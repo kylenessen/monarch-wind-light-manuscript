@@ -158,6 +158,10 @@ Predictor variables were selected to test specific hypotheses while avoiding mul
 
 To test for environmental effects on the response variable (BI), the analyses implemented generalized additive mixed models (GAMMs) through the mgcv package in R. Model selection compared 52 candidate models using AIC. The candidate set comprised two fundamental frameworks: models including (24 models) and excluding (24 models) the lag abundance term, with each framework containing null models, single predictor models, additive combinations, two- and three-way interactions, and models incorporating smooth terms for non-linear relationships. Random effects accounted for variation at three hierarchical levels: deployment location, observer, and deployment-day. Temporal autocorrelation within days was addressed using a first-order autoregressive (AR1) correlation structure grouped by deployment-day. All models were fitted using REML estimation.
 
+% Word review comment 83, jediffendorfer@usgs.gov, unresolved.
+% I think, but am not sure...so I propose you might have stronger inference if you took the top models from the initial set of candidate models and competed those against similarly structured "threshold" models..but vary the threshold..2m/s, 4, 8, etc.
+% Word review reply 84, Francis X. Villablanca, unresolved.
+% Yes, I see. We should keep this thought in mind if we need to reanalyze. But, because the data are the same, and the model structure is the same (except for inclusion and exclusion of thresholds) the AICs should be comparable.
 To specifically test for threshold effects of the Disruptive Wind Hypothesis' 2~m/s, we repeated the entire 52 model structures with a threshold-based predictor: count of minutes within each 30-minute period where wind gusts equaled or exceeded 2~m/s. This variable ranged from 0 to 30 minutes and was tested using the same model structures described above. Thus, model selection allowed direct comparison of continuous versus threshold-based wind effects.
 
 \subsubsection{Model Validation}
