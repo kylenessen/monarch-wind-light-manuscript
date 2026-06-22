@@ -1,0 +1,115 @@
+section,metric,value,denominator,note
+30-minute pairs,paired rows,1894,NA,NA
+30-minute pairs,unique observation frames,2028,NA,NA
+30-minute pairs,first observation date,2023-11-17,NA,NA
+30-minute pairs,last observation date,2024-02-04,NA,NA
+30-minute pairs,inclusive calendar days,80,NA,NA
+30-minute pairs,deployment day combinations,115,NA,NA
+30-minute pairs,summed hours between first and last daily observations,980.666,NA,NA
+30-minute pairs,peak unique observation hour,14:00,unique observations,202 observations
+30-minute pairs,peak paired time t hour,16:00,paired time t rows,196 rows
+30-minute pairs,16:00 unique observations,198,unique observations,NA
+30-minute pairs,16:00 paired time t rows,196,paired time t rows,NA
+30-minute weather,maximum gust minimum,0,NA,NA
+30-minute weather,maximum gust maximum,12.4,NA,NA
+30-minute weather,maximum gust mean,2.2,NA,NA
+30-minute weather,maximum gust standard deviation,1.36,NA,NA
+30-minute weather,maximum gust median,2.2,NA,NA
+30-minute weather,maximum gust first quartile,1.3,NA,NA
+30-minute weather,maximum gust third quartile,3,NA,NA
+30-minute weather,average temperature minimum,3,NA,NA
+30-minute weather,average temperature maximum,30,NA,NA
+30-minute weather,average temperature mean,14.568,NA,NA
+30-minute weather,average temperature standard deviation,3.8,NA,NA
+30-minute weather,average temperature median,14,NA,NA
+30-minute weather,average temperature first quartile,12.5,NA,NA
+30-minute weather,average temperature third quartile,17,NA,NA
+30-minute threshold,minutes above 2 m/s minimum,0,NA,NA
+30-minute threshold,minutes above 2 m/s maximum,31,NA,NA
+30-minute threshold,minutes above 2 m/s mean,9.077,NA,NA
+30-minute threshold,minutes above 2 m/s standard deviation,11.421,NA,NA
+30-minute threshold,minutes above 2 m/s median,2,NA,NA
+30-minute threshold,minutes above 2 m/s first quartile,0,NA,NA
+30-minute threshold,minutes above 2 m/s third quartile,19,NA,NA
+30-minute butterfly index,Butterfly Index minimum,0,NA,NA
+30-minute butterfly index,Butterfly Index maximum,950,NA,NA
+30-minute butterfly index,Butterfly Index mean,80.882,NA,NA
+30-minute butterfly index,Butterfly Index standard deviation,101.433,NA,NA
+30-minute butterfly index,Butterfly Index median,36,NA,NA
+30-minute butterfly index,Butterfly Index first quartile,8,NA,NA
+30-minute butterfly index,Butterfly Index third quartile,118,NA,NA
+30-minute direct sun,observations with butterflies in direct sun,601,paired rows,31.7%
+30-minute direct sun,mean butterflies in direct sun when present,16.983,NA,NA
+30-minute direct sun,maximum butterflies in direct sun when present,295,NA,NA
+Next Day Window,filtered rows,96,metrics_complete >= 0.95,NA
+Next Day Window,previous day maximum Butterfly Index minimum,0,NA,NA
+Next Day Window,previous day maximum Butterfly Index maximum,770,NA,NA
+Next Day Window,previous day maximum Butterfly Index mean,139.969,NA,NA
+Next Day Window,previous day maximum Butterfly Index standard deviation,141.912,NA,NA
+Next Day Window,previous day maximum Butterfly Index median,113,NA,NA
+Next Day Window,previous day maximum Butterfly Index first quartile,23.75,NA,NA
+Next Day Window,previous day maximum Butterfly Index third quartile,228.75,NA,NA
+Next Day Window,change in maximum Butterfly Index minimum,-376,NA,NA
+Next Day Window,change in maximum Butterfly Index maximum,464,NA,NA
+Next Day Window,change in maximum Butterfly Index mean,-10.458,NA,NA
+Next Day Window,change in maximum Butterfly Index standard deviation,112.188,NA,NA
+Next Day Window,change in maximum Butterfly Index median,-5.5,NA,NA
+Next Day Window,change in maximum Butterfly Index first quartile,-43.25,NA,NA
+Next Day Window,change in maximum Butterfly Index third quartile,17.25,NA,NA
+Next Day Window,maximum wind gust minimum,2,NA,NA
+Next Day Window,maximum wind gust maximum,12.8,NA,NA
+Next Day Window,maximum wind gust mean,4.531,NA,NA
+Next Day Window,maximum wind gust standard deviation,1.799,NA,NA
+Next Day Window,maximum wind gust median,4.1,NA,NA
+Next Day Window,maximum wind gust first quartile,3.2,NA,NA
+Next Day Window,maximum wind gust third quartile,5.35,NA,NA
+Next Day Window,cumulative butterflies in direct sun minimum,0,NA,NA
+Next Day Window,cumulative butterflies in direct sun maximum,1122,NA,NA
+Next Day Window,cumulative butterflies in direct sun mean,139.771,NA,NA
+Next Day Window,cumulative butterflies in direct sun standard deviation,206.865,NA,NA
+Next Day Window,cumulative butterflies in direct sun median,48,NA,NA
+Next Day Window,cumulative butterflies in direct sun first quartile,12,NA,NA
+Next Day Window,cumulative butterflies in direct sun third quartile,192,NA,NA
+Next Day Window,window duration hours minimum,24,NA,NA
+Next Day Window,window duration hours maximum,34.667,NA,NA
+Next Day Window,window duration hours mean,29.825,NA,NA
+Next Day Window,window duration hours standard deviation,3.655,NA,NA
+Next Day Window,window duration hours median,30.583,NA,NA
+Next Day Window,window duration hours first quartile,26,NA,NA
+Next Day Window,window duration hours third quartile,33.375,NA,NA
+24-hour robustness,filtered rows,94,metrics_complete >= 0.95,NA
+24-hour robustness,previous day maximum Butterfly Index minimum,0,NA,NA
+24-hour robustness,previous day maximum Butterfly Index maximum,770,NA,NA
+24-hour robustness,previous day maximum Butterfly Index mean,141.968,NA,NA
+24-hour robustness,previous day maximum Butterfly Index standard deviation,142.649,NA,NA
+24-hour robustness,previous day maximum Butterfly Index median,119,NA,NA
+24-hour robustness,previous day maximum Butterfly Index first quartile,24.5,NA,NA
+24-hour robustness,previous day maximum Butterfly Index third quartile,232.25,NA,NA
+24-hour robustness,change in maximum Butterfly Index minimum,-376,NA,NA
+24-hour robustness,change in maximum Butterfly Index maximum,464,NA,NA
+24-hour robustness,change in maximum Butterfly Index mean,-10.915,NA,NA
+24-hour robustness,change in maximum Butterfly Index standard deviation,113.316,NA,NA
+24-hour robustness,change in maximum Butterfly Index median,-5.5,NA,NA
+24-hour robustness,change in maximum Butterfly Index first quartile,-43.75,NA,NA
+24-hour robustness,change in maximum Butterfly Index third quartile,16.75,NA,NA
+24-hour robustness,maximum wind gust minimum,2,NA,NA
+24-hour robustness,maximum wind gust maximum,12.8,NA,NA
+24-hour robustness,maximum wind gust mean,4.329,NA,NA
+24-hour robustness,maximum wind gust standard deviation,1.8,NA,NA
+24-hour robustness,maximum wind gust median,4.1,NA,NA
+24-hour robustness,maximum wind gust first quartile,3.2,NA,NA
+24-hour robustness,maximum wind gust third quartile,4.9,NA,NA
+24-hour robustness,cumulative butterflies in direct sun minimum,0,NA,NA
+24-hour robustness,cumulative butterflies in direct sun maximum,1122,NA,NA
+24-hour robustness,cumulative butterflies in direct sun mean,108.755,NA,NA
+24-hour robustness,cumulative butterflies in direct sun standard deviation,177.104,NA,NA
+24-hour robustness,cumulative butterflies in direct sun median,29,NA,NA
+24-hour robustness,cumulative butterflies in direct sun first quartile,3.25,NA,NA
+24-hour robustness,cumulative butterflies in direct sun third quartile,144.25,NA,NA
+24-hour robustness,window duration hours minimum,24,NA,NA
+24-hour robustness,window duration hours maximum,24,NA,NA
+24-hour robustness,window duration hours mean,24,NA,NA
+24-hour robustness,window duration hours standard deviation,0,NA,NA
+24-hour robustness,window duration hours median,24,NA,NA
+24-hour robustness,window duration hours first quartile,24,NA,NA
+24-hour robustness,window duration hours third quartile,24,NA,NA

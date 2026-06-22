@@ -25,3 +25,7 @@
 # Generated manuscript exports
 exports/
 manuscript.pdf
+
+# Local analysis environments and scratch plots
+.venv/
+Rplots.pdf
