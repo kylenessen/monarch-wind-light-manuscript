@@ -22,10 +22,6 @@
 !.vscode/settings.json
 .idea/
 
-# Local agent workflow
-/AGENTS.md
-/agents.md
-
 # Generated manuscript exports
 exports/
 manuscript.pdf
