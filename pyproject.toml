@@ -1,0 +1,11 @@
+[project]
+name = "monarch-wind-light-manuscript"
+version = "0.1.0"
+description = "Analysis provenance scripts for the monarch wind and light manuscript"
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib>=3.10.6",
+    "numpy>=2.3.0",
+    "pandas>=2.3.0",
+]
+

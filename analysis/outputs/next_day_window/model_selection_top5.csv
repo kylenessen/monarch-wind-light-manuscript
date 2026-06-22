@@ -1,0 +1,6 @@
+Model,Terms,AICc,Delta_AICc,Weight
+M32,Interaction: wind_max_gust × sum_butterflies_direct_sun (linear),648.849,0,0.8469
+M52,Additive + Interaction: wind_max_gust + sum_butterflies_direct_sun + wind_max_gust×sum_butterflies_direct_sun (linear),654.448,5.599,0.0515
+M20,Interaction: temp_min × sum_butterflies_direct_sun (linear),656.773,7.924,0.0161
+M46,Additive + Interaction: temp_max + sum_butterflies_direct_sun + temp_max×sum_butterflies_direct_sun (linear),657.696,8.847,0.0102
+M30,Interaction: temp_at_max_count_t_1 × sum_butterflies_direct_sun (linear),657.905,9.056,0.0091

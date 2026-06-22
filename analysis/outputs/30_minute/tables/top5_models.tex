@@ -1,0 +1,16 @@
+\begin{table}
+
+\caption{Top 5 models ranked by AIC (30-minute analysis)}
+\centering
+\begin{tabular}[t]{llrrrr}
+\toprule
+Model & Terms & AIC & Delta_AIC & Weight & Wind_p\\
+\midrule
+M50 & Previous butterfly count, Temperature, Time since sunrise, Interaction (tensor): Maximum wind speed, Butterflies in direct sun & 8078.029 & 0.000 & 0.8559 & 5.55e-05\\
+M23 & Previous butterfly count, Temperature, Butterflies in direct sun, Time since sunrise & 8081.848 & 3.820 & 0.1268 & NA\\
+M22 & Previous butterfly count, Temperature (linear), Butterflies in direct sun, Time since sunrise & 8086.644 & 8.615 & 0.0115 & NA\\
+M24 & Previous butterfly count, Maximum wind speed, Temperature, Butterflies in direct sun, Time since sunrise & 8088.049 & 10.020 & 0.0057 & 2.18e-01\\
+M52 & Temperature, Time since sunrise, Interaction (tensor): Maximum wind speed, Butterflies in direct sun & 8096.722 & 18.693 & 0.0001 & 1.13e-05\\
+\bottomrule
+\end{tabular}
+\end{table}
