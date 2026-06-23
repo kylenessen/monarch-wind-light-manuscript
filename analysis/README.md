@@ -15,7 +15,7 @@ uv run analysis/prepare_lag_30min.py --lag-minutes 30 --tolerance-minutes 5 --ou
 `prepare_dynamic_windows.py` regenerates both daily window datasets.
 
 ```sh
-uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_analysis_24hr_window.csv --output-sunset data/monarch_daily_lag_analysis_sunset_window.csv
+uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_analysis_24hr_window.csv --output-nextday data/monarch_daily_lag_analysis_nextday_window.csv
 ```
 
 ## Analysis Scripts
@@ -24,21 +24,21 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 
 `descriptive_figures.R` regenerates the two-panel descriptive BI distribution and hourly 30-minute $\Delta$BI figure in `figures/`, and writes figure summaries to `analysis/outputs/descriptive_figures`.
 
-`linear_regression_figures.R` regenerates Figure 2 and Figure 3 in `figures/`, and writes `analysis/outputs/linear_regression/linear_regression_summary.csv`.
+`linear_regression_figures.R` regenerates `figures/wind_linear_30min.png` and `figures/wind_linear_nextday.png`, and writes `analysis/outputs/linear_regression/linear_regression_summary.csv`.
 
-`thirty_minute_gamm_analysis.R` refits the 52 30-minute GAMM candidates using the same random-effects structure as the publication figure script, writes model-selection outputs to `analysis/outputs/30_minute`, and regenerates Figure 4 through Figure 7 in `figures/`.
+`thirty_minute_gamm_analysis.R` refits the 52 30-minute GAMM candidates using the same random-effects structure as the publication figure script, writes model-selection outputs to `analysis/outputs/30_minute`, and regenerates `figures/partial_effects_30min.png`, `figures/interaction_wind_sun_30min.png`, `figures/diagnostics_30min.png`, and `figures/acf_30min.png`.
 
-`threshold_wind_disruption_analysis.R` refits the 52 threshold GAMM candidates using the same random-effects structure as the publication figure script, writes model-selection outputs to `analysis/outputs/threshold`, and regenerates `figures/fig08_threshold_interaction.png`.
+`threshold_wind_disruption_analysis.R` refits the 52 threshold GAMM candidates using the same random-effects structure as the publication figure script, writes model-selection outputs to `analysis/outputs/threshold`, and regenerates `analysis/outputs/threshold/figures/threshold_interaction_wind_sun.png`. This is a provenance figure, not a manuscript figure unless `manuscript.tex` includes it.
 
-`next_day_window_analysis.R` refits the best Next Day Window model, writes summaries to `analysis/outputs/next_day_window`, and regenerates Figure 9 through Figure 12 in `figures/`. The retained full model-selection table is `analysis/outputs/next_day_window/model_comparison_comprehensive.csv`.
+`next_day_window_analysis.R` refits the best Next Day Window model, writes summaries to `analysis/outputs/next_day_window`, and regenerates `figures/partial_effects_nextday.png`, `figures/interaction_wind_sun_nextday.png`, `figures/diagnostics_nextday.png`, and `figures/acf_nextday.png`. The retained full model-selection table is `analysis/outputs/next_day_window/model_comparison_comprehensive.csv`.
 
-`twenty_four_hour_robustness_analysis.R` refits the 24-hour robustness model, writes summaries to `analysis/outputs/24_hour`, and regenerates Figure 13 in `figures/`.
+`twenty_four_hour_robustness_analysis.R` refits the 24-hour robustness model, writes summaries to `analysis/outputs/24_hour`, and regenerates `figures/interaction_wind_sun_24hr.png`.
 
 `generate_publication_figures_all.R` is a convenience script that regenerates the manuscript figure set in one pass. Prefer the focused scripts above when tracing a specific result.
 
 ## Known Review Points
 
-The linear regression script reports the current Figure 3 regression on maximum BI change as beta 7.57, SE 5.76, p 0.192, r 0.131, and R2 0.017 for n 101. The manuscript currently contains beta 5.34, SE 4.63, p 0.252, r 0.115, and R2 0.013, which match the older 95th percentile response.
+The linear regression script reports the current `wind_linear_nextday` regression on maximum BI change as beta 7.57, SE 5.76, p 0.192, r 0.131, and R2 0.017 for n 101. The manuscript currently contains beta 5.34, SE 4.63, p 0.252, r 0.115, and R2 0.013, which match the older 95th percentile response.
 
 The figure-generation scripts omit the red 2 m/s threshold line by design, and the manuscript captions now match the figures.
 

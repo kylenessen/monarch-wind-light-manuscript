@@ -22,7 +22,7 @@ The analysis provenance usually lives in `/Users/kylenessen/Documents/GitHub/mas
 
 The original thesis repository lives in `/Users/kylenessen/Documents/GitHub/masters-thesis`. Use it mostly as reference for the thesis document that the manuscript was based on, older figure assets, and historical notes. It is not the authority for reviewed manuscript wording.
 
-For Figure 1, the temporal windows figure in this manuscript, use the repo-local generator at `figures/source/fig01_temporal_windows.py`. Run it with `uv run figures/source/fig01_temporal_windows.py`. By default it reads `figures/source/fig01_temporal_windows_max_count_timing.csv` and writes `figures/fig01_temporal_windows.png`, which is the file used by `manuscript.tex`. This generator was copied from `/Users/kylenessen/Documents/GitHub/masters-thesis/figures/methods/temporal_windows_all_intervals.py`. The older thesis script `temporal_windows.py` generates a different lower resolution version.
+For the temporal windows figure in this manuscript, use the repo-local generator at `figures/source/temporal_windows.py`. Run it with `uv run figures/source/temporal_windows.py`. By default it reads `figures/source/temporal_windows_max_count_timing.csv` and writes `figures/temporal_windows.png`, which is the file used by `manuscript.tex`. This generator was copied from `/Users/kylenessen/Documents/GitHub/masters-thesis/figures/methods/temporal_windows_all_intervals.py`. The older thesis script `temporal_windows.py` in that repository generates a different lower resolution version.
 
 ## Section Workflow
 

@@ -68,13 +68,13 @@ top5 <- comparison %>%
     Delta_AICc = round(delta_AICc, 3),
     Weight = round(weight_AICc, 4)
   )
-write_csv(top5, file.path(out_dir, "model_selection_top5.csv"))
+write_csv(top5, file.path(out_dir, "24hr_model_selection.csv"))
 
 model_summary <- summary(model$gam)
 smooths <- as.data.frame(model_summary$s.table) %>%
   rownames_to_column("term") %>%
   as_tibble()
-write_csv(smooths, file.path(out_dir, "best_model_summary.csv"))
+write_csv(smooths, file.path(out_dir, "24hr_model_summary.csv"))
 
 fit_stats <- tibble(
   model = "M31",
@@ -83,7 +83,7 @@ fit_stats <- tibble(
   scale = model_summary$scale,
   formula = "butterfly_diff_sqrt ~ s(max_butterflies_t_1, k = 5) + ti(wind_max_gust, sum_butterflies_direct_sun)"
 )
-write_csv(fit_stats, file.path(out_dir, "best_model_fit_statistics.csv"))
+write_csv(fit_stats, file.path(out_dir, "24hr_model_fit_statistics.csv"))
 
 descriptive <- tibble(
   metric = c(
@@ -115,7 +115,7 @@ descriptive <- tibble(
 )
 write_csv(descriptive, file.path(out_dir, "descriptive_statistics.csv"))
 
-fig13 <- create_binned_interaction_plot(
+interaction_wind_sun_24hr <- create_binned_interaction_plot(
   gam_model = model$gam,
   x_var = "wind_max_gust",
   y_var = "sum_butterflies_direct_sun",
@@ -136,6 +136,6 @@ fig13 <- create_binned_interaction_plot(
     axis.title = element_text(size = round(cfg$target_axis_title * cfg$interaction_w / cfg$display_width)),
     axis.text = element_text(size = round(cfg$target_axis_text * cfg$interaction_w / cfg$display_width))
   )
-save_both("fig13_interaction_wind_sun_24hr.png", fig13, cfg$interaction_w, cfg$interaction_h)
+save_both("interaction_wind_sun_24hr.png", interaction_wind_sun_24hr, cfg$interaction_w, cfg$interaction_h)
 
 message("Wrote 24-hour robustness outputs to ", out_dir)

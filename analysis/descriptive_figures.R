@@ -161,7 +161,7 @@ combined_plot <- p_bi + p_hourly +
   )
 
 ggsave(
-  here("figures", "fig14_bi_distribution_hourly_delta.png"),
+  here("figures", "descriptive_bi.png"),
   combined_plot,
   width = cfg$combined_w,
   height = cfg$combined_h,

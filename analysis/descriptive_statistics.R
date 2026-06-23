@@ -91,7 +91,7 @@ per_deployment_bi <- unique_obs %>%
   ) %>%
   arrange(deployment_id)
 
-next_day <- read_csv(here("data", "monarch_daily_lag_analysis_sunset_window.csv"), show_col_types = FALSE) %>%
+next_day <- read_csv(here("data", "monarch_daily_lag_analysis_nextday_window.csv"), show_col_types = FALSE) %>%
   filter(metrics_complete >= 0.95)
 
 hr24 <- read_csv(here("data", "monarch_daily_lag_analysis_24hr_window.csv"), show_col_types = FALSE) %>%
@@ -155,4 +155,3 @@ report <- c(
 writeLines(report, file.path(out_dir, "descriptive_statistics.md"))
 
 message("Wrote descriptive statistics to ", out_dir)
-

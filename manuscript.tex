@@ -156,7 +156,7 @@ Predictor variables were selected to test specific hypotheses while avoiding mul
 
 \subsubsection{Model Framework}
 
-To test for environmental effects on the response variable (BI), the analyses implemented generalized additive mixed models (GAMMs) through the mgcv package in R. Model selection compared 52 candidate models using AIC. The candidate set comprised two fundamental frameworks: models including (24 models) and excluding (24 models) the lag abundance term, with each framework containing null models, single predictor models, additive combinations, two- and three-way interactions, and models incorporating smooth terms for non-linear relationships. Random effects accounted for variation at three hierarchical levels: deployment location, observer, and deployment-day. Temporal autocorrelation within days was addressed using a first-order autoregressive (AR1) correlation structure grouped by deployment-day. All models were fitted using REML estimation.
+To test for environmental effects on the response variable ($\Delta$BI), the analyses implemented generalized additive mixed models (GAMMs) through the mgcv package in R. Model selection compared 52 candidate models using AIC. The candidate set comprised two fundamental frameworks: models including (24 models) and excluding (24 models) the lag BI term, with each framework containing null models, single predictor models, additive combinations, two- and three-way interactions, and models incorporating smooth terms for non-linear relationships. Random effects accounted for variation at three hierarchical levels: deployment location, observer, and deployment-day. Temporal autocorrelation within days was addressed using a first-order autoregressive (AR1) correlation structure grouped by deployment-day. All models were fitted using REML estimation.
 
 % Word review comment 83, jediffendorfer@usgs.gov, unresolved.
 % I think, but am not sure...so I propose you might have stronger inference if you took the top models from the initial set of candidate models and competed those against similarly structured "threshold" models..but vary the threshold..2m/s, 4, 8, etc.
@@ -184,7 +184,7 @@ Model selection followed the same information-theoretic approach as the 30-minut
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{figures/fig01_temporal_windows.png}
+\includegraphics[width=0.9\textwidth]{figures/temporal_windows.png}
 \caption{Temporal analysis windows for monarch butterfly monitoring. The figure illustrates two complementary approaches: (1) 30-minute lag analysis comparing consecutive observation intervals to capture immediate responses to environmental changes, and (2) Next Day Window analysis spanning from the previous day's maximum BI to the current day's final observation (mean duration $\sim$29.6 hours). Camera observations occur at 30-minute intervals during daylight hours only. Background shading indicates day-night cycles with transitions at sunrise and sunset.}
 \label{fig:temporal_windows}
 \end{figure}
@@ -206,29 +206,29 @@ Collectively, butterfly abundance ranged from 0 to 950 individuals per image, wi
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.95\textwidth]{figures/fig14_bi_distribution_hourly_delta.png}
+\includegraphics[width=0.95\textwidth]{figures/descriptive_bi.png}
 \caption{Descriptive distribution of monarch abundance and 30-minute cluster change. (A) Distribution of BI across 2,028 unique observation images. (B) Mean 30-minute $\Delta$BI by hour of the ending observation. Error bars show $\pm$1 SE across deployment-day hourly means.}
 \label{fig:descriptive_bi}
 \end{figure}
 
 \subsection{Linear Regression Between Maximum Wind Speed and Cluster Dynamics}
 
-We tested the most fundamental prediction of the Disruptive Wind Hypothesis: whether wind speed alone could explain changes in monarch cluster size ($\Delta$BI). The 30-minute window (Figure~\ref{fig:wind_linear_30min}) revealed no statistically significant relationship between maximum wind speed and $\Delta$BI ($\beta$ = 1.19 butterflies per m/s, SE = 0.66, $p$ = 0.073, $n$ = 1,894), with a negligible correlation ($r$ = 0.041, $R^{2}$ = 0.002) explaining only 0.2\% of the variance in $\Delta$BI. Data points scattered uniformly across all wind speeds from calm conditions to 12.4~m/s. Additionally, a heuristic test of the Disruptive Wind Hypothesis 2~m/s behavioral threshold (Figure~\ref{fig:wind_linear_30min}) showed no apparent demarcation in butterfly responses, with similar variance in $\Delta$BI both above and below this threshold. The Next Day Window analyses (Figure~\ref{fig:wind_linear_sunset}) similarly revealed no significant relationship between maximum wind exposure and $\Delta$BI ($\beta$ = 5.34 butterflies per m/s, SE = 4.63, $p$ = 0.252, $n$ = 101). The correlation remained weak ($r$ = 0.115, $R^{2}$ = 0.013), with wind speed explaining only 1.3\% of the variance in $\Delta$BI between consecutive days. All observation periods in the Next Day Window analysis experienced maximum wind speeds exceeding the Disruptive Wind Hypothesis 2~m/s behavioral threshold but with no apparent response (i.e., winds $>$ 2~m/s do not seem to have been avoided). Likewise, despite consistent exposure to winds that exceeded the threshold, no clear heuristic pattern emerged linking wind intensity to subsequent roost abandonment or growth.
+We tested the most fundamental prediction of the Disruptive Wind Hypothesis: whether wind speed alone could explain changes in monarch cluster size ($\Delta$BI). The 30-minute window (Figure~\ref{fig:wind_linear_30min}) revealed no statistically significant relationship between maximum wind speed and $\Delta$BI ($\beta$ = 1.19 butterflies per m/s, SE = 0.66, $p$ = 0.073, $n$ = 1,894), with a negligible correlation ($r$ = 0.041, $R^{2}$ = 0.002) explaining only 0.2\% of the variance in $\Delta$BI. Data points scattered uniformly across all wind speeds from calm conditions to 12.4~m/s. Additionally, a heuristic test of the Disruptive Wind Hypothesis 2~m/s behavioral threshold (Figure~\ref{fig:wind_linear_30min}) showed no apparent demarcation in butterfly responses, with similar variance in $\Delta$BI both above and below this threshold. The Next Day Window analyses (Figure~\ref{fig:wind_linear_nextday}) similarly revealed no significant relationship between maximum wind exposure and $\Delta$BI ($\beta$ = 5.34 butterflies per m/s, SE = 4.63, $p$ = 0.252, $n$ = 101). The correlation remained weak ($r$ = 0.115, $R^{2}$ = 0.013), with wind speed explaining only 1.3\% of the variance in $\Delta$BI between consecutive days. All observation periods in the Next Day Window analysis experienced maximum wind speeds exceeding the Disruptive Wind Hypothesis 2~m/s behavioral threshold but with no apparent response (i.e., winds $>$ 2~m/s do not seem to have been avoided). Likewise, despite consistent exposure to winds that exceeded the threshold, no clear heuristic pattern emerged linking wind intensity to subsequent roost abandonment or growth.
 
 These null linear regression relationships indicated that the Disruptive Wind Hypothesis alone cannot predict monarch clustering behavior, thus necessitating examination of more complex environmental interactions and conditional relationships that may modulate wind effects.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{figures/fig02_wind_vs_dbi_30min.png}
+\includegraphics[width=0.7\textwidth]{figures/wind_linear_30min.png}
 \caption{Maximum wind speed vs. $\Delta$BI (30-minute window). Linear regression of maximum wind speed and $\Delta$BI at 30-minute intervals. Each point represents a paired observation ($n$ = 1,894) of abundance (or $\Delta$BI) over a 30-minute interval. Positive values denote an increase in abundance, and negative values denote a decrease. Linear regression showed no significant relationship ($\beta$ = 1.19, SE = 0.66, $p$ = 0.073, $r$ = 0.041, $R^{2}$ = 0.002). The blue regression line is shown for reference despite non-significance.}
 \label{fig:wind_linear_30min}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{figures/fig03_wind_vs_dbi_nextday.png}
+\includegraphics[width=0.7\textwidth]{figures/wind_linear_nextday.png}
 \caption{Maximum wind speed vs. $\Delta$BI (Next Day Window). Linear regression of maximum wind speed and Next Day Window time interval which is the $\Delta$BI from maximum BI to the next day's sunset BI (see methods). Each point represents a paired observation ($n$ = 101) of abundance (or $\Delta$BI) over the Next Day Window interval. Positive values denote an increase in abundance, and negative values denote a decrease. Linear regression showed no significant relationship ($\beta$ = 5.34, SE = 4.63, $p$ = 0.252, $r$ = 0.115, $R^{2}$ = 0.013). The blue regression line is shown for reference despite non-significance.}
-\label{fig:wind_linear_sunset}
+\label{fig:wind_linear_nextday}
 \end{figure}
 
 \subsection{Wind Disruption Analysis}
@@ -284,7 +284,7 @@ Partial effects for the smooth terms, which represent the isolated influence of 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{figures/fig04_partial_effects_30min.png}
+\includegraphics[width=0.9\textwidth]{figures/partial_effects_30min.png}
 \caption{Partial effects for best fit wind disruption model (30-minute window). Partial effects of environmental predictors on $\Delta$BI from the best-fit GAMM model (M50) in the 30-minute wind disruption analysis. Partial effects show how each environmental factor influences butterfly abundance while holding all other variables constant, thus isolating each predictor's individual contribution to the response. Shaded regions represent 95\% confidence intervals. The blue vertical shading in the right panel shows the range of temperatures over which the flight threshold occurs.}
 \label{fig:partial_effects_30min}
 \end{figure}
@@ -293,7 +293,7 @@ The tensor interaction between wind speed and butterflies in direct sun ($p < 0.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{figures/fig05_interaction_wind_sun_30min.png}
+\includegraphics[width=0.7\textwidth]{figures/interaction_wind_sun_30min.png}
 \caption{$\Delta$BI response to interaction of wind and direct sun (30-minute window). Tensor smooth interaction between maximum wind speed (m/s) and the count of butterflies in direct sun on change in butterfly index ($\Delta$BI) in the 30-minute time windows. Color gradient indicates partial effects magnitude on $\Delta$BI (red = positive, blue = negative). Black points show observed data distribution. Gray regions indicate areas beyond reliable interpolation range.}
 \label{fig:interaction_wind_sun_30min}
 \end{figure}
@@ -304,7 +304,7 @@ Model diagnostic plots confirmed the adequacy of the GAMM specification (Figure~
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{figures/fig06_diagnostics_30min.png}
+\includegraphics[width=0.8\textwidth]{figures/diagnostics_30min.png}
 \caption{Quantile-quantile and residual plots for the best fit 30-minute wind disruption model. Quantile-quantile plot (left panel) comparing model residuals to theoretical normal distribution. Residuals versus fitted values (right panel) assess homoscedasticity and model adequacy.}
 \label{fig:diagnostics_30min}
 \end{figure}
@@ -332,7 +332,7 @@ Temporal autocorrelation analysis revealed minimal residual correlation structur
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{figures/fig07_acf_30min.png}
+\includegraphics[width=0.7\textwidth]{figures/acf_30min.png}
 \caption{Autocorrelation function for best fit 30-minute wind disruption model. Autocorrelation function of model residuals showing minimal temporal correlation after accounting for AR(1) structure within deployment-day time series. Blue dashed lines indicate 95\% confidence bounds for white noise.}
 \label{fig:acf_30min}
 \end{figure}
@@ -372,11 +372,11 @@ Daily maximum BI per cluster ranged from 0 to 770 butterflies (mean = 134.7 $\pm
 
 \subsubsection{Model Selection: Next Day Window and Site Fidelity Analysis}
 
-Model selection via AICc identified the best-fit model (M32) as capturing 85\% of the total model weight (Table~\ref{tab:sunset_model_selection}). The next best model showed substantially weaker support with $\Delta$AICc = 5.6 and only 5\% model weight. The best-fit model predicted square-root transformed change in BI as a function of: (1) the previous day's maximum butterfly index, (2) window duration in hours, and (3) a tensor smooth interaction between maximum wind gust speed and cumulative butterflies in direct sunlight.
+Model selection via AICc identified the best-fit model (M32) as capturing 85\% of the total model weight (Table~\ref{tab:nextday_model_selection}). The next best model showed substantially weaker support with $\Delta$AICc = 5.6 and only 5\% model weight. The best-fit model predicted square-root transformed change in BI as a function of: (1) the previous day's maximum butterfly index, (2) window duration in hours, and (3) a tensor smooth interaction between maximum wind gust speed and cumulative butterflies in direct sunlight.
 
 \begin{table}[H]
 \caption{Top 5 models ranked by AICc (Next Day Window and site fidelity analysis).}
-\label{tab:sunset_model_selection}
+\label{tab:nextday_model_selection}
 \centering
 \small
 \begin{tabular}{llrrr}
@@ -394,11 +394,11 @@ M30 & ti(Temp.\ at prev.\ max, Cum.\ sun) & 657.90 & 9.06 & 0.01 \\
 
 \subsubsection{Analysis of Best Fit Model}
 
-The Next Day Window/site fidelity model explained 39.7\% of the variance in maximum BI changes (adjusted $R^{2}$ = 0.397, $n$ = 96), representing a more than six-fold improvement in explanatory power compared to the 30-minute continuous (adjusted $R^{2}$ = 0.064) and threshold (adjusted $R^{2}$ = 0.061) analyses. Analysis revealed significant effects on $\Delta$BI for the previous day's maximum BI ($F$ = 24.88, $p < 0.001$) and the wind-sunlight interaction ($F$ = 4.10, $p < 0.001$). In addition, the partial effects of the previous day's maximum BI showed a significant negative linear relationship (Table~\ref{tab:sunset_model_summary}). Meaning that larger clusters experienced proportionally greater losses between days (as found in the 30-minute analysis). Window duration showed no significant relationship.
+The Next Day Window/site fidelity model explained 39.7\% of the variance in maximum BI changes (adjusted $R^{2}$ = 0.397, $n$ = 96), representing a more than six-fold improvement in explanatory power compared to the 30-minute continuous (adjusted $R^{2}$ = 0.064) and threshold (adjusted $R^{2}$ = 0.061) analyses. Analysis revealed significant effects on $\Delta$BI for the previous day's maximum BI ($F$ = 24.88, $p < 0.001$) and the wind-sunlight interaction ($F$ = 4.10, $p < 0.001$). In addition, the partial effects of the previous day's maximum BI showed a significant negative linear relationship (Table~\ref{tab:nextday_model_summary}). Meaning that larger clusters experienced proportionally greater losses between days (as found in the 30-minute analysis). Window duration showed no significant relationship.
 
 \begin{table}[H]
 \caption{Summary of best-fit model for Next Day Window and fidelity analysis.}
-\label{tab:sunset_model_summary}
+\label{tab:nextday_model_summary}
 \centering
 \small
 \begin{tabular}{lrrrr}
@@ -416,41 +416,41 @@ Wind gust $\times$ Sunlight exposure & 6.68 & 6.68 & 4.10 & $< 0.001$*** \\
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{figures/fig09_partial_effects_nextday.png}
+\includegraphics[width=0.9\textwidth]{figures/partial_effects_nextday.png}
 \caption{Partial effects of control variables in best fit Next Day Window model. Partial effects of control variables on Next Day Window time interval on monarch butterfly maximum $\Delta$BI from the best-fit GAMM model (M32). Partial effects isolate how each variable influences BI changes while holding other factors constant at their average values. Left panel shows the strong negative effect of previous-day maximum BI. Right panel shows window duration with no significant effect on cluster BI changes. Shaded regions represent 95\% confidence intervals.}
-\label{fig:partial_effects_sunset}
+\label{fig:partial_effects_nextday}
 \end{figure}
 
-In the Next Day Window and site fidelity analysis, the tensor smooth interaction between maximum wind gust and cumulative direct sun exposure ($p < 0.001$) revealed complex conditional relationships (Figure~\ref{fig:interaction_wind_sun_sunset}). For example, under low wind gust speeds around 2~m/s and low butterfly counts ($<$60--70) in direct sun, BI increased the following day. Yet under low wind gust speeds ($\sim$2~m/s), but higher butterfly counts in direct sun ($>$100) BI decreased the following day. Thus, at the same wind but under different light, the BI pattern reverses. And at intermediate to high values of both wind gust speed and butterfly sun exposure, cluster sizes (BI) increased the next day. These patterns suggest monarchs redistribute within the grove, moving from one set of wind and light conditions (blue regions showing cluster decreases) to another set of wind and light conditions (red regions showing cluster increases) in complex but predictable ways. We note that this movement may occur between researcher monitored and unmonitored areas of the grove or involve butterflies entering or leaving the site. Again, interpretation requires caution at interpolation boundaries and regions with single or low observations.
+In the Next Day Window and site fidelity analysis, the tensor smooth interaction between maximum wind gust and cumulative direct sun exposure ($p < 0.001$) revealed complex conditional relationships (Figure~\ref{fig:interaction_wind_sun_nextday}). For example, under low wind gust speeds around 2~m/s and low butterfly counts ($<$60--70) in direct sun, BI increased the following day. Yet under low wind gust speeds ($\sim$2~m/s), but higher butterfly counts in direct sun ($>$100) BI decreased the following day. Thus, at the same wind but under different light, the BI pattern reverses. And at intermediate to high values of both wind gust speed and butterfly sun exposure, cluster sizes (BI) increased the next day. These patterns suggest monarchs redistribute within the grove, moving from one set of wind and light conditions (blue regions showing cluster decreases) to another set of wind and light conditions (red regions showing cluster increases) in complex but predictable ways. We note that this movement may occur between researcher monitored and unmonitored areas of the grove or involve butterflies entering or leaving the site. Again, interpretation requires caution at interpolation boundaries and regions with single or low observations.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{figures/fig10_interaction_wind_sun_nextday.png}
+\includegraphics[width=0.7\textwidth]{figures/interaction_wind_sun_nextday.png}
 \caption{$\Delta$BI response to interactions of wind and sun exposure (Next Day Window). Tensor smooth interaction between maximum wind gust (m/s) and cumulative butterflies in direct sun on day-to-day cluster size changes ($\Delta$BI). Color gradient indicates partial effect magnitude on square-root transformed scale (red = positive, blue = negative). Black points show observed data distribution. Gray regions indicate areas beyond reliable interpolation range.}
-\label{fig:interaction_wind_sun_sunset}
+\label{fig:interaction_wind_sun_nextday}
 \end{figure}
 
 \subsubsection{Model Diagnostics}
 
-The quantile-quantile plot revealed approximately normal residual distribution with some minor deviations (Figure~\ref{fig:diagnostics_sunset}). Residual versus fitted value plots showed no systematic patterns or heteroscedasticity, indicating appropriate model structure. Basis dimension checks confirmed adequate smoothing parameter selection for the tensor smooth interaction term. The wind-sunlight interaction showed a k-index value of 1.06 ($p$ = 0.72), indicating sufficient basis dimensions to capture the underlying functional form without evidence of undersmoothing. Temporal autocorrelation analysis revealed minimal residual correlation structure after accounting for the AR(1) correlation within deployment days (Figure~\ref{fig:acf_sunset}). The autocorrelation function showed rapid decay with all lags beyond lag 1 falling within the significance bounds.
+The quantile-quantile plot revealed approximately normal residual distribution with some minor deviations (Figure~\ref{fig:diagnostics_nextday}). Residual versus fitted value plots showed no systematic patterns or heteroscedasticity, indicating appropriate model structure. Basis dimension checks confirmed adequate smoothing parameter selection for the tensor smooth interaction term. The wind-sunlight interaction showed a k-index value of 1.06 ($p$ = 0.72), indicating sufficient basis dimensions to capture the underlying functional form without evidence of undersmoothing. Temporal autocorrelation analysis revealed minimal residual correlation structure after accounting for the AR(1) correlation within deployment days (Figure~\ref{fig:acf_nextday}). The autocorrelation function showed rapid decay with all lags beyond lag 1 falling within the significance bounds.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{figures/fig11_diagnostics_nextday.png}
+\includegraphics[width=0.8\textwidth]{figures/diagnostics_nextday.png}
 \caption{Quantile-quantile and residual diagnostic plot for best fit Next Day Window model. Diagnostic plots for the best-fit GAMM model (M32) of the Next Day Window analysis. Left panel shows quantile-quantile plot comparing model residuals to theoretical normal distribution. Right panel displays residuals versus fitted values to assess homoscedasticity and model adequacy.}
-\label{fig:diagnostics_sunset}
+\label{fig:diagnostics_nextday}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{figures/fig12_acf_nextday.png}
+\includegraphics[width=0.7\textwidth]{figures/acf_nextday.png}
 \caption{Autocorrelation function for best fit Next Day Window model. Autocorrelation function of model residuals showing minimal temporal correlation after accounting for AR(1) structure within deployment days. Blue dashed lines indicate 95\% confidence bounds for white noise.}
-\label{fig:acf_sunset}
+\label{fig:acf_nextday}
 \end{figure}
 
 \subsection{Robustness Analysis: 24-Hour Change in BI}
 
-To assess the robustness of our Next Day Window and site fidelity findings, we conducted an analysis examining butterfly cluster changes over 24-hour periods rather than sunset-specific intervals. This analysis evaluated the same 76 candidate models using identical GAMM specifications with deployment random intercepts and AR(1) temporal correlation. Notably, model selection converged on the same structural form as the primary Next Day Window/site fidelity analysis. The decisive best-fit model (M31), incorporating a tensor smooth interaction between maximum wind gust and cumulative direct sun exposure, emerged with 51\% of the total model weight (Table~\ref{tab:24hr_model_selection}). Alternative models showed substantially weaker support, with the next best model achieving only 8\% weight and $\Delta$AICc = 3.6.
+To assess the robustness of our Next Day Window and site fidelity findings, we conducted an analysis examining butterfly cluster changes over 24-hour periods rather than variable Next Day Window intervals. This analysis evaluated the same 76 candidate models using identical GAMM specifications with deployment random intercepts and AR(1) temporal correlation. Notably, model selection converged on the same structural form as the primary Next Day Window/site fidelity analysis. The decisive best-fit model (M31), incorporating a tensor smooth interaction between maximum wind gust and cumulative direct sun exposure, emerged with 51\% of the total model weight (Table~\ref{tab:24hr_model_selection}). Alternative models showed substantially weaker support, with the next best model achieving only 8\% weight and $\Delta$AICc = 3.6.
 
 \begin{table}[H]
 \caption{Top models from 24-hour robustness analysis.}
@@ -470,12 +470,12 @@ M51 & Wind + sun + wind$\times$sun (smooth) & 641.7 & 5.4 & 0.03 & -- \\
 \end{tabular}
 \end{table}
 
-The 24-hour robustness analysis revealed qualitatively similar interaction patterns to the Next Day Window/site fidelity analysis (though with attenuated effect magnitudes) (Figure~\ref{fig:interaction_wind_sun_24hr}). For example, under low wind gust speeds around 2~m/s and low butterfly counts ($<$60--70) in direct sun, BI increased the following day. And under low wind gust speeds ($\sim$2~m/s), and higher butterfly counts in sun ($>$100) BI decreased the following day (a reversal of pattern). And at intermediate to high values of both wind gust speed and butterfly sun exposure, cluster sizes (BI) increased the next day. The convergent model selection and consistent interaction patterns across standardized (24hr) and variable scales strengthen confidence in the tested environmental interrelationships. This is also consistent with window duration showing no significant relationship with maximum $\Delta$BI (Figure~\ref{fig:partial_effects_sunset}) in the Next Day Window analysis. Pattern interpretation requires similar caution near data boundaries and regions with sparse observations.
+The 24-hour robustness analysis revealed qualitatively similar interaction patterns to the Next Day Window/site fidelity analysis (though with attenuated effect magnitudes) (Figure~\ref{fig:interaction_wind_sun_24hr}). For example, under low wind gust speeds around 2~m/s and low butterfly counts ($<$60--70) in direct sun, BI increased the following day. And under low wind gust speeds ($\sim$2~m/s), and higher butterfly counts in sun ($>$100) BI decreased the following day (a reversal of pattern). And at intermediate to high values of both wind gust speed and butterfly sun exposure, cluster sizes (BI) increased the next day. The convergent model selection and consistent interaction patterns across standardized (24hr) and variable scales strengthen confidence in the tested environmental interrelationships. This is also consistent with window duration showing no significant relationship with maximum $\Delta$BI (Figure~\ref{fig:partial_effects_nextday}) in the Next Day Window analysis. Pattern interpretation requires similar caution near data boundaries and regions with sparse observations.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{figures/fig13_interaction_wind_sun_24hr.png}
-\caption{$\Delta$BI response to interactions of wind and sun exposure over 24-hours. Tensor smooth interaction between maximum wind gust (m/s) and cumulative butterflies in direct sun on 24-hour cluster size changes ($\Delta$BI). Color gradient indicates partial effect magnitude on square-root transformed scale (red = positive, blue = negative). Black points show observed data distribution. Gray regions indicate areas beyond reliable interpolation range. The interaction pattern mirrors that observed in the sunset-specific analysis, supporting the robustness of identified environmental relationships.}
+\includegraphics[width=0.7\textwidth]{figures/interaction_wind_sun_24hr.png}
+\caption{$\Delta$BI response to interactions of wind and sun exposure over 24-hours. Tensor smooth interaction between maximum wind gust (m/s) and cumulative butterflies in direct sun on 24-hour cluster size changes ($\Delta$BI). Color gradient indicates partial effect magnitude on square-root transformed scale (red = positive, blue = negative). Black points show observed data distribution. Gray regions indicate areas beyond reliable interpolation range. The interaction pattern mirrors that observed in the Next Day Window analysis, supporting the robustness of identified environmental relationships.}
 \label{fig:interaction_wind_sun_24hr}
 \end{figure}
 
@@ -488,11 +488,11 @@ For over three decades, conservation practice has operated under the assumption 
 
 \subsection{Evidence Against Wind Disruption}
 
-We tested the most basic prediction of the Disruptive Wind Hypothesis, that increasing wind speed should produce decreasing cluster sizes. We found essentially no correlation at either temporal scale (30-minute $R^{2}$ = 0.002, $n$ = 1,894; two sunset cycles $R^{2}$ = 0.013, $n$ = 101) across wind speeds ranging from calm to six times the proposed threshold.
+We tested the most basic prediction of the Disruptive Wind Hypothesis, that increasing wind speed should produce decreasing cluster sizes. We found essentially no correlation at either temporal scale (30-minute $R^{2}$ = 0.002, $n$ = 1,894; Next Day Window $R^{2}$ = 0.013, $n$ = 101) across wind speeds ranging from calm to six times the proposed threshold.
 
-Modeling revealed that wind alone showed no disruptive effect. Instead, monarch responses were a complex interaction of wind and solar exposure. This interaction showed significance at $p < 0.001$ in both the 30-minute and two sunset cycle analyses. Indeed, wind effects depended entirely on light conditions. For butterflies in shade, wind speed (0 to 12.4~m/s) had no effect on cluster dynamics. Yet once butterflies occurred in sunlit positions, relationships became complex and conditional.
+Modeling revealed that wind alone showed no disruptive effect. Instead, monarch responses were a complex interaction of wind and solar exposure. This interaction showed significance at $p < 0.001$ in both the 30-minute and Next Day Window analyses. Indeed, wind effects depended entirely on light conditions. For butterflies in shade, wind speed (0 to 12.4~m/s) had no effect on cluster dynamics. Yet once butterflies occurred in sunlit positions, relationships became complex and conditional.
 
-Strikingly, every observation period over the two sunset cycle experienced maximum wind speeds that exceeded 2~m/s (range: 2.0--12.8~m/s), yet monarch clusters persisted throughout the 80-day study period. If the Disruptive Wind Hypothesis were correct, we should have observed either mass departures when temperatures permitted flight or butterflies physically dislodged and littering the ground when too cold to fly \cite{leongRestorationOverwinteringGrove1999}. We observed neither.
+Strikingly, every observation period in the Next Day Window analysis experienced maximum wind speeds that exceeded 2~m/s (range: 2.0--12.8~m/s), yet monarch clusters persisted throughout the 80-day study period. If the Disruptive Wind Hypothesis were correct, we should have observed either mass departures when temperatures permitted flight or butterflies physically dislodged and littering the ground when too cold to fly \cite{leongRestorationOverwinteringGrove1999}. We observed neither.
 
 \subsection{Thermoregulation as an Alternative Explanation}
 
@@ -520,7 +520,7 @@ Several factors shape the interpretation of our findings. First, our data come f
 
 Second, though we did not observe it, we do not dispute that wind can dislodge butterflies from a cluster. The wind disruption hypothesis was developed during an era of massive aggregations containing hundreds of thousands of individuals, where many butterflies attached only to other butterflies in multi-layered formations \cite{leongMicroenvironmentalFactorsAssociated1990,browerMonarchButterflyClusters2008}. In contrast, our study observed relatively small clusters where a large proportion of clustering butterflies could maintain direct contact with eucalyptus substrates. If substrate attachment provides greater wind resistance than butterfly-to-butterfly attachment, wind might affect these different clustering configurations differently. It is thus possible that the Disruptive Wind Hypothesis may be more accurate for the extreme densities of past decades but less relevant to today's smaller populations. Alternatively, the fact that we did not see dislodged butterflies even at wind speeds above 12.4~m/s when branches were swinging wildly, leads us to suspect that there may be an unrecognized interaction between wind and near freezing temperature that facilitates dislodgement.
 
-Finally, our models explained relatively little variance overall (30-minute 6.4\%; two sunset cycles 39.7\%), reflecting both the complexity of butterfly behavior and our focus on testing specific hypotheses rather than comprehensively explaining movement patterns. Regardless, the Wind Disruption Hypothesis predicts substantial observable impacts, not subtle ones. Our analyses achieved 87.5\% power to detect moderate effects and 98.5\% power for large effects. Our failure to detect effects, despite adequate power, validated methodology, and successful identification of other environmental predictors and interaction terms, provides strong evidence against the hypothesis rather than merely absence of evidence.
+Finally, our models explained relatively little variance overall (30-minute 6.4\%; Next Day Window 39.7\%), reflecting both the complexity of butterfly behavior and our focus on testing specific hypotheses rather than comprehensively explaining movement patterns. Regardless, the Wind Disruption Hypothesis predicts substantial observable impacts, not subtle ones. Our analyses achieved 87.5\% power to detect moderate effects and 98.5\% power for large effects. Our failure to detect effects, despite adequate power, validated methodology, and successful identification of other environmental predictors and interaction terms, provides strong evidence against the hypothesis rather than merely absence of evidence.
 
 \subsection{Unexplained Factors of Variation, Resolution and Replication}
 
@@ -563,7 +563,7 @@ While this study reduces certainty regarding some aspects of overwintering ecolo
 \section{Conclusions}
 %% ------------------------------------------------------------------
 
-Our direct test of the wind disruption hypothesis found no evidence that wind speeds above 2~m/s force overwintering monarchs to abandon their clusters. Every observation in our two sunset cycle analysis exceeded this threshold, yet clusters persisted. Linear regression analyses showed no relationship between wind and cluster changes. Model selection consistently identified other factors as more important. These multiple lines of evidence converge on a clear conclusion. Wind alone does not disrupt overwintering monarch butterflies as has been assumed for over three decades.
+Our direct test of the wind disruption hypothesis found no evidence that wind speeds above 2~m/s force overwintering monarchs to abandon their clusters. Every observation in our Next Day Window analysis exceeded this threshold, yet clusters persisted. Linear regression analyses showed no relationship between wind and cluster changes. Model selection consistently identified other factors as more important. These multiple lines of evidence converge on a clear conclusion. Wind alone does not disrupt overwintering monarch butterflies as has been assumed for over three decades.
 
 Instead, our results suggest that thermal factors may play a more important role in clustering dynamics than previously recognized. Monarchs responded strongly to direct sunlight which could directly influence body temperature. The unexpected wind-light interaction, where moderate wind combined with sun exposure sometimes increased cluster sizes, suggests that environmental conditions interact in complex ways that simple threshold-based management metrics cannot capture.
 
@@ -601,7 +601,7 @@ This appendix documents all candidate models tested in the 30-minute wind disrup
 \textbf{Model Structure.}
 All models used Generalized Additive Mixed Models (GAMM) with the following structure:
 \begin{itemize}
-\item \textbf{Response variable}: $\sqrt[3]{\Delta\text{Butterflies}}$ (cube root of butterfly count change between consecutive 30-minute intervals)
+\item \textbf{Response variable}: $\sqrt[3]{\Delta\mathrm{BI}}$ (cube root of BI change between consecutive 30-minute intervals)
 \item \textbf{Random effects}: Random intercept for deployment site
 \item \textbf{Correlation structure}: AR(1) autocorrelation within observation days
 \item \textbf{Estimation method}: Restricted Maximum Likelihood (REML)
@@ -693,7 +693,7 @@ This appendix documents all candidate models tested in the threshold wind disrup
 \textbf{Model Structure.}
 All models used Generalized Additive Mixed Models (GAMM) with the following structure:
 \begin{itemize}
-\item \textbf{Response variable}: $\sqrt[3]{\Delta\text{Butterflies}}$ (cube root of butterfly count change between consecutive 30-minute intervals)
+\item \textbf{Response variable}: $\sqrt[3]{\Delta\mathrm{BI}}$ (cube root of BI change between consecutive 30-minute intervals)
 \item \textbf{Random effects}: Random intercept for deployment site
 \item \textbf{Correlation structure}: AR(1) autocorrelation within observation days
 \item \textbf{Estimation method}: Restricted Maximum Likelihood (REML)
@@ -778,14 +778,14 @@ Model T50 was identified as the best-fit model based on Akaike Information Crite
 
 
 \section{Site Fidelity Analysis (Next Day Window): Candidate Models}
-\label{app:sunset_models}
+\label{app:nextday_models}
 
-This appendix documents all candidate models tested in the Next Day Window site fidelity analysis. A total of 78 models were evaluated to identify factors predicting daily changes in roost abandonment using a biologically-aligned weather window (from time of maximum count through functional sunset).
+This appendix documents all candidate models tested in the Next Day Window site fidelity analysis. A total of 78 models were evaluated to identify factors predicting daily changes in roost abandonment using a biologically-aligned weather window from the previous day's maximum BI through the current day's last observation.
 
 \textbf{Model Structure.}
 All models used Generalized Additive Mixed Models (GAMM) with the following structure:
 \begin{itemize}
-\item \textbf{Response variable}: $\sqrt{\Delta\text{Butterflies}_{95\text{th}}}$ (square root of change in 95th percentile butterfly count between days)
+\item \textbf{Response variable}: signed $\sqrt{|\Delta\mathrm{BI}_{\max}|}$ (signed square root of change in maximum daily BI between days)
 \item \textbf{Random effects}: Random intercept for deployment site
 \item \textbf{Correlation structure}: AR(1) autocorrelation for temporal dependence
 \item \textbf{Estimation method}: Restricted Maximum Likelihood (REML)
@@ -794,8 +794,8 @@ All models used Generalized Additive Mixed Models (GAMM) with the following stru
 \textbf{Variable Definitions.}
 \texttt{max\_butterflies\_t\_1}: Previous day maximum butterfly index (tested as smooth or linear);
 \texttt{lag\_duration\_hours}: Weather window duration (tested as smooth or linear);
-\texttt{temp\_min}: Minimum temperature from max count to sunset ($^{\circ}$C);
-\texttt{temp\_max}: Maximum temperature from max count to sunset ($^{\circ}$C);
+\texttt{temp\_min}: Minimum temperature over the Next Day Window ($^{\circ}$C);
+\texttt{temp\_max}: Maximum temperature over the Next Day Window ($^{\circ}$C);
 \texttt{temp\_at\_max\_count\_t\_1}: Temperature when max count occurred ($^{\circ}$C);
 \texttt{wind\_max\_gust}: Maximum wind gust in window (m/s);
 \texttt{sum\_butterflies\_direct\_sun}: Cumulative butterflies in direct sun;
@@ -805,7 +805,7 @@ $ti()$: Tensor product interaction smooth.
 Models were generated programmatically across seven categories. The first number in parentheses indicates models with smooth baseline controls; the second indicates linear baseline controls.
 
 \begin{longtable}{ll}
-\caption{Complete list of 78 candidate models tested in Next Day Window site fidelity analysis.} \label{tab:sunset_candidates} \\
+\caption{Complete list of 78 candidate models tested in Next Day Window site fidelity analysis.} \label{tab:nextday_candidates} \\
 \toprule
 \textbf{Model} & \textbf{Description} \\
 \midrule
@@ -861,12 +861,12 @@ Model M32 (Interaction: wind\_max\_gust $\times$ sum\_butterflies\_direct\_sun w
 \section{24-Hour Robustness Analysis: Candidate Models}
 \label{app:24hr_models}
 
-This appendix documents all candidate models tested in the 24-hour robustness analysis. A total of 76 models were evaluated using a fixed 24-hour weather window to validate findings from the sunset window analysis.
+This appendix documents all candidate models tested in the 24-hour robustness analysis. A total of 76 models were evaluated using a fixed 24-hour weather window to validate findings from the Next Day Window analysis.
 
 \textbf{Model Structure.}
 All models used Generalized Additive Mixed Models (GAMM) with the following structure:
 \begin{itemize}
-\item \textbf{Response variable}: $\sqrt{\Delta\text{Butterflies}_{95th}}$ (square root of change in 95th percentile butterfly count between days)
+\item \textbf{Response variable}: signed $\sqrt{|\Delta\mathrm{BI}_{\max}|}$ (signed square root of change in maximum daily BI between days)
 \item \textbf{Random effects}: Random intercept for deployment site
 \item \textbf{Correlation structure}: AR(1) autocorrelation for temporal dependence
 \item \textbf{Estimation method}: Restricted Maximum Likelihood (REML)
@@ -886,7 +886,7 @@ All models used Generalized Additive Mixed Models (GAMM) with the following stru
 \end{itemize}
 
 \textbf{Candidate Models.}
-Models were generated programmatically across seven categories, identical to the sunset window analysis structure. The first number in parentheses indicates models with smooth baseline controls; the second indicates linear baseline controls.
+Models were generated programmatically across seven categories, identical to the Next Day Window analysis structure. The first number in parentheses indicates models with smooth baseline controls; the second indicates linear baseline controls.
 
 \begin{footnotesize}
 \begin{longtable}{>{\raggedright}p{2.5cm}>{\raggedright\arraybackslash}p{11cm}}
@@ -983,7 +983,7 @@ M76 & Linear interaction + temp\_min + temp\_max (linear baseline) \\
 \end{longtable}
 \end{footnotesize}
 
-Model M31 (Interaction: wind\_max\_gust $\times$ sum\_butterflies\_direct\_sun with smooth baseline) was identified as the best-fit model based on AICc. Of the 76 candidate models, 72 converged successfully. This analysis validated the key finding from the sunset window analysis: the interaction between wind and direct sun exposure is the strongest predictor of roost abandonment. Complete model selection statistics are reported in the main text.
+Model M31 (Interaction: wind\_max\_gust $\times$ sum\_butterflies\_direct\_sun with smooth baseline) was identified as the best-fit model based on AICc. Of the 76 candidate models, 72 converged successfully. This analysis validated the key finding from the Next Day Window analysis: the interaction between wind and direct sun exposure is the strongest predictor of roost abandonment. Complete model selection statistics are reported in the main text.
 
 \end{appendix}
 
