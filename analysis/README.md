@@ -22,7 +22,7 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 
 `descriptive_statistics.R` writes descriptive summaries to `analysis/outputs/descriptive_statistics`. It records both paired-row counts and unique-image counts because those denominators differ.
 
-`descriptive_figures.R` regenerates the descriptive BI distribution and hourly 30-minute $\Delta$BI figures in `figures/`, and writes figure summaries to `analysis/outputs/descriptive_figures`.
+`descriptive_figures.R` regenerates the two-panel descriptive BI distribution and hourly 30-minute $\Delta$BI figure in `figures/`, and writes figure summaries to `analysis/outputs/descriptive_figures`.
 
 `linear_regression_figures.R` regenerates Figure 2 and Figure 3 in `figures/`, and writes `analysis/outputs/linear_regression/linear_regression_summary.csv`.
 

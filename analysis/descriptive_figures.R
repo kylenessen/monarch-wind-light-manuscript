@@ -3,6 +3,7 @@
 suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
+  library(patchwork)
   library(readr)
   library(tibble)
   library(here)
@@ -20,6 +21,8 @@ cfg <- list(
   target_axis_text = 10,
   figure_w = 7,
   figure_h = 5,
+  combined_w = 9,
+  combined_h = 4.5,
   steelblue = "steelblue",
   dark_gray = "#4d4d4d",
   zero_line = "gray65"
@@ -86,20 +89,11 @@ p_bi <- ggplot(unique_observations, aes(x = butterfly_index)) +
     x = "Butterfly Index",
     y = "Frequency"
   ) +
-  make_theme() +
+  make_theme(cfg$combined_w / 2) +
   theme(
     panel.grid.major.x = element_blank(),
     plot.margin = margin(6, 12, 6, 8)
   )
-
-ggsave(
-  here("figures", "fig14_bi_distribution.png"),
-  p_bi,
-  width = cfg$figure_w,
-  height = cfg$figure_h,
-  dpi = cfg$dpi,
-  bg = "white"
-)
 
 hourly_day_means <- lag_data %>%
   mutate(
@@ -149,23 +143,31 @@ p_hourly <- ggplot(hourly_summary, aes(x = hour, y = mean_delta_bi)) +
   ) +
   labs(
     x = "Time of day",
-    y = expression(paste("Mean change in Butterfly Index (", Delta, "BI)"))
+    y = expression(paste("Mean ", Delta, "BI"))
   ) +
-  make_theme() +
+  make_theme(cfg$combined_w / 2) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
     panel.grid.major.x = element_blank(),
     plot.margin = margin(6, 12, 6, 8)
   )
 
+combined_plot <- p_bi + p_hourly +
+  plot_layout(ncol = 2) +
+  plot_annotation(tag_levels = "A") &
+  theme(
+    plot.tag = element_text(face = "bold", size = 11),
+    plot.tag.position = c(0.02, 0.98)
+  )
+
 ggsave(
-  here("figures", "fig15_hourly_delta_bi.png"),
-  p_hourly,
-  width = cfg$figure_w,
-  height = cfg$figure_h,
+  here("figures", "fig14_bi_distribution_hourly_delta.png"),
+  combined_plot,
+  width = cfg$combined_w,
+  height = cfg$combined_h,
   dpi = cfg$dpi,
   bg = "white"
 )
 
 message("Wrote descriptive figure summaries to ", out_dir)
-message("Updated Figure 14 and Figure 15 in ", fig_dir)
+message("Updated descriptive BI figure in ", fig_dir)
