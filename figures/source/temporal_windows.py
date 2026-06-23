@@ -27,11 +27,11 @@ import numpy as np
 import pandas as pd
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-DEFAULT_DATA_PATH = SCRIPT_DIR / "fig01_temporal_windows_max_count_timing.csv"
-DEFAULT_OUTPUT_PATH = SCRIPT_DIR.parent / "fig01_temporal_windows.png"
+DEFAULT_DATA_PATH = SCRIPT_DIR / "temporal_windows_max_count_timing.csv"
+DEFAULT_OUTPUT_PATH = SCRIPT_DIR.parent / "temporal_windows.png"
 
 parser = argparse.ArgumentParser(
-    description="Generate the Figure 1 temporal windows PNG for manuscript.tex.",
+    description="Generate the temporal_windows PNG for manuscript.tex.",
 )
 parser.add_argument(
     "--data",
@@ -187,7 +187,7 @@ for i in range(len(observation_times) - 1):
                    arrowprops=dict(arrowstyle='-', color='darkblue',
                                  linewidth=0.5, linestyle='dashed', alpha=0.5))
 
-# Add sunset window
+# Add Next Day Window
 # Start at last observation of Day 1
 day1_obs = [t for t, h in observation_times if h < 24]
 if len(day1_obs) >= 1:
@@ -203,42 +203,42 @@ if len(day2_obs) > 0:
 else:
     day2_last_time = start_time + timedelta(hours=day2_sunset)
 
-# Draw sunset window bracket
-sunset_y = 0.75
-ax.annotate('', xy=(mdates.date2num(day1_max_time), sunset_y),
-           xytext=(mdates.date2num(day2_last_time), sunset_y),
+# Draw Next Day Window bracket
+nextday_window_y = 0.75
+ax.annotate('', xy=(mdates.date2num(day1_max_time), nextday_window_y),
+           xytext=(mdates.date2num(day2_last_time), nextday_window_y),
            arrowprops=dict(arrowstyle='|-|', color='darkred',
                          linewidth=2, shrinkA=0, shrinkB=0))
 
-# Add arrows for sunset window
-ax.annotate('', xy=(day1_max_time, observation_y), xytext=(day1_max_time, sunset_y - 0.05),
+# Add arrows for Next Day Window
+ax.annotate('', xy=(day1_max_time, observation_y), xytext=(day1_max_time, nextday_window_y - 0.05),
            arrowprops=dict(arrowstyle='-', color='darkred',
                          linewidth=1.5, linestyle='dashed'))
-ax.annotate('', xy=(day2_last_time, observation_y), xytext=(day2_last_time, sunset_y - 0.05),
+ax.annotate('', xy=(day2_last_time, observation_y), xytext=(day2_last_time, nextday_window_y - 0.05),
            arrowprops=dict(arrowstyle='-', color='darkred',
                          linewidth=1.5, linestyle='dashed'))
 
-# Add dashed extension lines to show sunset window start can vary
+# Add dashed extension lines to show Next Day Window start can vary
 # Get first observation of Day 1
 if len(day1_obs) > 0:
     day1_first_time = day1_obs[0]
 
     # Horizontal dashed line from first observation to last observation of Day 1
     day1_last_time = day1_obs[-1]  # Last observation of Day 1
-    ax.plot([day1_first_time, day1_last_time], [sunset_y, sunset_y],
+    ax.plot([day1_first_time, day1_last_time], [nextday_window_y, nextday_window_y],
             color='darkred', linestyle='--', linewidth=1.5, alpha=0.6)
 
     # Vertical dashed line from first observation
-    ax.plot([day1_first_time, day1_first_time], [observation_y, sunset_y],
+    ax.plot([day1_first_time, day1_first_time], [observation_y, nextday_window_y],
             color='darkred', linestyle='--', linewidth=1.5, alpha=0.6)
 
     # Add solid vertical line at first observation intersecting the dashed horizontal line (like a scale bar)
-    ax.plot([day1_first_time, day1_first_time], [sunset_y - 0.02, sunset_y + 0.02],
+    ax.plot([day1_first_time, day1_first_time], [nextday_window_y - 0.02, nextday_window_y + 0.02],
             color='darkred', linestyle='-', linewidth=2.5, zorder=6)
 
     # Add "Variable start time" label above the horizontal dashed line
     mid_dashed = day1_first_time + (day1_last_time - day1_first_time) / 2
-    ax.text(mid_dashed, sunset_y + 0.02, 'Variable start time',
+    ax.text(mid_dashed, nextday_window_y + 0.02, 'Variable start time',
             fontsize=16, ha='center', color='darkred', style='italic')
 
 # Add labels for both days - closer to the blue lines
@@ -258,9 +258,9 @@ if len(day2_obs) > 0:
             '30-minute windows',
             fontsize=18, ha='center', color='darkblue', weight='bold')
 
-# Calculate midpoint of sunset window for label
-sunset_midpoint = day1_max_time + (day2_last_time - day1_max_time) / 2
-ax.text(sunset_midpoint, sunset_y + 0.05,
+# Calculate midpoint of Next Day Window for label
+nextday_window_midpoint = day1_max_time + (day2_last_time - day1_max_time) / 2
+ax.text(nextday_window_midpoint, nextday_window_y + 0.05,
         'Next Day Window',
         fontsize=18, ha='center', color='darkred', weight='bold')
 

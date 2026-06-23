@@ -271,9 +271,9 @@ top5_tex <- kable(top5_out,
   format = "latex", booktabs = TRUE, escape = FALSE,
   caption = "Top 5 models ranked by AIC (30-minute analysis)"
 )
-writeLines(top5_tex, file.path(tab_dir, "top5_models.tex"))
-readr::write_csv(top5_out, file.path(tab_dir, "top5_models.csv"))
-readr::write_csv(top5_out, file.path(export_dir, "model_selection_top5.csv"))
+writeLines(top5_tex, file.path(tab_dir, "model_selection_30min.tex"))
+readr::write_csv(top5_out, file.path(tab_dir, "model_selection_30min.csv"))
+readr::write_csv(top5_out, file.path(export_dir, "model_selection_30min.csv"))
 
 # ----------------------------------------------------------------------------
 # Request 1 & 3: Best model summary paragraph + equation
@@ -344,7 +344,7 @@ if (wind_in_top5 > 0) {
 }
 
 para <- glue::glue(
-  "Environmental factors, but not wind, drove monarch abundance changes in {n_obs} ",
+  "Environmental factors, but not wind alone, drove Delta BI in {n_obs} ",
   "paired observations from {n_periods} monitoring periods at {n_sites} overwintering site{ifelse(n_sites==1,'','s')} during the 2023-2024 season. ",
   "Testing of {nrow(aic_tbl)} candidate models identified {best_id} as the best-fit model. ",
   "Model {best_id} included smooth terms for {term_sentence}, achieving an AIC value of {format(round(aic_tbl$AIC[1], 3), nsmall = 1)}. ",
@@ -375,19 +375,19 @@ smooth_terms <- as.data.frame(sm) %>%
   tibble::rownames_to_column("term") %>%
   tibble::as_tibble() %>%
   mutate(term_type = "smooth")
-readr::write_csv(bind_rows(parametric_terms, smooth_terms), file.path(tab_dir, "best_model_summary.csv"))
+readr::write_csv(bind_rows(parametric_terms, smooth_terms), file.path(tab_dir, "m50_summary.csv"))
 readr::write_csv(tibble(
   model = best_id,
   n = n_obs,
   adjusted_r_squared = summary(best$gam)$r.sq,
   scale = summary(best$gam)$scale,
   formula = specs_ok[[best_id]]
-), file.path(tab_dir, "best_model_fit_statistics.csv"))
+), file.path(tab_dir, "m50_fit_statistics.csv"))
 
 # ----------------------------------------------------------------------------
-# Bivariate plot: Wind speed vs butterfly change
+# Bivariate plot: wind speed vs Delta BI
 # ----------------------------------------------------------------------------
-cat("Creating bivariate plot: wind speed vs butterfly change...\n")
+cat("Creating bivariate plot: wind speed vs Delta BI...\n")
 
 # Calculate correlation
 wind_corr <- cor(model_data$max_gust, model_data$butterfly_difference_cbrt,
@@ -415,8 +415,8 @@ p_wind_bivariate <- ggplot(model_data, aes(x = max_gust, y = butterfly_differenc
   scale_x_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0.05))) +
   labs(
     x = "Maximum wind speed (m/s)",
-    y = "Butterfly abundance change (cube root transformed)",
-    title = sprintf("Maximum Wind Speed vs Butterfly Abundance Change\nCorrelation: r = %.2f", wind_corr)
+    y = "Delta BI (cube root transformed)",
+    title = sprintf("Maximum wind speed vs Delta BI\nCorrelation: r = %.2f", wind_corr)
   ) +
   custom_theme +
   theme(plot.title = element_text(size = 14, hjust = 0, face = "plain"))
@@ -450,7 +450,7 @@ p_main <- ggplot(model_data, aes(x = max_gust, y = butterfly_difference)) +
                      expand = c(0, 0)) +
   labs(
     x = "Maximum wind speed (m/s)",
-    y = "Butterfly abundance change",
+    y = "Delta BI",
     title = sprintf("Wind Disruption (30 minute interval)\nr = %.2f, p = %.4f",
                    wind_corr_raw, p_value_raw)
   ) +
@@ -636,8 +636,8 @@ if (have_temp) {
 
 if (length(plots) > 0) {
   p13 <- wrap_plots(plots, nrow = 1, ncol = length(plots))
-  ggsave(file.path(fig_dir, "partial_effects_best_1x3.png"), p13, width = 14, height = 4.6, dpi = 300, bg = "white")
-  ggsave(here("figures", "fig04_partial_effects_30min.png"), p13, width = 12, height = 6, dpi = 600, bg = "white")
+  ggsave(file.path(fig_dir, "partial_effects_30min.png"), p13, width = 14, height = 4.6, dpi = 300, bg = "white")
+  ggsave(here("figures", "partial_effects_30min.png"), p13, width = 12, height = 6, dpi = 600, bg = "white")
 }
 
 # Export a binned high-res surface for wind x sun interaction
@@ -662,8 +662,8 @@ if (exists("create_binned_interaction_plot")) {
     legend_text_size = 8,
     legend_key_height_cm = 1.4
   )
-  ggsave(file.path(fig_dir, "interaction_wind_x_sun_binned.png"), p_inter_binned, width = 7, height = 6, dpi = 300, bg = "white")
-  ggsave(here("figures", "fig05_interaction_wind_sun_30min.png"), p_inter_binned, width = 7, height = 6, dpi = 600, bg = "white")
+  ggsave(file.path(fig_dir, "interaction_wind_sun_30min.png"), p_inter_binned, width = 7, height = 6, dpi = 300, bg = "white")
+  ggsave(here("figures", "interaction_wind_sun_30min.png"), p_inter_binned, width = 7, height = 6, dpi = 600, bg = "white")
 }
 
 # ----------------------------------------------------------------------------
@@ -729,10 +729,10 @@ res_df <- tibble(
 )
 
 # Base plots saved via png() to avoid device issues
-png(file.path(fig_dir, "diag_acf.png"), width = 900, height = 600)
+png(file.path(fig_dir, "acf_30min.png"), width = 900, height = 600)
 acf(res_df$resid, main = "ACF of normalized residuals")
 dev.off()
-png(here("figures", "fig07_acf_30min.png"), width = 7, height = 5, units = "in", res = 600)
+png(here("figures", "acf_30min.png"), width = 7, height = 5, units = "in", res = 600)
 par(cex.lab = 1.2, cex.axis = 1.0, cex.main = 1.2, mar = c(5, 5, 2, 2))
 acf(res_df$resid, main = "", xlab = "Lag", ylab = "Autocorrelation")
 dev.off()
@@ -756,8 +756,8 @@ diag_qq <- ggplot(res_df, aes(sample = resid)) +
   theme_minimal()
 
 diag_1x2 <- wrap_plots(diag_qq, diag_scatter, nrow = 1, ncol = 2)
-ggsave(file.path(fig_dir, "diag_qq_and_residuals_1x2.png"), diag_1x2, width = 12, height = 5, dpi = 300, bg = "white")
-ggsave(here("figures", "fig06_diagnostics_30min.png"), diag_1x2, width = 9, height = 5, dpi = 600, bg = "white")
+ggsave(file.path(fig_dir, "diagnostics_30min.png"), diag_1x2, width = 12, height = 5, dpi = 300, bg = "white")
+ggsave(here("figures", "diagnostics_30min.png"), diag_1x2, width = 9, height = 5, dpi = 600, bg = "white")
 
 # ----------------------------------------------------------------------------
 # Minimal console summary & pointers

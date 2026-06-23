@@ -3,7 +3,7 @@
 Dynamic window analysis data preprocessing for monarch butterfly study
 Creates day-to-day comparisons with weather metrics calculated over dynamic time windows:
 1. 24-hour window: from time of max count (t-1) to +24 hours
-2. Sunset window: from time of max count (t-1) to last observation on day t
+2. Next Day Window: from time of max count (t-1) to the last observation on day t
 
 Key difference from original: includes overnight temperature and wind data
 """
@@ -257,10 +257,10 @@ def add_temperature_data(butterfly_df: pd.DataFrame,
     return merged_df, temp_df[['deployment_id', 'timestamp', 'temperature']]
 
 
-def create_daily_aggregates_with_sunset(df: pd.DataFrame) -> pd.DataFrame:
+def create_daily_aggregates_with_final_observation(df: pd.DataFrame) -> pd.DataFrame:
     """
     Aggregate butterfly and temperature data to daily level
-    Adds last_observation_time (functional sunset) for each day
+    Adds last_observation_time for each day
     """
     if df.empty:
         raise ValueError("Cannot aggregate empty DataFrame")
@@ -304,7 +304,7 @@ def create_daily_aggregates_with_sunset(df: pd.DataFrame) -> pd.DataFrame:
         time_of_max = daytime_obs.iloc[max_idx]['timestamp']
         temp_at_max = daytime_obs.iloc[max_idx]['temperature']
 
-        # Last observation time (functional sunset)
+        # Last observation time
         last_observation_time = daytime_obs['timestamp'].max()
 
         # Temperature metrics (daytime only for these stats, but we'll recalculate with 24/7 later)
@@ -332,7 +332,7 @@ def create_daily_aggregates_with_sunset(df: pd.DataFrame) -> pd.DataFrame:
             'butterflies_top3_mean': butterflies_top3_mean,
             'sum_butterflies_direct_sun': sum_butterflies_direct_sun,
             'time_of_max': time_of_max,
-            'last_observation_time': last_observation_time,  # NEW: functional sunset
+            'last_observation_time': last_observation_time,
             'temp_max': temp_max,
             'temp_min': temp_min,
             'temp_mean': temp_mean,
@@ -620,7 +620,7 @@ def create_dynamic_lag_pairs(
         temp_24hr_df: 24/7 temperature data
         deployments_df: Deployment metadata
         wind_db_dir: Directory containing wind databases
-        window_type: '24hr' or 'sunset'
+        window_type: '24hr' or 'nextday'
 
     Returns:
         DataFrame with lag pairs and dynamic weather metrics
@@ -676,7 +676,7 @@ def create_dynamic_lag_pairs(
 
             if window_type == '24hr':
                 window_end = window_start + timedelta(hours=24)
-            elif window_type == 'sunset':
+            elif window_type == 'nextday':
                 window_end = current_day['last_observation_time']
             else:
                 raise ValueError(f"Unknown window_type: {window_type}")
@@ -845,8 +845,8 @@ def main():
     # Output options
     parser.add_argument('--output-24hr', default='data/monarch_daily_lag_analysis_24hr_window.csv',
                        help='Output CSV for 24-hour window analysis')
-    parser.add_argument('--output-sunset', default='data/monarch_daily_lag_analysis_sunset_window.csv',
-                       help='Output CSV for sunset window analysis')
+    parser.add_argument('--output-nextday', default='data/monarch_daily_lag_analysis_nextday_window.csv',
+                       help='Output CSV for Next Day Window analysis')
 
     args = parser.parse_args()
 
@@ -876,8 +876,8 @@ def main():
 
         print(f"24/7 temperature dataset: {len(temp_24hr_df)} observations")
 
-        # Create daily aggregates (with functional sunset)
-        daily_df = create_daily_aggregates_with_sunset(butterfly_with_temp)
+        # Create daily aggregates with final observation times
+        daily_df = create_daily_aggregates_with_final_observation(butterfly_with_temp)
 
         # Filter valid days
         valid_days = filter_valid_days(daily_df, args.min_photos, args.max_photos)
@@ -893,16 +893,16 @@ def main():
         lag_df_24hr.to_csv(args.output_24hr, index=False)
         print(f"\n✅ 24-hour window dataset saved to {args.output_24hr}")
 
-        # Create sunset window lag pairs
+        # Create Next Day Window lag pairs
         print("\n" + "="*60)
-        lag_df_sunset = create_dynamic_lag_pairs(
+        lag_df_nextday = create_dynamic_lag_pairs(
             valid_days, butterfly_with_temp, temp_24hr_df, deployments_df,
-            args.wind_db_dir, window_type='sunset'
+            args.wind_db_dir, window_type='nextday'
         )
 
-        # Save sunset window dataset
-        lag_df_sunset.to_csv(args.output_sunset, index=False)
-        print(f"\n✅ Sunset window dataset saved to {args.output_sunset}")
+        # Save Next Day Window dataset
+        lag_df_nextday.to_csv(args.output_nextday, index=False)
+        print(f"\n✅ Next Day Window dataset saved to {args.output_nextday}")
 
         # Summary comparison
         print("\n" + "="*60)
@@ -913,15 +913,15 @@ def main():
         print(f"  - Mean duration: {lag_df_24hr['lag_duration_hours'].mean():.2f} hours")
         print(f"  - Median completeness: {lag_df_24hr['metrics_complete'].median():.3f}")
 
-        print(f"\nSunset Window Analysis:")
-        print(f"  - Lag pairs: {len(lag_df_sunset)}")
-        print(f"  - Mean duration: {lag_df_sunset['lag_duration_hours'].mean():.2f} hours")
-        print(f"  - Duration range: {lag_df_sunset['lag_duration_hours'].min():.1f} - {lag_df_sunset['lag_duration_hours'].max():.1f} hours")
-        print(f"  - Median completeness: {lag_df_sunset['metrics_complete'].median():.3f}")
+        print(f"\nNext Day Window Analysis:")
+        print(f"  - Lag pairs: {len(lag_df_nextday)}")
+        print(f"  - Mean duration: {lag_df_nextday['lag_duration_hours'].mean():.2f} hours")
+        print(f"  - Duration range: {lag_df_nextday['lag_duration_hours'].min():.1f} - {lag_df_nextday['lag_duration_hours'].max():.1f} hours")
+        print(f"  - Median completeness: {lag_df_nextday['metrics_complete'].median():.3f}")
 
         print(f"\nOutput files:")
         print(f"  - {args.output_24hr}")
-        print(f"  - {args.output_sunset}")
+        print(f"  - {args.output_nextday}")
         print(f"\nCompleted: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print("="*60)
 

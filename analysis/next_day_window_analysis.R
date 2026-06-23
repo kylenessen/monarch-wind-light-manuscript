@@ -67,7 +67,7 @@ save_acf_both <- function(filename, residuals) {
   }
 }
 
-data <- read_csv(here("data", "monarch_daily_lag_analysis_sunset_window.csv"), show_col_types = FALSE) %>%
+data <- read_csv(here("data", "monarch_daily_lag_analysis_nextday_window.csv"), show_col_types = FALSE) %>%
   mutate(
     butterfly_diff_sqrt = sign(butterfly_diff) * sqrt(abs(butterfly_diff))
   ) %>%
@@ -107,7 +107,7 @@ top5 <- model_table %>%
     Delta_AICc = round(delta_AICc, 3),
     Weight = round(weight_AICc, 4)
   )
-write_csv(top5, file.path(out_dir, "model_selection_top5.csv"))
+write_csv(top5, file.path(out_dir, "nextday_model_selection.csv"))
 
 model_summary <- summary(model$gam)
 parametric <- as.data.frame(model_summary$p.table) %>%
@@ -118,7 +118,7 @@ smooths <- as.data.frame(model_summary$s.table) %>%
   rownames_to_column("term") %>%
   as_tibble() %>%
   mutate(term_type = "smooth")
-write_csv(bind_rows(parametric, smooths), file.path(out_dir, "best_model_summary.csv"))
+write_csv(bind_rows(parametric, smooths), file.path(out_dir, "nextday_model_summary.csv"))
 
 fit_stats <- tibble(
   model = "M32",
@@ -127,7 +127,7 @@ fit_stats <- tibble(
   scale = model_summary$scale,
   formula = "butterfly_diff_sqrt ~ max_butterflies_t_1 + lag_duration_hours + ti(wind_max_gust, sum_butterflies_direct_sun)"
 )
-write_csv(fit_stats, file.path(out_dir, "best_model_fit_statistics.csv"))
+write_csv(fit_stats, file.path(out_dir, "nextday_model_fit_statistics.csv"))
 
 descriptive <- tibble(
   metric = c(
@@ -174,10 +174,10 @@ partial_duration <- ggplot(data, aes(lag_duration_hours, butterfly_diff_sqrt)) +
   labs(x = "Window duration (hours)", y = "") +
   make_theme(9)
 
-fig09 <- wrap_plots(partial_prev, partial_duration, nrow = 1)
-save_both("fig09_partial_effects_nextday.png", fig09, 9, 5)
+partial_effects_nextday <- wrap_plots(partial_prev, partial_duration, nrow = 1)
+save_both("partial_effects_nextday.png", partial_effects_nextday, 9, 5)
 
-fig10 <- create_binned_interaction_plot(
+interaction_wind_sun_nextday <- create_binned_interaction_plot(
   gam_model = model$gam,
   x_var = "wind_max_gust",
   y_var = "sum_butterflies_direct_sun",
@@ -198,14 +198,14 @@ fig10 <- create_binned_interaction_plot(
     axis.title = element_text(size = round(cfg$target_axis_title * cfg$interaction_w / cfg$display_width)),
     axis.text = element_text(size = round(cfg$target_axis_text * cfg$interaction_w / cfg$display_width))
   )
-save_both("fig10_interaction_wind_sun_nextday.png", fig10, cfg$interaction_w, cfg$interaction_h)
+save_both("interaction_wind_sun_nextday.png", interaction_wind_sun_nextday, cfg$interaction_w, cfg$interaction_h)
 
 residuals_df <- tibble(
   fitted = fitted(model$lme),
   resid = residuals(model$lme, type = "normalized")
 )
 
-fig11 <- wrap_plots(
+diagnostics_nextday <- wrap_plots(
   ggplot(residuals_df, aes(sample = resid)) +
     stat_qq(alpha = 0.3, size = 1, color = "#4d4d4d") +
     stat_qq_line(color = "#2c7fb8", linewidth = 0.8) +
@@ -219,8 +219,8 @@ fig11 <- wrap_plots(
     make_theme(9),
   nrow = 1
 )
-save_both("fig11_diagnostics_nextday.png", fig11, 9, cfg$diagnostic_h)
+save_both("diagnostics_nextday.png", diagnostics_nextday, 9, cfg$diagnostic_h)
 
-save_acf_both("fig12_acf_nextday.png", residuals_df$resid)
+save_acf_both("acf_nextday.png", residuals_df$resid)
 
 message("Wrote Next Day Window outputs to ", out_dir)

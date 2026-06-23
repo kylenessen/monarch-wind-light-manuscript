@@ -73,7 +73,7 @@ label_dbi <- expression(paste("Change in Butterfly Index (", Delta, "BI)"))
 lag_data <- read_csv(here("data", "monarch_analysis_lag30min.csv"), show_col_types = FALSE) %>%
   filter(!is.na(max_gust), !is.na(butterfly_difference))
 
-next_day_raw <- read_csv(here("data", "monarch_daily_lag_analysis_sunset_window.csv"), show_col_types = FALSE)
+next_day_raw <- read_csv(here("data", "monarch_daily_lag_analysis_nextday_window.csv"), show_col_types = FALSE)
 
 next_day_max <- next_day_raw %>%
   filter(!is.na(wind_max_gust), !is.na(butterfly_diff))
@@ -99,7 +99,7 @@ summary_rows <- bind_rows(
 write_csv(summary_rows, file.path(out_dir, "linear_regression_summary.csv"))
 
 save_scatter(
-  here("figures", "fig02_wind_vs_dbi_30min.png"),
+  here("figures", "wind_linear_30min.png"),
   lag_data,
   "max_gust",
   "butterfly_difference",
@@ -108,7 +108,7 @@ save_scatter(
 )
 
 save_scatter(
-  here("figures", "fig03_wind_vs_dbi_nextday.png"),
+  here("figures", "wind_linear_nextday.png"),
   next_day_max,
   "wind_max_gust",
   "butterfly_diff",
@@ -117,5 +117,4 @@ save_scatter(
 )
 
 message("Wrote linear regression summary to ", out_dir)
-message("Updated Figure 2 and Figure 3 in ", fig_dir)
-
+message("Updated wind_linear_30min.png and wind_linear_nextday.png in ", fig_dir)
