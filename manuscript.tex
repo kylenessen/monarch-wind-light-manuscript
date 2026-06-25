@@ -6,6 +6,7 @@
 %% Extra packages (beyond what mdpi.cls loads)
 %% Note: mdpi.cls already loads hyperref, natbib, booktabs, tabularx, etc.
 \usepackage{longtable}
+\setlength{\headheight}{20pt}
 
 %% ------------------------------------------------------------------
 %% Journal / article metadata
@@ -59,8 +60,8 @@
 % Word review comment 7, jediffendorfer@usgs.gov.
 % if space, you may want to describe the effect with more detail. I can't tell the direction of the interactive effect for example
 \abstract{The western monarch butterfly (\textit{Danaus plexippus}) population has declined by over 99\% since the 1980s, making conservation of overwintering habitat along California's coast a management priority. For three decades, the primary perspective on overwintering habitat has utilized a Microclimate Hypothesis which posits monarch butterflies seek a narrow microclimate for overwintering, including a nested Disruptive Wind Hypothesis which posits that wind speeds exceeding 2~m/s disrupt butterfly clusters and cause roost abandonment. In earlier work, we tested and rejected the Microclimate Hypothesis for temperature, humidity, and light, but did not address wind. This study provides the first direct experimental test of wind effects on overwintering monarch clusters.
-We deployed cameras and wind sensors at two sites on California's Vandenberg Space Force Base, during the 2023--2024 overwintering season. Time-lapse photography, documenting changes in butterfly abundance, and wind sensors adjacent to roosts, simultaneously collected 1,894 paired observations at 30-minute intervals across 80 days. Linear regression analysis revealed a poor relationship between wind speed and changes in cluster size at 30-minute and daily timescales ($R^{2} = 0.002$, $p = 0.073$ and $R^{2} = 0.013$, $p = 0.252$, respectively). Generalized additive mixed models identified temperature, time of day, and an interaction between wind and sunlight as factors influencing cluster behavior ($p < 0.001$). Wind alone showed no independent effect. Instead, wind effects appeared to be light dependent: when butterflies remained in shade, wind speed had no effect on cluster behavior (up to 12.4~m/s). Nonlinear conditional effects appeared, and the number of clustering butterflies changed, but only when butterflies occupied sunlit positions.
-Our findings challenge a fundamental assumption in monarch habitat management. Instead of managing for controlled wind speeds, our results indicate that both light and wind contribute to clustering decisions. Thus, thermoregulation may be a primary driver of clustering behavior. This result is consistent with previous work on thermal physiology of overwintering Western monarch butterflies. Thermal ecology can provide a new perspective for science-based management of overwintering habitats in California.\\
+We deployed cameras and wind sensors at two sites on California's Vandenberg Space Force Base, during the 2023--2024 overwintering season. Time-lapse photography, documenting changes in butterfly abundance, and wind sensors adjacent to roosts, simultaneously collected 1,894 paired observations at 30-minute intervals across 80 days. Linear regression analysis revealed a poor relationship between wind speed and changes in cluster size at 30-minute and daily timescales (\texorpdfstring{$R^{2} = 0.002$}{R squared = 0.002}, \texorpdfstring{$p = 0.073$}{p = 0.073} and \texorpdfstring{$R^{2} = 0.013$}{R squared = 0.013}, \texorpdfstring{$p = 0.252$}{p = 0.252}, respectively). Generalized additive mixed models identified temperature, time of day, and an interaction between wind and sunlight as factors influencing cluster behavior (\texorpdfstring{$p < 0.001$}{p < 0.001}). Wind alone showed no independent effect. Instead, wind effects appeared to be light dependent: when butterflies remained in shade, wind speed had no effect on cluster behavior (up to 12.4~m/s). Nonlinear conditional effects appeared, and the number of clustering butterflies changed, but only when butterflies occupied sunlit positions.
+Our findings challenge a fundamental assumption in monarch habitat management. Instead of managing for controlled wind speeds, our results indicate that both light and wind contribute to clustering decisions. Thus, thermoregulation may be a primary driver of clustering behavior. This result is consistent with previous work on thermal physiology of overwintering Western monarch butterflies. Thermal ecology can provide a new perspective for science-based management of overwintering habitats in California.\texorpdfstring{\\}{ }
 \textbf{ALTERNATIVE ABSTRACT – fits revision better.} The western monarch butterfly (\textit{Danaus plexippus}) population has declined by over 99\% since the 1980s, making conservation of overwintering habitat along California's coast a management priority. For three decades, the management of overwintering habitat has used a Microclimate Hypothesis which posits monarchs seek a narrow microclimate for overwintering, including a nested Disruptive Wind Hypothesis which posits that wind speeds exceeding 2~m/s disrupt butterfly clusters and cause roost abandonment. In earlier work, we tested and rejected the Microclimate Hypothesis for temperature, humidity, and light, but did not address wind. This study provides the first direct test of wind effects on overwintering clusters.
 We deployed cameras and wind sensors at two overwintering sites during the 2023--2024 overwintering season. Time-lapse photography, documenting changes in cluster size, and wind sensors adjacent to roosts, simultaneously collected observations across 80 days. Linear regression analysis revealed a poor relationship between wind speed and changes in cluster size at multiple time scales. Therefore, we considered additional attributes from the literature whereby generalized additive mixed models identified temperature, time of day, and interaction between wind and sunlight as attributes influencing clustering behavior. Wind alone showed no independent effect. Instead, wind effects appeared to be light dependent: nonlinear conditional effects appeared where the number of clustering butterflies changed, but only when butterflies occupied sunlit positions.
 Our findings challenge a fundamental assumption in monarch habitat management. Instead of managing wind speeds, our results indicate that both light and wind contribute to clustering decisions and should be considered in management decisions. Previous work on butterfly thermal physiology demonstrates that light, wind and behavior can interact to determine thoracic, and more specifically wing and flight muscle temperature. This suggests more appropriate models for science-based management of overwintering groves might be built by considering thermoregulation as the primary driver of clustering behavior.}
@@ -639,7 +640,7 @@ $s()$: Thin-plate regression spline smooth term;
 $ti()$: Tensor product interaction smooth;
 $*$: Linear interaction term.
 
-\begin{longtable}{ll}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-1.6cm-2\tabcolsep\relax}@{}}
 \caption{Complete list of 52 named candidate models tested in 30-minute wind disruption analysis.} \label{tab:30min_candidates} \\
 \toprule
 \textbf{Model} & \textbf{Formula} \\
@@ -731,7 +732,7 @@ $s()$: Thin-plate regression spline smooth term;
 $ti()$: Tensor product interaction smooth;
 $*$: Linear interaction term.
 
-\begin{longtable}{ll}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-1.6cm-2\tabcolsep\relax}@{}}
 \caption{Complete list of 52 named candidate models tested in threshold wind disruption analysis.} \label{tab:threshold_candidates} \\
 \toprule
 \textbf{Model} & \textbf{Formula} \\
@@ -826,7 +827,7 @@ $ti()$: Tensor product interaction smooth.
 
 Models were generated programmatically across seven categories. The first number in parentheses indicates models with smooth baseline controls; the second indicates linear baseline controls.
 
-\begin{longtable}{ll}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-1.6cm-2\tabcolsep\relax}@{}}
 \caption{Complete list of 78 candidate models tested in Next Day Window site fidelity analysis.} \label{tab:nextday_candidates} \\
 \toprule
 \textbf{Model} & \textbf{Description} \\
@@ -911,7 +912,7 @@ All models used Generalized Additive Mixed Models (GAMM) with the following stru
 Models were generated programmatically across seven categories, identical to the Next Day Window analysis structure. The first number in parentheses indicates models with smooth baseline controls; the second indicates linear baseline controls.
 
 \begin{footnotesize}
-\begin{longtable}{>{\raggedright}p{2.5cm}>{\raggedright\arraybackslash}p{11cm}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-2.5cm-2\tabcolsep\relax}@{}}
 \caption{Complete list of 76 candidate models tested in 24-hour robustness analysis} \\
 \toprule
 \textbf{Model} & \textbf{Description} \\
@@ -1013,6 +1014,6 @@ Model M31 (Interaction: wind\_max\_gust $\times$ sum\_butterflies\_direct\_sun w
 %% Bibliography
 %% ------------------------------------------------------------------
 \reftitle{References}
-\bibliography{bibliography/Thesis}
+\bibliography{bibliography/references}
 
 \end{document}
