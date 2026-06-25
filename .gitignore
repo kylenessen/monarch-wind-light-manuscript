@@ -26,6 +26,9 @@
 exports/
 manuscript.pdf
 
+# Temporary discovery reports
+reports/*.html
+
 # Local analysis environments and scratch plots
 .venv/
 Rplots.pdf
