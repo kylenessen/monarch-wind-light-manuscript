@@ -170,13 +170,13 @@ Predictor variables were selected to test specific hypotheses while avoiding mul
 
 \subsubsection{Model Framework}
 
-To test for environmental effects on the response variable ($\Delta$BI), the analyses implemented generalized additive mixed models (GAMMs) through the mgcv package in R. Model selection compared 52 candidate models using AIC. The candidate set comprised two fundamental frameworks: models including (24 models) and excluding (24 models) the lag BI term, with each framework containing null models, single predictor models, additive combinations, two- and three-way interactions, and models incorporating smooth terms for non-linear relationships. Random effects accounted for variation at three hierarchical levels: deployment location, observer, and deployment-day. Temporal autocorrelation within days was addressed using a first-order autoregressive (AR1) correlation structure grouped by deployment-day. All models were fitted using REML estimation.
+To test for environmental effects on the response variable ($\Delta$BI), the analyses implemented generalized additive mixed models (GAMMs) through the mgcv package in R. Model selection compared 52 named candidate models using AIC. The candidate set included 48 base models organized into two frameworks, 24 models that included previous BI and 24 models that excluded previous BI. Within each framework, models included baseline terms, single predictors, additive combinations, linear two-way and three-way interactions among the wind metric, average temperature, and direct-sun BI, and smooth terms for nonlinear relationships. Four additional candidates explicitly tested tensor-product interactions between the wind metric and direct-sun BI, with the same four structures repeated in the threshold analysis after replacing maximum wind gust with minutes at or above 2~m/s. Random effects accounted for variation at three hierarchical levels: deployment location, observer, and deployment-day. Temporal autocorrelation within days was addressed using a first-order autoregressive (AR1) correlation structure grouped by deployment-day. All models were fitted using REML estimation.
 
 % Word review comment 83, jediffendorfer@usgs.gov.
 % I think, but am not sure...so I propose you might have stronger inference if you took the top models from the initial set of candidate models and competed those against similarly structured "threshold" models..but vary the threshold..2m/s, 4, 8, etc.
 % Word review reply 84, Francis X. Villablanca.
 % Yes, I see. We should keep this thought in mind if we need to reanalyze. But, because the data are the same, and the model structure is the same (except for inclusion and exclusion of thresholds) the AICs should be comparable.
-To specifically test for threshold effects of the Disruptive Wind Hypothesis' 2~m/s, we repeated the entire 52 model structures with a threshold-based predictor: count of minutes within each 30-minute period where wind gusts equaled or exceeded 2~m/s. This variable ranged from 0 to 30 minutes and was tested using the same model structures described above. Thus, model selection allowed direct comparison of continuous versus threshold-based wind effects.
+To specifically test for threshold effects of the Disruptive Wind Hypothesis' 2~m/s, we repeated the same 52 named model structures with a threshold-based predictor: count of minutes within each 30-minute period where wind gusts equaled or exceeded 2~m/s. This variable ranged from 0 to 30 minutes and was tested using the same model structures described above. Thus, model selection allowed direct comparison of continuous versus threshold-based wind effects.
 
 \subsubsection{Model Validation}
 
@@ -618,13 +618,13 @@ These findings arrive at a critical moment for monarch conservation. With wester
 \section{30-Minute Wind Disruption Analysis: Candidate Models}
 \label{app:30min_models}
 
-This appendix documents all candidate models tested in the 30-minute wind disruption analysis. A total of 52 models were evaluated to identify the best-fitting model for predicting short-term changes in butterfly cluster presence based on weather conditions and direct sun exposure.
+This appendix documents all candidate models tested in the 30-minute wind disruption analysis. A total of 52 named models were evaluated to identify the best-fitting model for predicting short-term changes in butterfly cluster presence based on weather conditions and direct sun exposure.
 
 \textbf{Model Structure.}
 All models used Generalized Additive Mixed Models (GAMM) with the following structure:
 \begin{itemize}
 \item \textbf{Response variable}: $\sqrt[3]{\Delta\mathrm{BI}}$ (cube root of BI change between consecutive 30-minute intervals)
-\item \textbf{Random effects}: Random intercept for deployment site
+\item \textbf{Random effects}: Random intercepts for deployment site, observer, and deployment-day
 \item \textbf{Correlation structure}: AR(1) autocorrelation within observation days
 \item \textbf{Estimation method}: Restricted Maximum Likelihood (REML)
 \end{itemize}
@@ -640,7 +640,7 @@ $ti()$: Tensor product interaction smooth;
 $*$: Linear interaction term.
 
 \begin{longtable}{ll}
-\caption{Complete list of 52 candidate models tested in 30-minute wind disruption analysis.} \label{tab:30min_candidates} \\
+\caption{Complete list of 52 named candidate models tested in 30-minute wind disruption analysis.} \label{tab:30min_candidates} \\
 \toprule
 \textbf{Model} & \textbf{Formula} \\
 \midrule
@@ -710,13 +710,13 @@ Model M50 was identified as the best-fit model based on Akaike Information Crite
 \section{Threshold Wind Disruption Analysis: Candidate Models}
 \label{app:threshold_models}
 
-This appendix documents all candidate models tested in the threshold wind disruption sensitivity analysis. A total of 52 models were evaluated using a binary threshold-based wind metric to compare with the continuous maximum gust approach.
+This appendix documents all candidate models tested in the threshold wind disruption sensitivity analysis. A total of 52 named models were evaluated using a threshold-duration wind metric to compare with the continuous maximum gust approach.
 
 \textbf{Model Structure.}
 All models used Generalized Additive Mixed Models (GAMM) with the following structure:
 \begin{itemize}
 \item \textbf{Response variable}: $\sqrt[3]{\Delta\mathrm{BI}}$ (cube root of BI change between consecutive 30-minute intervals)
-\item \textbf{Random effects}: Random intercept for deployment site
+\item \textbf{Random effects}: Random intercepts for deployment site, observer, and deployment-day
 \item \textbf{Correlation structure}: AR(1) autocorrelation within observation days
 \item \textbf{Estimation method}: Restricted Maximum Likelihood (REML)
 \end{itemize}
@@ -732,7 +732,7 @@ $ti()$: Tensor product interaction smooth;
 $*$: Linear interaction term.
 
 \begin{longtable}{ll}
-\caption{Complete list of 52 candidate models tested in threshold wind disruption analysis.} \label{tab:threshold_candidates} \\
+\caption{Complete list of 52 named candidate models tested in threshold wind disruption analysis.} \label{tab:threshold_candidates} \\
 \toprule
 \textbf{Model} & \textbf{Formula} \\
 \midrule
