@@ -43,7 +43,7 @@ cfg <- list(
   target_legend_text  = 10,
 
   # Figure dimensions (inches)
-  scatter_w = 7, scatter_h = 6,
+  combined_scatter_w = 7, combined_scatter_h = 4.2,
   interaction_w = 7, interaction_h = 6,
   diagnostic_h = 5,
   acf_w = 7, acf_h = 5,
@@ -225,14 +225,12 @@ p_main <- ggplot(model_data, aes(x = max_gust, y = butterfly_difference)) +
   geom_hline(yintercept = 0, color = "gray65", linewidth = 0.5) +
   labs(x = "Maximum wind speed (m/s)",
        y = expression(paste("Change in Butterfly Index (", Delta, "BI)"))) +
-  make_pub_theme(cfg$scatter_w)
+  make_pub_theme(cfg$combined_scatter_w)
 
 if (cfg$show_threshold_line) {
   p_main <- p_main +
     geom_vline(xintercept = 2, color = "red", linetype = "dashed", linewidth = 0.7)
 }
-
-save_fig("wind_linear_30min.png", p_main, cfg$scatter_w, cfg$scatter_h)
 
 # ============================================================================
 # Wind linear scatter, Next Day Window, untransformed, using max BI change
@@ -251,15 +249,44 @@ p_nextday_scatter <- ggplot(nextday_lm_data, aes(x = wind_max_gust, y = butterfl
   geom_hline(yintercept = 0, color = "gray65", linewidth = 0.5) +
   labs(x = "Maximum wind speed (m/s)",
        y = expression(paste("Change in Butterfly Index (", Delta, "BI)"))) +
-  make_pub_theme(cfg$scatter_w)
+  make_pub_theme(cfg$combined_scatter_w)
 
 if (cfg$show_threshold_line) {
   p_nextday_scatter <- p_nextday_scatter +
     geom_vline(xintercept = 2, color = "red", linetype = "dashed", linewidth = 0.7)
 }
 
-save_fig("wind_linear_nextday.png", p_nextday_scatter,
-         cfg$scatter_w, cfg$scatter_h)
+wind_linear_x_limits <- range(c(model_data$max_gust, nextday_lm_data$wind_max_gust), na.rm = TRUE)
+wind_linear_x_limits <- c(0, ceiling(wind_linear_x_limits[2]))
+wind_linear_y_limits <- range(c(model_data$butterfly_difference, nextday_lm_data$butterfly_diff), na.rm = TRUE)
+wind_linear_y_limits <- range(pretty(wind_linear_y_limits, n = 5))
+
+wind_panel_title_theme <- theme(
+  plot.title = element_text(
+    color = "black",
+    size = round(cfg$target_axis_title * cfg$combined_scatter_w / cfg$display_width),
+    face = "plain",
+    hjust = 0.5,
+    margin = margin(b = 4)
+  )
+)
+
+p_main_combined <- p_main +
+  labs(title = "A. 30-minute window") +
+  coord_cartesian(xlim = wind_linear_x_limits, ylim = wind_linear_y_limits) +
+  wind_panel_title_theme
+
+p_nextday_combined <- p_nextday_scatter +
+  labs(title = "B. Next Day Window", y = NULL) +
+  coord_cartesian(xlim = wind_linear_x_limits, ylim = wind_linear_y_limits) +
+  wind_panel_title_theme
+
+save_fig(
+  "wind_linear_combined.png",
+  p_main_combined + p_nextday_combined + plot_layout(ncol = 2),
+  cfg$combined_scatter_w,
+  cfg$combined_scatter_h
+)
 
 # ============================================================================
 # Partial effects, 30-minute M50, 1x3 panel
@@ -529,8 +556,7 @@ save_fig("interaction_wind_sun_24hr.png", interaction_wind_sun_24hr, cfg$interac
 # ============================================================================
 cat(sprintf("\nAll figures saved to: %s\n", cfg$out_dir))
 cat("Figures generated:\n")
-cat("  wind_linear_30min.png. Linear regression scatter (30-min)\n")
-cat("  wind_linear_nextday.png. Linear regression scatter (Next Day Window)\n")
+cat("  wind_linear_combined.png. Two-panel linear regression scatter\n")
 cat("  partial_effects_30min.png. Partial effects 1x3 (M50)\n")
 cat("  interaction_wind_sun_30min.png. Wind x sun heatmap (M50)\n")
 cat("  diagnostics_30min.png. Q-Q and residuals (M50)\n")

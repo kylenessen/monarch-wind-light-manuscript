@@ -3,6 +3,7 @@
 suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
+  library(patchwork)
   library(readr)
   library(tibble)
   library(here)
@@ -15,8 +16,8 @@ dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
 
 cfg <- list(
   dpi = 600,
-  scatter_w = 7,
-  scatter_h = 6,
+  combined_w = 7,
+  combined_h = 4.2,
   show_threshold_line = FALSE
 )
 
@@ -26,26 +27,31 @@ make_theme <- function() {
       panel.grid.major = element_line(color = "gray90", linewidth = 0.5),
       panel.grid.minor = element_line(color = "gray95", linewidth = 0.3),
       axis.text = element_text(color = "black"),
-      axis.title = element_text(color = "black"),
-      plot.title = element_blank(),
+      axis.title = element_text(color = "black", size = 14),
+      plot.title = element_text(color = "black", size = 14, face = "plain", hjust = 0.5, margin = margin(b = 4)),
       plot.subtitle = element_blank(),
       plot.caption = element_blank()
     )
 }
 
-save_scatter <- function(path, data, x_var, y_var, xlab, ylab) {
+make_scatter <- function(data, x_var, y_var, xlab, ylab, title = NULL,
+                         x_limits = NULL, y_limits = NULL) {
   p <- ggplot(data, aes(x = .data[[x_var]], y = .data[[y_var]])) +
     geom_jitter(alpha = 0.45, size = 1.5, color = "#4d4d4d", width = 0.1, height = 0) +
     geom_smooth(method = "lm", se = TRUE, color = "steelblue", fill = "steelblue", alpha = 0.25, linewidth = 1) +
     geom_hline(yintercept = 0, color = "gray65", linewidth = 0.5) +
-    labs(x = xlab, y = ylab) +
+    labs(x = xlab, y = ylab, title = title) +
     make_theme()
 
   if (cfg$show_threshold_line) {
     p <- p + geom_vline(xintercept = 2, color = "red", linetype = "dashed", linewidth = 0.7)
   }
 
-  ggsave(path, p, width = cfg$scatter_w, height = cfg$scatter_h, dpi = cfg$dpi, bg = "white")
+  if (!is.null(x_limits) || !is.null(y_limits)) {
+    p <- p + coord_cartesian(xlim = x_limits, ylim = y_limits)
+  }
+
+  p
 }
 
 lm_summary_row <- function(label, model, data, x_var, y_var) {
@@ -98,23 +104,43 @@ summary_rows <- bind_rows(
 
 write_csv(summary_rows, file.path(out_dir, "linear_regression_summary.csv"))
 
-save_scatter(
-  here("figures", "wind_linear_30min.png"),
+wind_x_limits <- range(c(lag_data$max_gust, next_day_max$wind_max_gust), na.rm = TRUE)
+wind_x_limits <- c(0, ceiling(wind_x_limits[2]))
+wind_y_limits <- range(c(lag_data$butterfly_difference, next_day_max$butterfly_diff), na.rm = TRUE)
+wind_y_limits <- range(pretty(wind_y_limits, n = 5))
+
+combined_30 <- make_scatter(
   lag_data,
   "max_gust",
   "butterfly_difference",
   "Maximum wind speed (m/s)",
-  label_dbi
+  label_dbi,
+  "A. 30-minute window",
+  wind_x_limits,
+  wind_y_limits
 )
 
-save_scatter(
-  here("figures", "wind_linear_nextday.png"),
+combined_nextday <- make_scatter(
   next_day_max,
   "wind_max_gust",
   "butterfly_diff",
   "Maximum wind speed (m/s)",
-  label_dbi
+  NULL,
+  "B. Next Day Window",
+  wind_x_limits,
+  wind_y_limits
+)
+
+combined_plot <- combined_30 + combined_nextday + plot_layout(ncol = 2)
+
+ggsave(
+  here("figures", "wind_linear_combined.png"),
+  combined_plot,
+  width = cfg$combined_w,
+  height = cfg$combined_h,
+  dpi = cfg$dpi,
+  bg = "white"
 )
 
 message("Wrote linear regression summary to ", out_dir)
-message("Updated wind_linear_30min.png and wind_linear_nextday.png in ", fig_dir)
+message("Updated wind_linear_combined.png in ", fig_dir)
