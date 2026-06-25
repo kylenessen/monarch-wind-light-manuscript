@@ -24,7 +24,7 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 
 `descriptive_figures.R` regenerates the two-panel descriptive BI distribution and hourly 30-minute $\Delta$BI figure in `figures/`, and writes figure summaries to `analysis/outputs/descriptive_figures`.
 
-`linear_regression_figures.R` regenerates `figures/wind_linear_30min.png` and `figures/wind_linear_nextday.png`, and writes `analysis/outputs/linear_regression/linear_regression_summary.csv`.
+`linear_regression_figures.R` regenerates the manuscript figure `figures/wind_linear_combined.png` and writes `analysis/outputs/linear_regression/linear_regression_summary.csv`.
 
 `thirty_minute_gamm_analysis.R` refits the 52 30-minute GAMM candidates using the same random-effects structure as the publication figure script, writes model-selection outputs to `analysis/outputs/30_minute`, and regenerates `figures/partial_effects_30min.png`, `figures/interaction_wind_sun_30min.png`, `figures/diagnostics_30min.png`, and `figures/acf_30min.png`.
 
@@ -38,7 +38,7 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 
 ## Known Review Points
 
-The linear regression script reports the current `wind_linear_nextday` regression on maximum BI change as beta 7.57, SE 5.76, p 0.192, r 0.131, and R2 0.017 for n 101. The manuscript currently contains beta 5.34, SE 4.63, p 0.252, r 0.115, and R2 0.013, which match the older 95th percentile response.
+The linear regression figure and manuscript use the current Next Day Window regression on maximum BI change. This reports beta 7.57, SE 5.76, p 0.192, r 0.131, and R2 0.017 for n 101. The older 95th percentile response remains in `analysis/outputs/linear_regression/linear_regression_summary.csv` for provenance.
 
 The figure-generation scripts omit the red 2 m/s threshold line by design, and the manuscript captions now match the figures.
 
