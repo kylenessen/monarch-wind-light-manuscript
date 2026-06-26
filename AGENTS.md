@@ -24,9 +24,19 @@ The original thesis repository lives in `/Users/kylenessen/Documents/GitHub/mast
 
 For the temporal windows figure in this manuscript, use the repo-local generator at `figures/source/temporal_windows.py`. Run it with `uv run figures/source/temporal_windows.py`. By default it reads `figures/source/temporal_windows_max_count_timing.csv` and writes `figures/temporal_windows.png`, which is the file used by `manuscript.tex`. This generator was copied from `/Users/kylenessen/Documents/GitHub/masters-thesis/figures/methods/temporal_windows_all_intervals.py`. The older thesis script `temporal_windows.py` in that repository generates a different lower resolution version.
 
-## Linear Issue Workflow
+## GitHub Issue Workflow
 
-The main source of work is Linear. A session usually starts with one Linear issue at a time, with the prompt prefilled from Linear. Always fetch the original Linear issue before doing the work. Also check the issue comments because Kyle may leave extra context there after the prompt was generated.
+The main source of work is GitHub Issues. A session usually starts with one GitHub issue at a time. A short prompt such as `Work on GitHub issue kylenessen/monarch-wind-light-manuscript#11` is enough to begin.
+
+Always fetch the original GitHub issue before doing the work. Read the full issue body and all issue comments because Kyle may leave extra context there after the prompt was generated. Treat the GitHub issue as the body of work, and treat this `AGENTS.md` file as the workflow context.
+
+The current bookmarklet prompt should stay minimal:
+
+```text
+Work on GitHub issue kylenessen/monarch-wind-light-manuscript#11
+```
+
+The bookmarklet may replace `11` with the issue number from the current GitHub issue page. It should not include the full workflow instructions in the prompt.
 
 Use the issue to identify the manuscript section, analysis output, figure, table, or workflow to inspect. If the issue points to reviewed Word text, read the relevant section in the Word document first. Inspect the accepted text, tracked changes, and open comments. Use tools that preserve enough Word document structure to see comments and revisions.
 
@@ -40,13 +50,15 @@ After any approved change to the LaTeX manuscript, build the document before rep
 
 ## Git And Worktrees
 
-This workflow usually starts in a temporary worktree. Do not create branches unless the user explicitly asks. Keep the worktree aligned with the main line of development.
+This workflow usually starts in a temporary Codex worktree. Keep the worktree aligned with the main line of development. If a branch is needed, prefer an issue-linked GitHub branch. Use an existing linked branch when one exists. Otherwise create one with `gh issue develop <issue-number> --base main --name codex/<issue-number>-short-slug`.
 
-Before committing, ask the user. Prefer larger commits by manuscript section or review batch. Do not make tiny automatic commits during this manuscript reconciliation workflow.
+When Kyle approves edits, commit in small atomic commits that match the approved scope. Good commit boundaries include a manuscript section, a figure or table update, an analysis provenance update, or one review batch. Do not commit the temporary HTML report.
 
-At the end of a worktree session, help bring approved work back to main. Use a fast-forward update when possible. If conflicts appear, inspect them carefully and preserve user work. Resolve conflicts only after explaining the conflict and the proposed resolution to the user.
+At the end of a worktree session, Kyle may say `land it` or `bring to main`. Treat either phrase as the signal to bring the approved work back to `main`.
 
-When the approved work is brought back to main, update Linear. Leave a detailed comment that explains what was checked, what was changed, what build or verification was run, and any remaining caveats. Then complete the Linear issue.
+Prefer the pull request workflow. Push the branch, open a draft pull request, include `Closes #<issue-number>` or `Fixes #<issue-number>` in the pull request body when the work should close the issue, and summarize what was checked, what changed, what build or verification ran, and any remaining caveats. The pull request workflow should be handled from the terminal where possible.
+
+When Kyle says to land the work, merge the pull request from the terminal when checks and repository state allow it. If conflicts appear, inspect them carefully and preserve user work. Explain the conflict and proposed resolution before resolving it. After merge, confirm the issue closed or update the GitHub issue with a final comment and close it if appropriate.
 
 Keep this `AGENTS.md` file tracked in git so new worktrees inherit the workflow.
 
