@@ -51,14 +51,8 @@
 %% ------------------------------------------------------------------
 %% Abstract
 %% ------------------------------------------------------------------
-% KYL-86 abstract state.
-% Retain both abstract options in this draft because the reviewed Word file keeps both.
-% Ask Peter, Jay, and the reviewer whether the alternative should replace the first abstract.
-% Final submission must contain one abstract only.
-% Word review comment 4, jediffendorfer@usgs.gov.
-% if space, you may want to describe the effect with more detail. I can't tell the direction of the interactive effect for example
-% Word review comment 7, jediffendorfer@usgs.gov.
-% if space, you may want to describe the effect with more detail. I can't tell the direction of the interactive effect for example
+% Kyle:
+% Francis included two abstracts in his original edits for us to decide on one. I'm happy to defer on this decision to whatever you all think is best.
 \abstract{The western monarch butterfly (\textit{Danaus plexippus}) population has declined by over 99\% since the 1980s, making conservation of overwintering habitat along California's coast a management priority. For three decades, the primary perspective on overwintering habitat has utilized a Microclimate Hypothesis which posits monarch butterflies seek a narrow microclimate for overwintering, including a nested Disruptive Wind Hypothesis which posits that wind speeds exceeding 2~m/s disrupt butterfly clusters and cause roost abandonment. In earlier work, we tested and rejected the Microclimate Hypothesis for temperature, humidity, and light, but did not address wind. This study provides the first direct experimental test of wind effects on overwintering monarch clusters.
 We deployed cameras and wind sensors at two sites on California's Vandenberg Space Force Base, during the 2023--2024 overwintering season. Time-lapse photography, documenting changes in butterfly abundance, and wind sensors adjacent to roosts, simultaneously collected 1,894 paired observations at 30-minute intervals across 80 days. Linear regression analysis revealed a poor relationship between wind speed and changes in cluster size at 30-minute and daily timescales (\texorpdfstring{$R^{2} = 0.002$}{R squared = 0.002}, \texorpdfstring{$p = 0.073$}{p = 0.073} and \texorpdfstring{$R^{2} = 0.017$}{R squared = 0.017}, \texorpdfstring{$p = 0.192$}{p = 0.192}, respectively). Generalized additive mixed models identified temperature, time of day, and an interaction between wind and sunlight as factors influencing cluster behavior (\texorpdfstring{$p < 0.001$}{p < 0.001}). Wind alone showed no independent effect. Instead, wind effects appeared to be light dependent: when butterflies remained in shade, wind speed had no effect on cluster behavior (up to 12.4~m/s). Nonlinear conditional effects appeared, and the number of clustering butterflies changed, but only when butterflies occupied sunlit positions.
 Our findings challenge a fundamental assumption in monarch habitat management. Instead of managing for controlled wind speeds, our results indicate that both light and wind contribute to clustering decisions. Thus, thermoregulation may be a primary driver of clustering behavior. This result is consistent with previous work on thermal physiology of overwintering Western monarch butterflies. Thermal ecology can provide a new perspective for science-based management of overwintering habitats in California.\texorpdfstring{\\}{ }
@@ -69,12 +63,6 @@ Our findings challenge a fundamental assumption in monarch habitat management. I
 %% ------------------------------------------------------------------
 %% Keywords
 %% ------------------------------------------------------------------
-% KYL-86 keyword state.
-% Official MDPI Insects instructions require 3 to 10 pertinent keywords after the abstract.
-% The instructions do not state an alphabetization rule, but Insects review reports often ask for alphabetical order.
-% Use the reviewed Word keyword wording and order it alphabetically as a conservative draft choice.
-% Word review comment 9, jediffendorfer@usgs.gov.
-% check to see if journal wants these alphabetized
 \keyword{clustering behavior; conservation; \textit{Danaus plexippus}; habitat management; microclimate; overwintering; thermoregulation; western monarch butterfly; wind disruption}
 
 \externalbibliography{yes}
@@ -177,7 +165,7 @@ To test for environmental effects on the response variable ($\Delta$BI), the ana
 % I think, but am not sure...so I propose you might have stronger inference if you took the top models from the initial set of candidate models and competed those against similarly structured "threshold" models..but vary the threshold..2m/s, 4, 8, etc.
 % Word review reply 84, Francis X. Villablanca.
 % Yes, I see. We should keep this thought in mind if we need to reanalyze. But, because the data are the same, and the model structure is the same (except for inclusion and exclusion of thresholds) the AICs should be comparable.
-% Kyle Nessen note, KYL-89.
+% Kyle:
 % Added a bit of language to make the rationale more explicit in the manuscript.
 To specifically test for threshold effects of the Disruptive Wind Hypothesis' 2~m/s, we repeated the same 52 named model structures with a threshold-based predictor: count of minutes within each 30-minute period where wind gusts equaled or exceeded 2~m/s. This variable ranged from 0 to 30 minutes and was tested using the same model structures described above. Because both analyses used the same response data and model structures, differing only in whether wind was represented as a continuous gust speed or a 2~m/s threshold-duration metric, AIC values were treated as comparable across the two model sets.
 
@@ -281,9 +269,8 @@ The best-fit model (M50) from the 30-minute wind disruption analysis predicted $
 \begin{table}[H]
 % Word review comment 89, jediffendorfer@usgs.gov.
 % Def. need an improved table caption. A USGS they require us to make the caption have enough detail so the table can 'stand alone'..i.e reader doesnt need to go back to text to understand what the table means. That standard may be too much, but at minimum you need to define column headings...do you need both edt and Ref.d?
-% Word review note 90, Kyle Nessen.
-% Need to write a better table caption here, ideally matching what has been done elsewhere and as close to possible what Jay is asking. I don't recall exactly what edf and ref.df are, but I do recall needing them when do this analysis. We should discuss what is appropriate here.
-% Updated table caption. Please feel free to change as needed though. I dropped Ref.d, but I think we should keep edf.
+%Kyle: 
+% Updated table caption. Please feel free to change as needed though. I dropped Ref.d.
 \caption{Summary of best-fit 30-minute wind disruption model (M50). The response was cube-root transformed $\Delta$BI. edf is estimated degrees of freedom.}
 \label{tab:m50_summary}
 \centering
@@ -581,16 +568,12 @@ Nonetheless, buffer trees and surrounding forested areas should be preserved, no
 
 The current practice of wind protection employs planting trees and waiting decades for maturation, as well as the maintenance of healthy, mature specimens. If monarchs respond primarily to temperature, light and wind, and thermal patterns rather than strict wind thresholds, strategic canopy modification for light-based management might enable shorter-timeframe interventions.
 
-% Word review comment 177, Francis X. Villablanca.
-% Kyle can you add some references for the hemispheric photography work that show it used for light initially and then for wind more recently? Maybe is a Weiss a, b, c versus Weiss d, e, f sort of format?
 % Word review comment 179, Jay Diffendorfer.
 % This paragraph suggests WDH hasn't fully dominated grove management...just wondering if getting some of this upfront, or at least the notion that factors beyond wind have been part of grove management plans, would make for a more balanced introduction.
 % Word review reply 180, Francis X. Villablanca.
 % This is a good comment. It precipitated some editing... Unfortunately Stu has reinterpreted this early work from a wind perspective. So we should argue fr it's roots.
 Real-world examples support this possibility and suggest that we return to some of the early light-based work of Weiss and Leong, which has somehow been disregarded for wind-based inferences of the same work. For example, Weiss et al.\ \cite{weissForestCanopyStructure1991} found that successful overwintering sites maintain consistent canopy openness around 20\%, while unsuccessful sites show greater variability. At Monarch Lane in Los Osos, California, strategic canopy opening resulted in monarchs reoccupying an overwintering site \cite{leongRestorationOverwinteringGrove1999,xercessocietyWesternMonarchButterfly2025}. At Andrew Molera State Park in Big Sur, California, clearing an overgrown grove increased butterfly counts from zero to over one thousand (E.\ Pelton, pers.\ comm.). Conversely, tree planting at Pacific Grove required approximately 15 years of canopy maturation before monarchs returned (S.\ Weiss, pers.\ comm.). These patterns suggest that appropriate canopy structure, including carefully designed openings creating dappled light, is known to be successful, and can attract butterflies far more quickly than waiting for tree growth alone.
 
-% Word review comment 182, Jay Diffendorfer.
-% counter to previous paragraph.  I've only skimmed a handful of grove management plans so i don't this stuff well at all, but conversations with both Weiss and Emma def. indicated they were both thinking about this strategy..
 Unoccupied eucalyptus stands or overly dense groves might thus be converted to functional habitat through selective thinning. However, additional research is needed before implementing large-scale canopy modifications, particularly at established overwintering sites. But in the end, managers might proactively create suitable conditions by strategically opening existing canopies at appropriate locations (for example previously occupied but currently unused sites), representing a significant departure from previous approaches that focused almost entirely on wind protection and tree growth. This proactive and strategic approach is one of site restoration and could increase resilience for overwintering monarch butterflies.
 
 \subsubsection{Long-term Optimism Despite Current Uncertainty}
