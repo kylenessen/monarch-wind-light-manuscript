@@ -253,21 +253,21 @@ To examine more complex environmental interactions and conditional relationships
 Model selection via AIC identified the decisively best-fit model (M50), capturing 86\% of the total model weight (Table~\ref{tab:model_selection_30min}). The next best model (M23) showed substantially weaker support with $\Delta$AIC = 3.8 and only 13\% model weight.
 
 \begin{table}[H]
-\caption{Top 5 models ranked by AIC (30-minute window) of environmental predictors of $\Delta$BI.}
+\caption{Top 5 models ranked by AIC for environmental predictors of $\Delta$BI in the 30-minute wind disruption analysis. BI is butterfly index. $K$ is the number of estimated parameters, logLik is the model log-likelihood, $\Delta$AIC is the difference from the best model, and Weight is the Akaike weight.}
 \label{tab:model_selection_30min}
 \centering
 \small
-\begin{tabular}{llrrrrr}
+\begin{tabularx}{\textwidth}{lLrrrrr}
 \toprule
 \textbf{Model} & \textbf{Terms} & \textbf{$K$} & \textbf{logLik} & \textbf{AIC} & \textbf{$\Delta$AIC} & \textbf{Weight} \\
 \midrule
-M50 & Prev.\ count, Temp., Time, ti(Wind, Sun) & 15 & $-$4024.01 & 8078.03 & 0.00 & 0.86 \\
-M23 & Prev.\ count, Temp., Sun, Time & 14 & $-$4026.92 & 8081.85 & 3.82 & 0.13 \\
-M22 & Prev.\ count, Temp.\ (linear), Sun, Time & 13 & $-$4030.32 & 8086.64 & 8.62 & 0.01 \\
-M24 & Prev.\ count, Wind, Temp., Sun, Time & 16 & $-$4028.02 & 8088.05 & 10.02 & 0.01 \\
-M52 & Temp., Time, ti(Wind, Sun) & 13 & $-$4035.36 & 8096.72 & 18.69 & 0.00 \\
+M50 & Previous BI, temperature, time since sunrise, ti(maximum wind gust, butterflies in direct sun) & 15 & $-$4024.01 & 8078.03 & 0.00 & 0.86 \\
+M23 & Previous BI, temperature, butterflies in direct sun, time since sunrise & 14 & $-$4026.92 & 8081.85 & 3.82 & 0.13 \\
+M22 & Previous BI, temperature (linear), butterflies in direct sun, time since sunrise & 13 & $-$4030.32 & 8086.64 & 8.62 & 0.01 \\
+M24 & Previous BI, maximum wind gust, temperature, butterflies in direct sun, time since sunrise & 16 & $-$4028.02 & 8088.05 & 10.02 & 0.01 \\
+M52 & Temperature, time since sunrise, ti(maximum wind gust, butterflies in direct sun) & 13 & $-$4035.36 & 8096.72 & 18.69 & 0.00 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \subsubsection{Analysis of Best Fit Model}
@@ -279,22 +279,27 @@ M52 & Temp., Time, ti(Wind, Sun) & 13 & $-$4035.36 & 8096.72 & 18.69 & 0.00 \\
 The best-fit model (M50) from the 30-minute wind disruption analysis predicted $\Delta$BI as a function of: (1) the previous 30-minute observation's BI, (2) average 30-minute temperature, (3) time of day (minutes since sunrise), and (4) a tensor interaction between maximum wind gust speed and the number of butterflies in direct sunlight. Statistical analysis of this responsive change model revealed significant effects for three of the four predictors (Table~\ref{tab:m50_summary}). The previous butterfly index ($F$ = 12.50, $p < 0.001$), time of day ($F$ = 9.85, $p < 0.001$), and the wind-sunlight interaction ($F$ = 4.67, $p < 0.001$) all showed strong statistical significance. Temperature effects approached but did not reach conventional significance thresholds ($F$ = 3.19, $p$ = 0.057). The model only explained 6.4\% of the variance in $\Delta$BI (adjusted $R^{2}$ = 0.064, $n$ = 1894).
 
 \begin{table}[H]
-\caption{Summary of best-fit model (M50).}
+% Word review comment 89, jediffendorfer@usgs.gov.
+% Def. need an improved table caption. A USGS they require us to make the caption have enough detail so the table can 'stand alone'..i.e reader doesnt need to go back to text to understand what the table means. That standard may be too much, but at minimum you need to define column headings...do you need both edt and Ref.d?
+% Word review note 90, Kyle Nessen.
+% Need to write a better table caption here, ideally matching what has been done elsewhere and as close to possible what Jay is asking. I don't recall exactly what edf and ref.df are, but I do recall needing them when do this analysis. We should discuss what is appropriate here.
+% Updated table caption. Please feel free to change as needed though. I dropped Ref.d, but I think we should keep edf.
+\caption{Summary of best-fit 30-minute wind disruption model (M50). The response was cube-root transformed $\Delta$BI. edf is estimated degrees of freedom.}
 \label{tab:m50_summary}
 \centering
 \small
-\begin{tabular}{lrrrr}
+\begin{tabularx}{\textwidth}{Lrrr}
 \toprule
-\textbf{Smooth Term} & \textbf{edf} & \textbf{Ref.df} & \textbf{$F$} & \textbf{$p$-value} \\
+\textbf{Smooth Term} & \textbf{edf} & \textbf{$F$} & \textbf{$p$-value} \\
 \midrule
-Previous butterfly index & 2.41 & 2.41 & 12.50 & $< 0.001$*** \\
-Average temperature & 3.68 & 3.68 & 3.19 & 0.057 \\
-Time since sunrise & 4.87 & 4.87 & 9.85 & $< 0.001$*** \\
-Wind gust $\times$ Sunlight exposure & 7.35 & 7.35 & 4.67 & $< 0.001$*** \\
+Previous butterfly index & 2.41 & 12.50 & $< 0.001$*** \\
+Average temperature & 3.68 & 3.19 & 0.057 \\
+Time since sunrise & 4.87 & 9.85 & $< 0.001$*** \\
+Maximum wind gust $\times$ butterflies in direct sun & 7.35 & 4.67 & $< 0.001$*** \\
 \midrule
-\multicolumn{5}{l}{\textit{Model performance:} Adj.\ $R^{2}$ = 0.064, Scale est.\ = 4.03, $n$ = 1894} \\
+\multicolumn{4}{l}{\textit{Model performance:} Adj.\ $R^{2}$ = 0.064, Scale est.\ = 4.03, $n$ = 1894} \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 Partial effects for the smooth terms, which represent the isolated influence of each predictor while holding other variables constant at their mean, are shown in Figure~\ref{fig:partial_effects_30min}. The previous butterfly count (BI) showed a significant non-linear negative relationship ($p < 0.001$) consistent with proportionally greater departures from larger aggregations. Time of day captured a significant diurnal pattern ($p < 0.001$) with morning departures (reductions in BI) and afternoon returns (increases in BI). Temperature showed a marginally non-significant trend ($p$ = 0.057), suggesting possible effects beginning near the 12.7--16$^{\circ}$C flight threshold and continuing at warmer temperatures. In Figure~\ref{fig:partial_effects_30min}, limited change below this threshold is consistent with reduced ability to fly from clusters. The rise at moderate temperatures above the threshold suggests increased clustering under those conditions, whereas the decline at warmer values suggests departures from locations that may have become too warm.
@@ -392,21 +397,21 @@ Daily maximum BI per cluster ranged from 0 to 770 butterflies (mean = 134.7 $\pm
 Model selection via AICc identified the best-fit model (M32) as capturing 85\% of the total model weight (Table~\ref{tab:nextday_model_selection}). The next best model showed substantially weaker support with $\Delta$AICc = 5.6 and only 5\% model weight. The best-fit model predicted square-root transformed change in BI as a function of: (1) the previous day's maximum butterfly index, (2) window duration in hours, and (3) a tensor smooth interaction between maximum wind gust speed and cumulative butterflies in direct sunlight.
 
 \begin{table}[H]
-\caption{Top 5 models ranked by AICc (Next Day Window and site fidelity analysis).}
+\caption{Top 5 models ranked by AICc for the Next Day Window and site fidelity analysis. Terms list candidate weather terms evaluated with baseline controls for previous-day maximum BI and window duration. BI is butterfly index. $K$ is the number of estimated parameters, logLik is the model log-likelihood, $\Delta$AICc is the difference from the best model, Weight is the Akaike weight, and ti() denotes a tensor product interaction smooth.}
 \label{tab:nextday_model_selection}
 \centering
 \small
-\begin{tabular}{llrrrrr}
+\begin{tabularx}{\textwidth}{lLrrrrr}
 \toprule
 \textbf{Model} & \textbf{Terms} & \textbf{$K$} & \textbf{logLik} & \textbf{AICc} & \textbf{$\Delta$AICc} & \textbf{Weight} \\
 \midrule
-M32 & ti(Wind gust, Cum.\ sun) & 9 & $-$314.38 & 648.85 & 0.00 & 0.85 \\
-M52 & Wind, Sun, ti(Wind, Sun) & 13 & $-$312.00 & 654.45 & 5.60 & 0.05 \\
-M20 & ti(Min.\ temp., Cum.\ sun) & 9 & $-$318.34 & 656.77 & 7.92 & 0.02 \\
-M46 & Max.\ temp., Sun, ti(Max.\ temp., Sun) & 13 & $-$313.63 & 657.70 & 8.85 & 0.01 \\
-M30 & ti(Temp.\ at prev.\ max, Cum.\ sun) & 9 & $-$318.91 & 657.90 & 9.06 & 0.01 \\
+M32 & ti(maximum wind gust, cumulative butterflies in direct sun) & 9 & $-$314.38 & 648.85 & 0.00 & 0.85 \\
+M52 & Maximum wind gust, cumulative butterflies in direct sun, ti(maximum wind gust, cumulative butterflies in direct sun) & 13 & $-$312.00 & 654.45 & 5.60 & 0.05 \\
+M20 & ti(minimum temperature, cumulative butterflies in direct sun) & 9 & $-$318.34 & 656.77 & 7.92 & 0.02 \\
+M46 & Maximum temperature, cumulative butterflies in direct sun, ti(maximum temperature, cumulative butterflies in direct sun) & 13 & $-$313.63 & 657.70 & 8.85 & 0.01 \\
+M30 & ti(temperature at previous maximum BI, cumulative butterflies in direct sun) & 9 & $-$318.91 & 657.90 & 9.06 & 0.01 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \subsubsection{Analysis of Best Fit Model}
@@ -414,21 +419,21 @@ M30 & ti(Temp.\ at prev.\ max, Cum.\ sun) & 9 & $-$318.91 & 657.90 & 9.06 & 0.01
 The Next Day Window/site fidelity model explained 39.7\% of the variance in maximum BI changes (adjusted $R^{2}$ = 0.397, $n$ = 96), representing a more than six-fold improvement in explanatory power compared to the 30-minute continuous (adjusted $R^{2}$ = 0.064) and threshold (adjusted $R^{2}$ = 0.061) analyses. Analysis revealed significant effects on $\Delta$BI for the previous day's maximum BI ($F$ = 24.88, $p < 0.001$) and the wind-sunlight interaction ($F$ = 4.10, $p < 0.001$). In addition, the partial effects of the previous day's maximum BI showed a significant negative linear relationship (Table~\ref{tab:nextday_model_summary}). Meaning that larger clusters experienced proportionally greater losses between days (as found in the 30-minute analysis). Window duration showed no significant relationship.
 
 \begin{table}[H]
-\caption{Summary of best-fit model for Next Day Window and fidelity analysis.}
+\caption{Summary of best-fit model for the Next Day Window and fidelity analysis (M32). The response was signed square-root transformed maximum $\Delta$BI. edf is estimated degrees of freedom.}
 \label{tab:nextday_model_summary}
 \centering
 \small
-\begin{tabular}{lrrrr}
+\begin{tabularx}{\textwidth}{Lrrr}
 \toprule
-\textbf{Smooth Term} & \textbf{edf} & \textbf{Ref.df} & \textbf{$F$} & \textbf{$p$-value} \\
+\textbf{Smooth Term} & \textbf{edf} & \textbf{$F$} & \textbf{$p$-value} \\
 \midrule
-Previous day maximum butterfly index & 1.00 & 1.00 & 24.88 & $< 0.001$*** \\
-Window duration & 1.00 & 1.00 & 1.14 & 0.289 \\
-Wind gust $\times$ Sunlight exposure & 6.68 & 6.68 & 4.10 & $< 0.001$*** \\
+Previous day maximum butterfly index & 1.00 & 24.88 & $< 0.001$*** \\
+Window duration & 1.00 & 1.14 & 0.289 \\
+Maximum wind gust $\times$ cumulative butterflies in direct sun & 6.68 & 4.10 & $< 0.001$*** \\
 \midrule
-\multicolumn{5}{l}{\textit{Model performance:} Adj.\ $R^{2}$ = 0.397, Scale est.\ = 41.06, $n$ = 96} \\
+\multicolumn{4}{l}{\textit{Model performance:} Adj.\ $R^{2}$ = 0.397, Scale est.\ = 41.06, $n$ = 96} \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \begin{figure}[H]
@@ -470,21 +475,21 @@ The quantile-quantile plot revealed approximately normal residual distribution w
 To assess the robustness of our Next Day Window and site fidelity findings, we conducted an analysis examining butterfly cluster changes over 24-hour periods rather than variable Next Day Window intervals. This analysis evaluated the same 76 candidate models using identical GAMM specifications with deployment random intercepts and AR(1) temporal correlation. Notably, model selection converged on the same structural form as the primary Next Day Window/site fidelity analysis. The decisive best-fit model (M31), incorporating a tensor smooth interaction between maximum wind gust and cumulative direct sun exposure, emerged with 51\% of the total model weight (Table~\ref{tab:24hr_model_selection}). Alternative models showed substantially weaker support, with the next best model achieving only 8\% weight and $\Delta$AICc = 3.6.
 
 \begin{table}[H]
-\caption{Top models from 24-hour robustness analysis.}
+\caption{Top models from the 24-hour robustness analysis. Descriptions list candidate weather terms evaluated with the previous-day maximum BI baseline. BI is butterfly index. $K$ is the number of estimated parameters, logLik is the model log-likelihood, $\Delta$AICc is the difference from the best model, Weight is the Akaike weight, and adj.\ $R^{2}$ is adjusted $R^{2}$.}
 \label{tab:24hr_model_selection}
 \centering
 \footnotesize
-\begin{tabular}{llrrrrrr}
+\begin{tabularx}{\textwidth}{lLrrrrrr}
 \toprule
 \textbf{Model} & \textbf{Description} & \textbf{$K$} & \textbf{logLik} & \textbf{AICc} & \textbf{$\Delta$AICc} & \textbf{Weight} & \textbf{adj.\ $R^{2}$} \\
 \midrule
-M31 & Wind $\times$ sun exposure (smooth) & 9 & $-$308.09 & 636.3 & 0.0 & 0.51 & 0.235 \\
-M23 & Temperature $\times$ wind (smooth) & 9 & $-$309.89 & 639.9 & 3.6 & 0.08 & -- \\
-M29 & Temperature $\times$ sun exposure (smooth) & 9 & $-$310.31 & 640.8 & 4.4 & 0.06 & -- \\
-M19 & Min.\ temp.\ $\times$ sun exposure (smooth) & 9 & $-$310.48 & 641.1 & 4.8 & 0.05 & -- \\
-M51 & Wind + sun + wind$\times$sun (smooth) & 13 & $-$305.59 & 641.7 & 5.4 & 0.03 & -- \\
+M31 & Maximum wind gust $\times$ cumulative butterflies in direct sun (smooth) & 9 & $-$308.09 & 636.3 & 0.0 & 0.51 & 0.232 \\
+M23 & Maximum temperature $\times$ maximum wind gust (smooth) & 9 & $-$309.89 & 639.9 & 3.6 & 0.08 & -- \\
+M29 & Temperature at previous maximum BI $\times$ cumulative butterflies in direct sun (smooth) & 9 & $-$310.31 & 640.8 & 4.4 & 0.06 & -- \\
+M19 & Minimum temperature $\times$ cumulative butterflies in direct sun (smooth) & 9 & $-$310.48 & 641.1 & 4.8 & 0.05 & -- \\
+M51 & Maximum wind gust, cumulative butterflies in direct sun, maximum wind gust $\times$ cumulative butterflies in direct sun (smooth) & 13 & $-$305.59 & 641.7 & 5.4 & 0.03 & -- \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 The 24-hour robustness analysis revealed qualitatively similar interaction patterns to the Next Day Window/site fidelity analysis (though with attenuated effect magnitudes) (Figure~\ref{fig:interaction_wind_sun_24hr}). For example, under low wind gust speeds around 2~m/s and low butterfly counts ($<$60--70) in direct sun, BI increased the following day. And under low wind gust speeds ($\sim$2~m/s), and higher butterfly counts in sun ($>$100) BI decreased the following day (a reversal of pattern). And at intermediate to high values of both wind gust speed and butterfly sun exposure, cluster sizes (BI) increased the next day. The convergent model selection and consistent interaction patterns across standardized (24hr) and variable scales strengthen confidence in the tested environmental interrelationships. This is also consistent with window duration showing no significant relationship with maximum $\Delta$BI (Figure~\ref{fig:partial_effects_nextday}) in the Next Day Window analysis. Pattern interpretation requires similar caution near data boundaries and regions with sparse observations.
