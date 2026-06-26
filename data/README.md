@@ -10,4 +10,4 @@ The generated analysis datasets are also stored here. These include `monarch_ana
 
 The raw image files and the software used to view and edit classifications are not included in this repository because of storage constraints. They can be provided separately, but a long-term public hosting location has not yet been established.
 
-Deployments with no butterfly detections are also excluded from this repository. In those cases, the pole location and wind data still exist, but the deployment-level classification files are not included here.
+Deployments with no butterfly detections are also excluded from this repository. In those cases, the pole location and wind data still exist, but are not included here.

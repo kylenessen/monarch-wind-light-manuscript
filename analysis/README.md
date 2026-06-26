@@ -1,6 +1,6 @@
 # Results Analysis Provenance
 
-This directory contains the repo-local analysis scripts and outputs used by the Results section of `manuscript.tex`. The original provenance source was `/Users/kylenessen/Documents/GitHub/masters-analysis`, but the scripts and data needed to inspect or regenerate the Results artifacts now live in this repository.
+This directory contains the analysis scripts and outputs used by the Results section of `manuscript.tex`.
 
 Run Python data preparation scripts with `uv`. Run R scripts with `Rscript` from the repository root.
 
@@ -37,13 +37,3 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 `twenty_four_hour_robustness_analysis.R` refits the 24-hour robustness model, writes summaries to `analysis/outputs/24_hour`, and regenerates `figures/interaction_wind_sun_24hr.png`.
 
 `generate_publication_figures_all.R` is a convenience script that regenerates the manuscript figure set in one pass. Prefer the focused scripts above when tracing a specific result.
-
-## Known Review Points
-
-Threshold line policy. Red 2 m/s dashed lines are omitted from wind-light interaction plots and other figures where the manuscript has moved beyond the threshold hypothesis. They are retained in figures that directly test or critique the Disruptive Wind Hypothesis when the threshold line is part of the evidence, including `figures/wind_at_clusters_histogram.png`.
-
-The linear regression figure and manuscript use the current Next Day Window regression on maximum BI change. This reports beta 7.57, SE 5.76, p 0.192, r 0.131, and R2 0.017 for n 101. The older 95th percentile response remains in `analysis/outputs/linear_regression/linear_regression_summary.csv` for provenance.
-
-The wind-light interaction figure-generation scripts omit the red 2 m/s threshold line by design, and the manuscript captions now match those figures.
-
-The descriptive statistics script shows that the peak unique-observation hour is 14:00 with 202 images. The peak paired time t row count is 16:00 with 196 rows.
