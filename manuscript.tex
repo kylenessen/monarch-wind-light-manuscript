@@ -279,6 +279,11 @@ M52 & Temperature, time since sunrise, ti(maximum wind gust, butterflies in dire
 The best-fit model (M50) from the 30-minute wind disruption analysis predicted $\Delta$BI as a function of: (1) the previous 30-minute observation's BI, (2) average 30-minute temperature, (3) time of day (minutes since sunrise), and (4) a tensor interaction between maximum wind gust speed and the number of butterflies in direct sunlight. Statistical analysis of this responsive change model revealed significant effects for three of the four predictors (Table~\ref{tab:m50_summary}). The previous butterfly index ($F$ = 12.50, $p < 0.001$), time of day ($F$ = 9.85, $p < 0.001$), and the wind-sunlight interaction ($F$ = 4.67, $p < 0.001$) all showed strong statistical significance. Temperature effects approached but did not reach conventional significance thresholds ($F$ = 3.19, $p$ = 0.057). The model only explained 6.4\% of the variance in $\Delta$BI (adjusted $R^{2}$ = 0.064, $n$ = 1894).
 
 \begin{table}[H]
+% Word review comment 89, jediffendorfer@usgs.gov.
+% Def. need an improved table caption. A USGS they require us to make the caption have enough detail so the table can 'stand alone'..i.e reader doesnt need to go back to text to understand what the table means. That standard may be too much, but at minimum you need to define column headings...do you need both edt and Ref.d?
+% Word review note 90, Kyle Nessen.
+% Need to write a better table caption here, ideally matching what has been done elsewhere and as close to possible what Jay is asking. I don't recall exactly what edf and ref.df are, but I do recall needing them when do this analysis. We should discuss what is appropriate here.
+% Response to Jay's edf and Ref.df question. Keep both columns while reporting GAMM smooth summaries. edf describes the fitted smooth complexity. Ref.df is the reference degrees of freedom used for the approximate F tests. The caption now defines both so the table can stand alone. The same caption treatment was applied to the Next Day Window summary table.
 \caption{Summary of best-fit 30-minute wind disruption model (M50). The response was cube-root transformed $\Delta$BI. edf is estimated degrees of freedom. Ref.df is the reference degrees of freedom used for approximate $F$ tests.}
 \label{tab:m50_summary}
 \centering
