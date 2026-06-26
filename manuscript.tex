@@ -283,21 +283,21 @@ The best-fit model (M50) from the 30-minute wind disruption analysis predicted $
 % Def. need an improved table caption. A USGS they require us to make the caption have enough detail so the table can 'stand alone'..i.e reader doesnt need to go back to text to understand what the table means. That standard may be too much, but at minimum you need to define column headings...do you need both edt and Ref.d?
 % Word review note 90, Kyle Nessen.
 % Need to write a better table caption here, ideally matching what has been done elsewhere and as close to possible what Jay is asking. I don't recall exactly what edf and ref.df are, but I do recall needing them when do this analysis. We should discuss what is appropriate here.
-% Response to Jay's edf and Ref.df question. Keep both columns while reporting GAMM smooth summaries. edf describes the fitted smooth complexity. Ref.df is the reference degrees of freedom used for the approximate F tests. The caption now defines both so the table can stand alone. The same caption treatment was applied to the Next Day Window summary table.
-\caption{Summary of best-fit 30-minute wind disruption model (M50). The response was cube-root transformed $\Delta$BI. edf is estimated degrees of freedom. Ref.df is the reference degrees of freedom used for approximate $F$ tests.}
+% Updated table caption. Please feel free to change as needed though. I dropped Ref.d, but I think we should keep edf.
+\caption{Summary of best-fit 30-minute wind disruption model (M50). The response was cube-root transformed $\Delta$BI. edf is estimated degrees of freedom.}
 \label{tab:m50_summary}
 \centering
 \small
-\begin{tabularx}{\textwidth}{Lrrrr}
+\begin{tabularx}{\textwidth}{Lrrr}
 \toprule
-\textbf{Smooth Term} & \textbf{edf} & \textbf{Ref.df} & \textbf{$F$} & \textbf{$p$-value} \\
+\textbf{Smooth Term} & \textbf{edf} & \textbf{$F$} & \textbf{$p$-value} \\
 \midrule
-Previous butterfly index & 2.41 & 2.41 & 12.50 & $< 0.001$*** \\
-Average temperature & 3.68 & 3.68 & 3.19 & 0.057 \\
-Time since sunrise & 4.87 & 4.87 & 9.85 & $< 0.001$*** \\
-Maximum wind gust $\times$ butterflies in direct sun & 7.35 & 7.35 & 4.67 & $< 0.001$*** \\
+Previous butterfly index & 2.41 & 12.50 & $< 0.001$*** \\
+Average temperature & 3.68 & 3.19 & 0.057 \\
+Time since sunrise & 4.87 & 9.85 & $< 0.001$*** \\
+Maximum wind gust $\times$ butterflies in direct sun & 7.35 & 4.67 & $< 0.001$*** \\
 \midrule
-\multicolumn{5}{l}{\textit{Model performance:} Adj.\ $R^{2}$ = 0.064, Scale est.\ = 4.03, $n$ = 1894} \\
+\multicolumn{4}{l}{\textit{Model performance:} Adj.\ $R^{2}$ = 0.064, Scale est.\ = 4.03, $n$ = 1894} \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -419,19 +419,19 @@ M30 & ti(temperature at previous maximum BI, cumulative butterflies in direct su
 The Next Day Window/site fidelity model explained 39.7\% of the variance in maximum BI changes (adjusted $R^{2}$ = 0.397, $n$ = 96), representing a more than six-fold improvement in explanatory power compared to the 30-minute continuous (adjusted $R^{2}$ = 0.064) and threshold (adjusted $R^{2}$ = 0.061) analyses. Analysis revealed significant effects on $\Delta$BI for the previous day's maximum BI ($F$ = 24.88, $p < 0.001$) and the wind-sunlight interaction ($F$ = 4.10, $p < 0.001$). In addition, the partial effects of the previous day's maximum BI showed a significant negative linear relationship (Table~\ref{tab:nextday_model_summary}). Meaning that larger clusters experienced proportionally greater losses between days (as found in the 30-minute analysis). Window duration showed no significant relationship.
 
 \begin{table}[H]
-\caption{Summary of best-fit model for the Next Day Window and fidelity analysis (M32). The response was signed square-root transformed maximum $\Delta$BI. edf is estimated degrees of freedom. Ref.df is the reference degrees of freedom used for approximate $F$ tests.}
+\caption{Summary of best-fit model for the Next Day Window and fidelity analysis (M32). The response was signed square-root transformed maximum $\Delta$BI. edf is estimated degrees of freedom.}
 \label{tab:nextday_model_summary}
 \centering
 \small
-\begin{tabularx}{\textwidth}{Lrrrr}
+\begin{tabularx}{\textwidth}{Lrrr}
 \toprule
-\textbf{Smooth Term} & \textbf{edf} & \textbf{Ref.df} & \textbf{$F$} & \textbf{$p$-value} \\
+\textbf{Smooth Term} & \textbf{edf} & \textbf{$F$} & \textbf{$p$-value} \\
 \midrule
-Previous day maximum butterfly index & 1.00 & 1.00 & 24.88 & $< 0.001$*** \\
-Window duration & 1.00 & 1.00 & 1.14 & 0.289 \\
-Maximum wind gust $\times$ cumulative butterflies in direct sun & 6.68 & 6.68 & 4.10 & $< 0.001$*** \\
+Previous day maximum butterfly index & 1.00 & 24.88 & $< 0.001$*** \\
+Window duration & 1.00 & 1.14 & 0.289 \\
+Maximum wind gust $\times$ cumulative butterflies in direct sun & 6.68 & 4.10 & $< 0.001$*** \\
 \midrule
-\multicolumn{5}{l}{\textit{Model performance:} Adj.\ $R^{2}$ = 0.397, Scale est.\ = 41.06, $n$ = 96} \\
+\multicolumn{4}{l}{\textit{Model performance:} Adj.\ $R^{2}$ = 0.397, Scale est.\ = 41.06, $n$ = 96} \\
 \bottomrule
 \end{tabularx}
 \end{table}
