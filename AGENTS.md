@@ -14,6 +14,10 @@ Use the repo-local Word document at `reference/manuscript_20260409.docx`.
 
 The LaTeX manuscript is `manuscript.tex` unless the user names another file.
 
+When checking whether manuscript writing changed, compare the accepted Word text and open comments in `reference/manuscript_20260409.docx` against `manuscript.tex`. For historical pre-review wording from the thesis-derived manuscript, use `/Users/kylenessen/Documents/GitHub/masters-thesis` at commit `1f836465c2aac8026d9e93e6d55c823df69e6995`, usually the root `manuscript.tex` at that commit. A useful command is `git -C /Users/kylenessen/Documents/GitHub/masters-thesis show 1f836465c2aac8026d9e93e6d55c823df69e6995:manuscript.tex`.
+
+When checking whether Word comments have been addressed, inspect the Word comments structurally as well as the accepted text. The Word UI comment numbers may not match OOXML comment ids, so search by comment text and anchored paragraph, not by id alone. The bundled documents helper `scripts/comments_extract.py` can extract comment text and anchor snippets from `reference/manuscript_20260409.docx` into JSON for this comparison.
+
 ## Related Local Repositories
 
 The analysis provenance usually lives in `/Users/kylenessen/Documents/GitHub/masters-analysis`. Look there first for data preparation, model code, exported tables, regenerated result figures, and source data. This repository is a provenance source, not the authority for reviewed manuscript wording.
