@@ -18,8 +18,7 @@
 *.pdfsync
 
 # Local editor state
-.vscode/*
-!.vscode/settings.json
+.vscode/
 .idea/
 
 # Generated manuscript exports
