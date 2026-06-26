@@ -36,6 +36,9 @@ create_binned_interaction_plot <- function(
     barheight = 16,
     barwidth = 1.4,
     legend_text_size = 9,
+    legend_title_size = 10,
+    axis_title_size = 10,
+    axis_text_size = NULL,
     legend_key_height_cm = 0.6,
     legend_name = expression(paste("Partial effect on ", Delta, "BI")),
     base_size = 14,
@@ -113,11 +116,12 @@ create_binned_interaction_plot <- function(
       panel.background = element_rect(fill = NA, color = NA),
       plot.background = element_rect(fill = "white", color = NA),
       legend.position = "right",
-      legend.title = element_text(size = 10),
+      legend.title = element_text(size = legend_title_size),
       legend.text = element_text(size = legend_text_size),
       legend.key.height = unit(legend_key_height_cm, "cm"),
       legend.margin = margin(2, 4, 2, 4),
-      axis.title = element_text(size = 10)
+      axis.title = element_text(color = "black", size = axis_title_size),
+      axis.text = element_text(color = "black", size = axis_text_size)
     )
 
   return(p)

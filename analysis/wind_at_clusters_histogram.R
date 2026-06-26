@@ -8,6 +8,8 @@ suppressPackageStartupMessages({
   library(here)
 })
 
+source(here("analysis", "lib", "manuscript_figure_style.R"))
+
 out_dir <- here("analysis", "outputs", "wind_at_clusters")
 fig_dir <- here("figures")
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
@@ -17,6 +19,7 @@ cfg <- list(
   dpi = 600,
   figure_w = 6.5,
   figure_h = 4.0,
+  include_width = 0.75,
   binwidth = 0.25,
   threshold = 2,
   fill = "steelblue",
@@ -25,16 +28,7 @@ cfg <- list(
 )
 
 make_theme <- function() {
-  theme_minimal(base_size = 12) +
-    theme(
-      panel.grid.major = element_line(color = "gray90", linewidth = 0.5),
-      panel.grid.minor = element_blank(),
-      axis.text = element_text(color = "black"),
-      axis.title = element_text(color = "black"),
-      plot.title = element_blank(),
-      plot.subtitle = element_blank(),
-      plot.caption = element_blank()
-    )
+  theme_like_reference(cfg$figure_w, cfg$include_width, grid_minor = FALSE)
 }
 
 cluster_wind <- read_csv(here("data", "monarch_analysis_lag30min.csv"), show_col_types = FALSE) %>%
@@ -80,7 +74,7 @@ histogram <- ggplot(cluster_wind, aes(x = max_gust)) +
     hjust = 0,
     vjust = 1.3,
     color = cfg$threshold_color,
-    size = 3.5
+    size = ggplot_text_size(reference_text_size(reference_figure_style$axis_text, cfg$figure_w, cfg$include_width))
   ) +
   scale_x_continuous(
     limits = c(0, ceiling(max(cluster_wind$max_gust, na.rm = TRUE))),

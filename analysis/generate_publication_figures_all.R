@@ -26,6 +26,8 @@ suppressPackageStartupMessages({
   library(here)
 })
 
+source(here("analysis", "lib", "manuscript_figure_style.R"))
+
 # ============================================================================
 # CONFIGURATION. Adjust these to quickly change all figures.
 # ============================================================================
@@ -46,8 +48,12 @@ cfg <- list(
   # Figure dimensions (inches)
   combined_scatter_w = 7, combined_scatter_h = 4.2,
   interaction_w = 7, interaction_h = 6,
+  interaction_include_width = 0.70,
   diagnostic_h = 5,
+  diagnostic_include_width = 0.80,
   acf_w = 7, acf_h = 5,
+  acf_include_width = 0.70,
+  wind_at_clusters_include_width = 0.75,
 
   # DPI
 
@@ -312,7 +318,7 @@ wind_at_clusters_histogram <- ggplot(cluster_wind_data, aes(x = max_gust)) +
     hjust = 0,
     vjust = 1.3,
     color = "#c23b3b",
-    size = 3.5
+    size = ggplot_text_size(reference_text_size(reference_figure_style$axis_text, 6.5, cfg$wind_at_clusters_include_width))
   ) +
   scale_x_continuous(
     limits = c(0, ceiling(max(cluster_wind_data$max_gust, na.rm = TRUE))),
@@ -320,7 +326,7 @@ wind_at_clusters_histogram <- ggplot(cluster_wind_data, aes(x = max_gust)) +
     expand = expansion(mult = c(0, 0.02))
   ) +
   labs(x = "Maximum wind gust speed (m/s)", y = "Frequency") +
-  make_pub_theme(6.5) +
+  theme_like_reference(6.5, cfg$wind_at_clusters_include_width, grid_minor = FALSE) +
   theme(panel.grid.minor = element_blank())
 
 save_fig("wind_at_clusters_histogram.png", wind_at_clusters_histogram, 6.5, 4.0)
@@ -395,6 +401,8 @@ save_fig("partial_effects_30min.png", partial_effects_30min, 12, 6)
 # ============================================================================
 source(here("analysis", "lib", "plot_binned_interaction.R"))
 
+interaction_sizes <- reference_sizes(cfg$interaction_w, cfg$interaction_include_width)
+
 interaction_wind_sun_30min <- create_binned_interaction_plot(
   gam_model = M50$gam,
   x_var = "max_gust",
@@ -404,15 +412,17 @@ interaction_wind_sun_30min <- create_binned_interaction_plot(
   ylab = "Butterflies in direct sun",
   n = cfg$interaction_n,
   limits = cfg$interaction_limits,
-  breaks = cfg$interaction_breaks,
-  labels = cfg$interaction_labels,
+  breaks = c(-6, -4, -2, 0, 2, 4, 6),
+  labels = c("-6", "-4", "-2", "0", "+2", "+4", "+6"),
   too_far = cfg$interaction_too_far,
   barheight = 40, barwidth = 1.0,
-  legend_text_size = round(cfg$target_legend_text * cfg$interaction_w / cfg$display_width),
+  legend_text_size = interaction_sizes$legend_text,
+  legend_title_size = interaction_sizes$legend_title,
+  axis_title_size = interaction_sizes$axis_title,
+  axis_text_size = interaction_sizes$axis_text,
+  base_size = interaction_sizes$axis_title,
   legend_key_height_cm = 2.0
-) +
-  theme(axis.title = element_text(size = round(cfg$target_axis_title * cfg$interaction_w / cfg$display_width)),
-        axis.text = element_text(size = round(cfg$target_axis_text * cfg$interaction_w / cfg$display_width)))
+)
 
 if (cfg$show_threshold_line) {
   interaction_wind_sun_30min <- interaction_wind_sun_30min +
@@ -433,14 +443,14 @@ diag_qq <- ggplot(res_30, aes(sample = resid)) +
   stat_qq(alpha = 0.25, size = 0.8, color = "#4d4d4d") +
   stat_qq_line(color = "#2c7fb8", linewidth = 0.8) +
   labs(x = "Theoretical quantiles", y = "Sample quantiles") +
-  make_pub_theme(9)
+  theme_like_reference(9, cfg$diagnostic_include_width)
 
 diag_resid <- ggplot(res_30, aes(fitted, resid)) +
   geom_point(alpha = 0.25, size = 0.8, color = "#4d4d4d") +
   geom_smooth(se = FALSE, color = "#2c7fb8", linewidth = 0.8, method = "loess", span = 0.8) +
   geom_hline(yintercept = 0, color = "gray65") +
   labs(x = "Fitted values", y = "Standardized residuals") +
-  make_pub_theme(9)
+  theme_like_reference(9, cfg$diagnostic_include_width)
 
 diagnostics_30min <- wrap_plots(diag_qq, diag_resid, nrow = 1)
 save_fig("diagnostics_30min.png", diagnostics_30min, 9, cfg$diagnostic_h)
@@ -448,7 +458,7 @@ save_fig("diagnostics_30min.png", diagnostics_30min, 9, cfg$diagnostic_h)
 # ============================================================================
 # ACF, 30-minute M50
 # ============================================================================
-acf_cex <- make_acf_cex(cfg$acf_w)
+acf_cex <- acf_cex_like_reference(cfg$acf_w, cfg$acf_include_width)
 png(file.path(cfg$out_dir, "acf_30min.png"),
     width = cfg$acf_w, height = cfg$acf_h, units = "in", res = cfg$dpi)
 par(cex.lab = acf_cex$lab, cex.axis = acf_cex$axis, cex.main = acf_cex$lab, mar = c(5, 5, 2, 2))
@@ -523,11 +533,13 @@ interaction_wind_sun_nextday <- create_binned_interaction_plot(
              "0", "+2", "+4", "+6", "+8", "+10", "+12", "+14", "+16"),
   too_far = cfg$interaction_too_far,
   barheight = 40, barwidth = 1.0,
-  legend_text_size = round(cfg$target_legend_text * cfg$interaction_w / cfg$display_width),
+  legend_text_size = interaction_sizes$legend_text,
+  legend_title_size = interaction_sizes$legend_title,
+  axis_title_size = interaction_sizes$axis_title,
+  axis_text_size = interaction_sizes$axis_text,
+  base_size = interaction_sizes$axis_title,
   legend_key_height_cm = 2.0
-) +
-  theme(axis.title = element_text(size = round(cfg$target_axis_title * cfg$interaction_w / cfg$display_width)),
-        axis.text = element_text(size = round(cfg$target_axis_text * cfg$interaction_w / cfg$display_width)))
+)
 
 save_fig("interaction_wind_sun_nextday.png", interaction_wind_sun_nextday, cfg$interaction_w, cfg$interaction_h)
 
@@ -543,12 +555,12 @@ diagnostics_nextday <- wrap_plots(
   ggplot(res_nextday, aes(sample = resid)) +
     stat_qq(alpha = 0.3, size = 1, color = "#4d4d4d") +
     stat_qq_line(color = "#2c7fb8", linewidth = 0.8) +
-    labs(x = "Theoretical quantiles", y = "Sample quantiles") + make_pub_theme(9),
+    labs(x = "Theoretical quantiles", y = "Sample quantiles") + theme_like_reference(9, cfg$diagnostic_include_width),
   ggplot(res_nextday, aes(fitted, resid)) +
     geom_point(alpha = 0.3, size = 1, color = "#4d4d4d") +
     geom_smooth(se = FALSE, color = "#2c7fb8", linewidth = 0.8, method = "loess", span = 0.8) +
     geom_hline(yintercept = 0, color = "gray65") +
-    labs(x = "Fitted values", y = "Standardized residuals") + make_pub_theme(9),
+    labs(x = "Fitted values", y = "Standardized residuals") + theme_like_reference(9, cfg$diagnostic_include_width),
   nrow = 1
 )
 save_fig("diagnostics_nextday.png", diagnostics_nextday, 9, cfg$diagnostic_h)
@@ -580,11 +592,13 @@ interaction_wind_sun_24hr <- create_binned_interaction_plot(
              "0", "+2", "+4", "+6", "+8", "+10", "+12", "+14", "+16"),
   too_far = cfg$interaction_too_far,
   barheight = 40, barwidth = 1.0,
-  legend_text_size = round(cfg$target_legend_text * cfg$interaction_w / cfg$display_width),
+  legend_text_size = interaction_sizes$legend_text,
+  legend_title_size = interaction_sizes$legend_title,
+  axis_title_size = interaction_sizes$axis_title,
+  axis_text_size = interaction_sizes$axis_text,
+  base_size = interaction_sizes$axis_title,
   legend_key_height_cm = 2.0
-) +
-  theme(axis.title = element_text(size = round(cfg$target_axis_title * cfg$interaction_w / cfg$display_width)),
-        axis.text = element_text(size = round(cfg$target_axis_text * cfg$interaction_w / cfg$display_width)))
+)
 
 save_fig("interaction_wind_sun_24hr.png", interaction_wind_sun_24hr, cfg$interaction_w, cfg$interaction_h)
 

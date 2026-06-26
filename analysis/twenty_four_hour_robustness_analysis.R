@@ -11,6 +11,7 @@ suppressPackageStartupMessages({
 })
 
 source(here("analysis", "lib", "plot_binned_interaction.R"))
+source(here("analysis", "lib", "manuscript_figure_style.R"))
 
 out_dir <- here("analysis", "outputs", "24_hour")
 fig_out_dir <- file.path(out_dir, "figures")
@@ -22,6 +23,7 @@ cfg <- list(
   dpi = 600,
   interaction_w = 7,
   interaction_h = 6,
+  interaction_include_width = 0.70,
   display_width = 6,
   target_axis_title = 12,
   target_axis_text = 10
@@ -115,6 +117,8 @@ descriptive <- tibble(
 )
 write_csv(descriptive, file.path(out_dir, "descriptive_statistics.csv"))
 
+interaction_sizes <- reference_sizes(cfg$interaction_w, cfg$interaction_include_width)
+
 interaction_wind_sun_24hr <- create_binned_interaction_plot(
   gam_model = model$gam,
   x_var = "wind_max_gust",
@@ -129,13 +133,13 @@ interaction_wind_sun_24hr <- create_binned_interaction_plot(
   too_far = 0.04,
   barheight = 40,
   barwidth = 1.0,
-  legend_text_size = round(cfg$target_axis_text * cfg$interaction_w / cfg$display_width),
+  legend_text_size = interaction_sizes$legend_text,
+  legend_title_size = interaction_sizes$legend_title,
+  axis_title_size = interaction_sizes$axis_title,
+  axis_text_size = interaction_sizes$axis_text,
+  base_size = interaction_sizes$axis_title,
   legend_key_height_cm = 2.0
-) +
-  theme(
-    axis.title = element_text(size = round(cfg$target_axis_title * cfg$interaction_w / cfg$display_width)),
-    axis.text = element_text(size = round(cfg$target_axis_text * cfg$interaction_w / cfg$display_width))
-  )
+)
 save_both("interaction_wind_sun_24hr.png", interaction_wind_sun_24hr, cfg$interaction_w, cfg$interaction_h)
 
 message("Wrote 24-hour robustness outputs to ", out_dir)

@@ -9,6 +9,8 @@ suppressPackageStartupMessages({
   library(here)
 })
 
+source(here("analysis", "lib", "manuscript_figure_style.R"))
+
 out_dir <- here("analysis", "outputs", "descriptive_figures")
 fig_dir <- here("figures")
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
@@ -16,9 +18,7 @@ dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
 
 cfg <- list(
   dpi = 600,
-  display_width = 6,
-  target_axis_title = 12,
-  target_axis_text = 10,
+  include_width = 0.95,
   figure_w = 7,
   figure_h = 5,
   combined_w = 9,
@@ -28,20 +28,9 @@ cfg <- list(
   zero_line = "gray65"
 )
 
-make_theme <- function(fig_width = cfg$figure_w) {
-  scale_factor <- fig_width / cfg$display_width
-
-  theme_minimal(base_size = round(cfg$target_axis_title * scale_factor)) +
-    theme(
-      panel.grid.major = element_line(color = "gray90", linewidth = 0.5),
-      panel.grid.minor = element_blank(),
-      axis.text = element_text(color = "black", size = round(cfg$target_axis_text * scale_factor)),
-      axis.title = element_text(color = "black", size = round(cfg$target_axis_title * scale_factor)),
-      plot.title = element_blank(),
-      plot.subtitle = element_blank(),
-      plot.caption = element_blank(),
-      legend.position = "none"
-    )
+make_theme <- function() {
+  theme_like_reference(cfg$combined_w, cfg$include_width, grid_minor = FALSE) +
+    theme(legend.position = "none")
 }
 
 lag_data <- read_csv(here("data", "monarch_analysis_lag30min.csv"), show_col_types = FALSE) %>%
@@ -89,7 +78,7 @@ p_bi <- ggplot(unique_observations, aes(x = butterfly_index)) +
     x = "Butterfly Index",
     y = "Frequency"
   ) +
-  make_theme(cfg$combined_w / 2) +
+  make_theme() +
   theme(
     panel.grid.major.x = element_blank(),
     plot.margin = margin(6, 12, 6, 8)
@@ -145,7 +134,7 @@ p_hourly <- ggplot(hourly_summary, aes(x = hour, y = mean_delta_bi)) +
     x = "Time of day",
     y = expression(paste("Mean ", Delta, "BI"))
   ) +
-  make_theme(cfg$combined_w / 2) +
+  make_theme() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
     panel.grid.major.x = element_blank(),
@@ -156,7 +145,10 @@ combined_plot <- p_bi + p_hourly +
   plot_layout(ncol = 2) +
   plot_annotation(tag_levels = "A") &
   theme(
-    plot.tag = element_text(face = "bold", size = 11),
+    plot.tag = element_text(
+      face = "bold",
+      size = reference_text_size(reference_figure_style$axis_title, cfg$combined_w, cfg$include_width)
+    ),
     plot.tag.position = c(0.02, 0.98)
   )
 
