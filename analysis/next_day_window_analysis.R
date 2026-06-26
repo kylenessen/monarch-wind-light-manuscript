@@ -12,6 +12,7 @@ suppressPackageStartupMessages({
 })
 
 source(here("analysis", "lib", "plot_binned_interaction.R"))
+source(here("analysis", "lib", "manuscript_figure_style.R"))
 
 out_dir <- here("analysis", "outputs", "next_day_window")
 fig_out_dir <- file.path(out_dir, "figures")
@@ -26,9 +27,12 @@ cfg <- list(
   target_axis_text = 10,
   interaction_w = 7,
   interaction_h = 6,
+  interaction_include_width = 0.70,
   diagnostic_h = 5,
+  diagnostic_include_width = 0.80,
   acf_w = 7,
   acf_h = 5,
+  acf_include_width = 0.70,
   col_prev = "#9673c5",
   col_time = "#79a44c"
 )
@@ -59,9 +63,10 @@ save_both <- function(filename, plot, width, height) {
 }
 
 save_acf_both <- function(filename, residuals) {
+  acf_cex <- acf_cex_like_reference(cfg$acf_w, cfg$acf_include_width)
   for (path in c(file.path(fig_out_dir, filename), here("figures", filename))) {
     png(path, width = cfg$acf_w, height = cfg$acf_h, units = "in", res = cfg$dpi)
-    par(cex.lab = 1.2, cex.axis = 1.0, cex.main = 1.2, mar = c(5, 5, 2, 2))
+    par(cex.lab = acf_cex$lab, cex.axis = acf_cex$axis, cex.main = acf_cex$lab, mar = c(5, 5, 2, 2))
     acf(residuals, main = "", xlab = "Lag", ylab = "Autocorrelation")
     dev.off()
   }
@@ -177,6 +182,8 @@ partial_duration <- ggplot(data, aes(lag_duration_hours, butterfly_diff_sqrt)) +
 partial_effects_nextday <- wrap_plots(partial_prev, partial_duration, nrow = 1)
 save_both("partial_effects_nextday.png", partial_effects_nextday, 9, 5)
 
+interaction_sizes <- reference_sizes(cfg$interaction_w, cfg$interaction_include_width)
+
 interaction_wind_sun_nextday <- create_binned_interaction_plot(
   gam_model = model$gam,
   x_var = "wind_max_gust",
@@ -191,13 +198,13 @@ interaction_wind_sun_nextday <- create_binned_interaction_plot(
   too_far = 0.04,
   barheight = 40,
   barwidth = 1.0,
-  legend_text_size = round(cfg$target_axis_text * cfg$interaction_w / cfg$display_width),
+  legend_text_size = interaction_sizes$legend_text,
+  legend_title_size = interaction_sizes$legend_title,
+  axis_title_size = interaction_sizes$axis_title,
+  axis_text_size = interaction_sizes$axis_text,
+  base_size = interaction_sizes$axis_title,
   legend_key_height_cm = 2.0
-) +
-  theme(
-    axis.title = element_text(size = round(cfg$target_axis_title * cfg$interaction_w / cfg$display_width)),
-    axis.text = element_text(size = round(cfg$target_axis_text * cfg$interaction_w / cfg$display_width))
-  )
+)
 save_both("interaction_wind_sun_nextday.png", interaction_wind_sun_nextday, cfg$interaction_w, cfg$interaction_h)
 
 residuals_df <- tibble(
@@ -205,18 +212,20 @@ residuals_df <- tibble(
   resid = residuals(model$lme, type = "normalized")
 )
 
+diagnostic_theme <- theme_like_reference(9, cfg$diagnostic_include_width)
+
 diagnostics_nextday <- wrap_plots(
   ggplot(residuals_df, aes(sample = resid)) +
     stat_qq(alpha = 0.3, size = 1, color = "#4d4d4d") +
     stat_qq_line(color = "#2c7fb8", linewidth = 0.8) +
     labs(x = "Theoretical quantiles", y = "Sample quantiles") +
-    make_theme(9),
+    diagnostic_theme,
   ggplot(residuals_df, aes(fitted, resid)) +
     geom_point(alpha = 0.3, size = 1, color = "#4d4d4d") +
     geom_smooth(se = FALSE, color = "#2c7fb8", linewidth = 0.8, method = "loess", span = 0.8) +
     geom_hline(yintercept = 0, color = "gray65") +
     labs(x = "Fitted values", y = "Standardized residuals") +
-    make_theme(9),
+    diagnostic_theme,
   nrow = 1
 )
 save_both("diagnostics_nextday.png", diagnostics_nextday, 9, cfg$diagnostic_h)

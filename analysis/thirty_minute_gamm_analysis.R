@@ -19,6 +19,8 @@ suppressPackageStartupMessages({
   library(glue)
 })
 
+source(here("analysis", "lib", "manuscript_figure_style.R"))
+
 # ----------------------------------------------------------------------------
 # Paths
 # ----------------------------------------------------------------------------
@@ -644,6 +646,7 @@ if (length(plots) > 0) {
 src_file <- here("analysis", "lib", "plot_binned_interaction.R")
 if (file.exists(src_file)) source(src_file)
 if (exists("create_binned_interaction_plot")) {
+  interaction_sizes <- reference_sizes(7, 0.70)
   p_inter_binned <- create_binned_interaction_plot(
     gam_model = best$gam,
     x_var = "max_gust",
@@ -654,12 +657,16 @@ if (exists("create_binned_interaction_plot")) {
     n = 400,
     limits = c(-6, 6),
     nbreaks = 17,
-    breaks = c(-6, -5, -4, -3, -2, -1, -0.5, 0, 0.5, 1, 2, 3, 4, 5, 6),
-    labels = c("-6", "-5", "-4", "-3", "-2", "-1", "-0.5", "0", "+0.5", "+1", "+2", "+3", "+4", "+5", "+6"),
+    breaks = c(-6, -4, -2, 0, 2, 4, 6),
+    labels = c("-6", "-4", "-2", "0", "+2", "+4", "+6"),
     too_far = 0.04,
     barheight = 34,
     barwidth = 1.0,
-    legend_text_size = 8,
+    legend_text_size = interaction_sizes$legend_text,
+    legend_title_size = interaction_sizes$legend_title,
+    axis_title_size = interaction_sizes$axis_title,
+    axis_text_size = interaction_sizes$axis_text,
+    base_size = interaction_sizes$axis_title,
     legend_key_height_cm = 1.4
   )
   ggsave(file.path(fig_dir, "interaction_wind_sun_30min.png"), p_inter_binned, width = 7, height = 6, dpi = 300, bg = "white")
@@ -730,10 +737,12 @@ res_df <- tibble(
 
 # Base plots saved via png() to avoid device issues
 png(file.path(fig_dir, "acf_30min.png"), width = 900, height = 600)
+acf_cex <- acf_cex_like_reference(7, 0.70)
+par(cex.lab = acf_cex$lab, cex.axis = acf_cex$axis, cex.main = acf_cex$lab, mar = c(5, 5, 2, 2))
 acf(res_df$resid, main = "ACF of normalized residuals")
 dev.off()
 png(here("figures", "acf_30min.png"), width = 7, height = 5, units = "in", res = 600)
-par(cex.lab = 1.2, cex.axis = 1.0, cex.main = 1.2, mar = c(5, 5, 2, 2))
+par(cex.lab = acf_cex$lab, cex.axis = acf_cex$axis, cex.main = acf_cex$lab, mar = c(5, 5, 2, 2))
 acf(res_df$resid, main = "", xlab = "Lag", ylab = "Autocorrelation")
 dev.off()
 
@@ -741,19 +750,21 @@ png(file.path(fig_dir, "diag_pacf.png"), width = 900, height = 600)
 pacf(res_df$resid, main = "PACF of normalized residuals")
 dev.off()
 
+diagnostic_theme <- theme_like_reference(9, 0.80)
+
 # Combined 1x2 diagnostic panel: Q-Q plot and Residuals vs Fitted
 diag_scatter <- ggplot(res_df, aes(fitted, resid)) +
   geom_point(alpha = 0.25, size = 0.8, color = "#4d4d4d") +
   geom_smooth(se = FALSE, color = "#2c7fb8", linewidth = 0.8, method = "loess", span = 0.8) +
   geom_hline(yintercept = 0, color = "gray65") +
   labs(x = "Fitted values", y = "Standardized residuals") +
-  theme_minimal()
+  diagnostic_theme
 
 diag_qq <- ggplot(res_df, aes(sample = resid)) +
   stat_qq(alpha = 0.25, size = 0.8, color = "#4d4d4d") +
   stat_qq_line(color = "#2c7fb8", linewidth = 0.8) +
   labs(x = "Theoretical quantiles", y = "Sample quantiles") +
-  theme_minimal()
+  diagnostic_theme
 
 diag_1x2 <- wrap_plots(diag_qq, diag_scatter, nrow = 1, ncol = 2)
 ggsave(file.path(fig_dir, "diagnostics_30min.png"), diag_1x2, width = 12, height = 5, dpi = 300, bg = "white")
