@@ -26,6 +26,8 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 
 `linear_regression_figures.R` regenerates the manuscript figure `figures/wind_linear_combined.png` and writes `analysis/outputs/linear_regression/linear_regression_summary.csv`.
 
+`wind_at_clusters_histogram.R` regenerates the manuscript figure `figures/wind_at_clusters_histogram.png` and writes `analysis/outputs/wind_at_clusters/wind_at_clusters_summary.csv`. The figure uses current 30-minute paired rows where butterflies are present at time `t`, with 0.25 m/s bins.
+
 `thirty_minute_gamm_analysis.R` refits the 52 30-minute GAMM candidates using the same random-effects structure as the publication figure script, writes model-selection outputs to `analysis/outputs/30_minute`, and regenerates `figures/partial_effects_30min.png`, `figures/interaction_wind_sun_30min.png`, `figures/diagnostics_30min.png`, and `figures/acf_30min.png`.
 
 `threshold_wind_disruption_analysis.R` refits the 52 threshold GAMM candidates using the same random-effects structure as the publication figure script, writes model-selection outputs to `analysis/outputs/threshold`, and regenerates `analysis/outputs/threshold/figures/threshold_interaction_wind_sun.png`. This is a provenance figure, not a manuscript figure unless `manuscript.tex` includes it.
@@ -38,8 +40,10 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 
 ## Known Review Points
 
+Threshold line policy. Red 2 m/s dashed lines are omitted from wind-light interaction plots and other figures where the manuscript has moved beyond the threshold hypothesis. They are retained in figures that directly test or critique the Disruptive Wind Hypothesis when the threshold line is part of the evidence, including `figures/wind_at_clusters_histogram.png`.
+
 The linear regression figure and manuscript use the current Next Day Window regression on maximum BI change. This reports beta 7.57, SE 5.76, p 0.192, r 0.131, and R2 0.017 for n 101. The older 95th percentile response remains in `analysis/outputs/linear_regression/linear_regression_summary.csv` for provenance.
 
-The figure-generation scripts omit the red 2 m/s threshold line by design, and the manuscript captions now match the figures.
+The wind-light interaction figure-generation scripts omit the red 2 m/s threshold line by design, and the manuscript captions now match those figures.
 
 The descriptive statistics script shows that the peak unique-observation hour is 14:00 with 202 images. The peak paired time t row count is 16:00 with 196 rows.

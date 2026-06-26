@@ -10,7 +10,8 @@
 #   - Y-axis: "Change in Butterfly Index (ΔBI)" on scatter plots
 #   - Partial effect labels: "Partial effect on ΔBI"
 #   - Terminology: BI, Delta BI, and Next Day Window
-#   - 2 m/s threshold dashed lines removed (configurable)
+#   - 2 m/s threshold dashed lines removed from wind-light interaction plots
+#   - 2 m/s threshold dashed line retained in wind-at-clusters histogram
 #   - File naming: semantic names matching manuscript labels
 # ============================================================================
 
@@ -57,7 +58,7 @@ cfg <- list(
   col_time = "#79a44c",
   col_temp = "#b86e7e",
 
-  # Show 2 m/s threshold line? (Francis wants it removed)
+  # Show 2 m/s threshold line on wind-light interaction plots?
   show_threshold_line = FALSE,
 
   # Interaction plot settings
@@ -287,6 +288,42 @@ save_fig(
   cfg$combined_scatter_w,
   cfg$combined_scatter_h
 )
+
+# ============================================================================
+# Wind-at-clusters histogram
+# ============================================================================
+cluster_wind_data <- monarch_data %>%
+  filter(!is.na(max_gust), !is.na(total_butterflies_t), total_butterflies_t > 0)
+
+wind_at_clusters_histogram <- ggplot(cluster_wind_data, aes(x = max_gust)) +
+  geom_histogram(
+    binwidth = 0.25,
+    boundary = 0,
+    fill = "steelblue",
+    color = "white",
+    linewidth = 0.25
+  ) +
+  geom_vline(xintercept = 2, color = "#c23b3b", linetype = "dashed", linewidth = 0.8) +
+  annotate(
+    "text",
+    x = 2.15,
+    y = Inf,
+    label = "2 m/s",
+    hjust = 0,
+    vjust = 1.3,
+    color = "#c23b3b",
+    size = 3.5
+  ) +
+  scale_x_continuous(
+    limits = c(0, ceiling(max(cluster_wind_data$max_gust, na.rm = TRUE))),
+    breaks = seq(0, ceiling(max(cluster_wind_data$max_gust, na.rm = TRUE)), by = 2),
+    expand = expansion(mult = c(0, 0.02))
+  ) +
+  labs(x = "Maximum wind gust speed (m/s)", y = "Frequency") +
+  make_pub_theme(6.5) +
+  theme(panel.grid.minor = element_blank())
+
+save_fig("wind_at_clusters_histogram.png", wind_at_clusters_histogram, 6.5, 4.0)
 
 # ============================================================================
 # Partial effects, 30-minute M50, 1x3 panel
