@@ -1,0 +1,2 @@
+n_paired_rows,minimum_max_gust,first_quartile_max_gust,median_max_gust,mean_max_gust,third_quartile_max_gust,maximum_max_gust,n_at_or_above_2ms,percent_at_or_above_2ms
+1856,0,1.3,2.2,2.201939655172415,3,12.4,1074,57.866379310344826
