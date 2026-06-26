@@ -30,6 +30,19 @@ The main source of work is GitHub Issues. A session usually starts with one GitH
 
 Always fetch the original GitHub issue before doing the work. Read the full issue body and all issue comments because Kyle may leave extra context there after the prompt was generated. Treat the GitHub issue as the body of work, and treat this `AGENTS.md` file as the workflow context.
 
+This repo uses the GitHub Project `manuscript revisions` at <https://github.com/users/kylenessen/projects/4>. When an agent actually picks up an issue for work, mark the project item as `In Progress` before manuscript inspection, branch creation, or file edits. Do not mark an issue `In Progress` just because you are triaging it. The project status is a coordination signal. It does not replace issue state, issue labels, comments, or pull request status.
+
+Use the project status field, not a GitHub issue label, for this handoff. The current project id is `PVT_kwHOAjiDx84Bbt9i`, the `Status` field id is `PVTSSF_lAHOAjiDx84Bbt9izhWcgvQ`, and the `In Progress` option id is `47fc9ee4`. Query these again if the project is replaced or the command fails.
+
+```sh
+gh project item-list 4 --owner kylenessen --limit 100 --format json
+gh project item-edit --project-id PVT_kwHOAjiDx84Bbt9i --id <project-item-id> --field-id PVTSSF_lAHOAjiDx84Bbt9izhWcgvQ --single-select-option-id 47fc9ee4
+```
+
+If the issue is not already in the project, add it first with `gh project item-add 4 --owner kylenessen --url <issue-url>`. If `gh` lacks project access, run `gh auth refresh --hostname github.com -s project` and have Kyle complete the browser confirmation.
+
+When work is finished, set the project item to `Done` only after the issue is closed, the closing pull request is merged, or Kyle explicitly says the issue should be considered done. Leave it `In Progress` while a discrepancy report is awaiting approval, while a pull request is open, or while follow-up changes remain.
+
 Use the issue to identify the manuscript section, analysis output, figure, table, or workflow to inspect. If the issue points to reviewed Word text, read the relevant section in the Word document first. Inspect the accepted text, tracked changes, and open comments. Use tools that preserve enough Word document structure to see comments and revisions.
 
 Then read the corresponding LaTeX section. Compare it against the Word document. Identify wording differences, missing insertions, removed text that still appears in LaTeX, unresolved comments, formatting issues that affect meaning, citation differences, figure or table reference differences, and any places where the section boundary is unclear.
