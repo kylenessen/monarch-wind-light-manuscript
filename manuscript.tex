@@ -183,7 +183,7 @@ To specifically test for threshold effects of the Disruptive Wind Hypothesis' 2~
 
 \subsubsection{Model Validation}
 
-Model assumptions were verified through standard residual diagnostics including examination of residual distributions, fitted versus residual plots, and quantile-quantile plots. Convergence was confirmed for all candidate models in both the continuous and threshold analyses. Model performance and predictor significance were evaluated through AIC comparison, with models differing by less than 2 AIC units considered equivalent.
+Model assumptions were verified through standard residual diagnostics including examination of residual distributions, fitted versus residual plots, and quantile-quantile plots. Convergence was confirmed for all candidate models in both the continuous and threshold analyses. Model performance and predictor significance were evaluated through AIC comparison, with models differing by less than 2 AIC units considered equivalent. For close comparisons among models with different fitted degrees of freedom, we also inspected log-likelihoods and parameter counts to evaluate whether additional terms improved fit enough to justify added complexity.
 
 \subsubsection{Statistical Power Analysis}
 
@@ -256,17 +256,20 @@ Model selection via AIC identified the decisively best-fit model (M50), capturin
 \label{tab:model_selection_30min}
 \centering
 \small
-\begin{tabular}{llrrr}
+\begin{tabular}{llrrrrr}
 \toprule
-\textbf{Model} & \textbf{Terms} & \textbf{AIC} & \textbf{$\Delta$AIC} & \textbf{Weight} \\
+\textbf{Model} & \textbf{Terms} & \textbf{$K$} & \textbf{logLik} & \textbf{AIC} & \textbf{$\Delta$AIC} & \textbf{Weight} \\
 \midrule
-M50 & Prev.\ count, Temp., Time, ti(Wind, Sun) & 8078.03 & 0.00 & 0.86 \\
-M23 & Prev.\ count, Temp., Sun, Time & 8081.85 & 3.82 & 0.13 \\
-M22 & Prev.\ count, Temp.\ (linear), Sun, Time & 8086.64 & 8.62 & 0.01 \\
-M24 & Prev.\ count, Wind, Temp., Sun, Time & 8088.05 & 10.02 & 0.01 \\
-M52 & Temp., Time, ti(Wind, Sun) & 8096.72 & 18.69 & 0.00 \\
+M50 & Prev.\ count, Temp., Time, ti(Wind, Sun) & 15 & $-$4024.01 & 8078.03 & 0.00 & 0.86 \\
+M23 & Prev.\ count, Temp., Sun, Time & 14 & $-$4026.92 & 8081.85 & 3.82 & 0.13 \\
+M22 & Prev.\ count, Temp.\ (linear), Sun, Time & 13 & $-$4030.32 & 8086.64 & 8.62 & 0.01 \\
+M24 & Prev.\ count, Wind, Temp., Sun, Time & 16 & $-$4028.02 & 8088.05 & 10.02 & 0.01 \\
+M52 & Temp., Time, ti(Wind, Sun) & 13 & $-$4035.36 & 8096.72 & 18.69 & 0.00 \\
 \bottomrule
 \end{tabular}
+\begin{flushleft}
+\footnotesize Note. $K$ is the fitted parameter count used in the information criterion.
+\end{flushleft}
 \end{table}
 
 \subsubsection{Analysis of Best Fit Model}
@@ -395,17 +398,20 @@ Model selection via AICc identified the best-fit model (M32) as capturing 85\% o
 \label{tab:nextday_model_selection}
 \centering
 \small
-\begin{tabular}{llrrr}
+\begin{tabular}{llrrrrr}
 \toprule
-\textbf{Model} & \textbf{Terms} & \textbf{AICc} & \textbf{$\Delta$AICc} & \textbf{Weight} \\
+\textbf{Model} & \textbf{Terms} & \textbf{$K$} & \textbf{logLik} & \textbf{AICc} & \textbf{$\Delta$AICc} & \textbf{Weight} \\
 \midrule
-M32 & ti(Wind gust, Cum.\ sun) & 648.85 & 0.00 & 0.85 \\
-M52 & Wind, Sun, ti(Wind, Sun) & 654.45 & 5.60 & 0.05 \\
-M20 & ti(Min.\ temp., Cum.\ sun) & 656.77 & 7.92 & 0.02 \\
-M46 & Max.\ temp., Sun, ti(Max.\ temp., Sun) & 657.70 & 8.85 & 0.01 \\
-M30 & ti(Temp.\ at prev.\ max, Cum.\ sun) & 657.90 & 9.06 & 0.01 \\
+M32 & ti(Wind gust, Cum.\ sun) & 9 & $-$314.38 & 648.85 & 0.00 & 0.85 \\
+M52 & Wind, Sun, ti(Wind, Sun) & 13 & $-$312.00 & 654.45 & 5.60 & 0.05 \\
+M20 & ti(Min.\ temp., Cum.\ sun) & 9 & $-$318.34 & 656.77 & 7.92 & 0.02 \\
+M46 & Max.\ temp., Sun, ti(Max.\ temp., Sun) & 13 & $-$313.63 & 657.70 & 8.85 & 0.01 \\
+M30 & ti(Temp.\ at prev.\ max, Cum.\ sun) & 9 & $-$318.91 & 657.90 & 9.06 & 0.01 \\
 \bottomrule
 \end{tabular}
+\begin{flushleft}
+\footnotesize Note. $K$ is the fitted parameter count used in the information criterion.
+\end{flushleft}
 \end{table}
 
 \subsubsection{Analysis of Best Fit Model}
@@ -472,18 +478,21 @@ To assess the robustness of our Next Day Window and site fidelity findings, we c
 \caption{Top models from 24-hour robustness analysis.}
 \label{tab:24hr_model_selection}
 \centering
-\small
-\begin{tabular}{llrrrr}
+\footnotesize
+\begin{tabular}{llrrrrrr}
 \toprule
-\textbf{Model} & \textbf{Description} & \textbf{AICc} & \textbf{$\Delta$AICc} & \textbf{Weight} & \textbf{adj.\ $R^{2}$} \\
+\textbf{Model} & \textbf{Description} & \textbf{$K$} & \textbf{logLik} & \textbf{AICc} & \textbf{$\Delta$AICc} & \textbf{Weight} & \textbf{adj.\ $R^{2}$} \\
 \midrule
-M31 & Wind $\times$ sun exposure (smooth) & 636.3 & 0.0 & 0.51 & 0.235 \\
-M23 & Temperature $\times$ wind (smooth) & 639.9 & 3.6 & 0.08 & -- \\
-M29 & Temperature $\times$ sun exposure (smooth) & 640.8 & 4.4 & 0.06 & -- \\
-M19 & Min.\ temp.\ $\times$ sun exposure (smooth) & 641.1 & 4.8 & 0.05 & -- \\
-M51 & Wind + sun + wind$\times$sun (smooth) & 641.7 & 5.4 & 0.03 & -- \\
+M31 & Wind $\times$ sun exposure (smooth) & 9 & $-$308.09 & 636.3 & 0.0 & 0.51 & 0.235 \\
+M23 & Temperature $\times$ wind (smooth) & 9 & $-$309.89 & 639.9 & 3.6 & 0.08 & -- \\
+M29 & Temperature $\times$ sun exposure (smooth) & 9 & $-$310.31 & 640.8 & 4.4 & 0.06 & -- \\
+M19 & Min.\ temp.\ $\times$ sun exposure (smooth) & 9 & $-$310.48 & 641.1 & 4.8 & 0.05 & -- \\
+M51 & Wind + sun + wind$\times$sun (smooth) & 13 & $-$305.59 & 641.7 & 5.4 & 0.03 & -- \\
 \bottomrule
 \end{tabular}
+\begin{flushleft}
+\footnotesize Note. $K$ is the fitted parameter count used in the information criterion.
+\end{flushleft}
 \end{table}
 
 The 24-hour robustness analysis revealed qualitatively similar interaction patterns to the Next Day Window/site fidelity analysis (though with attenuated effect magnitudes) (Figure~\ref{fig:interaction_wind_sun_24hr}). For example, under low wind gust speeds around 2~m/s and low butterfly counts ($<$60--70) in direct sun, BI increased the following day. And under low wind gust speeds ($\sim$2~m/s), and higher butterfly counts in sun ($>$100) BI decreased the following day (a reversal of pattern). And at intermediate to high values of both wind gust speed and butterfly sun exposure, cluster sizes (BI) increased the next day. The convergent model selection and consistent interaction patterns across standardized (24hr) and variable scales strengthen confidence in the tested environmental interrelationships. This is also consistent with window duration showing no significant relationship with maximum $\Delta$BI (Figure~\ref{fig:partial_effects_nextday}) in the Next Day Window analysis. Pattern interpretation requires similar caution near data boundaries and regions with sparse observations.
