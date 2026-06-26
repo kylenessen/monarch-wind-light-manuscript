@@ -1,4 +1,4 @@
-# Results Analysis Provenance
+# Results Directory
 
 This directory contains the analysis scripts and outputs used by the Results section of `manuscript.tex`.
 
