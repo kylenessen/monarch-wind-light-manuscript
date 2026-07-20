@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%	MDPI class for LaTeX files	 13 March 2026
+%%%%	MDPI class for LaTeX files	 23 June 2026
 %% %%	For any information please send an e-mail to:
 %% %%		latex@mdpi.com
 %% %%
@@ -24,7 +24,7 @@
 
 %% IDENTIFICATION
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{Definitions/mdpi}[13/03/2026 MDPI paper class]
+\ProvidesClass{Definitions/mdpi}[23/06/2026 MDPI paper class]
 
  %% PRELIMINARY DECLARATIONS
 \LoadClass[10pt,a4paper]{article}
@@ -33,7 +33,7 @@
 \RequirePackage{calc}
 \RequirePackage{indentfirst}
 \RequirePackage{fancyhdr}
-\RequirePackage{graphicx,epstopdf}
+\RequirePackage{graphicx}
 \RequirePackage{lastpage}
 \RequirePackage{ifthen}
 \RequirePackage{float}
@@ -296,17 +296,20 @@
 		\OR \equal{\@journal}{education}     % Transfer to APA type
 		\OR \equal{\@journal}{ejihpe}           % Transfer to APA type
 		\OR \equal{\@journal}{famsci}           % Transfer to APA type
-		\OR \equal{\@journal}{games}          % Transfer to APA type
+		\OR \equal{\@journal}{games}           % Transfer to APA type
 		\OR \equal{\@journal}{humans}         % Transfer to APA type
 		\OR \equal{\@journal}{ijcs}               % Transfer to APA type
-		\OR \equal{\@journal}{ijfs}               % Transfer to APA type
+		\OR \equal{\@journal}{ijfs}                % Transfer to APA type
+		\OR \equal{\@journal}{investment}     % New APA Journal
+		\OR \equal{\@journal}{fclam}             % New APA Journal
 		\OR \equal{\@journal}{jintelligence}   % Transfer to APA type from 19 Dec. 2025
 		\OR \equal{\@journal}{journalmedia} % Transfer to APA type
 		\OR \equal{\@journal}{jrfm}              % Transfer to APA type
 		\OR \equal{\@journal}{jsam}             % New APA Journal
 		\OR \equal{\@journal}{languages}      % Transfer to APA type
+		\OR \equal{\@journal}{opermanag}      % New APA Journal
 		\OR \equal{\@journal}{peacestud}      % New APA Journal
-		\OR \equal{\@journal}{projmanag}      % New APA Journal
+		\OR \equal{\@journal}{pmh}                 % New APA Journal
 		\OR \equal{\@journal}{psycholint}      % Transfer to APA type
 		\OR \equal{\@journal}{publications}   % Transfer to APA type
 		\OR \equal{\@journal}{tourismhosp}   % Transfer to APA type
@@ -322,7 +325,6 @@
 		\OR \equal{\@journal}{genealogy}
 		\OR \equal{\@journal}{histories}
 		\OR \equal{\@journal}{humanities}
-		\OR \equal{\@journal}{jintelligence}
 		\OR \equal{\@journal}{laws}
 		\OR \equal{\@journal}{literature}
 		\OR \equal{\@journal}{religions}
@@ -341,13 +343,17 @@
 		\OR \equal{\@journal}{games}          
 		\OR \equal{\@journal}{humans}  
 		\OR \equal{\@journal}{ijcs}                      
-		\OR \equal{\@journal}{ijfs}              
+		\OR \equal{\@journal}{ijfs}
+		\OR \equal{\@journal}{investment}
+		\OR \equal{\@journal}{fclam}
+		\OR \equal{\@journal}{jintelligence}
 		\OR \equal{\@journal}{journalmedia}
 		\OR \equal{\@journal}{jrfm}             
 		\OR \equal{\@journal}{jsam}
 		\OR \equal{\@journal}{languages}
+		\OR \equal{\@journal}{opermanag}
 		\OR \equal{\@journal}{peacestud}
-		\OR \equal{\@journal}{projmanag}
+		\OR \equal{\@journal}{pmh}
 		\OR \equal{\@journal}{psycholint}      
 		\OR \equal{\@journal}{publications}   
 		\OR \equal{\@journal}{tourismhosp}   
