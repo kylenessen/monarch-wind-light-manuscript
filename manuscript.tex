@@ -114,7 +114,7 @@ Vandenberg Space Force Base (VSFB, 34.7398$^{\circ}$N, 120.5725$^{\circ}$W) in S
 
 \subsection{Monitoring Strategy}
 
-Spring Canyon (34.6315$^{\circ}$N, 120.6182$^{\circ}$W) is the most historically reliable and highest overwintering abundance site on VSFB. It is approximately 2.0-hectares of mature blue gum eucalyptus (BGE) ranging to 40 meters in height. A perennial creek runs through the grove, creating a riparian corridor supporting heterogeneous canopy structure, variable tree spacing, and diverse understory vegetation. Surf Road, an infrequently used but paved access road, bisects both the creek and forest canopy. Although only recently (2022) documented, UDMH consistently ranks among the base's highest population sites. UDMH (34.6719$^{\circ}$N, 120.5950$^{\circ}$W), comprises 5.1-hectares of BGE windrows with an understory of scattered low shrubs.
+Spring Canyon (SC; 34.6315$^{\circ}$N, 120.6182$^{\circ}$W) is the most historically reliable and highest overwintering abundance site on VSFB. It is approximately 2.0-hectares of mature blue gum eucalyptus (BGE) ranging to 40 meters in height. A perennial creek runs through the grove, creating a riparian corridor supporting heterogeneous canopy structure, variable tree spacing, and diverse understory vegetation. Surf Road, an infrequently used but paved access road, bisects both the creek and forest canopy. Although only recently (2022) documented, UDMH consistently ranks among the base's highest population sites. UDMH (34.6719$^{\circ}$N, 120.5950$^{\circ}$W), comprises 5.1-hectares of BGE windrows with an understory of scattered low shrubs.
 % Zach Ancona: I think UDMH needs to be defined here before you start using acronyms for it as it is the first mention, unless I missed it.
 In the 2023--2024 overwintering season two sites were sampled given that monarchs were present. All other sites on base were excluded from analysis due to a lack of monarch butterflies. Unfortunately, the 2024--2025 season coincided with historically low monarch abundance throughout California \cite{xercessocietyWesternMonarchThanksgiving2025}, thus no data are presented for 2024--2025.
 
@@ -164,7 +164,7 @@ Predictor variables were selected to test specific hypotheses while avoiding mul
 
 \subsubsection{Model Framework}
 %Zach Ancona: Again here, avoid using acronyms if not previously defined. If you only mention it once, then just use the full name "REML"
-To test for environmental effects on the response variable ($\Delta$BI), the analyses implemented generalized additive mixed models (GAMMs) through the mgcv package in R. Model selection compared 52 named candidate models using AIC. The candidate set included 48 base models organized into two frameworks, 24 models that included previous BI and 24 models that excluded previous BI. Within each framework, models included baseline terms, single predictors, additive combinations, linear two-way and three-way interactions among the wind metric, average temperature, direct-sun BI, and smooth terms for nonlinear relationships. Four additional candidates explicitly tested tensor-product interactions between the wind metric and direct-sun BI, with the same four structures repeated in the threshold analysis after replacing maximum wind gust with minutes at or above 2~m/s. Random effects accounted for variation at three hierarchical levels: deployment location, observer, and deployment-day. Temporal autocorrelation within days was addressed using a first-order autoregressive (AR1) correlation structure grouped by deployment-day. All models were fitted using REML estimation.
+To test for environmental effects on the response variable ($\Delta$BI), the analyses implemented generalized additive mixed models (GAMMs) through the mgcv package in R. Model selection compared 52 named candidate models using AIC. The candidate set included 48 base models organized into two frameworks, 24 models that included previous BI and 24 models that excluded previous BI. Within each framework, models included baseline terms, single predictors, additive combinations, linear two-way and three-way interactions among the wind metric, average temperature, direct-sun BI, and smooth terms for nonlinear relationships. Four additional candidates explicitly tested tensor-product interactions between the wind metric and direct-sun BI, with the same four structures repeated in the threshold analysis after replacing maximum wind gust with minutes at or above 2~m/s. Random effects accounted for variation at three hierarchical levels: deployment location, observer, and deployment-day. Temporal autocorrelation within days was addressed using a first-order autoregressive (AR1) correlation structure grouped by deployment-day. All models were fitted using restricted maximum likelihood (REML) estimation.
 
 % Zach Ancona: DWH to WDH "Distruptive Wind Hypothesis
 % Zach Ancona: I feel like the colon is used a lot when it may not be needed. Sometimes I like it when you are listing multiple examples after, but here I think it is not necessary. Try to reformat this thought into a single sentence without using a colon. "tested predictor:"
@@ -191,7 +191,7 @@ Model selection followed the same information-theoretic approach as the 30-minut
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{figures/temporal_windows.png}
-\caption{Temporal analysis windows for monarch butterfly monitoring. The figure illustrates two complementary approaches: (1) 30-minute lag analysis comparing consecutive observation intervals to capture immediate responses to environmental changes, and (2) Next Day Window analysis spanning from the previous day's maximum BI to the current day's final observation (mean duration $\sim$29.6 hours). Camera observations occur at 30-minute intervals during daylight hours only. Background shading indicates day-night cycles with transitions at sunrise and sunset.}
+\caption{Temporal analysis windows for monarch butterfly monitoring. BI is butterfly index. The figure illustrates two complementary approaches: (1) 30-minute lag analysis comparing consecutive observation intervals to capture immediate responses to environmental changes, and (2) Next Day Window analysis spanning from the previous day's maximum BI to the current day's final observation (mean duration $\sim$29.6 hours). Camera observations occur at 30-minute intervals during daylight hours only. Background shading indicates day-night cycles with transitions at sunrise and sunset.}
 \label{fig:temporal_windows}
 \end{figure}
 
@@ -211,7 +211,7 @@ Collectively, butterfly abundance ranged from 0 to 950 individuals per image, wi
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.95\textwidth]{figures/descriptive_bi.png}
-\caption{Distribution of monarch abundance and 30-minute cluster change. (A) Histogram of BI across 2,028 unique observation images. (B) Mean 30-minute $\Delta$BI by hour of the ending observation, based on available 1,894 paired intervals. Error bars show $\pm$1 SE across deployment-day hourly means.}
+\caption{Distribution of monarch abundance and 30-minute cluster change. BI is butterfly index. (A) Histogram of BI across 2,028 unique observation images. (B) Mean 30-minute $\Delta$BI by hour of the ending observation, based on available 1,894 paired intervals. Error bars show $\pm$1 SE across deployment-day hourly means.}
 \label{fig:descriptive_bi}
 \end{figure}
 
@@ -224,7 +224,7 @@ These null linear regression relationships indicated that the Wind Disruption Hy
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.95\textwidth]{figures/wind_linear_combined.png}
-\caption{Maximum wind speed vs. $\Delta$BI across analytical windows. (A) Linear regression of maximum wind speed and $\Delta$BI at 30-minute intervals. Each point represents a paired observation ($n$ = 1,894) of abundance (or $\Delta$BI) over a 30-minute interval. Linear regression showed no significant relationship ($\beta$ = 1.19, SE = 0.66, $p$ = 0.073, $r$ = 0.041, $R^{2}$ = 0.002). (B) Linear regression of maximum wind speed and Next Day Window time interval which is the $\Delta$BI from maximum BI to the next day's sunset BI (see methods). Each point represents a paired observation ($n$ = 101) of abundance (or $\Delta$BI) over the Next Day Window interval. Linear regression showed no significant relationship ($\beta$ = 7.57, SE = 5.76, $p$ = 0.192, $r$ = 0.131, $R^{2}$ = 0.017). Positive values denote an increase in abundance, negative values denote a decrease, and blue regression lines are shown for reference despite non-significance.}
+\caption{Maximum wind speed vs. $\Delta$BI across analytical windows. BI is butterfly index. (A) Linear regression of maximum wind speed and $\Delta$BI at 30-minute intervals. Each point represents a paired observation ($n$ = 1,894) of abundance (or $\Delta$BI) over a 30-minute interval. Linear regression showed no significant relationship ($\beta$ = 1.19, SE = 0.66, $p$ = 0.073, $r$ = 0.041, $R^{2}$ = 0.002). (B) Linear regression of maximum wind speed and Next Day Window time interval which is the $\Delta$BI from maximum BI to the next day's sunset BI (see methods). Each point represents a paired observation ($n$ = 101) of abundance (or $\Delta$BI) over the Next Day Window interval. Linear regression showed no significant relationship ($\beta$ = 7.57, SE = 5.76, $p$ = 0.192, $r$ = 0.131, $R^{2}$ = 0.017). Positive values denote an increase in abundance, negative values denote a decrease, and blue regression lines are shown for reference despite non-significance.}
 \label{fig:wind_linear}
 \end{figure}
 
@@ -260,7 +260,7 @@ The best-fit model (M50) from the 30-minute wind disruption analysis predicted $
 
 %Zach Ancona: Table also not displaying, can't comment
 \begin{table}[H]
-\caption{Summary of best-fit 30-minute wind disruption model (M50). The response was cube-root transformed $\Delta$BI. edf is estimated degrees of freedom.}
+\caption{Summary of best-fit 30-minute wind disruption model (M50). The response was cube-root transformed $\Delta$BI. BI is butterfly index. edf is estimated degrees of freedom.}
 \label{tab:m50_summary}
 \centering
 \small
@@ -283,7 +283,7 @@ Partial effects for the smooth terms, which represent the isolated influence of 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{figures/partial_effects_30min.png}
-\caption{Partial effects for best fit wind disruption model (30-minute window). Partial effects of environmental predictors on $\Delta$BI from the best-fit GAMM model (M50) in the 30-minute wind disruption analysis. Partial effects show how each environmental factor influences butterfly abundance while holding all other variables constant, thus isolating each predictor's individual contribution to the response. Shaded regions represent 95\% confidence intervals. The blue vertical shading in the right panel shows the range of temperatures over which the flight threshold occurs.}
+\caption{Partial effects for best fit wind disruption model (30-minute window). BI is butterfly index. Partial effects of environmental predictors on $\Delta$BI from the best-fit GAMM model (M50) in the 30-minute wind disruption analysis. Partial effects show how each environmental factor influences butterfly abundance while holding all other variables constant, thus isolating each predictor's individual contribution to the response. Shaded regions represent 95\% confidence intervals. The blue vertical shading in the right panel shows the range of temperatures over which the flight threshold occurs.}
 \label{fig:partial_effects_30min}
 \end{figure}
 %Zach Ancona: With the way the first part of this sentence is strucutred and the colon, I expected to see something about "in sun" after the colon. I think if you aren't explaining anything about the in sun conditions, then get rid of the colon and just finish the sentence for wind without the colon. The colon to me indicated that you planned on listing both sun and wind explanations."At higher counts of butterflies in sun (e.g., $>$100) and considering wind: in wind $<$1~m/s clusters increase, then decrease in winds between 2 and 3~m/s, and then the pattern reverses and cluster sizes increase when wind speeds exceeded 3~m/s."
@@ -395,7 +395,7 @@ M30 & ti(temperature at previous maximum BI, cumulative butterflies in direct su
 The Next Day Window/site fidelity model explained 39.7\% of the variance in maximum BI changes (adjusted $R^{2}$ = 0.397, $n$ = 96), representing a more than six-fold improvement in explanatory power compared to the 30-minute continuous (adjusted $R^{2}$ = 0.064) and threshold (adjusted $R^{2}$ = 0.061) analyses. Analysis revealed significant effects on $\Delta$BI for the previous day's maximum BI ($F$ = 24.88, $p < 0.001$) and the wind-sunlight interaction ($F$ = 4.10, $p < 0.001$). In addition, the partial effects of the previous day's maximum BI showed a significant negative linear relationship (Table~\ref{tab:nextday_model_summary}). Meaning that larger clusters experienced proportionally greater losses between days (as found in the 30-minute analysis). Window duration showed no significant relationship.
 
 \begin{table}[H]
-\caption{Summary of best-fit model for the Next Day Window and fidelity analysis (M32). The response was signed square-root transformed maximum $\Delta$BI. edf is estimated degrees of freedom.}
+\caption{Summary of best-fit model for the Next Day Window and fidelity analysis (M32). The response was signed square-root transformed maximum $\Delta$BI. BI is butterfly index. edf is estimated degrees of freedom.}
 \label{tab:nextday_model_summary}
 \centering
 \small
@@ -415,7 +415,7 @@ Maximum wind gust $\times$ cumulative butterflies in direct sun & 6.68 & 4.10 & 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{figures/partial_effects_nextday.png}
-\caption{Partial effects of control variables in the best fit Next Day Window model. Partial effects of control variables on Next Day Window time interval on monarch butterfly maximum $\Delta$BI from the best-fit GAMM model (M32). Partial effects isolate how each variable influences BI changes while holding other factors constant at their average values. Left panel shows the strong negative effect of previous-day maximum BI. Right panel shows window duration with no significant effect on cluster BI changes. Shaded regions represent 95\% confidence intervals.}
+\caption{Partial effects of control variables in the best fit Next Day Window model. BI is butterfly index. Partial effects of control variables on Next Day Window time interval on monarch butterfly maximum $\Delta$BI from the best-fit GAMM model (M32). Partial effects isolate how each variable influences BI changes while holding other factors constant at their average values. Left panel shows the strong negative effect of previous-day maximum BI. Right panel shows window duration with no significant effect on cluster BI changes. Shaded regions represent 95\% confidence intervals.}
 \label{fig:partial_effects_nextday}
 \end{figure}
 
@@ -424,7 +424,7 @@ In the Next Day Window and site fidelity analysis, the tensor smooth interaction
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{figures/interaction_wind_sun_nextday.png}
-\caption{$\Delta$BI response to interactions of wind and sun exposure (Next Day Window). Tensor smooth interaction between maximum wind gust (m/s) and cumulative butterflies in direct sun on day-to-day cluster size changes ($\Delta$BI). Color gradient indicates partial effect magnitude on square-root transformed scale (red = positive, blue = negative). Black points show observed data distribution. Gray regions indicate areas beyond reliable interpolation range.}
+\caption{$\Delta$BI response to interactions of wind and sun exposure (Next Day Window). BI is butterfly index. Tensor smooth interaction between maximum wind gust (m/s) and cumulative butterflies in direct sun on day-to-day cluster size changes ($\Delta$BI). Color gradient indicates partial effect magnitude on square-root transformed scale (red = positive, blue = negative). Black points show observed data distribution. Gray regions indicate areas beyond reliable interpolation range.}
 \label{fig:interaction_wind_sun_nextday}
 \end{figure}
 
@@ -473,7 +473,7 @@ The 24-hour robustness analysis revealed qualitatively similar interaction patte
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{figures/interaction_wind_sun_24hr.png}
-\caption{$\Delta$BI response to interactions of wind and sun exposure over 24-hours. Tensor smooth interaction between maximum wind gust (m/s) and cumulative butterflies in direct sun on 24-hour cluster size changes ($\Delta$BI). Color gradient indicates partial effect magnitude on square-root transformed scale (red = positive, blue = negative). Black points show observed data distribution. Gray regions indicate areas beyond reliable interpolation range. The interaction pattern mirrors that observed in the Next Day Window analysis, supporting the robustness of identified environmental relationships.}
+\caption{$\Delta$BI response to interactions of wind and sun exposure over 24-hours. BI is butterfly index. Tensor smooth interaction between maximum wind gust (m/s) and cumulative butterflies in direct sun on 24-hour cluster size changes ($\Delta$BI). Color gradient indicates partial effect magnitude on square-root transformed scale (red = positive, blue = negative). Black points show observed data distribution. Gray regions indicate areas beyond reliable interpolation range. The interaction pattern mirrors that observed in the Next Day Window analysis, supporting the robustness of identified environmental relationships.}
 \label{fig:interaction_wind_sun_24hr}
 \end{figure}
 
