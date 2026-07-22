@@ -6,7 +6,7 @@
   margin: (x: 1in, top: 1in, bottom: 1in),
 )
 #set text(font: "New Computer Modern", size: 11pt)
-#set par(justify: true, leading: 0.65em, spacing: 1.0em)
+#set par(justify: true)
 
 22 July 2026
 
@@ -21,15 +21,15 @@ Despite its influence, the wind component of the Microclimate Hypothesis had nev
 
 We found that wind speed alone did not predict changes in cluster size. Wind mattered only under direct sunlight. In the sun, calm conditions drove butterflies from clusters, while moderate winds, well above the 2 m/s threshold, coincided with cluster growth. These results point to thermoregulation, rather than mechanical disruption, as the more likely driver of clustering behavior.
 
-Because our results directly challenge long-held assumptions about how overwintering groves are managed and restored, they carry immediate management consequences. For this reason the manuscript fits the scope of the Special Issue, which highlights advances in monarch biology, conservation, and management from local to continental scales.
+Because our results directly challenge long-held assumptions about how overwintering groves are managed and restored, they carry immediate management consequences. For this reason the manuscript fits the scope of this special issue.
 
 We confirm that neither the manuscript nor any parts of its content are currently under consideration for publication with or published in another journal. All authors have approved the manuscript and agree with its submission to _Insects_.
 
 Thank you for considering our work. We look forward to your response.
 
-#v(0.4em)
 Sincerely,
-#v(0.6em)
+
+#image("Signature.png", width: 1.8in)
 
 Kyle Nessen \
 Corresponding author \
