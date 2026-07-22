@@ -3,10 +3,10 @@
 
 #set page(
   paper: "us-letter",
-  margin: (x: 1in, top: 1in, bottom: 1in),
+  margin: (x: 1in, top: 0.85in, bottom: 0.85in),
 )
 #set text(font: "New Computer Modern", size: 11pt)
-#set par(justify: true, leading: 0.62em, spacing: 0.85em)
+#set par(justify: true, leading: 0.62em, spacing: 0.8em)
 
 // --- Sender ---
 #text(weight: "bold")[Kyle Nessen] \
@@ -15,9 +15,9 @@ California Polytechnic State University \
 San Luis Obispo, CA 93407, USA \
 knessen\@calpoly.edu
 
-#v(0.8em)
+#v(0.55em)
 22 July 2026
-#v(0.8em)
+#v(0.55em)
 
 // --- Recipient ---
 Editor-in-Chief and Editorial Office \
@@ -31,7 +31,7 @@ Dear Editor,
 
 We are pleased to submit our manuscript, "Wind Does Not Disrupt Overwintering Monarch Butterfly Clusters: Direct Empirical Test of a Three-Decade Management Assumption," for consideration in this Special Issue of _Insects_.
 
-Conservation of monarch butterflies in the west largely focuses on managment of overwintering habitat. For over three decades, this management has been principally guided by the Microclimate Hypothesis, which asserts that overwintering butterflies seek specific and narrow abiotic conditions for suitable habitat. Wind has long been considered the most important of these abiotic conditions, where wind speeds exceeding 2 m/s are thought to dislodge monarch butterflies and make habitat unsuitable. Land managers have invested substantial effort to protect the wind sheltering properties of overwintering groves from wind, and this threshold came to shape restoration guidance across California.
+Conservation of monarch butterflies in the west largely focuses on management of overwintering habitat. For over three decades, this management has been principally guided by the Microclimate Hypothesis, which asserts that overwintering butterflies seek specific and narrow abiotic conditions for suitable habitat. Wind has long been considered the most important of these abiotic conditions, where wind speeds exceeding 2 m/s are thought to dislodge monarch butterflies and make habitat unsuitable. Land managers have invested substantial effort to protect the wind-sheltering properties of overwintering groves, and this threshold came to shape restoration guidance across California.
 
 Despite its influence, the wind component of the Microclimate Hypothesis had never been tested directly. Ours is the first study to do so. We deployed cameras and wind sensors at two overwintering sites and tracked cluster size alongside wind conditions across 80 days.
 
@@ -43,9 +43,9 @@ We confirm that neither the manuscript nor any parts of its content are currentl
 
 Thank you for considering our work. We look forward to your response.
 
-#v(0.6em)
+#v(0.5em)
 Sincerely,
-#v(0.8em)
+#v(0.6em)
 
 Kyle Nessen \
 Corresponding author \
