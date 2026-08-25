@@ -1,0 +1,5 @@
+component,term,variance,standard_deviation
+deployment_id,(Intercept),0.5740689,0.7576733
+Observer,(Intercept),0.5740689,0.7576733
+deployment_day,(Intercept),0.0172405,0.1313031
+Residual,Residual,4.0719377,2.0179043

@@ -1,0 +1,10 @@
+M16 figure conditions
+
+Previous BI is held at the sample median of 37 butterflies.
+Temperature values are the 10th percentile, median, and 90th percentile: 10, 14, 19.5 degrees C.
+Direct-sun values represent no visible butterflies in direct sun and the median and 75th percentile among nonzero direct-sun observations: 0, 7, 20 butterflies.
+The wind range ends at the 99th percentile of the observed maximum gust distribution, 6.21 m/s.
+Predictions exclude random effects and are shown on the fitted cube-root response scale.
+Confidence bands represent pointwise 95 percent fixed-effect intervals.
+Raw main-effect coefficients are conditional on zero values of interacting predictors.
+Temperature zero is outside the observed range, so the interaction figures should guide interpretation.
