@@ -28,11 +28,11 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 
 `wind_at_clusters_histogram.R` regenerates the manuscript figure `figures/wind_at_clusters_histogram.png` and writes `analysis/outputs/wind_at_clusters/wind_at_clusters_summary.csv`. The figure uses current 30-minute paired rows where butterflies are present at time `t`, with 0.25 m/s bins.
 
-`thirty_minute_gamm_analysis.R` refits the 52 30-minute GAMM candidates using the same random-effects structure as the publication figure script, writes model-selection outputs to `analysis/outputs/30_minute`, and regenerates `figures/partial_effects_30min.png`, `figures/interaction_wind_sun_30min.png`, `figures/diagnostics_30min.png`, and `figures/acf_30min.png`.
+`thirty_minute_gamm_analysis.R` compares the 50 unique 30-minute GAMM candidates using maximum likelihood, then refits the selected model using restricted maximum likelihood. It preserves the original candidate identifiers after removing duplicate models M20 and M44. The script writes a complete fit audit and model-selection outputs to `analysis/outputs/30_minute`. It regenerates model diagnostics and only generates a wind by direct-sun interaction surface when the selected model contains that tensor interaction.
 
 `threshold_wind_disruption_analysis.R` refits the 52 threshold GAMM candidates using the same random-effects structure as the publication figure script, writes model-selection outputs to `analysis/outputs/threshold`, and regenerates `analysis/outputs/threshold/figures/threshold_interaction_wind_sun.png`. This is a provenance figure, not a manuscript figure unless `manuscript.tex` includes it.
 
-`next_day_window_analysis.R` refits the best Next Day Window model, writes summaries to `analysis/outputs/next_day_window`, and regenerates `figures/partial_effects_nextday.png`, `figures/interaction_wind_sun_nextday.png`, `figures/diagnostics_nextday.png`, and `figures/acf_nextday.png`. The retained full model-selection table is `analysis/outputs/next_day_window/model_comparison_comprehensive.csv`.
+`next_day_window_analysis.R` reconstructs and compares the 74 Next Day Window candidates that were defined in the original analysis. These are M1 through M72 and M77 through M78. It uses maximum likelihood and AICc for comparison, records every fit and convergence warning, and refits the selected model using restricted maximum likelihood. Outputs are written to `analysis/outputs/next_day_window`, including the complete audit in `model_comparison_comprehensive.csv`.
 
 `twenty_four_hour_robustness_analysis.R` refits the 24-hour robustness model, writes summaries to `analysis/outputs/24_hour`, and regenerates `figures/interaction_wind_sun_24hr.png`.
 
