@@ -154,10 +154,6 @@ To specifically test for threshold effects of the Wind Disruption Hypothesis' 2~
 
 Model assumptions were verified through standard residual diagnostics including examination of residual distributions, fitted versus residual plots, and quantile-quantile plots. Convergence was confirmed for all candidate models in both the continuous and threshold analyses. Model performance and predictor significance were evaluated through AIC comparison, with models differing by less than 2 AIC units considered equivalent. For close comparisons among models with different fitted degrees of freedom, we also inspected log-likelihoods and parameter counts to evaluate whether additional terms improved fit enough to justify added complexity.
 
-\subsubsection{Statistical Power Analysis}
-
-We evaluated our statistical ability to detect various wind effect sizes given 1,894 paired observations by conducting a simulation-based power analysis. We simulated 200 datasets from the best-fitting model (which excluded wind effects) and artificially introduced wind effects of known magnitude ranging from 0.05 to 0.20 standard deviations of the response variable. For each effect size, we refitted models including wind terms to determine the proportion of simulations where the artificial effect was detected as statistically significant ($\alpha = 0.05$). This simulation approach accounts for the complexity of our GAMM framework and hierarchical data structure, providing robust estimates of statistical power for detecting wind effects across a range of biologically plausible magnitudes.
-
 \subsubsection{Dynamic Window Analysis}
 The response time expected for changes in the response variable is technically unknown. The Wind Disruption Hypothesis does not address response time(s), but we surmise they should be a function of environmental conditions and butterfly biology. In the analyses outlined above (30-minute), we assumed that the response time could be at that level of resolution (30-minutes) under flight temperature conditions or after shivering. But it could be longer. For example, a response could occur over the course of one day: a daytime disruptive wind event, later followed by a threshold temperature that might support a behavioral response. Or an evening/overnight disruptive wind event might lead to a response the following day. Furthermore, monarchs may make clustering decisions on longer temporal horizons by not responding to immediate environmental conditions. To examine whether day-to-day changes in BI depend on cumulative weather exposure and are not just dependent on changes over a 30-minute interval, we conducted a complementary analysis using dynamic temporal windows. We tested two longer time windows to examine the robustness of our findings based on the 30-minute response window. First, a ``24-hour'' window provided a standardized comparison, extending exactly 24 hours from the previous day's maximum BI (i.e., allowing for the maximum possible response over a fixed time). Second, a biologically aligned ``Next Day Window'' spanning from the previous day's maximum BI to the current day's last observation, approximating functional sunset on the second day when roosting decisions would have a second chance to be finalized. The Next Day Window interval might thus allow for roosting decisions that could not be made the previous evening because of temperatures below flight threshold. This window varied in duration (mean = 29.6 hours) capturing the exposure period of a peak aggregation through two potential opportunities for a subsequent roosting decision.
 
@@ -310,27 +306,6 @@ Temporal autocorrelation analysis revealed minimal residual correlation structur
 To determine whether wind is best characterized as a continuous variable or a binary disruption threshold, we repeated the entire model selection process using ``minutes above 2~m/s'' as the wind predictor. The best threshold model (T50) captured only 55\% of model weight compared to 40\% for a model without any wind term ($\Delta$AIC = 0.62) and showed comparable explanatory power (adjusted $R^{2}$ = 0.061) to the continuous wind model (adjusted $R^{2}$ = 0.064). Therefore, we find that the threshold approach does not improve the characterization of wind effects. While the threshold approach (2~m/s) may not optimally characterize wind effects, the interaction between wind (as a continuous or discrete variable) and solar exposure is a better characterization.
 
 We note that parameter estimation was not the objective of this comparison; rather, hypothesis testing was the objective. Therefore, we do not summarize the interaction partial effects here but present the complete threshold analysis results in Appendix~\ref{app:threshold_models}.
-
-\subsection{Statistical Power to Detect Wind Effects}
-
-Post-hoc power analysis indicates that 1,894 paired observations achieved sufficient statistical power for effect sizes of biological relevance (Table~\ref{tab:power_analysis}).
-
-\begin{table}[H]
-\caption{Statistical power to detect wind effects.}
-\label{tab:power_analysis}
-\centering
-\small
-\begin{tabular}{rrr}
-\toprule
-\textbf{Effect Size (SD units)} & \textbf{Power (Proportion)} & \textbf{Power (\%)} \\
-\midrule
-0.05 & 0.165 & 16.5\% \\
-0.10 & 0.560 & 56\% \\
-0.15 & 0.875 & 87.5\% \\
-0.20 & 0.985 & 98.5\% \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \subsection{Next Day Window and Site Fidelity Analysis}
 
@@ -495,7 +470,7 @@ Several factors shape the interpretation of our findings. First, our data come f
 . The 2024--2025 season saw near-complete absence of monarchs at our study sites, coinciding with the second-lowest overwintering population on record \cite{xercessocietyWesternMonarchThanksgiving2025}. This absence prevented temporal replication but underscored the urgency of understanding overwintering ecology with the data we have.
 
 Second, though we did not observe it, we do not dispute that wind can dislodge butterflies from a cluster. We see at least two conditions under which disruption could be possible or even likely. The Wind Disruption Hypothesis was developed during an era of massive aggregations containing hundreds of thousands of individuals, where many butterflies attached only to other butterflies in multi-layered formations \cite{leongMicroenvironmentalFactorsAssociated1990,browerMonarchButterflyClusters2008}. In contrast, our study observed relatively small clusters where a larger proportion of clustering butterflies could maintain direct contact with eucalyptus substrates. Thus, if substrate attachment provides greater wind resistance than butterfly-to-butterfly attachment, then wind might affect these different clustering configurations differently. It is thus possible that the Wind Disruption Hypothesis may be more accurate under extreme densities as reported by Alonso-Mejia et al.\ \cite{alonso-mejiaInfluenceTemperatureSurface1992}. Those authors report that monarchs can be dislodged by the wind. They also report that monarchs can be dislodged by rain. Freezing conditions can be survived by monarch butterflies, to temperatures as low as $-$7 or $-$8$^{\circ}$C \cite{alonso-mejiaInfluenceTemperatureSurface1992,andersonFreezeprotectionOverwinteringMonarch1996}, respectively. Though if conditions are wet instead of dry, survival at this temperature is reduced by 50 percent \cite{alonso-mejiaInfluenceTemperatureSurface1992}. Also at these temperatures, shivering and then crawling up vegetation will significantly increase survival \cite{andersonFreezeprotectionOverwinteringMonarch1996,mastersMonarchButterflyDanaus1988} as monarchs avoid the lowest temperatures (at substrate level). Like crawling, if monarchs are under dense foliage their body temperature approximates ambient, but with exposure to the night sky body temperature falls in proportion to exposure \cite{andersonFreezeprotectionOverwinteringMonarch1996}. This exposure reduces survival and even more so if wet instead of dry \cite{andersonFreezeprotectionOverwinteringMonarch1996}. Similarly, wind driven convective cooling can reduce survival and even at slow wind speeds \cite{kingsolver_thermoregulation_1983}.
-Finally, our models explained relatively little variance overall (30-minute 6.4\%; Next Day Window 39.7\%), reflecting both the complexity of butterfly behavior and our focus on testing specific hypotheses rather than comprehensively explaining movement patterns. Regardless, the Wind Disruption Hypothesis predicts substantial observable impacts, not subtle ones. Our analyses achieved 87.5\% power to detect moderate effects and 98.5\% power for large effects. Our failure to detect effects, despite adequate power, validated methodology, and successful identification of other environmental predictors and interaction terms, provides strong evidence against the hypothesis rather than merely absence of evidence.
+Finally, our models explained relatively little variance overall (30-minute 6.4\%; Next Day Window 39.7\%), reflecting both the complexity of butterfly behavior and our focus on testing specific hypotheses rather than comprehensively explaining movement patterns. We therefore interpret our results as a failure to detect a consistent wind-disruption effect under the monitored conditions, rather than evidence that wind disruption cannot occur in other settings.
 
 \subsection{Unexplained Factors of Variation, Resolution and Replication}
 
