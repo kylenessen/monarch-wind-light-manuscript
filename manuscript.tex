@@ -153,12 +153,12 @@ To test for environmental effects on the response variable ($\Delta$BI), the ana
 Model assumptions were verified through standard residual diagnostics including examination of residual distributions, fitted versus residual plots, and quantile-quantile plots. Model performance and predictor significance were evaluated through AIC comparison, with models differing by less than 2 AIC units considered equivalent. For close comparisons among models with different fitted degrees of freedom, we also inspected log-likelihoods and parameter counts to evaluate whether additional terms improved fit enough to justify added complexity.
 
 \subsubsection{Dynamic Window Analysis}
-The response time expected for changes in the response variable is technically unknown. The Wind Disruption Hypothesis does not address response time(s), but we surmise they should be a function of environmental conditions and butterfly biology. In the analyses outlined above (30-minute), we assumed that the response time could be at that level of resolution (30-minutes) under flight temperature conditions or after shivering. But it could be longer. For example, a response could occur over the course of one day: a daytime disruptive wind event, later followed by a threshold temperature that might support a behavioral response. Or an evening/overnight disruptive wind event might lead to a response the following day. Furthermore, monarchs may make clustering decisions on longer temporal horizons by not responding to immediate environmental conditions. To examine whether day-to-day changes in BI depend on cumulative weather exposure and are not just dependent on changes over a 30-minute interval, we conducted a complementary analysis using dynamic temporal windows. We tested two longer time windows to examine the robustness of our findings based on the 30-minute response window. First, a ``24-hour'' window provided a standardized comparison, extending exactly 24 hours from the previous day's maximum BI (i.e., allowing for the maximum possible response over a fixed time). Second, a biologically aligned ``Next Day Window'' spanning from the previous day's maximum BI to the current day's last observation, approximating functional sunset on the second day when roosting decisions would have a second chance to be finalized. The Next Day Window interval might thus allow for roosting decisions that could not be made the previous evening because of temperatures below flight threshold. This window varied in duration (mean = 29.6 hours) capturing the exposure period of a peak aggregation through two potential opportunities for a subsequent roosting decision.
+The response time expected for changes in the response variable is unknown. The 30-minute analysis assumes that butterflies can respond within one observation interval, but responses may take longer when temperatures are below the flight threshold or when roosting decisions occur over a longer temporal horizon. We therefore conducted a complementary Next Day Window analysis spanning from the previous day's maximum BI to the current day's last observation. This window approximated functional sunset on the second day, when roosting decisions would have a second chance to be finalized. It varied in duration, with a mean of 29.6 hours.
 
 Daily aggregate metrics were computed for each deployment-day combination, including maximum BI, 95th percentile BI, and mean of the top three BIs. We retained only days with 15--25 daytime photographs to ensure adequate temporal coverage, then constructed consecutive day pairs separated by exactly one day. Pairs where both days had a maximum BI of zero were excluded as uninformative. The response variable, defined as the change in maximum daily BI over the designated dynamic window, underwent signed square root transformation to achieve approximate normality while preserving directional information.
-Weather metric variable selection for the dynamic window analyses began with 19 candidate predictors. Candidates included: spanning baseline BI metrics, temperature summaries (minimum, maximum, and mean values, plus cumulative metrics such as degree-hours above 15$^{\circ}$C), wind exposure measures (average sustained speed, maximum gust, cumulative gust exposure, and time above the proposed 2~m/s threshold), and cumulative sun exposure (the cumulative BIs observed in direct sunlight across all frames within the window). The sun exposure candidate predictor integrated both exposure duration and instantaneous abundance. We conducted correlation analysis to identify multicollinearity within groups of predictors. Based on this analysis, we selected predictors that minimized redundancy while maintaining interpretability and adequate degrees of freedom relative to sample size. We selected maximum wind gust as the primary wind metric because it captured the variance of all wind variables in a single interpretable measure, showed high correlation with sustained speed, gust summation, and threshold exceedance metrics, and duplicated our selection for the 30-minute analysis. Mode wind gust was excluded because it contained too few unique values, causing model convergence issues. We excluded the candidate predictors mean temperature and degree-hours above 15$^{\circ}$C to reduce multicollinearity. We selected three temperature candidate predictors, minimum and maximum window temperature and temperature at the previous day's maximum count. We also included cumulative direct sun exposure as the primary predictor for testing the wind and sun interaction. For the Next Day Window analysis, we included lag duration (hours) as a control variable to account for varying window lengths. Overall, we required 95\% data completeness across temperature, wind, and daylight observations, calculated as the geometric mean of coverage ratios. Thus, the final screened predictor set for model selection included previous-day maximum BI, minimum temperature, maximum temperature, temperature at the previous day's maximum count, maximum wind gust, and cumulative direct sun exposure. The Next Day Window models also included lag duration as a window-length control, while the fixed 24-hour models did not.
+Weather metric variable selection for the Next Day Window analysis began with 19 candidate predictors. Candidates included baseline BI metrics, temperature summaries, wind exposure measures, and cumulative sun exposure. The sun exposure candidate predictor integrated both exposure duration and instantaneous abundance. We conducted correlation analysis to identify multicollinearity within groups of predictors. Based on this analysis, we selected predictors that minimized redundancy while maintaining interpretability and adequate degrees of freedom relative to sample size. We selected maximum wind gust as the primary wind metric because it was highly correlated with sustained speed and cumulative gust exposure and matched the metric used in the 30-minute analysis. Mode wind gust was excluded because it contained too few unique values and caused model convergence issues. We excluded mean temperature and degree-hours above 15$^{\circ}$C to reduce multicollinearity. The retained predictors were previous-day maximum BI, minimum and maximum temperature, temperature at the previous day's maximum count, maximum wind gust, and cumulative direct sun exposure. Lag duration was included as a control variable to account for varying window lengths. We required 95\% data completeness across temperature, wind, and daylight observations, calculated as the geometric mean of coverage ratios.
 
-Model selection followed the same information-theoretic approach as the 30-minute analysis. We evaluated 78 candidate models for the Next Day Window and 76 candidate models for the fixed 24-hour window using GAMMs with deployment random intercepts and AR(1) temporal correlation structures. The candidate set included null models, single predictors, additive combinations, and models with smooth interaction terms. To address potential overfitting given the reduced sample size ($n$ = 94--96 pairs), we applied conservative thresholds for the ratio of effective degrees of freedom to sample size and conducted leave-one-deployment-out cross-validation on top-performing models.
+Model selection followed the same information-theoretic approach as the 30-minute analysis. We evaluated 78 candidate models for the Next Day Window using GAMMs with deployment random intercepts and AR(1) temporal correlation structures. The candidate set included null models, single predictors, additive combinations, and models with smooth interaction terms. To address potential overfitting given the reduced sample size ($n$ = 96 pairs), we applied conservative thresholds for the ratio of effective degrees of freedom to sample size and conducted leave-one-deployment-out cross-validation on top-performing models.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{figures/temporal_windows.png}
@@ -290,7 +290,7 @@ Temporal autocorrelation analysis revealed minimal residual correlation structur
 
 \subsection{Next Day Window and Site Fidelity Analysis}
 
-As noted, in the 30-minute interval analysis we assume butterflies can respond to unfavorable conditions over that interval. This assumption may not hold when temperatures fall below the flight threshold, or when shivering is too physiologically expensive, or when clustering decisions occur on a longer temporal horizon. Meaning there could be an apparent lag in response ($\Delta$BI). To address these limitations, we examined 96 consecutive-day pairs using a variable time interval spanning from the previous day's maximum BI to the consecutive day's last observation at sunset (mean duration = 29.6 hours). This approach tests whether cumulative weather exposure over a longer interval is what actually influences $\Delta$BI. Inadvertently, it is also a test of site fidelity decisions over the course of two evenings. If butterflies leave a cluster, they could choose to return or not by the following day's sunset. Returning would boost or maintain the maximum BI at sunset; not returning would lower it. A secondary analysis (below) using a standard 24-hour window ($n$ = 94 pairs) provided a sensitivity test of our findings.
+As noted, the 30-minute analysis assumes that butterflies can respond to unfavorable conditions over one observation interval. This assumption may not hold when temperatures fall below the flight threshold or when clustering decisions occur over a longer temporal horizon. To address this limitation, we examined 96 consecutive-day pairs using a variable interval spanning from the previous day's maximum BI to the next day's last observation at sunset, with a mean duration of 29.6 hours. This approach tests whether cumulative weather exposure over a longer interval predicts subsequent change in the visible cluster.
 
 Daily maximum BI per cluster ranged from 0 to 770 butterflies (mean = 134.7 $\pm$ 138.1), with Next Day Window changes in maximum BI ranging from losses of 376 butterflies to gains of 464 butterflies (mean change = $-$10.5 $\pm$ 111.6). Maximum interval wind gusts ranged from 2.0 to 12.8~m/s (mean = 4.5 $\pm$ 1.8~m/s). Cumulative direct sun exposure varied from 0 to 1,122 butterflies observed per interval (mean = 139.8 $\pm$ 206.9).
 
@@ -371,38 +371,6 @@ The quantile-quantile plot revealed approximately normal residual distribution w
 \caption{Autocorrelation function for best fit Next Day Window model. Autocorrelation function of model residuals showing minimal temporal correlation after accounting for AR(1) structure within deployment days. Blue dashed lines indicate 95\% confidence bounds for white noise.}
 \label{fig:acf_nextday}
 \end{figure}
-
-\subsection{Robustness Analysis: 24-Hour Change in BI}
-
-To assess the robustness of our Next Day Window and site fidelity findings, we conducted an analysis examining butterfly cluster changes over 24-hour periods rather than variable Next Day Window intervals. This analysis evaluated the same 76 candidate models using identical GAMM specifications with deployment random intercepts and AR(1) temporal correlation. Notably, model selection converged on the same structural form as the primary Next Day Window/site fidelity analysis. The decisive best-fit model (M31), incorporating a tensor smooth interaction between maximum wind gust and cumulative direct sun exposure, emerged with 51\% of the total model weight (Table~\ref{tab:24hr_model_selection}). Alternative models showed substantially weaker support, with the next best model achieving only 8\% weight and $\Delta$AICc = 3.6.
-
-\begin{table}[H]
-\caption{Top models from the 24-hour robustness analysis. Descriptions list candidate weather terms evaluated with the previous-day maximum BI baseline. BI is butterfly index. $K$ is the number of estimated parameters, logLik is the model log-likelihood, $\Delta$AICc is the difference from the best model, Weight is the Akaike weight, and adj.\ $R^{2}$ is adjusted $R^{2}$.}
-\label{tab:24hr_model_selection}
-\centering
-\footnotesize
-\begin{tabularx}{\textwidth}{lLrrrrrr}
-\toprule
-\textbf{Model} & \textbf{Description} & \textbf{$K$} & \textbf{logLik} & \textbf{AICc} & \textbf{$\Delta$AICc} & \textbf{Weight} & \textbf{adj.\ $R^{2}$} \\
-\midrule
-M31 & Maximum wind gust $\times$ cumulative butterflies in direct sun (smooth) & 9 & $-$308.09 & 636.3 & 0.0 & 0.51 & 0.232 \\
-M23 & Maximum temperature $\times$ maximum wind gust (smooth) & 9 & $-$309.89 & 639.9 & 3.6 & 0.08 & -- \\
-M29 & Temperature at previous maximum BI $\times$ cumulative butterflies in direct sun (smooth) & 9 & $-$310.31 & 640.8 & 4.4 & 0.06 & -- \\
-M19 & Minimum temperature $\times$ cumulative butterflies in direct sun (smooth) & 9 & $-$310.48 & 641.1 & 4.8 & 0.05 & -- \\
-M51 & Maximum wind gust, cumulative butterflies in direct sun, maximum wind gust $\times$ cumulative butterflies in direct sun (smooth) & 13 & $-$305.59 & 641.7 & 5.4 & 0.03 & -- \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-The 24-hour robustness analysis revealed qualitatively similar interaction patterns to the Next Day Window/site fidelity analysis (though with attenuated effect magnitudes) (Figure~\ref{fig:interaction_wind_sun_24hr}). For example, under low wind gust speeds around 2~m/s and low butterfly counts ($<$60--70) in direct sun, BI increased the following day. And under low wind gust speeds ($\sim$2~m/s), and higher butterfly counts in sun ($>$100) BI decreased the following day (a reversal of pattern). And at intermediate to high values of both wind gust speed and butterfly sun exposure, cluster sizes (BI) increased the next day. The convergent model selection and consistent interaction patterns across standardized (24hr) and variable scales strengthen confidence in the tested environmental interrelationships. This is also consistent with window duration showing no significant relationship with maximum $\Delta$BI (Figure~\ref{fig:partial_effects_nextday}) in the Next Day Window analysis. Pattern interpretation requires similar caution near data boundaries and regions with sparse observations.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{figures/interaction_wind_sun_24hr.png}
-\caption{$\Delta$BI response to interactions of wind and sun exposure over 24-hours. BI is butterfly index. Tensor smooth interaction between maximum wind gust (m/s) and cumulative butterflies in direct sun on 24-hour cluster size changes ($\Delta$BI). Color gradient indicates partial effect magnitude on square-root transformed scale (red = positive, blue = negative). Black points show observed data distribution. Gray regions indicate areas beyond reliable interpolation range. The interaction pattern mirrors that observed in the Next Day Window analysis, supporting the robustness of identified environmental relationships.}
-\label{fig:interaction_wind_sun_24hr}
-\end{figure}
-
 
 %% ------------------------------------------------------------------
 \section{Discussion}
@@ -694,133 +662,6 @@ M78     & Linear interaction + temp\_min + temp\_max \\
 \end{longtable}
 
 Model M32 (Interaction: wind\_max\_gust $\times$ sum\_butterflies\_direct\_sun with linear baseline) was identified as the best-fit model based on AICc (small-sample corrected AIC). Of the 78 candidate models, 42 converged successfully; models with smooth baseline controls generally failed to converge due to sample size limitations ($n$ = 96 lag pairs). Complete model selection statistics are reported in the main text.
-
-\section{24-Hour Robustness Analysis: Candidate Models}
-\label{app:24hr_models}
-
-This appendix documents all candidate models tested in the 24-hour robustness analysis. A total of 76 models were evaluated using a fixed 24-hour weather window to validate findings from the Next Day Window analysis.
-
-\textbf{Model Structure.}
-All models used Generalized Additive Mixed Models (GAMM) with the following structure:
-\begin{itemize}
-\item \textbf{Response variable}: signed $\sqrt{|\Delta\mathrm{BI}_{\max}|}$ (signed square root of change in maximum daily BI between days)
-\item \textbf{Random effects}: Random intercept for deployment site
-\item \textbf{Correlation structure}: AR(1) autocorrelation for temporal dependence
-\item \textbf{Estimation method}: Restricted Maximum Likelihood (REML)
-\end{itemize}
-
-\textbf{Variable Definitions.}
-\begin{itemize}
-\item \texttt{max\_butterflies\_t\_1}: Previous day maximum count (tested as smooth or linear)
-\item \texttt{lag\_duration\_hours}: Weather window duration (24 hours, constant)
-\item \texttt{temp\_min}: Minimum temperature in 24-hour window ($^\circ$C)
-\item \texttt{temp\_max}: Maximum temperature in 24-hour window ($^\circ$C)
-\item \texttt{temp\_at\_max\_count\_t\_1}: Temperature when max count occurred ($^\circ$C)
-\item \texttt{wind\_max\_gust}: Maximum wind gust in 24-hour window (m/s)
-\item \texttt{sum\_butterflies\_direct\_sun}: Cumulative butterflies in direct sun
-\item \texttt{s()}: Thin-plate regression spline smooth term
-\item \texttt{ti()}: Tensor product interaction smooth
-\end{itemize}
-
-\textbf{Candidate Models.}
-Models were generated programmatically across seven categories, identical to the Next Day Window analysis structure. The first number in parentheses indicates models with smooth baseline controls; the second indicates linear baseline controls.
-
-\begin{footnotesize}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-2.5cm-2\tabcolsep\relax}@{}}
-\caption{Complete list of 76 candidate models tested in 24-hour robustness analysis} \\
-\toprule
-\textbf{Model} & \textbf{Description} \\
-\midrule
-\endfirsthead
-\multicolumn{2}{c}{\tablename\ \thetable{} -- continued from previous page} \\
-\toprule
-\textbf{Model} & \textbf{Description} \\
-\midrule
-\endhead
-\midrule
-\multicolumn{2}{r}{Continued on next page} \\
-\endfoot
-\bottomrule
-\endlastfoot
-%
-% Part 1: Null Models
-\multicolumn{2}{l}{\textit{Part 1: Null Models (2 models)}} \\
-\addlinespace
-M1 & Null (smooth baseline) \\
-M2 & Null (linear baseline) \\
-\addlinespace
-%
-% Part 2: Single Predictor Models
-\multicolumn{2}{l}{\textit{Part 2: Single Predictor Models (10 models)}} \\
-\addlinespace
-M3, M4 & Single: temp\_min (smooth, linear) \\
-M5, M6 & Single: temp\_max (smooth, linear) \\
-M7, M8 & Single: temp\_at\_max\_count\_t\_1 (smooth, linear) \\
-M9, M10 & Single: wind\_max\_gust (smooth, linear) \\
-M11, M12 & Single: sum\_butterflies\_direct\_sun (smooth, linear) \\
-\addlinespace
-%
-% Part 3: Two-Way Interaction Models
-\multicolumn{2}{l}{\textit{Part 3: Two-Way Interaction Models (20 models)}} \\
-\addlinespace
-M13, M14 & Interaction: temp\_min $\times$ temp\_max (smooth, linear) \\
-M15, M16 & Interaction: temp\_min $\times$ temp\_at\_max\_count\_t\_1 (smooth, linear) \\
-M17, M18 & Interaction: temp\_min $\times$ wind\_max\_gust (smooth, linear) \\
-M19, M20 & Interaction: temp\_min $\times$ sum\_butterflies\_direct\_sun (smooth, linear) \\
-M21, M22 & Interaction: temp\_max $\times$ temp\_at\_max\_count\_t\_1 (smooth, linear) \\
-M23, M24 & Interaction: temp\_max $\times$ wind\_max\_gust (smooth, linear) \\
-M25, M26 & Interaction: temp\_max $\times$ sum\_butterflies\_direct\_sun (smooth, linear) \\
-M27, M28 & Interaction: temp\_at\_max\_count\_t\_1 $\times$ wind\_max\_gust (smooth, linear) \\
-M29, M30 & Interaction: temp\_at\_max\_count\_t\_1 $\times$ sum\_butterflies\_direct\_sun (smooth, linear) \\
-M31, M32 & Interaction: wind\_max\_gust $\times$ sum\_butterflies\_direct\_sun (smooth, linear) \\
-\addlinespace
-%
-% Part 4: Main Effects + Interaction Models
-\multicolumn{2}{l}{\textit{Part 4: Main Effects + Interaction Models (20 models)}} \\
-\addlinespace
-M33, M34 & Additive + Interaction: temp\_min + temp\_max + interaction (smooth, linear) \\
-M35, M36 & Additive + Interaction: temp\_min + temp\_at\_max\_count\_t\_1 + interaction (smooth, linear) \\
-M37, M38 & Additive + Interaction: temp\_min + wind\_max\_gust + interaction (smooth, linear) \\
-M39, M40 & Additive + Interaction: temp\_min + sum\_butterflies\_direct\_sun + interaction (smooth, linear) \\
-M41, M42 & Additive + Interaction: temp\_max + temp\_at\_max\_count\_t\_1 + interaction (smooth, linear) \\
-M43, M44 & Additive + Interaction: temp\_max + wind\_max\_gust + interaction (smooth, linear) \\
-M45, M46 & Additive + Interaction: temp\_max + sum\_butterflies\_direct\_sun + interaction (smooth, linear) \\
-M47, M48 & Additive + Interaction: temp\_at\_max\_count\_t\_1 + wind\_max\_gust + interaction (smooth, linear) \\
-M49, M50 & Additive + Interaction: temp\_at\_max\_count\_t\_1 + sum\_butterflies\_direct\_sun + interaction (smooth, linear) \\
-M51, M52 & Additive + Interaction: wind\_max\_gust + sum\_butterflies\_direct\_sun + interaction (smooth, linear) \\
-\addlinespace
-%
-% Part 5: Strategic Additive Combinations
-\multicolumn{2}{l}{\textit{Part 5: Strategic Additive Combinations (14 models)}} \\
-\addlinespace
-M53, M54 & Additive: All temperature variables (smooth, linear) \\
-M55, M56 & Additive: temp\_min + temp\_max (smooth, linear) \\
-M57, M58 & Additive: temp\_min + wind\_max\_gust (smooth, linear) \\
-M59, M60 & Additive: temp\_max + wind\_max\_gust (smooth, linear) \\
-M61, M62 & Additive: temp\_at\_max\_count\_t\_1 + wind\_max\_gust (smooth, linear) \\
-M63, M64 & Additive: All temperature + wind (smooth, linear) \\
-M65, M66 & Additive: All predictors (smooth, linear) \\
-\addlinespace
-%
-% Part 6: Complex Models with Multiple Interactions
-\multicolumn{2}{l}{\textit{Part 6: Complex Models with Multiple Interactions (6 models)}} \\
-\addlinespace
-M67, M68 & All temperature main effects + all temperature interactions (smooth, linear) \\
-M69, M70 & All main effects + all temperature $\times$ wind interactions (smooth, linear) \\
-M71, M72 & FULL MODEL: All main effects + all two-way interactions (smooth, linear) \\
-\addlinespace
-%
-% Part 7: Extra Linear Interaction Candidates
-\multicolumn{2}{l}{\textit{Part 7: Extra Linear Interaction Candidates (4 models)}} \\
-\addlinespace
-M73 & Linear interaction: wind\_max\_gust $\times$ sum\_butterflies\_direct\_sun (smooth baseline) \\
-M74 & Linear interaction: wind\_max\_gust $\times$ sum\_butterflies\_direct\_sun (linear baseline) \\
-M75 & Linear interaction + temp\_min + temp\_max (smooth baseline) \\
-M76 & Linear interaction + temp\_min + temp\_max (linear baseline) \\
-\end{longtable}
-\end{footnotesize}
-
-Model M31 (Interaction: wind\_max\_gust $\times$ sum\_butterflies\_direct\_sun with smooth baseline) was identified as the best-fit model based on AICc. Of the 76 candidate models, 72 converged successfully. This analysis validated the key finding from the Next Day Window analysis: the interaction between wind and direct sun exposure is the strongest predictor of roost abandonment. Complete model selection statistics are reported in the main text.
 
 \end{appendix}
 
