@@ -84,6 +84,22 @@ Work is being completed on the `codex/major-revision` branch. Each entry identif
 
 **Commit.** `40c4e59` Remove temporal window diagram.
 
+## 6. Correct the retained candidate-model comparisons
+
+**Status.** Analysis completed. Manuscript update pending discussion.
+
+**Source.** Reviewer 1, comment 10 in [reviewer-1.md](reviewer-1.md). The reviewer identified duplicate 30-minute candidates and asked how failed Next Day Window fits affected model selection.
+
+**Decision.** Remove exact duplicate candidates M20 and M44 from the 30-minute comparison without renumbering the remaining candidates. Reconstruct only the 74 Next Day Window candidates that were actually defined in the original analysis. Compare models with different fixed-effect structures using maximum likelihood. Refit each selected model using restricted maximum likelihood for coefficient estimation. Record every attempted formula, fit status, warning, sample size, likelihood method, and information criterion.
+
+**Analysis result.** In the 30-minute analysis, 49 of 50 unique candidates produced rankable fits. One model produced a convergence warning and was excluded. The corrected comparison selected M16, a linear three-way interaction among maximum wind gust, average temperature, and the number of butterflies visible in direct sun, with previous BI as a control. This differs from the reported M50 tensor-interaction model and requires a manuscript-level decision before revision. In the Next Day Window analysis, 67 of 74 candidates produced rankable fits and seven produced convergence warnings. M32 remained the selected model. Its corrected Akaike weight was 0.614, so the manuscript should not describe its support as decisive.
+
+**Draft response.** We removed the duplicated 30-minute candidates and repeated both retained candidate-model comparisons using maximum likelihood, followed by restricted maximum likelihood refits of the selected models. We also reconstructed the Next Day Window set from the formulas actually defined in the original analysis. The revised files report all successful and unsuccessful fits and their warnings. The corrected Next Day Window comparison retained M32 as the selected model, with 67 of 74 candidates producing rankable fits. The 30-minute comparison selected a different model, M16, and the corresponding manuscript results are being revised.
+
+**Verification.** Both scripts completed successfully. The 30-minute audit contains 50 unique formulas. The Next Day Window audit contains 74 unique formulas. No duplicated formulas remain in either retained candidate set.
+
+**Commit.** `f2468ce` Correct retained model comparisons.
+
 ## Submission deliverables to maintain
 
 The final revision package must include a clean revised manuscript, a version with revisions highlighted, and a point-by-point response letter. The reference list and all DOI links must be audited. Reference 53 requires correction. Any reviewer request that cannot be addressed must receive a direct explanation. The journal granted the requested extension. The revised deadline is 4 September 2026.
