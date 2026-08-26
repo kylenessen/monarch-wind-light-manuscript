@@ -463,8 +463,8 @@ figure_notes <- c(
   "",
   paste("Previous BI is held at the sample median of", previous_bi_value, "butterflies."),
   paste(
-    "Temperature values represent a cool observed condition, the upper value",
-    "of the historical flight-threshold range, and a warm observed condition:",
+    "Temperature values represent a cool observed condition, a representative",
+    "value within the historical flight-threshold range, and a warm observed condition:",
     paste(temperature_values, collapse = ", "), "degrees C."
   ),
   paste(
