@@ -178,7 +178,7 @@ fit_statistics <- tibble(
 write_csv(fit_statistics, file.path(table_dir, "m16_fit_statistics.csv"))
 
 # Conditional effect of a 1 m/s increase in wind
-temperature_values <- c(10, 14, 19.5)
+temperature_values <- c(10, 15, 20)
 sun_values <- c(0, 7, 20)
 fixed_beta <- fixef(model$lme)
 fixed_vcov <- vcov(model$lme)
@@ -238,7 +238,7 @@ prediction_grid <- prediction_grid %>%
     temperature_label = factor(
       temperature_avg,
       levels = temperature_values,
-      labels = c("10.0 °C", "14.0 °C", "19.5 °C")
+      labels = c("10 °C", "15 °C", "20 °C")
     ),
     direct_sun_label = factor(
       butterflies_direct_sun_t_lag,
@@ -309,7 +309,7 @@ slope_grid <- bind_rows(lapply(temperature_values, function(temp) {
     temperature_label = factor(
       temperature_c,
       levels = temperature_values,
-      labels = c("10.0 °C", "14.0 °C", "19.5 °C")
+      labels = c("10 °C", "15 °C", "20 °C")
     )
   )
 write_csv(slope_grid, file.path(table_dir, "m16_conditional_wind_effect_curve.csv"))
@@ -463,7 +463,8 @@ figure_notes <- c(
   "",
   paste("Previous BI is held at the sample median of", previous_bi_value, "butterflies."),
   paste(
-    "Temperature values are the 10th percentile, median, and 90th percentile:",
+    "Temperature values represent a cool observed condition, the upper value",
+    "of the historical flight-threshold range, and a warm observed condition:",
     paste(temperature_values, collapse = ", "), "degrees C."
   ),
   paste(
