@@ -1,0 +1,111 @@
+[
+  {
+    "id": "85ce5195-f49f-4994-99e6-5d3681922754",
+    "filePath": "manuscript.tex",
+    "startLine": 69,
+    "startChar": 0,
+    "endLine": 69,
+    "endChar": 1352,
+    "selectedText": "The distribution and survival of invertebrate species are governed by complex interplays of biotic and abiotic factors. While biotic interactions influence community assembly in part through predation, competition, and parasitism \\cite{blois-heulinDirectIndirectEffects1990,laffertyComparingMechanismsHost2013,miller-terkuilePredatorPreyInteractions2022}, abiotic conditions often set the fundamental limits determining where invertebrates can persist \\cite{sextonEvolutionEcologySpecies2009,louthanWhereWhenSpecies2015,thomasClimateChangeRange2010}. Temperature constrains invertebrate physiology across all latitudes, from Antarctic midges \\cite{everattResponsesInvertebratesTemperature2015} to desert land snails \\cite{schweizerSnailsSunStrategies2019}. In invertebrates, temperature correlates positively with metabolic rates and respiratory water loss, creating compound stresses that limit activity windows \\cite{chownWaterLossInsects2011}. In addition, via a correlation with temperature, solar radiation can drive both direct physiological impacts and behavioral responses. Examples range from army ants demonstrating habitat-specific thermal maxima tied to insolation exposure \\cite{baudierExtremeInsolationClimatic2018}, to terrestrial gastropods climbing vertical surfaces to escape ground-level heat \\cite{schweizerSnailsSunStrategies2019}.",
+    "text": "This whole paragraph needs to be collapsed down to a single sentence. Abitotic factors matter to inverts, and wind is one such factor. Bam. Then move on to monarchs immediately.",
+    "timestamp": "2026-08-28T06:00:19.702Z",
+    "resolved": false
+  },
+  {
+    "id": "5ddee0f8-b290-4ca4-9440-a7c665aef689",
+    "filePath": "manuscript.tex",
+    "startLine": 71,
+    "startChar": 0,
+    "endLine": 71,
+    "endChar": 2040,
+    "selectedText": "Wind is another abiotic factor that can influence invertebrate distribution and behavior through remarkable and diverse mechanisms that vary across species. For example, cockroaches perceive air currents as low as 0.015--0.03~m/s and demonstrate predictable orientation shifts in response to wind velocities \\cite{bellSearchAnemotacticOrientation1979}. Mosquitoes' sensitivity to winds as light as 1.0~m/s can effectively ground entire populations \\cite{bidlingmayerEffectWindVelocity1995}. Some species exploit wind for dispersal through specialized behaviors, such as spiders' stereotypical ``tiptoe'' behavior which initiates ballooning but only when winds permit controlled trajectories \\cite{bonteHeritabilitySpiderBallooning2007}. Some species respond to wind as an environmental stressor requiring active avoidance. For mad hatterpillar larvae, 3~m/s winds are a disturbance cue, triggering movements to stable microsites on branches, and behavioral shifts to leeward sides and abaxial leaf surfaces \\cite{leonardExposureWindAlters2016}. Underlying many of these behavioral avoidance responses are the fundamental thermal and hydric effects of wind, as convective cooling from air movement significantly alters both heat and water exchanges between organisms and their environment, particularly when wind interacts with solar radiation \\cite{riddellWindNicheThermal2025}. For example, in butterflies, basking is used to warm at cool temperatures. But wing position can be modified to reflect solar energy towards the thorax, or to minimize convective heat loss and maximize solar radiation heat gain of the wing itself, causing antennae, wings and thorax to heat up at different rates and reach different temperature above ambient (reviewed by \\cite{munroClimateStrongPredictor2019,tsaiPhysicalBehavioralAdaptations2020,krishnaAirTemperatureDrives2021}). Thus, wind can be recognized as having direct mechanical effects, and indirect thermal and hydric effects through interactions with covariates such as temperature and insolation.",
+    "text": "Same comment as above. We need to dramatically reduce this intro down.",
+    "timestamp": "2026-08-28T06:00:49.721Z",
+    "resolved": false
+  },
+  {
+    "id": "1a1e3b2b-13ca-4d99-a891-d0b49c1f7658",
+    "filePath": "manuscript.tex",
+    "startLine": 183,
+    "startChar": 0,
+    "endLine": 183,
+    "endChar": 51,
+    "selectedText": "\\subsubsection{Model Selection: 30-Minute Analysis}",
+    "text": "See github issue 43 I believe. We need to completely revamp this section.",
+    "timestamp": "2026-08-28T06:02:04.403Z",
+    "resolved": false
+  },
+  {
+    "id": "2441f921-6387-4e70-afcb-2ca55d6d784b",
+    "filePath": "manuscript.tex",
+    "startLine": 242,
+    "startChar": 0,
+    "endLine": 243,
+    "endChar": 33,
+    "selectedText": "\n\\subsubsection{Model Diagnostics}",
+    "text": "All model diagnostic figures can be removed. We can acknowledge them in a single line perhaps, but I want to remove them. If reviewer comments contradict this statement let me know.",
+    "timestamp": "2026-08-28T06:03:07.496Z",
+    "resolved": false
+  },
+  {
+    "id": "6f7e72b8-44f3-4783-ad7d-4c05bc880c99",
+    "filePath": "manuscript.tex",
+    "startLine": 367,
+    "startChar": 0,
+    "endLine": 368,
+    "endChar": 0,
+    "selectedText": "\\section{Discussion}\n",
+    "text": "Need to check everything for mentions of removed analyses. Overall this section needs to be much shorter, and more cautious based on the study.",
+    "timestamp": "2026-08-28T06:04:50.447Z",
+    "resolved": false,
+    "editedAt": "2026-08-28T06:08:16.448Z"
+  },
+  {
+    "id": "9ba3d0c2-39d4-4993-bdb5-45daf21cdc81",
+    "filePath": "manuscript.tex",
+    "startLine": 387,
+    "startChar": 0,
+    "endLine": 387,
+    "endChar": 59,
+    "selectedText": "\\subsection{Thermoregulation as an Alternative Explanation}",
+    "text": "I think the reviewers had a lot of issues with this whole section? We need to find a way to offer thermoregulation as a mechanism to help understand our results, but not overstep in what we can conclude.",
+    "timestamp": "2026-08-28T06:06:03.082Z",
+    "resolved": false
+  },
+  {
+    "id": "adac7654-6bc5-4068-bf61-2b372afa5d3c",
+    "filePath": "manuscript.tex",
+    "startLine": 405,
+    "startChar": 0,
+    "endLine": 405,
+    "endChar": 36,
+    "selectedText": "\\subsection{Limitations and Context}",
+    "text": "Probably need to tighten this up and move it lower in the discussion.",
+    "timestamp": "2026-08-28T06:06:24.990Z",
+    "resolved": false
+  },
+  {
+    "id": "abe17448-9c47-412a-82ec-ff2fbaff9704",
+    "filePath": "manuscript.tex",
+    "startLine": 413,
+    "startChar": 0,
+    "endLine": 413,
+    "endChar": 73,
+    "selectedText": "\\subsection{Unexplained Factors of Variation, Resolution and Replication}",
+    "text": "Consider what is worth saving here and remove the rest.",
+    "timestamp": "2026-08-28T06:06:51.547Z",
+    "resolved": false
+  },
+  {
+    "id": "310be958-cfa9-4611-af97-6f8b7362f214",
+    "filePath": "manuscript.tex",
+    "startLine": 421,
+    "startChar": 0,
+    "endLine": 421,
+    "endChar": 42,
+    "selectedText": "\\subsection{Implications for Conservation}",
+    "text": "This subsection is far too long. We need to hit the most salient points in a thrifty way. Short elevator pitch to a land manager. Not a full report to them.",
+    "timestamp": "2026-08-28T06:07:26.721Z",
+    "resolved": false
+  }
+]
