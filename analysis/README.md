@@ -32,6 +32,8 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 
 `m16_full_outputs.R` produces the complete focused export for the selected 30-minute M16 model. It writes fixed effects with confidence intervals, ML and REML fit statistics, variance components, conditional wind effects, full printed output, residual diagnostics, and manuscript-styled interpretation figures to `analysis/outputs/30_minute/m16`.
 
+`prepare_bi_category_sensitivity.py` and `bi_category_sensitivity_analysis.R` regenerate both retained analyses using lower-bound, geometric-midpoint, arithmetic-midpoint, and upper-bound values for the ordinal BI categories. They also record a focused observer fixed-effect sensitivity check. Outputs are written to `analysis/outputs/bi_category_sensitivity`.
+
 `threshold_wind_disruption_analysis.R` refits the 52 threshold GAMM candidates using the same random-effects structure as the publication figure script, writes model-selection outputs to `analysis/outputs/threshold`, and regenerates `analysis/outputs/threshold/figures/threshold_interaction_wind_sun.png`. This is a provenance figure, not a manuscript figure unless `manuscript.tex` includes it.
 
 `next_day_window_analysis.R` reconstructs and compares the 74 Next Day Window candidates that were defined in the original analysis. These are M1 through M72 and M77 through M78. It uses maximum likelihood and AICc for comparison, records every fit and convergence warning, and refits the selected model using restricted maximum likelihood. Outputs are written to `analysis/outputs/next_day_window`, including the complete audit in `model_comparison_comprehensive.csv`.
