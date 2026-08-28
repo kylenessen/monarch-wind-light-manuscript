@@ -39,3 +39,17 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 `twenty_four_hour_robustness_analysis.R` refits the 24-hour robustness model, writes summaries to `analysis/outputs/24_hour`, and regenerates `figures/interaction_wind_sun_24hr.png`.
 
 `generate_publication_figures_all.R` is a convenience script that regenerates the manuscript figure set in one pass. Prefer the focused scripts above when tracing a specific result.
+
+## Figure Paths and Revision Status
+
+The `figures/` directory contains files used directly by the current `manuscript.tex` build. The `analysis/outputs/` directories contain analysis-specific exports and provenance figures. The revised 30-minute M16 interpretation figures are in `analysis/outputs/30_minute/m16/figures`.
+
+The current M16 interpretation figures are `m16_predicted_response.png` and `m16_conditional_wind_effect.png`. They show predicted responses and conditional wind effects at observed temperature and direct-sun conditions. The M16 diagnostics are `m16_diagnostics.png`, `m16_residual_acf.png`, and `m16_residual_pacf.png`.
+
+The root files `figures/diagnostics_30min.png` and `figures/acf_30min.png` currently match the M16 diagnostics byte for byte. The root files `figures/partial_effects_30min.png` and `figures/interaction_wind_sun_30min.png` are legacy M50 figures. They remain in place because the current manuscript still references them. They should be replaced or removed only as part of the manuscript figure rewrite.
+
+The Next Day Window files are mirrored between `figures/` and `analysis/outputs/next_day_window/figures`. These pairs currently match byte for byte. The 24-hour, threshold, and linear-regression figures are retained analysis outputs or legacy provenance files. They are not referenced by the current manuscript, but their generating scripts still write them. Do not delete them until those scripts and any supplemental-material decision are resolved.
+
+Several mirrored files are exact duplicates. The current duplicate pairs are `figures/diagnostics_30min.png` with `analysis/outputs/30_minute/m16/figures/m16_diagnostics.png`, `figures/acf_30min.png` with `analysis/outputs/30_minute/m16/figures/m16_residual_acf.png`, the four Next Day Window figures with their counterparts in `analysis/outputs/next_day_window/figures`, and the 24-hour interaction figure with its counterpart in `analysis/outputs/24_hour/figures`. These duplicates are intentionally preserved because the focused scripts write the output copies and the manuscript build reads the root copies.
+
+The convenience script `generate_publication_figures_all.R` still fits and labels the former M50 30-minute model. It is therefore a legacy generator until it is updated for M16. Use `thirty_minute_gamm_analysis.R` and `m16_full_outputs.R` when tracing the revised 30-minute analysis.
