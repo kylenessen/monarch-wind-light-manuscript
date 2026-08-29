@@ -9,7 +9,7 @@
     "selectedText": "deployments",
     "text": "Do we need to explain what a deployment is?",
     "timestamp": "2026-08-29T19:53:39.533Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "b4b23d4d-9836-4316-985e-ba763dd935c6",
@@ -21,7 +21,7 @@
     "selectedText": "15-m",
     "text": "Sounds like each pole is fifteen meters, when really they can be up to fifteen meters.",
     "timestamp": "2026-08-29T19:54:17.374Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "f77ece10-8a82-4779-8e4f-a0121d0528d1",
@@ -33,7 +33,7 @@
     "selectedText": "reflective",
     "text": "Reflective kind of bothers me here. But I suppose that's true. We should indicate that butterflies appear dark and eucalyptus appears bright in the near infrared spectrum.",
     "timestamp": "2026-08-29T19:56:02.806Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "87f2f829-17e8-4413-82c4-b53d0361de0b",
@@ -45,7 +45,7 @@
     "selectedText": "30 minutes",
     "text": "I don't think we ever used 30 minute intervals in the fields. It was either f it was predominantly 10 with only a few that were five in the beginning. And we downsampled the thirty minutes to basically reduce classification effort.",
     "timestamp": "2026-08-29T19:56:50.247Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "944c5a66-bf74-4015-863e-3b00f9a6b119",
@@ -57,7 +57,7 @@
     "selectedText": "The same online protocol",
     "text": "The same online protocol? It looks like you cut any introduction to that along with the URL, which I would like to keep.",
     "timestamp": "2026-08-29T20:06:22.317Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "99e35843-0530-4b75-91a8-540abe4d134d",
@@ -69,7 +69,7 @@
     "selectedText": "Image Classification and Derived Variables",
     "text": "I don't see anything in here about how we classified daylight images only because we needed ambient light to appropriately separate the butterflies from the foliage. Or reliably, I should say. I'm concerned this whole section got cut down like quite a bit and I would like to discuss what was cut and we should figure out what",
     "timestamp": "2026-08-29T20:11:58.988Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "f910640d-bd38-4046-a1cb-79f84fe28038",
@@ -81,7 +81,7 @@
     "selectedText": "No UDMH deployment contributed a qualifying pair.",
     "text": "Is this true?",
     "timestamp": "2026-08-29T20:13:02.604Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "28d42689-3bb0-43a3-9bc4-5895a659a8ce",
@@ -93,7 +93,7 @@
     "selectedText": "he 30-minute set contained 50 unique candidates, representing single predictors, additive combinations, linear two-way and three-way interactions, smooth effects, and tensor-product interactions.",
     "text": "Do we not include a baseline only model?",
     "timestamp": "2026-08-29T20:15:18.944Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "aacabcef-969e-4d66-bad4-5d93efe211e4",
@@ -105,7 +105,7 @@
     "selectedText": "ext Day models included a deployment random intercept and an AR(1) residual correlation structure within deployment series.",
     "text": "Do we have any random effects we should report for the thirty minute analysis like this?",
     "timestamp": "2026-08-29T20:17:55.326Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "0e77e763-9962-4279-9c62-94eadffdc5fa",
@@ -117,6 +117,6 @@
     "selectedText": "To evaluate sensitivity to the numerical representation of BI categories, we regenerated both analytical datasets using category lower bounds (1, 10, 100), rounded geometric midpoints (3, 32, 316), rounded arithmetic midpoints (5, 55, 550), and upper bounds (9, 99, 999), then refitted the selected model for each response window. We also added observer as a fixed effect to the selected 30-minute model as a focused check for mean differences among observers. This check does not estimate inter-observer agreement because observers classified non-overlapping deployments.",
     "text": "I'm skeptical about this paragraph. I think this is really just more of a response to the reviewers. And it's a little bit the amount of words dedicated to it and for the the contribution of the project seems disproportionate. I think you could collapse this to say we did sensitivity checks on the BI categories and found they did not that our results were insensitive to these checks. And maybe something that inner observer agreement was not calculated because each deployment was classified by a single individual. Maybe you put that somewhere else. I just don't wanna be um I don't wanna spend too much time on it. I just wanna indicate that we thought about it but ultimately we don't think it matters and there's nothing we can do about this interobserver agreement.",
     "timestamp": "2026-08-29T20:20:49.984Z",
-    "resolved": false
+    "resolved": true
   }
 ]
