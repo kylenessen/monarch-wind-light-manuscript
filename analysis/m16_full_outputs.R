@@ -308,15 +308,6 @@ prediction_plot <- ggplot(
   figure_theme
 
 ggsave(
-  file.path(figure_dir, "m16_predicted_response.png"),
-  prediction_plot,
-  width = 12,
-  height = 5.8,
-  dpi = 600,
-  bg = "white"
-)
-
-ggsave(
   file.path(candidate_figure_dir, "a_global_range_lines.png"),
   prediction_plot,
   width = 12,
@@ -367,21 +358,24 @@ supported_prediction_grid <- prediction_grid %>%
   mutate(
     fit_supported = if_else(supported, fit, NA_real_),
     conf_low_supported = if_else(supported, conf_low, NA_real_),
-    conf_high_supported = if_else(supported, conf_high, NA_real_)
+    conf_high_supported = if_else(supported, conf_high, NA_real_),
+    fit_supported_raw = fit_supported^3,
+    conf_low_supported_raw = conf_low_supported^3,
+    conf_high_supported_raw = conf_high_supported^3
   )
 
 supported_line_plot <- ggplot(
   supported_prediction_grid,
   aes(
     x = max_gust,
-    y = fit_supported,
+    y = fit_supported_raw,
     color = direct_sun_label,
     fill = direct_sun_label,
     group = direct_sun_label
   )
 ) +
   geom_ribbon(
-    aes(ymin = conf_low_supported, ymax = conf_high_supported),
+    aes(ymin = conf_low_supported_raw, ymax = conf_high_supported_raw),
     alpha = 0.10,
     linewidth = 0,
     color = NA,
@@ -395,9 +389,18 @@ supported_line_plot <- ggplot(
   scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
   labs(
     x = "Maximum wind gust (m/s)",
-    y = expression(paste("Predicted cube-root ", Delta, "BI"))
+    y = expression(paste("Fitted 30-minute ", Delta, "BI"))
   ) +
   figure_theme
+
+ggsave(
+  file.path(figure_dir, "m16_predicted_response.png"),
+  supported_line_plot,
+  width = 12,
+  height = 5.8,
+  dpi = 600,
+  bg = "white"
+)
 
 ggsave(
   file.path(candidate_figure_dir, "b_supported_range_lines.png"),
@@ -817,8 +820,15 @@ figure_notes <- c(
     "The wind range ends at the 99th percentile of the observed maximum gust",
     paste0("distribution, ", round(wind_max_plot, 2), " m/s.")
   ),
-  "Predictions exclude random effects and are shown on the fitted cube-root response scale.",
-  "Confidence bands represent pointwise 95 percent fixed-effect intervals.",
+  paste(
+    "The manuscript figure back-transforms the fitted signed cube-root response",
+    "and interval endpoints by cubing them, so the vertical axis is in original delta BI units."
+  ),
+  paste(
+    "These values are back-transformed fitted changes, not conditional means",
+    "estimated directly on the raw delta BI scale."
+  ),
+  "Predictions exclude random effects. Confidence bands are pointwise 95 percent fixed-effect intervals.",
   paste(
     "Candidate B limits each line to the central 90 percent of gusts among",
     "the 50 observations nearest to its temperature and direct-sun combination."
