@@ -258,67 +258,23 @@ figure_theme <- theme_like_reference(12, 0.95) +
 
 sun_colors <- c("0" = "#4d4d4d", "7" = "#2b83ba", "20" = "#d7191c")
 
-prediction_grid$supported <- FALSE
-temperature_scale <- sd(data$temperature_avg)
-direct_sun_scale <- IQR(
-  data$butterflies_direct_sun_t_lag[data$butterflies_direct_sun_t_lag > 0]
-)
-line_support_rows <- list()
-
-for (temperature_value in temperature_values) {
-  for (direct_sun_value in sun_values) {
-    condition_distance <- sqrt(
-      ((data$temperature_avg - temperature_value) / temperature_scale)^2 +
-        ((data$butterflies_direct_sun_t_lag - direct_sun_value) /
-          direct_sun_scale)^2
-    )
-    nearby_rows <- order(condition_distance)[seq_len(min(50, nrow(data)))]
-    wind_minimum <- min(data$max_gust[nearby_rows])
-    wind_maximum <- max(data$max_gust[nearby_rows])
-    grid_rows <- prediction_grid$temperature_avg == temperature_value &
-      prediction_grid$butterflies_direct_sun_t_lag == direct_sun_value
-
-    prediction_grid$supported[grid_rows] <-
-      prediction_grid$max_gust[grid_rows] >= wind_minimum &
-      prediction_grid$max_gust[grid_rows] <= wind_maximum
-
-    line_support_rows[[length(line_support_rows) + 1L]] <- tibble(
-      temperature_c = temperature_value,
-      butterflies_in_direct_sun = direct_sun_value,
-      nearby_observations = length(nearby_rows),
-      wind_minimum = wind_minimum,
-      wind_maximum = wind_maximum
-    )
-  }
-}
-
-line_support_table <- bind_rows(line_support_rows)
-
-supported_prediction_grid <- prediction_grid %>%
-  mutate(
-    fit_supported = if_else(supported, fit, NA_real_),
-    conf_low_supported = if_else(supported, conf_low, NA_real_),
-    conf_high_supported = if_else(supported, conf_high, NA_real_)
-  )
-
-supported_line_plot <- ggplot(
-  supported_prediction_grid,
+response_plot <- ggplot(
+  prediction_grid,
   aes(
     x = max_gust,
-    y = fit_supported,
+    y = fit,
     color = direct_sun_label,
     fill = direct_sun_label,
     group = direct_sun_label
   )
 ) +
   geom_ribbon(
-    aes(ymin = conf_low_supported, ymax = conf_high_supported),
+    aes(ymin = conf_low, ymax = conf_high),
     alpha = 0.10,
     linewidth = 0,
-    color = NA,
-    na.rm = TRUE
+    color = NA
   ) +
-  geom_line(linewidth = 1.0, na.rm = TRUE) +
+  geom_line(linewidth = 1.0) +
   geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
   facet_wrap(~temperature_label, nrow = 1) +
   scale_color_manual(values = sun_colors, name = "Sun-exposed BI") +
@@ -332,7 +288,7 @@ supported_line_plot <- ggplot(
 
 ggsave(
   file.path(figure_dir, "m16_predicted_response.png"),
-  supported_line_plot,
+  response_plot,
   width = 12,
   height = 5.8,
   dpi = 600,
@@ -389,15 +345,6 @@ ggsave(
   height = 5.8,
   dpi = 600,
   bg = "white"
-)
-
-write_csv(
-  supported_prediction_grid,
-  file.path(table_dir, "m16_supported_line_predictions.csv")
-)
-write_csv(
-  line_support_table,
-  file.path(table_dir, "m16_supported_line_ranges.csv")
 )
 
 # Model diagnostics
@@ -537,10 +484,7 @@ figure_notes <- c(
     "The manuscript figure shows fitted values on the signed cube-root response scale.",
     "Values above zero indicate increases in BI and values below zero indicate decreases."
   ),
-  paste(
-    "Each manuscript line spans the full local gust range among the 50 nearest",
-    "observations, subject to the shared overall 99th-percentile cap."
-  ),
+  "Each manuscript line spans 0 m/s to the shared overall 99th-percentile cap.",
   "All observations, including those above the plotting cap, were retained in model fitting.",
   "Predictions exclude random effects. Confidence bands are pointwise 95 percent fixed-effect intervals.",
   "Raw main-effect coefficients are conditional on zero values of interacting predictors.",
