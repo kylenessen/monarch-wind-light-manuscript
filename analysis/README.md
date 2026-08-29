@@ -36,7 +36,7 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 
 `threshold_wind_disruption_analysis.R` refits the 52 threshold GAMM candidates using the same random-effects structure as the publication figure script, writes model-selection outputs to `analysis/outputs/threshold`, and regenerates `analysis/outputs/threshold/figures/threshold_interaction_wind_sun.png`. This is a provenance figure, not a manuscript figure unless `manuscript.tex` includes it.
 
-`next_day_window_analysis.R` reconstructs and compares the 74 Next Day Window candidates that were defined in the original analysis. These are M1 through M72 and M77 through M78. It uses maximum likelihood and AICc for comparison, records every fit and convergence warning, and refits the selected model using restricted maximum likelihood. Outputs are written to `analysis/outputs/next_day_window`, including the complete audit in `model_comparison_comprehensive.csv`.
+`next_day_window_analysis.R` compares 75 Next Day Window candidates. The original analysis defined M1 through M72 and M77 through M78. M79 is a prespecified linear analogue of the selected 30-minute model and adds the three-way interaction among maximum gust, mean window temperature, and cumulative sun-exposed BI. The script uses maximum likelihood and AICc for comparison, records every fit and convergence warning, and refits the selected model using restricted maximum likelihood. Outputs are written to `analysis/outputs/next_day_window`, including the complete audit in `model_comparison_comprehensive.csv`.
 
 `twenty_four_hour_robustness_analysis.R` refits the 24-hour robustness model, writes summaries to `analysis/outputs/24_hour`, and regenerates `figures/interaction_wind_sun_24hr.png`.
 

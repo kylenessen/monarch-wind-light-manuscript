@@ -81,7 +81,8 @@ data <- read_csv(here("data", "monarch_daily_lag_analysis_nextday_window.csv"), 
   mutate(
     deployment_id = factor(deployment_id),
     across(
-      c(max_butterflies_t_1, lag_duration_hours, wind_max_gust, sum_butterflies_direct_sun),
+      c(max_butterflies_t_1, lag_duration_hours, temp_mean, wind_max_gust,
+        sum_butterflies_direct_sun),
       as.numeric
     )
   ) %>%
@@ -94,7 +95,8 @@ data <- read_csv(here("data", "monarch_daily_lag_analysis_nextday_window.csv"), 
   )
 
 # Reconstruct the original candidate search. The source defines M1-M72 and
-# M77-M78. M73-M76 are not defined candidates and are not invented here.
+# M77-M78. M73-M76 are not defined candidates. M79 is the prespecified linear
+# analogue of the selected 30-minute wind x temperature x direct-sun model.
 k_baseline <- 5
 k_lag <- 5
 weather_predictors <- c(
@@ -201,8 +203,14 @@ add_candidate(77,
 add_candidate(78,
   paste("butterfly_diff_sqrt ~", smooth_base, "+ temp_min + temp_max + wind_max_gust + sum_butterflies_direct_sun + wind_max_gust:sum_butterflies_direct_sun"),
   "Linear interaction + temp_min + temp_max (with baseline + lag duration)")
+add_candidate(79,
+  paste("butterfly_diff_sqrt ~", linear_base, "+ wind_max_gust * temp_mean * sum_butterflies_direct_sun"),
+  "Linear three-way interaction: wind_max_gust x temp_mean x sum_butterflies_direct_sun")
 
-stopifnot(length(model_specs) == 74, identical(names(model_specs), c(paste0("M", 1:72), "M77", "M78")))
+stopifnot(
+  length(model_specs) == 75,
+  identical(names(model_specs), c(paste0("M", 1:72), "M77", "M78", "M79"))
+)
 
 fit_model_safe <- function(formula_str, method = "ML") {
   warnings <- character()
