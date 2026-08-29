@@ -331,10 +331,92 @@ T09 & Smooth wind by sun interaction with temperature & $C + s(W) + s(T) + s(S) 
 
 The primary 30-minute comparison contained the eight H templates and nine T templates, for 17 candidates. The adjustment set $C$ was previous BI and linear minutes since sunrise. The no-previous-BI sensitivity retained time since sunrise, and the no-time sensitivity retained previous BI. Each model included random intercepts for deployment and deployment-day and AR(1) correlation within deployment-day. All 51 fits completed without warnings. The full linear three-way interaction ranked first in all three candidate sets.
 
+Table~\ref{tab:30min_candidates} gives the fixed-effect structure of every primary 30-minute candidate. In this table, $C_{30}$ is previous BI plus minutes since sunrise, $W_{30}$ is maximum gust within the paired interval, $S_{30}$ is sun-exposed BI at the earlier image, and $T_{30}$ is mean camera temperature between the paired images. Smooth terms used shrinkage thin-plate regression splines with $k=5$. Every candidate also had the random-effect and correlation structure described above.
+
+\begin{longtable}{@{}p{0.13\textwidth}p{0.79\textwidth}@{}}
+\caption{The 17 primary candidates in the 30-minute model comparison.} \label{tab:30min_candidates} \\
+\toprule
+\textbf{ID} & \textbf{Fixed-effect structure} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Fixed-effect structure} \\
+\midrule
+\endhead
+H00 & $C_{30}$ \\
+H01 & $C_{30} + W_{30}$ \\
+H02 & $C_{30} + S_{30}$ \\
+H03 & $C_{30} + W_{30} + S_{30}$ \\
+H04 & $C_{30} + W_{30} * S_{30}$ \\
+H05 & $C_{30} + ti(W_{30},S_{30})$ \\
+H06 & $C_{30} + s(W_{30}) + s(S_{30})$ \\
+H07 & $C_{30} + s(W_{30}) + s(S_{30}) + ti(W_{30},S_{30})$ \\
+T01 & $C_{30} + T_{30}$ \\
+T02 & $C_{30} + W_{30} + T_{30} + S_{30}$ \\
+T03 & $C_{30} + W_{30} * T_{30} + S_{30}$ \\
+T04 & $C_{30} + W_{30} * S_{30} + T_{30}$ \\
+T05 & $C_{30} + T_{30} * S_{30} + W_{30}$ \\
+T06 & $C_{30} + W_{30} * T_{30} + W_{30} * S_{30} + T_{30} * S_{30}$ \\
+T07 & $C_{30} + W_{30} * T_{30} * S_{30}$ \\
+T08 & $C_{30} + s(W_{30}) + s(T_{30}) + s(S_{30})$ \\
+T09 & $C_{30} + s(W_{30}) + s(T_{30}) + s(S_{30}) + ti(W_{30},S_{30})$ \\
+\bottomrule
+\end{longtable}
+
 \subsection{Next Day Candidate Mapping}
 \label{app:nextday_models}
 
 The primary Next Day comparison contained the eight H templates and nine T templates repeated for each of the three temperature summaries, for 35 candidates. The adjustment set $C$ was previous-day maximum BI and window duration. The no-previous-BI sensitivity removed previous-day maximum BI from all 35 candidates but retained window duration. Each model included a deployment random intercept and AR(1) correlation within deployment. All 70 fits completed without warnings. The centered wind by sun-exposed BI tensor interaction ranked first in both candidate sets.
+
+Table~\ref{tab:nextday_candidates} gives the fixed-effect structure of every primary Next Day candidate. Here, $C_D$ is previous-day maximum BI plus window duration, $W_D$ is maximum gust within the response window, and $S_D$ is cumulative sun-exposed BI across daylight images. The three temperature variables are $T_{\min}$, minimum window temperature, $T_{\max}$, maximum window temperature, and $T_P$, temperature at the previous day's maximum BI. Smooth terms used shrinkage thin-plate regression splines with $k=5$. Every candidate also had the random-effect and correlation structure described above.
+
+\begin{longtable}{@{}p{0.18\textwidth}p{0.74\textwidth}@{}}
+\caption{The 35 primary candidates in the Next Day model comparison.} \label{tab:nextday_candidates} \\
+\toprule
+\textbf{ID} & \textbf{Fixed-effect structure} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Fixed-effect structure} \\
+\midrule
+\endhead
+H00 & $C_D$ \\
+H01 & $C_D + W_D$ \\
+H02 & $C_D + S_D$ \\
+H03 & $C_D + W_D + S_D$ \\
+H04 & $C_D + W_D * S_D$ \\
+H05 & $C_D + ti(W_D,S_D)$ \\
+H06 & $C_D + s(W_D) + s(S_D)$ \\
+H07 & $C_D + s(W_D) + s(S_D) + ti(W_D,S_D)$ \\
+min-T01 & $C_D + T_{\min}$ \\
+min-T02 & $C_D + W_D + T_{\min} + S_D$ \\
+min-T03 & $C_D + W_D * T_{\min} + S_D$ \\
+min-T04 & $C_D + W_D * S_D + T_{\min}$ \\
+min-T05 & $C_D + T_{\min} * S_D + W_D$ \\
+min-T06 & $C_D + W_D * T_{\min} + W_D * S_D + T_{\min} * S_D$ \\
+min-T07 & $C_D + W_D * T_{\min} * S_D$ \\
+min-T08 & $C_D + s(W_D) + s(T_{\min}) + s(S_D)$ \\
+min-T09 & $C_D + s(W_D) + s(T_{\min}) + s(S_D) + ti(W_D,S_D)$ \\
+max-T01 & $C_D + T_{\max}$ \\
+max-T02 & $C_D + W_D + T_{\max} + S_D$ \\
+max-T03 & $C_D + W_D * T_{\max} + S_D$ \\
+max-T04 & $C_D + W_D * S_D + T_{\max}$ \\
+max-T05 & $C_D + T_{\max} * S_D + W_D$ \\
+max-T06 & $C_D + W_D * T_{\max} + W_D * S_D + T_{\max} * S_D$ \\
+max-T07 & $C_D + W_D * T_{\max} * S_D$ \\
+max-T08 & $C_D + s(W_D) + s(T_{\max}) + s(S_D)$ \\
+max-T09 & $C_D + s(W_D) + s(T_{\max}) + s(S_D) + ti(W_D,S_D)$ \\
+prev-T01 & $C_D + T_P$ \\
+prev-T02 & $C_D + W_D + T_P + S_D$ \\
+prev-T03 & $C_D + W_D * T_P + S_D$ \\
+prev-T04 & $C_D + W_D * S_D + T_P$ \\
+prev-T05 & $C_D + T_P * S_D + W_D$ \\
+prev-T06 & $C_D + W_D * T_P + W_D * S_D + T_P * S_D$ \\
+prev-T07 & $C_D + W_D * T_P * S_D$ \\
+prev-T08 & $C_D + s(W_D) + s(T_P) + s(S_D)$ \\
+prev-T09 & $C_D + s(W_D) + s(T_P) + s(S_D) + ti(W_D,S_D)$ \\
+\bottomrule
+\end{longtable}
 
 All 121 fits were compared using maximum likelihood and AICc. Akaike weights were calculated separately within each response window and sensitivity framework. The selected formulas were refitted using restricted maximum likelihood. Complete machine-readable formulas, fit outcomes, rankings, and selected-model summaries accompany the analysis code.
 
