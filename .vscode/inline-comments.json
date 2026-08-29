@@ -9,7 +9,7 @@
     "selectedText": "Monarchs are ectotherms that regulate body temperature behaviorally while conserving finite lipid reserves across the overwintering season",
     "text": "Needs citations",
     "timestamp": "2026-08-29T23:05:56.564Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "ba594de6-7957-4b8e-bd9e-3d70873ab16d",
@@ -21,7 +21,7 @@
     "selectedText": "The relatively small clusters observed during the study may also respond differently from the large, multilayered aggregations in which many butterflies attach primarily to other butterflies rather than directly to vegetation \\cite{leongMicroenvironmentalFactorsAssociated1990,browerMonarchButterflyClusters2008}.",
     "text": "The point of this sentence is to say that when Kingston published his papers and did his work originally, there were many more monarchs in California. And the size of the clusters may change the behavior that we observe in the field.",
     "timestamp": "2026-08-29T23:07:46.523Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "1f05452d-2552-403b-a1ce-aced425d563f",
@@ -33,6 +33,6 @@
     "selectedText": "not that wind was unimportant",
     "text": "Let's remove this unimportant line and just say the principal finding is blah blah blah blah blah.",
     "timestamp": "2026-08-29T23:08:31.982Z",
-    "resolved": false
+    "resolved": true
   }
 ]
