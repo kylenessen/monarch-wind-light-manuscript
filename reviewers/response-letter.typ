@@ -173,7 +173,7 @@ We agree that a one-minute sampling interval containing a maximum gust at or abo
 ]
 #locations([Lines 299–301, 348–353, and 429–447])
 #response[
-Draft in progress. We will use the descriptive term “number of butterflies visible in direct sunlight,” not irradiance or light intensity. We will state that it is not an independent physical irradiance measurement and discuss the potential relationship between visibility, cluster size, behavior, canopy geometry, and the response variable.
+We now use the term “sun-exposed Butterfly Index,” or “sun-exposed BI,” for the BI subtotal contributed by occupied grid cells classified as receiving direct sunlight. This is an abundance index for sunlit cells, not a count of individually identified butterflies or a physical measurement of irradiance or light intensity. We also clarify that sun-exposed BI depends on visible cluster size, butterfly behavior, visibility, and canopy geometry and may therefore be related to the response variable. We interpret the reported interaction as a conditional association involving sun-exposed BI rather than an independent effect of measured solar irradiance.
 ]
 
 #heading(level: 2)[Comment 7]
