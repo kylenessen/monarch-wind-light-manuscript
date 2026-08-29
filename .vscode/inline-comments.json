@@ -9,7 +9,7 @@
     "selectedText": "averaged 16.8.",
     "text": "we should report median instead.",
     "timestamp": "2026-08-29T16:55:03.516Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "603f30bf-bfb2-4a75-a94a-5f0914b716ee",
@@ -21,6 +21,6 @@
     "selectedText": "window duration was not supported",
     "text": "Do we force window duration into all 74 models? If it's not supported I wonder if it should be included.",
     "timestamp": "2026-08-29T17:05:32.190Z",
-    "resolved": false
+    "resolved": true
   }
 ]

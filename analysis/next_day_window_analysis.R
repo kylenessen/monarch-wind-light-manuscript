@@ -370,7 +370,7 @@ interaction_wind_sun_nextday <- create_binned_interaction_plot(
   x_var = "wind_max_gust",
   y_var = "sum_butterflies_direct_sun",
   data = data,
-  xlab = "Maximum wind speed (m/s)",
+  xlab = "Maximum wind gust (m/s)",
   ylab = "Butterflies in direct sun",
   n = 400,
   limits = c(-16, 16),
