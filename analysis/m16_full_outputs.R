@@ -320,6 +320,7 @@ ggsave(
 # percent of gusts among the 50 observations nearest to that temperature and
 # direct-sun combination.
 prediction_grid$supported <- FALSE
+prediction_grid$supported_90 <- FALSE
 temperature_scale <- sd(data$temperature_avg)
 direct_sun_scale <- IQR(
   data$butterflies_direct_sun_t_lag[data$butterflies_direct_sun_t_lag > 0]
@@ -345,9 +346,12 @@ for (temperature_value in temperature_values) {
     )
     grid_rows <- prediction_grid$temperature_avg == temperature_value &
       prediction_grid$butterflies_direct_sun_t_lag == direct_sun_value
-    prediction_grid$supported[grid_rows] <-
+    prediction_grid$supported_90[grid_rows] <-
       prediction_grid$max_gust[grid_rows] >= supported_wind[1] &
       prediction_grid$max_gust[grid_rows] <= supported_wind[2]
+    prediction_grid$supported[grid_rows] <-
+      prediction_grid$max_gust[grid_rows] >= min(data$max_gust[nearby_rows]) &
+      prediction_grid$max_gust[grid_rows] <= max(data$max_gust[nearby_rows])
     line_support_rows[[length(line_support_rows) + 1]] <- tibble(
       temperature_c = temperature_value,
       butterflies_in_direct_sun = direct_sun_value,
@@ -368,6 +372,9 @@ supported_prediction_grid <- prediction_grid %>%
     fit_supported = if_else(supported, fit, NA_real_),
     conf_low_supported = if_else(supported, conf_low, NA_real_),
     conf_high_supported = if_else(supported, conf_high, NA_real_),
+    fit_supported_90 = if_else(supported_90, fit, NA_real_),
+    conf_low_supported_90 = if_else(supported_90, conf_low, NA_real_),
+    conf_high_supported_90 = if_else(supported_90, conf_high, NA_real_),
     fit_supported_raw = fit_supported^3,
     conf_low_supported_raw = conf_low_supported^3,
     conf_high_supported_raw = conf_high_supported^3
@@ -411,9 +418,38 @@ ggsave(
   bg = "white"
 )
 
+supported_90_line_plot <- ggplot(
+  supported_prediction_grid,
+  aes(
+    x = max_gust,
+    y = fit_supported_90,
+    color = direct_sun_label,
+    fill = direct_sun_label,
+    group = direct_sun_label
+  )
+) +
+  geom_ribbon(
+    aes(ymin = conf_low_supported_90, ymax = conf_high_supported_90),
+    alpha = 0.10,
+    linewidth = 0,
+    color = NA,
+    na.rm = TRUE
+  ) +
+  geom_line(linewidth = 1.0, na.rm = TRUE) +
+  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
+  facet_wrap(~temperature_label, nrow = 1) +
+  scale_color_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
+  scale_fill_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
+  labs(
+    x = "Maximum wind gust (m/s)",
+    y = "Modeled 30-minute BI change\n(cube-root scale)"
+  ) +
+  figure_theme
+
 ggsave(
   file.path(candidate_figure_dir, "b_supported_range_lines.png"),
-  supported_line_plot,
+  supported_90_line_plot,
   width = 12,
   height = 5.8,
   dpi = 300,
@@ -971,6 +1007,11 @@ figure_notes <- c(
     "The manuscript figure shows fitted values on the signed cube-root response scale.",
     "Values above zero indicate increases in BI and values below zero indicate decreases."
   ),
+  paste(
+    "Each manuscript line spans the full local gust range among the 50 nearest",
+    "observations, subject to the shared overall 99th-percentile cap."
+  ),
+  "All observations, including those above the plotting cap, were retained in model fitting.",
   "Predictions exclude random effects. Confidence bands are pointwise 95 percent fixed-effect intervals.",
   paste(
     "Candidate B limits each line to the central 90 percent of gusts among",

@@ -5,6 +5,8 @@ Temperature values represent a cool observed condition, a representative value w
 Direct-sun values represent no visible butterflies in direct sun and the median and 75th percentile among nonzero direct-sun observations: 0, 7, 20 butterflies.
 The wind range ends at the 99th percentile of the observed maximum gust distribution, 6.21 m/s.
 The manuscript figure shows fitted values on the signed cube-root response scale. Values above zero indicate increases in BI and values below zero indicate decreases.
+Each manuscript line spans the full local gust range among the 50 nearest observations, subject to the shared overall 99th-percentile cap.
+All observations, including those above the plotting cap, were retained in model fitting.
 Predictions exclude random effects. Confidence bands are pointwise 95 percent fixed-effect intervals.
 Candidate B limits each line to the central 90 percent of gusts among the 50 observations nearest to its temperature and direct-sun combination.
 Candidate E spans the full minimum-to-maximum gust range among all 50 nearby observations for each temperature and direct-sun combination.
