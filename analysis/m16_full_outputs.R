@@ -368,14 +368,14 @@ supported_line_plot <- ggplot(
   supported_prediction_grid,
   aes(
     x = max_gust,
-    y = fit_supported_raw,
+    y = fit_supported,
     color = direct_sun_label,
     fill = direct_sun_label,
     group = direct_sun_label
   )
 ) +
   geom_ribbon(
-    aes(ymin = conf_low_supported_raw, ymax = conf_high_supported_raw),
+    aes(ymin = conf_low_supported, ymax = conf_high_supported),
     alpha = 0.10,
     linewidth = 0,
     color = NA,
@@ -389,7 +389,7 @@ supported_line_plot <- ggplot(
   scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
   labs(
     x = "Maximum wind gust (m/s)",
-    y = expression(paste("Fitted 30-minute ", Delta, "BI"))
+    y = "Modeled 30-minute BI change\n(cube-root scale)"
   ) +
   figure_theme
 
@@ -821,12 +821,8 @@ figure_notes <- c(
     paste0("distribution, ", round(wind_max_plot, 2), " m/s.")
   ),
   paste(
-    "The manuscript figure back-transforms the fitted signed cube-root response",
-    "and interval endpoints by cubing them, so the vertical axis is in original delta BI units."
-  ),
-  paste(
-    "These values are back-transformed fitted changes, not conditional means",
-    "estimated directly on the raw delta BI scale."
+    "The manuscript figure shows fitted values on the signed cube-root response scale.",
+    "Values above zero indicate increases in BI and values below zero indicate decreases."
   ),
   "Predictions exclude random effects. Confidence bands are pointwise 95 percent fixed-effect intervals.",
   paste(
