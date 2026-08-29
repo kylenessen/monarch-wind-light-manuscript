@@ -19,8 +19,7 @@ out_dir <- here("analysis", "outputs", "30_minute", "m16")
 table_dir <- file.path(out_dir, "tables")
 text_dir <- file.path(out_dir, "text")
 figure_dir <- file.path(out_dir, "figures")
-candidate_figure_dir <- file.path(figure_dir, "candidates")
-for (path in c(out_dir, table_dir, text_dir, figure_dir, candidate_figure_dir)) {
+for (path in c(out_dir, table_dir, text_dir, figure_dir)) {
   dir.create(path, recursive = TRUE, showWarnings = FALSE)
 }
 
@@ -178,7 +177,7 @@ write_csv(fit_statistics, file.path(table_dir, "m16_fit_statistics.csv"))
 
 # Conditional effect of a 1 m/s increase in wind
 temperature_values <- c(10, 15, 20)
-sun_values <- c(0, 7, 20)
+sun_values <- c(0, 3, 20)
 fixed_beta <- fixef(model$lme)
 fixed_vcov <- vcov(model$lme)
 fixed_df <- min(lme_summary$tTable[, "DF"])
@@ -242,7 +241,7 @@ prediction_grid <- prediction_grid %>%
     direct_sun_label = factor(
       butterflies_direct_sun_t_lag,
       levels = sun_values,
-      labels = c("0", "7", "20")
+      labels = c("0", "3", "20")
     )
   )
 write_csv(prediction_grid, file.path(table_dir, "m16_figure_predictions.csv"))
@@ -257,127 +256,49 @@ figure_theme <- theme_like_reference(12, 0.95) +
     )
   )
 
-sun_colors <- c("0" = "#4d4d4d", "7" = "#2b83ba", "20" = "#d7191c")
+sun_colors <- c("0" = "#4d4d4d", "3" = "#2b83ba", "20" = "#d7191c")
 
-inside_polygon <- function(x, y, polygon_x, polygon_y) {
-  inside <- rep(FALSE, length(x))
-  previous <- length(polygon_x)
-  for (current in seq_along(polygon_x)) {
-    crosses <- ((polygon_y[current] > y) != (polygon_y[previous] > y)) &
-      (x < (polygon_x[previous] - polygon_x[current]) *
-        (y - polygon_y[current]) /
-        (polygon_y[previous] - polygon_y[current]) + polygon_x[current])
-    inside <- xor(inside, crosses)
-    previous <- current
-  }
-  inside
-}
-
-inside_observed_hull <- function(x, y, observed_x, observed_y) {
-  observed <- unique(data.frame(x = observed_x, y = observed_y))
-  if (nrow(observed) < 3) return(rep(FALSE, length(x)))
-  hull_rows <- chull(observed$x, observed$y)
-  inside_polygon(
-    x,
-    y,
-    observed$x[hull_rows],
-    observed$y[hull_rows]
-  )
-}
-
-prediction_plot <- ggplot(
-  prediction_grid,
-  aes(x = max_gust, y = fit, color = direct_sun_label, fill = direct_sun_label)
-) +
-  geom_ribbon(
-    aes(ymin = conf_low, ymax = conf_high),
-    alpha = 0.10,
-    linewidth = 0,
-    color = NA
-  ) +
-  geom_line(linewidth = 1.0) +
-  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
-  facet_wrap(~temperature_label, nrow = 1) +
-  scale_color_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
-  scale_fill_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
-  scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
-  labs(
-    x = "Maximum wind gust (m/s)",
-    y = expression(paste("Predicted cube-root ", Delta, "BI"))
-  ) +
-  figure_theme
-
-ggsave(
-  file.path(candidate_figure_dir, "a_global_range_lines.png"),
-  prediction_plot,
-  width = 12,
-  height = 5.8,
-  dpi = 300,
-  bg = "white"
-)
-
-# Candidate B. Familiar line plot, but each line is limited to the central 90
-# percent of gusts among the 50 observations nearest to that temperature and
-# direct-sun combination.
 prediction_grid$supported <- FALSE
-prediction_grid$supported_90 <- FALSE
 temperature_scale <- sd(data$temperature_avg)
 direct_sun_scale <- IQR(
   data$butterflies_direct_sun_t_lag[data$butterflies_direct_sun_t_lag > 0]
 )
 line_support_rows <- list()
+
 for (temperature_value in temperature_values) {
   for (direct_sun_value in sun_values) {
     condition_distance <- sqrt(
       ((data$temperature_avg - temperature_value) / temperature_scale)^2 +
-      ((data$butterflies_direct_sun_t_lag - direct_sun_value) /
-        direct_sun_scale)^2
+        ((data$butterflies_direct_sun_t_lag - direct_sun_value) /
+          direct_sun_scale)^2
     )
-    nearby_rows <- order(condition_distance)[seq_len(50)]
-    supported_wind <- quantile(
-      data$max_gust[nearby_rows],
-      c(0.05, 0.95),
-      names = FALSE
-    )
-    supported_wind_95 <- quantile(
-      data$max_gust[nearby_rows],
-      c(0.025, 0.975),
-      names = FALSE
-    )
+    nearby_rows <- order(condition_distance)[seq_len(min(50, nrow(data)))]
+    wind_minimum <- min(data$max_gust[nearby_rows])
+    wind_maximum <- max(data$max_gust[nearby_rows])
     grid_rows <- prediction_grid$temperature_avg == temperature_value &
       prediction_grid$butterflies_direct_sun_t_lag == direct_sun_value
-    prediction_grid$supported_90[grid_rows] <-
-      prediction_grid$max_gust[grid_rows] >= supported_wind[1] &
-      prediction_grid$max_gust[grid_rows] <= supported_wind[2]
+
     prediction_grid$supported[grid_rows] <-
-      prediction_grid$max_gust[grid_rows] >= min(data$max_gust[nearby_rows]) &
-      prediction_grid$max_gust[grid_rows] <= max(data$max_gust[nearby_rows])
-    line_support_rows[[length(line_support_rows) + 1]] <- tibble(
+      prediction_grid$max_gust[grid_rows] >= wind_minimum &
+      prediction_grid$max_gust[grid_rows] <= wind_maximum
+
+    line_support_rows[[length(line_support_rows) + 1L]] <- tibble(
       temperature_c = temperature_value,
       butterflies_in_direct_sun = direct_sun_value,
       nearby_observations = length(nearby_rows),
-      wind_minimum = min(data$max_gust[nearby_rows]),
-      wind_lower_95 = supported_wind_95[1],
-      wind_lower = supported_wind[1],
-      wind_upper = supported_wind[2],
-      wind_upper_95 = supported_wind_95[2],
-      wind_maximum = max(data$max_gust[nearby_rows])
+      wind_minimum = wind_minimum,
+      wind_maximum = wind_maximum
     )
   }
 }
+
 line_support_table <- bind_rows(line_support_rows)
 
 supported_prediction_grid <- prediction_grid %>%
   mutate(
     fit_supported = if_else(supported, fit, NA_real_),
     conf_low_supported = if_else(supported, conf_low, NA_real_),
-    conf_high_supported = if_else(supported, conf_high, NA_real_),
-    fit_supported_90 = if_else(supported_90, fit, NA_real_),
-    conf_low_supported_90 = if_else(supported_90, conf_low, NA_real_),
-    conf_high_supported_90 = if_else(supported_90, conf_high, NA_real_),
-    fit_supported_raw = fit_supported^3,
-    conf_low_supported_raw = conf_low_supported^3,
-    conf_high_supported_raw = conf_high_supported^3
+    conf_high_supported = if_else(supported, conf_high, NA_real_)
   )
 
 supported_line_plot <- ggplot(
@@ -415,437 +336,6 @@ ggsave(
   width = 12,
   height = 5.8,
   dpi = 600,
-  bg = "white"
-)
-
-supported_90_line_plot <- ggplot(
-  supported_prediction_grid,
-  aes(
-    x = max_gust,
-    y = fit_supported_90,
-    color = direct_sun_label,
-    fill = direct_sun_label,
-    group = direct_sun_label
-  )
-) +
-  geom_ribbon(
-    aes(ymin = conf_low_supported_90, ymax = conf_high_supported_90),
-    alpha = 0.10,
-    linewidth = 0,
-    color = NA,
-    na.rm = TRUE
-  ) +
-  geom_line(linewidth = 1.0, na.rm = TRUE) +
-  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
-  facet_wrap(~temperature_label, nrow = 1) +
-  scale_color_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
-  scale_fill_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
-  scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
-  labs(
-    x = "Maximum wind gust (m/s)",
-    y = "Modeled 30-minute BI change\n(cube-root scale)"
-  ) +
-  figure_theme
-
-ggsave(
-  file.path(candidate_figure_dir, "b_supported_range_lines.png"),
-  supported_90_line_plot,
-  width = 12,
-  height = 5.8,
-  dpi = 300,
-  bg = "white"
-)
-
-# Candidate E. Same representative conditions as candidate B, but each line
-# spans the full minimum-to-maximum gust range among all 50 nearby observations.
-all_local_prediction_grid <- expand.grid(
-  max_gust = seq(min(data$max_gust), max(data$max_gust), length.out = 240),
-  temperature_avg = temperature_values,
-  butterflies_direct_sun_t_lag = sun_values,
-  KEEP.OUT.ATTRS = FALSE
-) %>%
-  mutate(total_butterflies_t_lag = previous_bi_value)
-
-all_local_prediction <- predict(
-  model$gam,
-  newdata = all_local_prediction_grid,
-  se.fit = TRUE
-)
-all_local_prediction_grid <- all_local_prediction_grid %>%
-  mutate(
-    fit = as.numeric(all_local_prediction$fit),
-    standard_error = as.numeric(all_local_prediction$se.fit),
-    conf_low = fit - 1.96 * standard_error,
-    conf_high = fit + 1.96 * standard_error,
-    temperature_label = factor(
-      temperature_avg,
-      levels = temperature_values,
-      labels = c("10 °C", "15 °C", "20 °C")
-    ),
-    direct_sun_label = factor(
-      butterflies_direct_sun_t_lag,
-      levels = sun_values,
-      labels = c("0", "7", "20")
-    )
-  ) %>%
-  left_join(
-    line_support_table,
-    by = c(
-      "temperature_avg" = "temperature_c",
-      "butterflies_direct_sun_t_lag" = "butterflies_in_direct_sun"
-    )
-  ) %>%
-  mutate(
-    supported_all = max_gust >= wind_minimum & max_gust <= wind_maximum,
-    supported_95 = max_gust >= wind_lower_95 & max_gust <= wind_upper_95,
-    fit_supported_all = if_else(supported_all, fit, NA_real_),
-    conf_low_supported_all = if_else(supported_all, conf_low, NA_real_),
-    conf_high_supported_all = if_else(supported_all, conf_high, NA_real_),
-    fit_supported_95 = if_else(supported_95, fit, NA_real_),
-    conf_low_supported_95 = if_else(supported_95, conf_low, NA_real_),
-    conf_high_supported_95 = if_else(supported_95, conf_high, NA_real_)
-  )
-
-all_local_line_plot <- ggplot(
-  all_local_prediction_grid,
-  aes(
-    x = max_gust,
-    y = fit_supported_all,
-    color = direct_sun_label,
-    fill = direct_sun_label,
-    group = direct_sun_label
-  )
-) +
-  geom_ribbon(
-    aes(ymin = conf_low_supported_all, ymax = conf_high_supported_all),
-    alpha = 0.10,
-    linewidth = 0,
-    color = NA,
-    na.rm = TRUE
-  ) +
-  geom_line(linewidth = 1.0, na.rm = TRUE) +
-  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
-  facet_wrap(~temperature_label, nrow = 1) +
-  scale_color_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
-  scale_fill_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
-  scale_x_continuous(
-    breaks = seq(0, 12, by = 4),
-    expand = expansion(mult = c(0, 0.02))
-  ) +
-  labs(
-    x = "Maximum wind gust (m/s)",
-    y = "Modeled 30-minute BI change\n(cube-root scale)"
-  ) +
-  figure_theme
-
-ggsave(
-  file.path(candidate_figure_dir, "e_all_local_range_lines.png"),
-  all_local_line_plot,
-  width = 12,
-  height = 5.8,
-  dpi = 300,
-  bg = "white"
-)
-
-# Candidate F. Same design using the central 95 percent of gust values among
-# the 50 nearby observations for each displayed condition.
-supported_95_line_plot <- ggplot(
-  all_local_prediction_grid,
-  aes(
-    x = max_gust,
-    y = fit_supported_95,
-    color = direct_sun_label,
-    fill = direct_sun_label,
-    group = direct_sun_label
-  )
-) +
-  geom_ribbon(
-    aes(ymin = conf_low_supported_95, ymax = conf_high_supported_95),
-    alpha = 0.10,
-    linewidth = 0,
-    color = NA,
-    na.rm = TRUE
-  ) +
-  geom_line(linewidth = 1.0, na.rm = TRUE) +
-  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
-  facet_wrap(~temperature_label, nrow = 1) +
-  scale_color_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
-  scale_fill_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
-  scale_x_continuous(
-    breaks = seq(0, 12, by = 4),
-    expand = expansion(mult = c(0, 0.02))
-  ) +
-  labs(
-    x = "Maximum wind gust (m/s)",
-    y = "Modeled 30-minute BI change\n(cube-root scale)"
-  ) +
-  figure_theme
-
-ggsave(
-  file.path(candidate_figure_dir, "f_95_percent_local_range_lines.png"),
-  supported_95_line_plot,
-  width = 12,
-  height = 5.8,
-  dpi = 300,
-  bg = "white"
-)
-
-# Candidate G. Add the nonzero 25th percentile while retaining the median and
-# 75th percentile. Lines span their full local range subject to the shared
-# overall 99th-percentile gust cap used in the manuscript figure.
-four_sun_values <- c(0, 3, 7, 20)
-four_sun_prediction_grid <- expand.grid(
-  max_gust = wind_sequence,
-  temperature_avg = temperature_values,
-  butterflies_direct_sun_t_lag = four_sun_values,
-  KEEP.OUT.ATTRS = FALSE
-) %>%
-  mutate(total_butterflies_t_lag = previous_bi_value)
-
-four_sun_prediction <- predict(
-  model$gam,
-  newdata = four_sun_prediction_grid,
-  se.fit = TRUE
-)
-four_sun_prediction_grid <- four_sun_prediction_grid %>%
-  mutate(
-    fit = as.numeric(four_sun_prediction$fit),
-    standard_error = as.numeric(four_sun_prediction$se.fit),
-    conf_low = fit - 1.96 * standard_error,
-    conf_high = fit + 1.96 * standard_error,
-    supported = FALSE,
-    temperature_label = factor(
-      temperature_avg,
-      levels = temperature_values,
-      labels = c("10 °C", "15 °C", "20 °C")
-    ),
-    direct_sun_label = factor(
-      butterflies_direct_sun_t_lag,
-      levels = four_sun_values,
-      labels = c("0", "3", "7", "20")
-    )
-  )
-
-for (temperature_value in temperature_values) {
-  for (direct_sun_value in four_sun_values) {
-    condition_distance <- sqrt(
-      ((data$temperature_avg - temperature_value) / temperature_scale)^2 +
-      ((data$butterflies_direct_sun_t_lag - direct_sun_value) /
-        direct_sun_scale)^2
-    )
-    nearby_rows <- order(condition_distance)[seq_len(50)]
-    grid_rows <- four_sun_prediction_grid$temperature_avg == temperature_value &
-      four_sun_prediction_grid$butterflies_direct_sun_t_lag == direct_sun_value
-    four_sun_prediction_grid$supported[grid_rows] <-
-      four_sun_prediction_grid$max_gust[grid_rows] >=
-        min(data$max_gust[nearby_rows]) &
-      four_sun_prediction_grid$max_gust[grid_rows] <=
-        max(data$max_gust[nearby_rows])
-  }
-}
-
-four_sun_prediction_grid <- four_sun_prediction_grid %>%
-  mutate(
-    fit_supported = if_else(supported, fit, NA_real_),
-    conf_low_supported = if_else(supported, conf_low, NA_real_),
-    conf_high_supported = if_else(supported, conf_high, NA_real_)
-  )
-
-four_sun_colors <- c(
-  "0" = "#4d4d4d",
-  "3" = "#009E73",
-  "7" = "#0072B2",
-  "20" = "#D55E00"
-)
-four_sun_line_plot <- ggplot(
-  four_sun_prediction_grid,
-  aes(
-    x = max_gust,
-    y = fit_supported,
-    color = direct_sun_label,
-    fill = direct_sun_label,
-    group = direct_sun_label
-  )
-) +
-  geom_ribbon(
-    aes(ymin = conf_low_supported, ymax = conf_high_supported),
-    alpha = 0.07,
-    linewidth = 0,
-    color = NA,
-    na.rm = TRUE
-  ) +
-  geom_line(linewidth = 1.0, na.rm = TRUE) +
-  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
-  facet_wrap(~temperature_label, nrow = 1) +
-  scale_color_manual(values = four_sun_colors, name = "Butterflies visible in direct sun") +
-  scale_fill_manual(values = four_sun_colors, name = "Butterflies visible in direct sun") +
-  scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
-  labs(
-    x = "Maximum wind gust (m/s)",
-    y = "Modeled 30-minute BI change\n(cube-root scale)"
-  ) +
-  figure_theme
-
-ggsave(
-  file.path(candidate_figure_dir, "g_four_direct_sun_levels.png"),
-  four_sun_line_plot,
-  width = 12,
-  height = 5.8,
-  dpi = 300,
-  bg = "white"
-)
-
-# Candidate H. Retain no direct-sun butterflies and the nonzero 25th and 75th
-# percentiles, omitting the nonzero median for a cleaner three-line display.
-three_sun_prediction_grid <- four_sun_prediction_grid %>%
-  filter(butterflies_direct_sun_t_lag %in% c(0, 3, 20)) %>%
-  mutate(
-    direct_sun_label = factor(
-      butterflies_direct_sun_t_lag,
-      levels = c(0, 3, 20),
-      labels = c("0", "3", "20")
-    )
-  )
-
-three_sun_colors <- c(
-  "0" = "#4d4d4d",
-  "3" = "#2b83ba",
-  "20" = "#d7191c"
-)
-three_sun_line_plot <- ggplot(
-  three_sun_prediction_grid,
-  aes(
-    x = max_gust,
-    y = fit_supported,
-    color = direct_sun_label,
-    fill = direct_sun_label,
-    group = direct_sun_label
-  )
-) +
-  geom_ribbon(
-    aes(ymin = conf_low_supported, ymax = conf_high_supported),
-    alpha = 0.10,
-    linewidth = 0,
-    color = NA,
-    na.rm = TRUE
-  ) +
-  geom_line(linewidth = 1.0, na.rm = TRUE) +
-  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
-  facet_wrap(~temperature_label, nrow = 1) +
-  scale_color_manual(values = three_sun_colors, name = "Butterflies visible in direct sun") +
-  scale_fill_manual(values = three_sun_colors, name = "Butterflies visible in direct sun") +
-  scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
-  labs(
-    x = "Maximum wind gust (m/s)",
-    y = "Modeled 30-minute BI change\n(cube-root scale)"
-  ) +
-  figure_theme
-
-ggsave(
-  file.path(candidate_figure_dir, "h_three_direct_sun_levels_0_3_20.png"),
-  three_sun_line_plot,
-  width = 12,
-  height = 5.8,
-  dpi = 300,
-  bg = "white"
-)
-
-# Candidate C. Three temperature slices through the fitted response surface.
-# Gray regions lack nearby observations in wind and direct-sun space within
-# 1.5 degrees C of the displayed temperature.
-surface_sun_max <- unname(quantile(
-  data$butterflies_direct_sun_t_lag[data$butterflies_direct_sun_t_lag > 0],
-  0.95
-))
-surface_grid <- expand.grid(
-  max_gust = seq(0, wind_max_plot, length.out = 120),
-  temperature_avg = temperature_values,
-  butterflies_direct_sun_t_lag = seq(0, surface_sun_max, length.out = 120),
-  KEEP.OUT.ATTRS = FALSE
-) %>%
-  mutate(total_butterflies_t_lag = previous_bi_value)
-
-surface_prediction <- predict(model$gam, newdata = surface_grid, se.fit = TRUE)
-surface_grid <- surface_grid %>%
-  mutate(
-    fit = as.numeric(surface_prediction$fit),
-    supported = FALSE,
-    temperature_label = factor(
-      temperature_avg,
-      levels = temperature_values,
-      labels = c("10 °C", "15 °C", "20 °C")
-    )
-  )
-for (temperature_value in temperature_values) {
-  grid_rows <- surface_grid$temperature_avg == temperature_value
-  nearby_data <- data %>%
-    filter(abs(temperature_avg - temperature_value) <= 1.5)
-  surface_grid$supported[grid_rows] <- inside_observed_hull(
-    surface_grid$max_gust[grid_rows],
-    surface_grid$butterflies_direct_sun_t_lag[grid_rows],
-    nearby_data$max_gust,
-    nearby_data$butterflies_direct_sun_t_lag
-  )
-}
-surface_grid <- surface_grid %>%
-  mutate(fit_supported = if_else(supported, fit, NA_real_))
-
-surface_points <- bind_rows(lapply(temperature_values, function(temperature_value) {
-  data %>%
-    filter(
-      abs(temperature_avg - temperature_value) <= 1.5,
-      max_gust <= wind_max_plot,
-      butterflies_direct_sun_t_lag <= surface_sun_max
-    ) %>%
-    mutate(
-      temperature_label = factor(
-        temperature_value,
-        levels = temperature_values,
-        labels = c("10 °C", "15 °C", "20 °C")
-      )
-    )
-}))
-
-surface_limit <- max(abs(surface_grid$fit_supported), na.rm = TRUE)
-response_surface_plot <- ggplot(
-  surface_grid,
-  aes(x = max_gust, y = butterflies_direct_sun_t_lag)
-) +
-  geom_raster(aes(fill = fit_supported)) +
-  geom_point(
-    data = surface_points,
-    aes(x = max_gust, y = butterflies_direct_sun_t_lag),
-    inherit.aes = FALSE,
-    shape = 21,
-    fill = "white",
-    color = "gray25",
-    alpha = 0.28,
-    size = 0.8,
-    stroke = 0.2
-  ) +
-  facet_wrap(~temperature_label, nrow = 1) +
-  scale_fill_gradient2(
-    low = "#2b83ba",
-    mid = "white",
-    high = "#d7191c",
-    midpoint = 0,
-    limits = c(-surface_limit, surface_limit),
-    na.value = "gray88",
-    name = expression(paste("Predicted cube-root ", Delta, "BI"))
-  ) +
-  labs(
-    x = "Maximum wind gust (m/s)",
-    y = "Butterflies visible in direct sun"
-  ) +
-  figure_theme +
-  theme(legend.position = "right")
-
-ggsave(
-  file.path(candidate_figure_dir, "c_supported_response_surfaces.png"),
-  response_surface_plot,
-  width = 12,
-  height = 5.8,
-  dpi = 300,
   bg = "white"
 )
 
@@ -901,114 +391,6 @@ ggsave(
   bg = "white"
 )
 
-# Candidate D. Conditional wind slope across temperature and the direct-sun
-# measure. This removes arbitrary slices and displays the three-way interaction
-# directly. Gray regions lack nearby observed temperature and sun combinations.
-slope_surface_grid <- expand.grid(
-  temperature_c = seq(
-    unname(quantile(data$temperature_avg, 0.01)),
-    unname(quantile(data$temperature_avg, 0.99)),
-    length.out = 180
-  ),
-  butterflies_in_direct_sun = seq(0, surface_sun_max, length.out = 180),
-  KEEP.OUT.ATTRS = FALSE
-)
-
-contrast_matrix <- matrix(
-  0,
-  nrow = nrow(slope_surface_grid),
-  ncol = length(fixed_beta),
-  dimnames = list(NULL, names(fixed_beta))
-)
-contrast_matrix[, "Xmax_gust"] <- 1
-contrast_matrix[, "Xmax_gust:temperature_avg"] <-
-  slope_surface_grid$temperature_c
-contrast_matrix[, "Xmax_gust:butterflies_direct_sun_t_lag"] <-
-  slope_surface_grid$butterflies_in_direct_sun
-contrast_matrix[, "Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag"] <-
-  slope_surface_grid$temperature_c *
-  slope_surface_grid$butterflies_in_direct_sun
-
-slope_surface_grid$estimate <- as.numeric(contrast_matrix %*% fixed_beta)
-slope_surface_grid$standard_error <- sqrt(rowSums(
-  (contrast_matrix %*% fixed_vcov) * contrast_matrix
-))
-slope_surface_grid$conf_low <- slope_surface_grid$estimate +
-  qt(0.025, df = fixed_df) * slope_surface_grid$standard_error
-slope_surface_grid$conf_high <- slope_surface_grid$estimate +
-  qt(0.975, df = fixed_df) * slope_surface_grid$standard_error
-slope_surface_grid$supported <- inside_observed_hull(
-  slope_surface_grid$temperature_c,
-  slope_surface_grid$butterflies_in_direct_sun,
-  data$temperature_avg,
-  data$butterflies_direct_sun_t_lag
-)
-slope_surface_grid$estimate_supported <- if_else(
-  slope_surface_grid$supported,
-  slope_surface_grid$estimate,
-  NA_real_
-)
-
-slope_surface_points <- data %>%
-  filter(
-    butterflies_direct_sun_t_lag <= surface_sun_max,
-    temperature_avg >= min(slope_surface_grid$temperature_c),
-    temperature_avg <= max(slope_surface_grid$temperature_c)
-  )
-
-slope_limit <- max(abs(slope_surface_grid$estimate_supported), na.rm = TRUE)
-conditional_surface_plot <- ggplot(
-  slope_surface_grid,
-  aes(x = temperature_c, y = butterflies_in_direct_sun)
-) +
-  geom_raster(aes(fill = estimate_supported)) +
-  geom_contour(
-    aes(z = estimate),
-    breaks = 0,
-    color = "gray20",
-    linewidth = 0.7
-  ) +
-  geom_point(
-    data = slope_surface_points,
-    aes(x = temperature_avg, y = butterflies_direct_sun_t_lag),
-    inherit.aes = FALSE,
-    shape = 21,
-    fill = "white",
-    color = "gray25",
-    alpha = 0.20,
-    size = 0.8,
-    stroke = 0.2
-  ) +
-  scale_fill_gradient2(
-    low = "#2b83ba",
-    mid = "white",
-    high = "#d7191c",
-    midpoint = 0,
-    limits = c(-slope_limit, slope_limit),
-    na.value = "gray88",
-    name = "Wind slope per 1 m/s"
-  ) +
-  labs(
-    x = "Approximate local temperature (°C)",
-    y = "Butterflies visible in direct sun"
-  ) +
-  theme_like_reference(7, 0.95) +
-  guides(fill = guide_colorbar(title.position = "top")) +
-  theme(
-    legend.position = "bottom",
-    legend.title = element_text(size = reference_figure_style$legend_title),
-    plot.margin = margin(8, 12, 8, 12)
-  )
-
-ggsave(
-  file.path(candidate_figure_dir, "d_conditional_wind_effect_surface.png"),
-  conditional_surface_plot,
-  width = 8.5,
-  height = 6.5,
-  dpi = 300,
-  bg = "white"
-)
-
 write_csv(
   supported_prediction_grid,
   file.path(table_dir, "m16_supported_line_predictions.csv")
@@ -1016,26 +398,6 @@ write_csv(
 write_csv(
   line_support_table,
   file.path(table_dir, "m16_supported_line_ranges.csv")
-)
-write_csv(
-  all_local_prediction_grid,
-  file.path(table_dir, "m16_all_local_line_predictions.csv")
-)
-write_csv(
-  four_sun_prediction_grid,
-  file.path(table_dir, "m16_four_sun_level_predictions.csv")
-)
-write_csv(
-  three_sun_prediction_grid,
-  file.path(table_dir, "m16_three_sun_level_predictions_0_3_20.csv")
-)
-write_csv(
-  surface_grid,
-  file.path(table_dir, "m16_supported_response_surface.csv")
-)
-write_csv(
-  slope_surface_grid,
-  file.path(table_dir, "m16_conditional_wind_effect_surface.csv")
 )
 
 # Model diagnostics
@@ -1164,7 +526,7 @@ figure_notes <- c(
   ),
   paste(
     "Direct-sun values represent no visible butterflies in direct sun and the",
-    "median and 75th percentile among nonzero direct-sun observations:",
+    "25th and 75th percentiles among nonzero direct-sun observations:",
     paste(sun_values, collapse = ", "), "butterflies."
   ),
   paste(
@@ -1181,34 +543,6 @@ figure_notes <- c(
   ),
   "All observations, including those above the plotting cap, were retained in model fitting.",
   "Predictions exclude random effects. Confidence bands are pointwise 95 percent fixed-effect intervals.",
-  paste(
-    "Candidate B limits each line to the central 90 percent of gusts among",
-    "the 50 observations nearest to its temperature and direct-sun combination."
-  ),
-  paste(
-    "Candidate E spans the full minimum-to-maximum gust range among all",
-    "50 nearby observations for each temperature and direct-sun combination."
-  ),
-  paste(
-    "Candidate F spans the central 95 percent of gust values among the",
-    "50 nearby observations for each temperature and direct-sun combination."
-  ),
-  paste(
-    "Candidate G adds the nonzero 25th percentile, using direct-sun values",
-    "of 0, 3, 7, and 20 butterflies with the manuscript range rules."
-  ),
-  paste(
-    "Candidate H uses 0, 3, and 20 butterflies in direct sun, representing",
-    "none and the nonzero 25th and 75th percentiles."
-  ),
-  paste(
-    "Candidate C masks predictions outside the convex hull of wind and",
-    "direct-sun observations within 1.5 degrees C of each displayed temperature."
-  ),
-  paste(
-    "Candidate D masks conditional wind slopes outside the convex hull of",
-    "observed temperature and direct-sun combinations."
-  ),
   "Raw main-effect coefficients are conditional on zero values of interacting predictors.",
   "Temperature zero is outside the observed range, so the interaction figures should guide interpretation."
 )

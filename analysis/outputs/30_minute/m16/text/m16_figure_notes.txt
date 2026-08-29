@@ -2,18 +2,11 @@ M16 figure conditions
 
 Previous BI is held at the sample median of 37 butterflies.
 Temperature values represent a cool observed condition, a representative value within the historical flight-threshold range, and a warm observed condition: 10, 15, 20 degrees C.
-Direct-sun values represent no visible butterflies in direct sun and the median and 75th percentile among nonzero direct-sun observations: 0, 7, 20 butterflies.
+Direct-sun values represent no visible butterflies in direct sun and the 25th and 75th percentiles among nonzero direct-sun observations: 0, 3, 20 butterflies.
 The wind range ends at the 99th percentile of the observed maximum gust distribution, 6.21 m/s.
 The manuscript figure shows fitted values on the signed cube-root response scale. Values above zero indicate increases in BI and values below zero indicate decreases.
 Each manuscript line spans the full local gust range among the 50 nearest observations, subject to the shared overall 99th-percentile cap.
 All observations, including those above the plotting cap, were retained in model fitting.
 Predictions exclude random effects. Confidence bands are pointwise 95 percent fixed-effect intervals.
-Candidate B limits each line to the central 90 percent of gusts among the 50 observations nearest to its temperature and direct-sun combination.
-Candidate E spans the full minimum-to-maximum gust range among all 50 nearby observations for each temperature and direct-sun combination.
-Candidate F spans the central 95 percent of gust values among the 50 nearby observations for each temperature and direct-sun combination.
-Candidate G adds the nonzero 25th percentile, using direct-sun values of 0, 3, 7, and 20 butterflies with the manuscript range rules.
-Candidate H uses 0, 3, and 20 butterflies in direct sun, representing none and the nonzero 25th and 75th percentiles.
-Candidate C masks predictions outside the convex hull of wind and direct-sun observations within 1.5 degrees C of each displayed temperature.
-Candidate D masks conditional wind slopes outside the convex hull of observed temperature and direct-sun combinations.
 Raw main-effect coefficients are conditional on zero values of interacting predictors.
 Temperature zero is outside the observed range, so the interaction figures should guide interpretation.
