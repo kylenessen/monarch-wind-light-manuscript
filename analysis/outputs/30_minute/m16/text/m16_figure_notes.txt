@@ -2,7 +2,7 @@ M16 figure conditions
 
 Previous BI is held at the sample median of 37 butterflies.
 Temperature values represent a cool observed condition, a representative value within the historical flight-threshold range, and a warm observed condition: 10, 15, 20 degrees C.
-Direct-sun values represent no visible butterflies in direct sun and the 25th and 75th percentiles among nonzero direct-sun observations: 0, 3, 20 butterflies.
+Sun-exposed BI values represent zero and the median and 75th percentile among observations with positive sun-exposed BI: 0, 7, 20.
 The wind range ends at the 99th percentile of the observed maximum gust distribution, 6.21 m/s.
 The manuscript figure shows fitted values on the signed cube-root response scale. Values above zero indicate increases in BI and values below zero indicate decreases.
 Each manuscript line spans the full local gust range among the 50 nearest observations, subject to the shared overall 99th-percentile cap.

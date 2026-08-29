@@ -177,7 +177,7 @@ write_csv(fit_statistics, file.path(table_dir, "m16_fit_statistics.csv"))
 
 # Conditional effect of a 1 m/s increase in wind
 temperature_values <- c(10, 15, 20)
-sun_values <- c(0, 3, 20)
+sun_values <- c(0, 7, 20)
 fixed_beta <- fixef(model$lme)
 fixed_vcov <- vcov(model$lme)
 fixed_df <- min(lme_summary$tTable[, "DF"])
@@ -241,7 +241,7 @@ prediction_grid <- prediction_grid %>%
     direct_sun_label = factor(
       butterflies_direct_sun_t_lag,
       levels = sun_values,
-      labels = c("0", "3", "20")
+      labels = as.character(sun_values)
     )
   )
 write_csv(prediction_grid, file.path(table_dir, "m16_figure_predictions.csv"))
@@ -256,7 +256,7 @@ figure_theme <- theme_like_reference(12, 0.95) +
     )
   )
 
-sun_colors <- c("0" = "#4d4d4d", "3" = "#2b83ba", "20" = "#d7191c")
+sun_colors <- c("0" = "#4d4d4d", "7" = "#2b83ba", "20" = "#d7191c")
 
 prediction_grid$supported <- FALSE
 temperature_scale <- sd(data$temperature_avg)
@@ -321,12 +321,12 @@ supported_line_plot <- ggplot(
   geom_line(linewidth = 1.0, na.rm = TRUE) +
   geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
   facet_wrap(~temperature_label, nrow = 1) +
-  scale_color_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
-  scale_fill_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
+  scale_color_manual(values = sun_colors, name = "Sun-exposed BI") +
+  scale_fill_manual(values = sun_colors, name = "Sun-exposed BI") +
   scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
   labs(
     x = "Maximum wind gust (m/s)",
-    y = "Modeled 30-minute BI change\n(cube-root scale)"
+    y = "Predicted 30-minute BI change\n(cube-root scale)"
   ) +
   figure_theme
 
@@ -376,7 +376,7 @@ slope_plot <- ggplot(
   facet_wrap(~temperature_label, nrow = 1) +
   scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
   labs(
-    x = "Butterflies visible in direct sun",
+    x = "Sun-exposed BI",
     y = "Wind effect per 1 m/s"
   ) +
   figure_theme +
@@ -525,9 +525,9 @@ figure_notes <- c(
     paste(temperature_values, collapse = ", "), "degrees C."
   ),
   paste(
-    "Direct-sun values represent no visible butterflies in direct sun and the",
-    "25th and 75th percentiles among nonzero direct-sun observations:",
-    paste(sun_values, collapse = ", "), "butterflies."
+    "Sun-exposed BI values represent zero and the median and 75th percentile",
+    "among observations with positive sun-exposed BI:",
+    paste0(paste(sun_values, collapse = ", "), ".")
   ),
   paste(
     "The wind range ends at the 99th percentile of the observed maximum gust",
