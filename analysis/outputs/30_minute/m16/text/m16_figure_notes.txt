@@ -3,9 +3,10 @@ M16 figure conditions
 Previous BI is held at the sample median of 37 butterflies.
 Temperature values represent a cool observed condition, a representative value within the historical flight-threshold range, and a warm observed condition: 10, 15, 20 degrees C.
 Sun-exposed BI values represent zero and the median and 75th percentile among observations with positive sun-exposed BI: 0, 7, 20.
-The displayed wind range ends at 4 m/s.
+The displayed wind range ends at 6.207 m/s.
 The manuscript figure shows fitted values on the signed cube-root response scale. Values above zero indicate increases in BI and values below zero indicate decreases.
-Each manuscript line spans 0 m/s to 4 m/s.
+Solid line portions mark the deployment-balanced 95 percent central halfspace-depth region for the three plotted predictors.
+Faint line portions extend the fitted predictions to the overall 99th percentile of maximum gust, 6.207 m/s.
 All observations, including those above the plotting cap, were retained in model fitting.
 Predictions exclude random effects. Confidence bands are pointwise 95 percent fixed-effect intervals.
 Raw main-effect coefficients are conditional on zero values of interacting predictors.

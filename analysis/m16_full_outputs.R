@@ -215,8 +215,29 @@ write_csv(
 
 # Prediction data for manuscript-style figures
 previous_bi_value <- median(data$total_butterflies_t_lag)
-wind_max_plot <- 4
-wind_sequence <- seq(0, wind_max_plot, length.out = 160)
+wind_max_plot <- unname(quantile(data$max_gust, 0.99))
+wind_sequence <- seq(0, wind_max_plot, length.out = 240)
+
+support_interval_path <- file.path(
+  table_dir,
+  "m16_prediction_support_intervals.csv"
+)
+if (!file.exists(support_interval_path)) {
+  stop(
+    "Missing M16 support intervals. Run `uv run analysis/m16_prediction_support.py` first."
+  )
+}
+support_intervals <- read_csv(
+  support_interval_path,
+  show_col_types = FALSE
+) %>%
+  filter(abs(central_coverage - 0.95) < 1e-8) %>%
+  transmute(
+    temperature_avg = temperature_c,
+    butterflies_direct_sun_t_lag = sun_exposed_bi,
+    support_min = gust_support_min_ms,
+    support_max = gust_support_max_ms
+  )
 
 prediction_grid <- expand.grid(
   max_gust = wind_sequence,
@@ -228,11 +249,16 @@ prediction_grid <- expand.grid(
 
 prediction <- predict(model$gam, newdata = prediction_grid, se.fit = TRUE)
 prediction_grid <- prediction_grid %>%
+  left_join(
+    support_intervals,
+    by = c("temperature_avg", "butterflies_direct_sun_t_lag")
+  ) %>%
   mutate(
     fit = as.numeric(prediction$fit),
     standard_error = as.numeric(prediction$se.fit),
     conf_low = fit - 1.96 * standard_error,
     conf_high = fit + 1.96 * standard_error,
+    supported = max_gust >= support_min & max_gust <= support_max,
     temperature_label = factor(
       temperature_avg,
       levels = temperature_values,
@@ -270,32 +296,55 @@ response_plot <- ggplot(
 ) +
   geom_ribbon(
     aes(ymin = conf_low, ymax = conf_high),
-    alpha = 0.10,
+    alpha = 0.025,
     linewidth = 0,
     color = NA
   ) +
-  geom_line(linewidth = 1.0) +
+  geom_line(linewidth = 0.65, alpha = 0.22) +
+  geom_ribbon(
+    data = filter(prediction_grid, supported),
+    aes(ymin = conf_low, ymax = conf_high),
+    alpha = 0.12,
+    linewidth = 0,
+    color = NA
+  ) +
+  geom_line(
+    data = filter(prediction_grid, supported),
+    linewidth = 1.05
+  ) +
   geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
   facet_wrap(~temperature_label, nrow = 1) +
   scale_color_manual(values = sun_colors, name = "Sun-exposed BI") +
   scale_fill_manual(values = sun_colors, name = "Sun-exposed BI") +
   scale_x_continuous(
     limits = c(0, wind_max_plot),
-    breaks = seq(0, wind_max_plot, by = 1),
+    breaks = 0:6,
     expand = expansion(mult = 0.01)
   ) +
   labs(
+    subtitle = paste0(
+      "Solid sections mark the central 95% joint predictor region; ",
+      "faint extensions continue to the gust 99th percentile (",
+      format(round(wind_max_plot, 2), nsmall = 2), " m/s)."
+    ),
     x = "Maximum wind gust (m/s)",
     y = "Predicted 30-minute BI change\n(cube-root scale)"
   ) +
   figure_theme +
-  theme(panel.spacing.x = grid::unit(1, "lines"))
+  theme(
+    plot.subtitle = element_text(
+      color = "gray35",
+      size = 10,
+      margin = margin(b = 8)
+    ),
+    panel.spacing.x = grid::unit(1, "lines")
+  )
 
 ggsave(
   file.path(figure_dir, "m16_predicted_response.png"),
   response_plot,
   width = 12,
-  height = 5.8,
+  height = 6.2,
   dpi = 600,
   bg = "white"
 )
@@ -486,7 +535,14 @@ figure_notes <- c(
     "The manuscript figure shows fitted values on the signed cube-root response scale.",
     "Values above zero indicate increases in BI and values below zero indicate decreases."
   ),
-  paste("Each manuscript line spans 0 m/s to", wind_max_plot, "m/s."),
+  paste(
+    "Solid line portions mark the deployment-balanced 95 percent central",
+    "halfspace-depth region for the three plotted predictors."
+  ),
+  paste(
+    "Faint line portions extend the fitted predictions to the overall",
+    "99th percentile of maximum gust,", wind_max_plot, "m/s."
+  ),
   "All observations, including those above the plotting cap, were retained in model fitting.",
   "Predictions exclude random effects. Confidence bands are pointwise 95 percent fixed-effect intervals.",
   "Raw main-effect coefficients are conditional on zero values of interacting predictors.",
