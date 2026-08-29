@@ -13,10 +13,10 @@ butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust *
 
 Parametric coefficients:
                                                         Estimate Std. Error
-(Intercept)                                            0.0158676  0.4809454
-total_butterflies_t_lag                               -0.0023579  0.0004856
-max_gust                                              -0.1735508  0.1468895
-temperature_avg                                        0.0191151  0.0216821
+(Intercept)                                            0.0158685  0.4809491
+total_butterflies_t_lag                               -0.0023580  0.0004856
+max_gust                                              -0.1735509  0.1468895
+temperature_avg                                        0.0191152  0.0216821
 butterflies_direct_sun_t_lag                           0.1724460  0.0361650
 max_gust:temperature_avg                               0.0134056  0.0102750
 max_gust:butterflies_direct_sun_t_lag                 -0.0920241  0.0168295
@@ -43,47 +43,43 @@ REML mixed-model summary
 Linear mixed-effects model fit by REML
   Data: strip.offset(mf)
        AIC      BIC    logLik
-  8132.647 8210.231 -4052.324
+  8130.647 8202.689 -4052.324
 
 Random effects:
  Formula: ~1 | deployment_id
         (Intercept)
-StdDev:   0.7576733
+StdDev:    1.071527
 
- Formula: ~1 | Observer %in% deployment_id
-        (Intercept)
-StdDev:   0.7576733
-
- Formula: ~1 | deployment_day %in% Observer %in% deployment_id
+ Formula: ~1 | deployment_day %in% deployment_id
         (Intercept) Residual
-StdDev:   0.1313031 2.017904
+StdDev:   0.1313099 2.017904
 
 Correlation Structure: ARMA(1,0)
- Formula: ~observation_order_within_day_t | deployment_id/Observer/deployment_day
+ Formula: ~observation_order_within_day_t | deployment_id/deployment_day
  Parameter estimate(s):
       Phi1
--0.1501109
+-0.1501126
 Fixed effects:  y ~ X - 1
                                                              Value Std.Error
-X(Intercept)                                            0.01586756 0.4809454
-Xtotal_butterflies_t_lag                               -0.00235794 0.0004856
-Xmax_gust                                              -0.17355081 0.1468895
-Xtemperature_avg                                        0.01911506 0.0216821
-Xbutterflies_direct_sun_t_lag                           0.17244600 0.0361650
+X(Intercept)                                            0.01586851 0.4809491
+Xtotal_butterflies_t_lag                               -0.00235796 0.0004856
+Xmax_gust                                              -0.17355088 0.1468895
+Xtemperature_avg                                        0.01911518 0.0216821
+Xbutterflies_direct_sun_t_lag                           0.17244602 0.0361650
 Xmax_gust:temperature_avg                               0.01340556 0.0102750
-Xmax_gust:butterflies_direct_sun_t_lag                 -0.09202414 0.0168295
+Xmax_gust:butterflies_direct_sun_t_lag                 -0.09202412 0.0168295
 Xtemperature_avg:butterflies_direct_sun_t_lag          -0.01412162 0.0024449
 Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag  0.00661677 0.0010827
                                                          DF   t-value p-value
-X(Intercept)                                           1771  0.032992  0.9737
-Xtotal_butterflies_t_lag                               1771 -4.856171  0.0000
+X(Intercept)                                           1771  0.032994  0.9737
+Xtotal_butterflies_t_lag                               1771 -4.856192  0.0000
 Xmax_gust                                              1771 -1.181506  0.2376
-Xtemperature_avg                                       1771  0.881605  0.3781
-Xbutterflies_direct_sun_t_lag                          1771  4.768315  0.0000
+Xtemperature_avg                                       1771  0.881611  0.3781
+Xbutterflies_direct_sun_t_lag                          1771  4.768319  0.0000
 Xmax_gust:temperature_avg                              1771  1.304680  0.1922
-Xmax_gust:butterflies_direct_sun_t_lag                 1771 -5.468020  0.0000
-Xtemperature_avg:butterflies_direct_sun_t_lag          1771 -5.776020  0.0000
-Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag 1771  6.111197  0.0000
+Xmax_gust:butterflies_direct_sun_t_lag                 1771 -5.468023  0.0000
+Xtemperature_avg:butterflies_direct_sun_t_lag          1771 -5.776025  0.0000
+Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag 1771  6.111200  0.0000
  Correlation:
                                                        X(Int) Xtt___ Xmx_gs
 Xtotal_butterflies_t_lag                               -0.170
@@ -115,68 +111,62 @@ Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag -0.980   -0.901
 
 Standardized Within-Group Residuals:
         Min          Q1         Med          Q3         Max
--4.01208921 -0.71903489 -0.02934463  0.67091022  4.76581123
+-4.01209649 -0.71903462 -0.02934504  0.67091075  4.76580910
 
 Number of Observations: 1894
 Number of Groups:
-                                  deployment_id
-                                             10
-                    Observer %in% deployment_id
-                                             10
-deployment_day %in% Observer %in% deployment_id
-                                            115
+                    deployment_id deployment_day %in% deployment_id
+                               10                               115
 
 Fixed-effect 95 percent confidence intervals
                                                               lower
-X(Intercept)                                           -0.927412748
-Xtotal_butterflies_t_lag                               -0.003310264
-Xmax_gust                                              -0.461645900
-Xtemperature_avg                                       -0.023410165
-Xbutterflies_direct_sun_t_lag                           0.101515480
-Xmax_gust:temperature_avg                              -0.006746802
-Xmax_gust:butterflies_direct_sun_t_lag                 -0.125031943
-Xtemperature_avg:butterflies_direct_sun_t_lag          -0.018916752
+X(Intercept)                                           -0.927419162
+Xtotal_butterflies_t_lag                               -0.003310280
+Xmax_gust                                              -0.461645899
+Xtemperature_avg                                       -0.023410038
+Xbutterflies_direct_sun_t_lag                           0.101515540
+Xmax_gust:temperature_avg                              -0.006746798
+Xmax_gust:butterflies_direct_sun_t_lag                 -0.125031901
+Xtemperature_avg:butterflies_direct_sun_t_lag          -0.018916753
 Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag  0.004493207
                                                                est.
-X(Intercept)                                            0.015867557
-Xtotal_butterflies_t_lag                               -0.002357942
-Xmax_gust                                              -0.173550812
-Xtemperature_avg                                        0.019115061
-Xbutterflies_direct_sun_t_lag                           0.172446004
-Xmax_gust:temperature_avg                               0.013405562
-Xmax_gust:butterflies_direct_sun_t_lag                 -0.092024138
-Xtemperature_avg:butterflies_direct_sun_t_lag          -0.014121618
-Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag  0.006616767
+X(Intercept)                                            0.015868511
+Xtotal_butterflies_t_lag                               -0.002357956
+Xmax_gust                                              -0.173550876
+Xtemperature_avg                                        0.019115183
+Xbutterflies_direct_sun_t_lag                           0.172446020
+Xmax_gust:temperature_avg                               0.013405560
+Xmax_gust:butterflies_direct_sun_t_lag                 -0.092024119
+Xtemperature_avg:butterflies_direct_sun_t_lag          -0.014121622
+Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag  0.006616766
                                                               upper
-X(Intercept)                                            0.959147863
-Xtotal_butterflies_t_lag                               -0.001405619
-Xmax_gust                                               0.114544276
-Xtemperature_avg                                        0.061640288
-Xbutterflies_direct_sun_t_lag                           0.243376527
-Xmax_gust:temperature_avg                               0.033557926
-Xmax_gust:butterflies_direct_sun_t_lag                 -0.059016333
-Xtemperature_avg:butterflies_direct_sun_t_lag          -0.009326484
-Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag  0.008740327
+X(Intercept)                                            0.959156185
+Xtotal_butterflies_t_lag                               -0.001405632
+Xmax_gust                                               0.114544148
+Xtemperature_avg                                        0.061640404
+Xbutterflies_direct_sun_t_lag                           0.243376500
+Xmax_gust:temperature_avg                               0.033557919
+Xmax_gust:butterflies_direct_sun_t_lag                 -0.059016337
+Xtemperature_avg:butterflies_direct_sun_t_lag          -0.009326490
+Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag  0.008740324
 attr(,"label")
 [1] "Fixed effects:"
 
 Variance components
                  Variance     StdDev
 deployment_id =  pdLogChol(1)
-(Intercept)      0.5740689    0.7576733
-Observer =       pdLogChol(1)
-(Intercept)      0.5740689    0.7576733
+(Intercept)      1.14817099   1.0715274
 deployment_day = pdLogChol(1)
-(Intercept)      0.0172405    0.1313031
-Residual         4.0719377    2.0179043
+(Intercept)      0.01724229   0.1313099
+Residual         4.07193698   2.0179041
 
 AR1 coefficient
       Phi1
--0.1501109
+-0.1501126
 
 ML model-comparison statistics
 # A tibble: 1 × 12
   Model Formula  Status Error Warning     n Likelihood_Method LogLik    df   AIC
-  <chr> <chr>    <chr>  <lgl> <chr>   <dbl> <chr>              <dbl> <dbl> <dbl>
-1 M16   butterf… succe… NA    <NA>     1894 ML                -4014.    14 8056.
+  <chr> <chr>    <chr>  <lgl> <lgl>   <dbl> <chr>              <dbl> <dbl> <dbl>
+1 M16   butterf… succe… NA    NA       1894 ML                -4014.    13 8054.
 # ℹ 2 more variables: Delta_AIC <dbl>, Weight <dbl>

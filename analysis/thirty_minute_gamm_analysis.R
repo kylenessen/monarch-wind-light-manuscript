@@ -45,8 +45,7 @@ model_data <- dat %>%
     !is.na(butterflies_direct_sun_t_lag),
     !is.na(observation_order_within_day_t),
     !is.na(deployment_day),
-    !is.na(deployment_id),
-    !is.na(Observer)
+    !is.na(deployment_id)
   )
 
 n_obs <- nrow(model_data)
@@ -58,7 +57,7 @@ n_sites <- if ("grove" %in% names(model_data)) dplyr::n_distinct(model_data$grov
 # They are excluded without renumbering so the original candidate IDs remain
 # traceable to the exploratory analysis.
 # ----------------------------------------------------------------------------
-random_structure <- list(deployment_id = ~1, Observer = ~1, deployment_day = ~1)
+random_structure <- list(deployment_id = ~1, deployment_day = ~1)
 correlation_structure <- corAR1(form = ~ observation_order_within_day_t | deployment_day)
 
 model_specs <- list(
@@ -341,7 +340,7 @@ writeLines(as.character(para), file.path(text_dir, "paragraph.md"))
 # Best model equation (plain)
 eq_plain <- paste(
   aic_tbl$Formula[1],
-  "+ random(deployment_id, Observer, deployment_day) + AR1(within deployment_day)"
+  "+ random(deployment_id, deployment_day) + AR1(within deployment_day)"
 )
 writeLines(eq_plain, file.path(text_dir, "best_model_equation.txt"))
 writeLines(best_id, file.path(text_dir, "best_model_id.txt"))

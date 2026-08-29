@@ -6,5 +6,8 @@ Direct-sun values represent no visible butterflies in direct sun and the median 
 The wind range ends at the 99th percentile of the observed maximum gust distribution, 6.21 m/s.
 Predictions exclude random effects and are shown on the fitted cube-root response scale.
 Confidence bands represent pointwise 95 percent fixed-effect intervals.
+Candidate B limits each line to the central 90 percent of gusts among the 50 observations nearest to its temperature and direct-sun combination.
+Candidate C masks predictions outside the convex hull of wind and direct-sun observations within 1.5 degrees C of each displayed temperature.
+Candidate D masks conditional wind slopes outside the convex hull of observed temperature and direct-sun combinations.
 Raw main-effect coefficients are conditional on zero values of interacting predictors.
 Temperature zero is outside the observed range, so the interaction figures should guide interpretation.
