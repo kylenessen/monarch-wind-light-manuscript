@@ -5,6 +5,7 @@
 
 suppressPackageStartupMessages({
   library(dplyr)
+  library(ggplot2)
   library(here)
   library(mgcv)
   library(nlme)
@@ -12,6 +13,8 @@ suppressPackageStartupMessages({
   library(readr)
   library(tibble)
 })
+
+source(here("analysis", "lib", "manuscript_figure_style.R"))
 
 out_dir <- here("analysis", "outputs", "harmonized_model_comparison")
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
@@ -67,7 +70,7 @@ build_candidate_specs <- function(response, controls, wind, sun, temperatures, w
   )
   specs <- add_spec(
     specs, "H05", join_terms(controls, tensor),
-    "Tensor wind by sun-exposed BI interaction without marginal smooths",
+    "Centered tensor wind by sun-exposed BI interaction",
     legacy_model = if (window == "next_day") "M32" else "",
     mirror_of = if (window == "thirty_minute") "M32" else ""
   )
@@ -213,6 +216,7 @@ refit_selected <- function(comparison, data, random, correlation) {
   list(
     selected = selected,
     summary = bind_rows(parametric, smooth),
+    model = fit$model,
     fit = tibble(
       window = selected$window,
       framework = selected$framework,
@@ -260,24 +264,24 @@ next_correlation <- corAR1(form = ~ observation_order_t | deployment_id)
 frameworks <- list(
   thirty_minute_primary = list(
     data = thirty_minute_data, response = "butterfly_difference_cbrt",
-    controls = "total_butterflies_t_lag", wind = "max_gust",
+    controls = "total_butterflies_t_lag + time_within_day_t", wind = "max_gust",
     sun = "butterflies_direct_sun_t_lag", temperatures = c(avg = "temperature_avg"),
     random = thirty_random, correlation = thirty_correlation,
-    window = "thirty_minute", framework = "primary_previous_bi"
+    window = "thirty_minute", framework = "primary_controls"
   ),
   thirty_minute_no_previous = list(
     data = thirty_minute_data, response = "butterfly_difference_cbrt",
-    controls = "1", wind = "max_gust",
+    controls = "time_within_day_t", wind = "max_gust",
     sun = "butterflies_direct_sun_t_lag", temperatures = c(avg = "temperature_avg"),
     random = thirty_random, correlation = thirty_correlation,
     window = "thirty_minute", framework = "sensitivity_no_previous_bi"
   ),
-  thirty_minute_time_adjusted = list(
+  thirty_minute_no_time = list(
     data = thirty_minute_data, response = "butterfly_difference_cbrt",
-    controls = "total_butterflies_t_lag + time_within_day_t", wind = "max_gust",
+    controls = "total_butterflies_t_lag", wind = "max_gust",
     sun = "butterflies_direct_sun_t_lag", temperatures = c(avg = "temperature_avg"),
     random = thirty_random, correlation = thirty_correlation,
-    window = "thirty_minute", framework = "sensitivity_time_adjusted"
+    window = "thirty_minute", framework = "sensitivity_no_time"
   ),
   next_day_primary = list(
     data = next_day_data, response = "butterfly_diff_sqrt",
@@ -339,5 +343,123 @@ selected_fit_statistics <- bind_rows(map(selected_outputs, "fit"))
 write_csv(selected_models, file.path(out_dir, "selected_models.csv"))
 write_csv(selected_fit_statistics, file.path(out_dir, "selected_model_fit_statistics.csv"))
 write_csv(bind_rows(comparisons), file.path(out_dir, "all_comparisons.csv"))
+
+figure_dir <- file.path(out_dir, "figures")
+dir.create(figure_dir, recursive = TRUE, showWarnings = FALSE)
+
+thirty_model <- selected_outputs$thirty_minute_primary$model$gam
+thirty_lme <- selected_outputs$thirty_minute_primary$model$lme
+temperature_values <- c(10, 15, 20)
+sun_values <- c(0, 7, 20)
+previous_bi_value <- median(thirty_minute_data$total_butterflies_t_lag)
+time_value <- median(thirty_minute_data$time_within_day_t)
+wind_max_plot <- unname(quantile(thirty_minute_data$max_gust, 0.99))
+
+fixed_beta <- fixef(thirty_lme)
+fixed_vcov <- vcov(thirty_lme)
+fixed_df <- min(summary(thirty_lme)$tTable[, "DF"])
+conditional_wind_effect <- function(temperature, direct_sun) {
+  contrast <- setNames(rep(0, length(fixed_beta)), names(fixed_beta))
+  contrast["Xmax_gust"] <- 1
+  contrast["Xmax_gust:temperature_avg"] <- temperature
+  contrast["Xmax_gust:butterflies_direct_sun_t_lag"] <- direct_sun
+  contrast["Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag"] <-
+    temperature * direct_sun
+  estimate <- sum(contrast * fixed_beta)
+  standard_error <- sqrt(as.numeric(t(contrast) %*% fixed_vcov %*% contrast))
+  t_value <- estimate / standard_error
+  tibble(
+    temperature_c = temperature,
+    sun_exposed_bi = direct_sun,
+    wind_effect_per_1_ms = estimate,
+    standard_error = standard_error,
+    denominator_df = fixed_df,
+    t_value = t_value,
+    p_value = 2 * pt(abs(t_value), df = fixed_df, lower.tail = FALSE),
+    conf_low = estimate + qt(0.025, df = fixed_df) * standard_error,
+    conf_high = estimate + qt(0.975, df = fixed_df) * standard_error
+  )
+}
+
+conditional_table <- bind_rows(lapply(temperature_values, function(temperature) {
+  bind_rows(lapply(sun_values, function(sun) {
+    conditional_wind_effect(temperature, sun)
+  }))
+}))
+write_csv(
+  conditional_table,
+  file.path(out_dir, "thirty_minute_conditional_wind_effects.csv")
+)
+
+prediction_grid <- expand.grid(
+  max_gust = seq(0, wind_max_plot, length.out = 240),
+  temperature_avg = temperature_values,
+  butterflies_direct_sun_t_lag = sun_values,
+  KEEP.OUT.ATTRS = FALSE
+) %>%
+  mutate(
+    total_butterflies_t_lag = previous_bi_value,
+    time_within_day_t = time_value
+  )
+
+prediction <- predict(thirty_model, newdata = prediction_grid, se.fit = TRUE)
+prediction_grid <- prediction_grid %>%
+  mutate(
+    fit = as.numeric(prediction$fit),
+    standard_error = as.numeric(prediction$se.fit),
+    conf_low = fit - 1.96 * standard_error,
+    conf_high = fit + 1.96 * standard_error,
+    temperature_label = factor(
+      temperature_avg,
+      levels = temperature_values,
+      labels = c("10 °C", "15 °C", "20 °C")
+    ),
+    direct_sun_label = factor(
+      butterflies_direct_sun_t_lag,
+      levels = sun_values,
+      labels = as.character(sun_values)
+    )
+  )
+write_csv(prediction_grid, file.path(out_dir, "thirty_minute_figure_predictions.csv"))
+
+sun_colors <- c("0" = "#4d4d4d", "7" = "#2b83ba", "20" = "#d7191c")
+response_plot <- ggplot(
+  prediction_grid,
+  aes(
+    x = max_gust, y = fit, color = direct_sun_label,
+    fill = direct_sun_label, group = direct_sun_label
+  )
+) +
+  geom_ribbon(
+    aes(ymin = conf_low, ymax = conf_high),
+    alpha = 0.10, linewidth = 0, color = NA
+  ) +
+  geom_line(linewidth = 1.0) +
+  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
+  facet_wrap(~temperature_label, nrow = 1) +
+  scale_color_manual(values = sun_colors, name = "Sun-exposed BI") +
+  scale_fill_manual(values = sun_colors, name = "Sun-exposed BI") +
+  scale_x_continuous(
+    limits = c(0, wind_max_plot), breaks = 0:6,
+    expand = expansion(mult = 0.01)
+  ) +
+  labs(
+    x = "Maximum wind gust (m/s)",
+    y = "Predicted 30-minute BI change\n(cube-root scale)"
+  ) +
+  theme_like_reference(12, 0.95) +
+  theme(
+    legend.position = "bottom",
+    legend.title = element_text(size = reference_sizes(12, 0.95)$legend_title),
+    strip.text = element_text(
+      color = "black", size = reference_sizes(12, 0.95)$axis_text
+    ),
+    panel.spacing.x = grid::unit(1, "lines")
+  )
+
+ggsave(
+  file.path(figure_dir, "thirty_minute_predicted_response.png"),
+  response_plot, width = 12, height = 5.8, dpi = 600, bg = "white"
+)
 
 message("Wrote harmonized comparisons to ", out_dir)
