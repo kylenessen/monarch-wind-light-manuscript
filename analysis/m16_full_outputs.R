@@ -215,7 +215,7 @@ write_csv(
 
 # Prediction data for manuscript-style figures
 previous_bi_value <- median(data$total_butterflies_t_lag)
-wind_max_plot <- unname(quantile(data$max_gust, 0.99))
+wind_max_plot <- 4
 wind_sequence <- seq(0, wind_max_plot, length.out = 160)
 
 prediction_grid <- expand.grid(
@@ -279,12 +279,17 @@ response_plot <- ggplot(
   facet_wrap(~temperature_label, nrow = 1) +
   scale_color_manual(values = sun_colors, name = "Sun-exposed BI") +
   scale_fill_manual(values = sun_colors, name = "Sun-exposed BI") +
-  scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
+  scale_x_continuous(
+    limits = c(0, wind_max_plot),
+    breaks = seq(0, wind_max_plot, by = 1),
+    expand = expansion(mult = 0.01)
+  ) +
   labs(
     x = "Maximum wind gust (m/s)",
     y = "Predicted 30-minute BI change\n(cube-root scale)"
   ) +
-  figure_theme
+  figure_theme +
+  theme(panel.spacing.x = grid::unit(1, "lines"))
 
 ggsave(
   file.path(figure_dir, "m16_predicted_response.png"),
@@ -476,15 +481,12 @@ figure_notes <- c(
     "among observations with positive sun-exposed BI:",
     paste0(paste(sun_values, collapse = ", "), ".")
   ),
-  paste(
-    "The wind range ends at the 99th percentile of the observed maximum gust",
-    paste0("distribution, ", round(wind_max_plot, 2), " m/s.")
-  ),
+  paste("The displayed wind range ends at", wind_max_plot, "m/s."),
   paste(
     "The manuscript figure shows fitted values on the signed cube-root response scale.",
     "Values above zero indicate increases in BI and values below zero indicate decreases."
   ),
-  "Each manuscript line spans 0 m/s to the shared overall 99th-percentile cap.",
+  paste("Each manuscript line spans 0 m/s to", wind_max_plot, "m/s."),
   "All observations, including those above the plotting cap, were retained in model fitting.",
   "Predictions exclude random effects. Confidence bands are pointwise 95 percent fixed-effect intervals.",
   "Raw main-effect coefficients are conditional on zero values of interacting predictors.",
