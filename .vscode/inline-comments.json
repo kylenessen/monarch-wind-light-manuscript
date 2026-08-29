@@ -9,7 +9,7 @@
     "selectedText": "67 produced rankable fits.",
     "text": "were the other models excluded?",
     "timestamp": "2026-08-29T16:26:50.546Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "0772ac8a-8f9f-4520-a36d-20a29a117da3",
@@ -21,7 +21,7 @@
     "selectedText": "The Next Day Window analysis included 96 consecutive-day pairs with a mean interval of 29.6 hours. Daily maximum BI ranged from 0 to 770, and changes ranged from a loss of 376 to a gain of 464 (mean = $-$10.5 $\\pm$ 111.6). Maximum gusts within these intervals ranged from 2.0 to 12.8~m/s (mean = 4.5 $\\pm$ 1.8~m/s), and cumulative sun-exposed BI ranged from 0 to 1,122 (mean = 139.8 $\\pm$ 206.9).",
     "text": "I wonder if the 30 min analysis also needs a paragraph like this? Or should this be cut? If retained, we need to double check this values using a sub agent.",
     "timestamp": "2026-08-29T16:27:31.795Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "951305c9-96dd-4830-80eb-9170dbe30fc4",
@@ -33,7 +33,7 @@
     "selectedText": "baseline model without environmental predictors",
     "text": "This is the null model, correct? Does it have a model number? We could be clearer in this description",
     "timestamp": "2026-08-29T16:28:34.521Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "ea09edaa-35a6-4d64-b994-1f3c3de6f932",
@@ -45,7 +45,7 @@
     "selectedText": "previous-day maximum BI, window duration,",
     "text": "We should indicate that these are predictors to help control the model and are not biologically significant.",
     "timestamp": "2026-08-29T16:30:16.820Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "fcfba81a-310f-4548-adf9-33d084755404",
@@ -57,6 +57,6 @@
     "selectedText": "igned square-root transformed daily change",
     "text": "use the same language as 30 min analsysis",
     "timestamp": "2026-08-29T16:31:10.028Z",
-    "resolved": false
+    "resolved": true
   }
 ]
