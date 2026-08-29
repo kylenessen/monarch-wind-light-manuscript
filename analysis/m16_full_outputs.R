@@ -590,6 +590,111 @@ ggsave(
   bg = "white"
 )
 
+# Candidate G. Add the nonzero 25th percentile while retaining the median and
+# 75th percentile. Lines span their full local range subject to the shared
+# overall 99th-percentile gust cap used in the manuscript figure.
+four_sun_values <- c(0, 3, 7, 20)
+four_sun_prediction_grid <- expand.grid(
+  max_gust = wind_sequence,
+  temperature_avg = temperature_values,
+  butterflies_direct_sun_t_lag = four_sun_values,
+  KEEP.OUT.ATTRS = FALSE
+) %>%
+  mutate(total_butterflies_t_lag = previous_bi_value)
+
+four_sun_prediction <- predict(
+  model$gam,
+  newdata = four_sun_prediction_grid,
+  se.fit = TRUE
+)
+four_sun_prediction_grid <- four_sun_prediction_grid %>%
+  mutate(
+    fit = as.numeric(four_sun_prediction$fit),
+    standard_error = as.numeric(four_sun_prediction$se.fit),
+    conf_low = fit - 1.96 * standard_error,
+    conf_high = fit + 1.96 * standard_error,
+    supported = FALSE,
+    temperature_label = factor(
+      temperature_avg,
+      levels = temperature_values,
+      labels = c("10 °C", "15 °C", "20 °C")
+    ),
+    direct_sun_label = factor(
+      butterflies_direct_sun_t_lag,
+      levels = four_sun_values,
+      labels = c("0", "3", "7", "20")
+    )
+  )
+
+for (temperature_value in temperature_values) {
+  for (direct_sun_value in four_sun_values) {
+    condition_distance <- sqrt(
+      ((data$temperature_avg - temperature_value) / temperature_scale)^2 +
+      ((data$butterflies_direct_sun_t_lag - direct_sun_value) /
+        direct_sun_scale)^2
+    )
+    nearby_rows <- order(condition_distance)[seq_len(50)]
+    grid_rows <- four_sun_prediction_grid$temperature_avg == temperature_value &
+      four_sun_prediction_grid$butterflies_direct_sun_t_lag == direct_sun_value
+    four_sun_prediction_grid$supported[grid_rows] <-
+      four_sun_prediction_grid$max_gust[grid_rows] >=
+        min(data$max_gust[nearby_rows]) &
+      four_sun_prediction_grid$max_gust[grid_rows] <=
+        max(data$max_gust[nearby_rows])
+  }
+}
+
+four_sun_prediction_grid <- four_sun_prediction_grid %>%
+  mutate(
+    fit_supported = if_else(supported, fit, NA_real_),
+    conf_low_supported = if_else(supported, conf_low, NA_real_),
+    conf_high_supported = if_else(supported, conf_high, NA_real_)
+  )
+
+four_sun_colors <- c(
+  "0" = "#4d4d4d",
+  "3" = "#009E73",
+  "7" = "#0072B2",
+  "20" = "#D55E00"
+)
+four_sun_line_plot <- ggplot(
+  four_sun_prediction_grid,
+  aes(
+    x = max_gust,
+    y = fit_supported,
+    color = direct_sun_label,
+    fill = direct_sun_label,
+    group = direct_sun_label
+  )
+) +
+  geom_ribbon(
+    aes(ymin = conf_low_supported, ymax = conf_high_supported),
+    alpha = 0.07,
+    linewidth = 0,
+    color = NA,
+    na.rm = TRUE
+  ) +
+  geom_line(linewidth = 1.0, na.rm = TRUE) +
+  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
+  facet_wrap(~temperature_label, nrow = 1) +
+  scale_color_manual(values = four_sun_colors, name = "Butterflies visible in direct sun") +
+  scale_fill_manual(values = four_sun_colors, name = "Butterflies visible in direct sun") +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
+  labs(
+    x = "Maximum wind gust (m/s)",
+    y = "Modeled 30-minute BI change\n(cube-root scale)"
+  ) +
+  figure_theme
+
+ggsave(
+  file.path(candidate_figure_dir, "g_four_direct_sun_levels.png"),
+  four_sun_line_plot,
+  width = 12,
+  height = 5.8,
+  dpi = 300,
+  bg = "white"
+)
+
 # Candidate C. Three temperature slices through the fitted response surface.
 # Gray regions lack nearby observations in wind and direct-sun space within
 # 1.5 degrees C of the displayed temperature.
@@ -862,6 +967,10 @@ write_csv(
   file.path(table_dir, "m16_all_local_line_predictions.csv")
 )
 write_csv(
+  four_sun_prediction_grid,
+  file.path(table_dir, "m16_four_sun_level_predictions.csv")
+)
+write_csv(
   surface_grid,
   file.path(table_dir, "m16_supported_response_surface.csv")
 )
@@ -1024,6 +1133,10 @@ figure_notes <- c(
   paste(
     "Candidate F spans the central 95 percent of gust values among the",
     "50 nearby observations for each temperature and direct-sun combination."
+  ),
+  paste(
+    "Candidate G adds the nonzero 25th percentile, using direct-sun values",
+    "of 0, 3, 7, and 20 butterflies with the manuscript range rules."
   ),
   paste(
     "Candidate C masks predictions outside the convex hull of wind and",
