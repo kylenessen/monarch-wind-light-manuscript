@@ -9,7 +9,7 @@
     "selectedText": "number of butterflies visible in direct sun",
     "text": "I don't think this is accurate because what it is in reality is the number it's it's a proxy okay it's butterfly index cells with butterflies in them that are experiencing direct sunlight. What is a better way to carefully say this?",
     "timestamp": "2026-08-29T06:14:54.957Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "d1a52d60-f7ed-4dbc-bf25-84dfeac9d88e",
@@ -21,7 +21,7 @@
     "selectedText": "The estimated three-way interaction coefficient was positive",
     "text": "I don't understand what this means.",
     "timestamp": "2026-08-29T06:15:20.115Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "a48b8949-c896-4f59-87b6-ba0284f2b1ae",
@@ -33,7 +33,7 @@
     "selectedText": "As more butterflies became visible in direct sun, the fitted wind relationship became increasingly negative at 10$^{\\circ}$C and increasingly positive at 15 and 20$^{\\circ}$C (Figure~\\ref{fig:m16_predicted_response}).",
     "text": "We need to talk through what I'm actually seeing. Tell me if your understanding is different, but under cold conditions or ten degrees Celsius. Butterflies in shade. Or the lower end of Illumination. To me, it shows no change across the whole The confidence interval is very neatly captured around zero. However, butterfly set That are in a higher light condition and we should think about how to talk about this. Show a negative relationship. We're increasing wind speeds correspond with a negative change in butterfly index at fifteen degrees Celsius, which is approximately the flight threshold we see no real effect of And under warm conditions twenty degrees Celsius It looks like there's some uncertainty where the confidence interval either contains zero or just barely misses it, but overall seems to be elevated above. Uh this is true for butterflies that are in low light conditions, so above four meters per second, there is evidence that BI change increases and under high light condition, butterflies or the butterfly index decreases under calm conditions and increases as wind speeds increase approximately switching or two meters per second. Let me know if that agrees with your understanding.",
     "timestamp": "2026-08-29T06:20:56.169Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "24364daa-acf4-4b92-a868-d9fdf689fb45",
@@ -45,7 +45,7 @@
     "selectedText": "Modeled",
     "text": "Is there a better word here? Maybe predicted. Modeled feels wrong for some reason.",
     "timestamp": "2026-08-29T06:21:31.845Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "3fc7f2d5-2a12-44e7-9d54-19902c0550ad",
@@ -57,7 +57,7 @@
     "selectedText": "Values above zero indicate increases in BI, and values below zero indicate decreases.",
     "text": "Do we need to consider confidence intervals?",
     "timestamp": "2026-08-29T06:22:08.648Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "7f22d13d-88d1-41c1-ad6d-03e98334c074",
@@ -69,7 +69,7 @@
     "selectedText": "Values of 3 and 20 butterflies represent the 25th and 75th percentiles among nonzero direct-sun observations",
     "text": "I wonder if we should go back to median and is seventy five percentile the best like upper boundary for light conditions? Is it representative and well supported?",
     "timestamp": "2026-08-29T06:23:45.899Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "3f91669f-f835-4acd-8f84-0efbf4b58dea",
@@ -81,6 +81,6 @@
     "selectedText": "Each line spans the local observed gust range among the 50 observations nearest to its displayed temperature and direct-sun combination.",
     "text": "I don't understand what this means.",
     "timestamp": "2026-08-29T06:24:12.437Z",
-    "resolved": false
+    "resolved": true
   }
 ]
