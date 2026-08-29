@@ -695,6 +695,61 @@ ggsave(
   bg = "white"
 )
 
+# Candidate H. Retain no direct-sun butterflies and the nonzero 25th and 75th
+# percentiles, omitting the nonzero median for a cleaner three-line display.
+three_sun_prediction_grid <- four_sun_prediction_grid %>%
+  filter(butterflies_direct_sun_t_lag %in% c(0, 3, 20)) %>%
+  mutate(
+    direct_sun_label = factor(
+      butterflies_direct_sun_t_lag,
+      levels = c(0, 3, 20),
+      labels = c("0", "3", "20")
+    )
+  )
+
+three_sun_colors <- c(
+  "0" = "#4d4d4d",
+  "3" = "#2b83ba",
+  "20" = "#d7191c"
+)
+three_sun_line_plot <- ggplot(
+  three_sun_prediction_grid,
+  aes(
+    x = max_gust,
+    y = fit_supported,
+    color = direct_sun_label,
+    fill = direct_sun_label,
+    group = direct_sun_label
+  )
+) +
+  geom_ribbon(
+    aes(ymin = conf_low_supported, ymax = conf_high_supported),
+    alpha = 0.10,
+    linewidth = 0,
+    color = NA,
+    na.rm = TRUE
+  ) +
+  geom_line(linewidth = 1.0, na.rm = TRUE) +
+  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
+  facet_wrap(~temperature_label, nrow = 1) +
+  scale_color_manual(values = three_sun_colors, name = "Butterflies visible in direct sun") +
+  scale_fill_manual(values = three_sun_colors, name = "Butterflies visible in direct sun") +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.02))) +
+  labs(
+    x = "Maximum wind gust (m/s)",
+    y = "Modeled 30-minute BI change\n(cube-root scale)"
+  ) +
+  figure_theme
+
+ggsave(
+  file.path(candidate_figure_dir, "h_three_direct_sun_levels_0_3_20.png"),
+  three_sun_line_plot,
+  width = 12,
+  height = 5.8,
+  dpi = 300,
+  bg = "white"
+)
+
 # Candidate C. Three temperature slices through the fitted response surface.
 # Gray regions lack nearby observations in wind and direct-sun space within
 # 1.5 degrees C of the displayed temperature.
@@ -971,6 +1026,10 @@ write_csv(
   file.path(table_dir, "m16_four_sun_level_predictions.csv")
 )
 write_csv(
+  three_sun_prediction_grid,
+  file.path(table_dir, "m16_three_sun_level_predictions_0_3_20.csv")
+)
+write_csv(
   surface_grid,
   file.path(table_dir, "m16_supported_response_surface.csv")
 )
@@ -1137,6 +1196,10 @@ figure_notes <- c(
   paste(
     "Candidate G adds the nonzero 25th percentile, using direct-sun values",
     "of 0, 3, 7, and 20 butterflies with the manuscript range rules."
+  ),
+  paste(
+    "Candidate H uses 0, 3, and 20 butterflies in direct sun, representing",
+    "none and the nonzero 25th and 75th percentiles."
   ),
   paste(
     "Candidate C masks predictions outside the convex hull of wind and",
