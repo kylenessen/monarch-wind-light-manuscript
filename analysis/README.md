@@ -38,6 +38,8 @@ uv run analysis/prepare_dynamic_windows.py --output-24hr data/monarch_daily_lag_
 
 `next_day_window_analysis.R` compares 75 Next Day Window candidates. The original analysis defined M1 through M72 and M77 through M78. M79 is a prespecified linear analogue of the selected 30-minute model and adds the three-way interaction among maximum gust, mean window temperature, and cumulative sun-exposed BI. The script uses maximum likelihood and AICc for comparison, records every fit and convergence warning, and refits the selected model using restricted maximum likelihood. Outputs are written to `analysis/outputs/next_day_window`, including the complete audit in `model_comparison_comprehensive.csv`.
 
+`harmonized_model_comparison.R` applies a shared hypothesis-template strategy to the 30-minute and Next Day windows while retaining the environmental predictor definitions from the original analyses. It includes the exact M16 and M32 formulas and their cross-window mirrors. Previous BI is forced in each primary framework and removed only in separately ranked sensitivity comparisons. The script uses AICc for both windows and writes complete comparisons, rankings, selected-model summaries, and a model crosswalk to `analysis/outputs/harmonized_model_comparison`.
+
 `twenty_four_hour_robustness_analysis.R` refits the 24-hour robustness model, writes summaries to `analysis/outputs/24_hour`, and regenerates `figures/interaction_wind_sun_24hr.png`.
 
 `generate_publication_figures_all.R` is a convenience script that regenerates the manuscript figure set in one pass. Prefer the focused scripts above when tracing a specific result.

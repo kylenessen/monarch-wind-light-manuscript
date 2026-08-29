@@ -1,0 +1,6 @@
+window,framework,candidate_id,legacy_model,formula,n,adjusted_r_squared,scale
+thirty_minute,primary_previous_bi,avg_T07,M16,butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust * temperature_avg * butterflies_direct_sun_t_lag,1894,0.051114068962621495,4.0719369847435525
+thirty_minute,sensitivity_no_previous_bi,avg_T07,M16,butterfly_difference_cbrt ~ 1 + max_gust * temperature_avg * butterflies_direct_sun_t_lag,1894,0.041050281298440794,4.161409333349505
+thirty_minute,sensitivity_time_adjusted,avg_T07,M16,butterfly_difference_cbrt ~ total_butterflies_t_lag + time_within_day_t + max_gust * temperature_avg * butterflies_direct_sun_t_lag,1894,0.05268076262663124,4.082635376649064
+next_day,primary_previous_bi,H05,M32,"butterfly_diff_sqrt ~ max_butterflies_t_1 + lag_duration_hours + ti(wind_max_gust, sum_butterflies_direct_sun)",96,0.39664369755327933,41.05550494818962
+next_day,sensitivity_no_previous_bi,H05,M32,"butterfly_diff_sqrt ~ lag_duration_hours + ti(wind_max_gust, sum_butterflies_direct_sun)",96,0.35709072999976,44.13806525145237
