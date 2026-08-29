@@ -338,6 +338,11 @@ for (temperature_value in temperature_values) {
       c(0.05, 0.95),
       names = FALSE
     )
+    supported_wind_95 <- quantile(
+      data$max_gust[nearby_rows],
+      c(0.025, 0.975),
+      names = FALSE
+    )
     grid_rows <- prediction_grid$temperature_avg == temperature_value &
       prediction_grid$butterflies_direct_sun_t_lag == direct_sun_value
     prediction_grid$supported[grid_rows] <-
@@ -347,8 +352,12 @@ for (temperature_value in temperature_values) {
       temperature_c = temperature_value,
       butterflies_in_direct_sun = direct_sun_value,
       nearby_observations = length(nearby_rows),
+      wind_minimum = min(data$max_gust[nearby_rows]),
+      wind_lower_95 = supported_wind_95[1],
       wind_lower = supported_wind[1],
-      wind_upper = supported_wind[2]
+      wind_upper = supported_wind[2],
+      wind_upper_95 = supported_wind_95[2],
+      wind_maximum = max(data$max_gust[nearby_rows])
     )
   }
 }
@@ -405,6 +414,140 @@ ggsave(
 ggsave(
   file.path(candidate_figure_dir, "b_supported_range_lines.png"),
   supported_line_plot,
+  width = 12,
+  height = 5.8,
+  dpi = 300,
+  bg = "white"
+)
+
+# Candidate E. Same representative conditions as candidate B, but each line
+# spans the full minimum-to-maximum gust range among all 50 nearby observations.
+all_local_prediction_grid <- expand.grid(
+  max_gust = seq(min(data$max_gust), max(data$max_gust), length.out = 240),
+  temperature_avg = temperature_values,
+  butterflies_direct_sun_t_lag = sun_values,
+  KEEP.OUT.ATTRS = FALSE
+) %>%
+  mutate(total_butterflies_t_lag = previous_bi_value)
+
+all_local_prediction <- predict(
+  model$gam,
+  newdata = all_local_prediction_grid,
+  se.fit = TRUE
+)
+all_local_prediction_grid <- all_local_prediction_grid %>%
+  mutate(
+    fit = as.numeric(all_local_prediction$fit),
+    standard_error = as.numeric(all_local_prediction$se.fit),
+    conf_low = fit - 1.96 * standard_error,
+    conf_high = fit + 1.96 * standard_error,
+    temperature_label = factor(
+      temperature_avg,
+      levels = temperature_values,
+      labels = c("10 °C", "15 °C", "20 °C")
+    ),
+    direct_sun_label = factor(
+      butterflies_direct_sun_t_lag,
+      levels = sun_values,
+      labels = c("0", "7", "20")
+    )
+  ) %>%
+  left_join(
+    line_support_table,
+    by = c(
+      "temperature_avg" = "temperature_c",
+      "butterflies_direct_sun_t_lag" = "butterflies_in_direct_sun"
+    )
+  ) %>%
+  mutate(
+    supported_all = max_gust >= wind_minimum & max_gust <= wind_maximum,
+    supported_95 = max_gust >= wind_lower_95 & max_gust <= wind_upper_95,
+    fit_supported_all = if_else(supported_all, fit, NA_real_),
+    conf_low_supported_all = if_else(supported_all, conf_low, NA_real_),
+    conf_high_supported_all = if_else(supported_all, conf_high, NA_real_),
+    fit_supported_95 = if_else(supported_95, fit, NA_real_),
+    conf_low_supported_95 = if_else(supported_95, conf_low, NA_real_),
+    conf_high_supported_95 = if_else(supported_95, conf_high, NA_real_)
+  )
+
+all_local_line_plot <- ggplot(
+  all_local_prediction_grid,
+  aes(
+    x = max_gust,
+    y = fit_supported_all,
+    color = direct_sun_label,
+    fill = direct_sun_label,
+    group = direct_sun_label
+  )
+) +
+  geom_ribbon(
+    aes(ymin = conf_low_supported_all, ymax = conf_high_supported_all),
+    alpha = 0.10,
+    linewidth = 0,
+    color = NA,
+    na.rm = TRUE
+  ) +
+  geom_line(linewidth = 1.0, na.rm = TRUE) +
+  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
+  facet_wrap(~temperature_label, nrow = 1) +
+  scale_color_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
+  scale_fill_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
+  scale_x_continuous(
+    breaks = seq(0, 12, by = 4),
+    expand = expansion(mult = c(0, 0.02))
+  ) +
+  labs(
+    x = "Maximum wind gust (m/s)",
+    y = "Modeled 30-minute BI change\n(cube-root scale)"
+  ) +
+  figure_theme
+
+ggsave(
+  file.path(candidate_figure_dir, "e_all_local_range_lines.png"),
+  all_local_line_plot,
+  width = 12,
+  height = 5.8,
+  dpi = 300,
+  bg = "white"
+)
+
+# Candidate F. Same design using the central 95 percent of gust values among
+# the 50 nearby observations for each displayed condition.
+supported_95_line_plot <- ggplot(
+  all_local_prediction_grid,
+  aes(
+    x = max_gust,
+    y = fit_supported_95,
+    color = direct_sun_label,
+    fill = direct_sun_label,
+    group = direct_sun_label
+  )
+) +
+  geom_ribbon(
+    aes(ymin = conf_low_supported_95, ymax = conf_high_supported_95),
+    alpha = 0.10,
+    linewidth = 0,
+    color = NA,
+    na.rm = TRUE
+  ) +
+  geom_line(linewidth = 1.0, na.rm = TRUE) +
+  geom_hline(yintercept = 0, color = "gray55", linewidth = 0.5) +
+  facet_wrap(~temperature_label, nrow = 1) +
+  scale_color_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
+  scale_fill_manual(values = sun_colors, name = "Butterflies visible in direct sun") +
+  scale_x_continuous(
+    breaks = seq(0, 12, by = 4),
+    expand = expansion(mult = c(0, 0.02))
+  ) +
+  labs(
+    x = "Maximum wind gust (m/s)",
+    y = "Modeled 30-minute BI change\n(cube-root scale)"
+  ) +
+  figure_theme
+
+ggsave(
+  file.path(candidate_figure_dir, "f_95_percent_local_range_lines.png"),
+  supported_95_line_plot,
   width = 12,
   height = 5.8,
   dpi = 300,
@@ -679,6 +822,10 @@ write_csv(
   file.path(table_dir, "m16_supported_line_ranges.csv")
 )
 write_csv(
+  all_local_prediction_grid,
+  file.path(table_dir, "m16_all_local_line_predictions.csv")
+)
+write_csv(
   surface_grid,
   file.path(table_dir, "m16_supported_response_surface.csv")
 )
@@ -828,6 +975,14 @@ figure_notes <- c(
   paste(
     "Candidate B limits each line to the central 90 percent of gusts among",
     "the 50 observations nearest to its temperature and direct-sun combination."
+  ),
+  paste(
+    "Candidate E spans the full minimum-to-maximum gust range among all",
+    "50 nearby observations for each temperature and direct-sun combination."
+  ),
+  paste(
+    "Candidate F spans the central 95 percent of gust values among the",
+    "50 nearby observations for each temperature and direct-sun combination."
   ),
   paste(
     "Candidate C masks predictions outside the convex hull of wind and",

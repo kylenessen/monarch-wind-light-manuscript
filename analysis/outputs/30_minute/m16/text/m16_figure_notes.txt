@@ -7,6 +7,8 @@ The wind range ends at the 99th percentile of the observed maximum gust distribu
 The manuscript figure shows fitted values on the signed cube-root response scale. Values above zero indicate increases in BI and values below zero indicate decreases.
 Predictions exclude random effects. Confidence bands are pointwise 95 percent fixed-effect intervals.
 Candidate B limits each line to the central 90 percent of gusts among the 50 observations nearest to its temperature and direct-sun combination.
+Candidate E spans the full minimum-to-maximum gust range among all 50 nearby observations for each temperature and direct-sun combination.
+Candidate F spans the central 95 percent of gust values among the 50 nearby observations for each temperature and direct-sun combination.
 Candidate C masks predictions outside the convex hull of wind and direct-sun observations within 1.5 degrees C of each displayed temperature.
 Candidate D masks conditional wind slopes outside the convex hull of observed temperature and direct-sun combinations.
 Raw main-effect coefficients are conditional on zero values of interacting predictors.
