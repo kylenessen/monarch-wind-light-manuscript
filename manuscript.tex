@@ -146,21 +146,21 @@ Temperature values were extracted from camera-image overlays with an optical-cha
 
 We paired BI at time $t$ with BI at $t-30$ minutes for each daytime deployment series, allowing a $\pm$5-minute tolerance for variation in image timing. Pairs with BI equal to zero at both observations were excluded as uninformative. The resulting dataset contained 1,894 pairs across 115 deployment-days. Of these, 1,873 pairs came from eight SC deployments and 21 came from two UDMH deployments. We defined the response as $\Delta\mathrm{BI}=\mathrm{BI}_{t}-\mathrm{BI}_{t-30}$ and applied a signed cube-root transformation, $y=\operatorname{sign}(\Delta\mathrm{BI})|\Delta\mathrm{BI}|^{1/3}$, to improve residual normality while preserving the direction of change.
 
-The primary wind predictor was the maximum of the one-minute gust records within each 30-minute interval. Average sustained speed, modal gust, and gust standard deviation were not included in the candidate set because they were strongly correlated with maximum gust ($r>0.75$). Other candidate predictors were mean camera temperature between the paired images, sun-exposed BI at the earlier image, elapsed time within the day, and BI at the earlier image. Previous BI was evaluated as a baseline adjustment because intervals beginning with larger visible clusters could exhibit larger absolute changes. It also contributes mathematically to $\Delta$BI, so its coefficient was not interpreted as a biological response.
+The environmental predictors were maximum gust within the 30-minute interval, mean camera temperature between the paired images, and sun-exposed BI at the earlier image. Average sustained speed, modal gust, and gust standard deviation were not included because they were strongly correlated with maximum gust ($r>0.75$). BI at the earlier image and minutes since sunrise were adjustment covariates. Previous BI accounted for differences in the amount of visible cluster available to change, and time since sunrise accounted for systematic daily activity patterns. Previous BI also contributes mathematically to $\Delta$BI, so its coefficient was not interpreted as a biological response.
 
 \subsubsection{Next Day Response Window}
 
 The response time for wind-associated cluster change was unknown, so we also evaluated change over a window beginning at the previous day's maximum BI and ending at the current day's last daytime image. This endpoint approximated the end of the second day's observation period. We retained deployment-days containing 15--25 daytime images, paired only consecutive calendar days, and excluded pairs with a daily maximum BI of zero on both days. We required at least 95\% overall data completeness, calculated as the geometric mean of temperature, wind, and daylight-image coverage. The response was the change in daily maximum BI and was transformed as $y=\operatorname{sign}(\Delta\mathrm{BI}_{\max})\sqrt{|\Delta\mathrm{BI}_{\max}|}$. These criteria produced 96 pairs from six SC deployments. No UDMH deployment contributed a pair after the daily-coverage and consecutive-day criteria were applied.
 
-Candidate predictors were previous-day maximum BI, window duration, minimum and maximum camera temperature, camera temperature at the previous day's maximum BI, maximum gust during the window, and cumulative sun-exposed BI. Cumulative sun-exposed BI was the sum of sun-exposed BI across daylight images within the window and therefore combined exposure duration with the indexed abundance visible in sunlit cells. Previous-day maximum BI and window duration were treated as baseline adjustments. As in the 30-minute analysis, the previous BI coefficient was not interpreted as a biological response because the variable also contributes to the response definition.
+The environmental predictors were maximum gust during the window, cumulative sun-exposed BI, and three alternative temperature summaries. These were minimum temperature, maximum temperature, and camera temperature at the previous day's maximum BI. Temperature summaries were evaluated in separate candidates rather than combined in the same model. Mean window temperature was not analyzed because the window spanned both daytime and nighttime conditions. Cumulative sun-exposed BI was the sum of sun-exposed BI across daylight images within the window and therefore combined exposure duration with the indexed abundance visible in sunlit cells. Previous-day maximum BI and window duration were adjustment covariates. As in the 30-minute analysis, the previous BI coefficient was not interpreted as a biological response because the variable also contributes to the response definition.
 
 \subsubsection{Model Comparison, Diagnostics, and Sensitivity Analyses}
 
-We fitted generalized additive mixed models with the \texttt{mgcv} package in R. The 30-minute set contained 50 unique candidates, representing baseline-only models, single predictors, additive combinations, linear two-way and three-way interactions, smooth effects, and tensor-product interactions. They were organized in parallel frameworks with and without previous BI. All 30-minute models included random intercepts for deployment and deployment-day and an AR(1) residual correlation structure within deployment-day series.
+We fitted generalized additive mixed models with the \texttt{mgcv} package in R. Both response windows used the same environmental hypothesis templates, applied to the window-specific wind, temperature, and sun-exposed BI summaries. The templates represented adjustment covariates only, single environmental predictors, additive effects, linear two-way interactions, a full linear three-way interaction, additive smooths, and tensor interactions. Linear interaction models followed marginality by including their lower-order terms. Smooth candidates included a centered tensor interaction and a hierarchical tensor model. The centered tensor represented a joint wind and sun-exposed BI response after excluding their marginal basis functions. The hierarchical tensor included marginal wind and sun-exposed BI smooths as well as their interaction. The 30-minute set contained 17 candidates. The Next Day set contained 35 because each of the nine temperature-dependent templates was evaluated separately with the three temperature summaries. Candidate weights were calculated separately within each response window.
 
-The Next Day set contained 74 candidate models. These included baseline-only models and single, additive, interactive, and smooth environmental effects. Next Day models included a deployment random intercept and an AR(1) residual correlation structure within deployment series. Because all qualifying pairs came from Spring Canyon, this random effect accounts for repeated observations among deployments within one grove and does not provide grove-level replication.
+Every primary 30-minute candidate included previous BI and linear minutes since sunrise as adjustment covariates. The 30-minute sensitivity analyses repeated the complete candidate set after omitting previous BI and after omitting time since sunrise. Every primary Next Day candidate included previous-day maximum BI and window duration. Its sensitivity analysis omitted previous-day maximum BI but retained window duration. All 30-minute models included random intercepts for deployment and deployment-day and an AR(1) residual correlation structure within deployment-day series. Next Day models included a deployment random intercept and an AR(1) residual correlation structure within deployment series. Observer was not included as a separate effect because each deployment was classified by one observer, so observer did not vary independently of deployment. Because all qualifying Next Day pairs came from Spring Canyon, the deployment effect accounts for repeated observations among deployments within one grove and does not provide grove-level replication.
 
-Candidates were fitted using maximum likelihood and ranked by AIC for the 30-minute analysis and AICc for the smaller Next Day dataset. Fits with convergence warnings were excluded from ranking. Models within two information-criterion units of the minimum were considered similarly supported. Each selected model was refitted using restricted maximum likelihood for coefficient estimation, uncertainty, prediction, and diagnostics. We evaluated residual distributions, residual-versus-fitted and quantile-quantile plots, basis dimensions, and residual autocorrelation. Complete formulas, fit outcomes, warnings, and rankings are provided in Appendices~\ref{app:30min_models} and \ref{app:nextday_models} and with the reproducibility materials.
+All candidates were fitted using maximum likelihood and ranked by the small-sample corrected Akaike information criterion, AICc. Models within two AICc units of the minimum were considered similarly supported. Akaike weights were calculated within each primary or sensitivity candidate set. The selected model in each set was refitted using restricted maximum likelihood for coefficient estimation, uncertainty, prediction, and diagnostics. We evaluated residual distributions, residual-versus-fitted and quantile-quantile plots, basis dimensions, and residual autocorrelation. All 121 candidate fits converged without warnings. Complete formulas and rankings are provided in Appendices~\ref{app:30min_models} and \ref{app:nextday_models} and with the reproducibility materials.
 
 Focused sensitivity analyses evaluated alternative numerical values for the BI categories and mean differences among observers. Complete sensitivity methods and outputs are provided with the reproducibility materials.
 %% ------------------------------------------------------------------
@@ -185,31 +185,31 @@ The Next Day Window analysis included 96 consecutive-day pairs with a mean inter
 
 \subsection{30-Minute Wind Disruption Analysis}
 
-To test whether wind was associated with short-term changes in visible cluster size, we compared 50 unique candidate models. The best-supported model, M16, included previous BI as a control covariate and a linear three-way interaction among maximum wind gust, average temperature, and sun-exposed BI. All 50 models produced rankable fits. M16 received nearly all candidate-set support (AIC = 8053.95, Akaike weight = 0.9997). The second-ranked model, M40, contained the same three-way interaction but omitted previous BI and was 17.54 AIC units higher.
+To test whether wind was associated with short-term changes in visible cluster size, we compared 17 primary candidate models. The best-supported model included previous BI, time since sunrise, and a linear three-way interaction among maximum wind gust, average temperature, and sun-exposed BI. It received nearly all candidate-set support (AICc = 8052.02, Akaike weight $>$ 0.9999). The model containing all three linear two-way interactions ranked second and was 33.80 AICc units higher. The same environmental three-way interaction ranked first when previous BI was omitted and when time since sunrise was omitted.
 
-The fitted relationship between maximum gust and short-term BI change varied with both temperature and sun-exposed BI. Evidence for this joint dependence was strong (three-way interaction, $\beta$ = 0.00662, SE = 0.00108, $t$ = 6.11, $p < 0.001$). The positive interaction term indicates that the conditional wind slope shifted toward more positive values as temperature increased, and that this shift was larger when sun-exposed BI was higher. When sun-exposed BI was zero, wind slopes were not distinguishable from zero at 10, 15, or 20$^{\circ}$C (all $p > 0.18$). At sun-exposed BI values of 7 and 20, slopes were negative at 10$^{\circ}$C (both $p < 0.001$), slightly positive at 15$^{\circ}$C ($p$ = 0.038 and 0.011), and positive at 20$^{\circ}$C (both $p < 0.001$). At 15$^{\circ}$C, however, predicted changes remained close to zero and their pointwise confidence intervals included zero throughout the displayed gust ranges. At 20$^{\circ}$C and sun-exposed BI of 7, the confidence interval for predicted change excluded zero at gusts above approximately 3.2~m/s. At sun-exposed BI of 20, the fitted line crossed zero near 2.1~m/s, while confidence intervals excluded zero only below approximately 1.2~m/s and above 3.0~m/s (Figure~\ref{fig:m16_predicted_response}).
+The fitted relationship between maximum gust and short-term BI change varied with both temperature and sun-exposed BI. Evidence for this joint dependence was strong (three-way interaction, $\beta$ = 0.00651, SE = 0.00108, $t$ = 6.02, $p < 0.001$). The positive interaction term indicates that the conditional wind slope shifted toward more positive values as temperature increased, and that this shift was larger when sun-exposed BI was higher. When sun-exposed BI was zero, wind slopes were not distinguishable from zero at 10, 15, or 20$^{\circ}$C (all $p > 0.16$). At sun-exposed BI values of 7 and 20, slopes were negative at 10$^{\circ}$C (both $p < 0.001$) and positive at 20$^{\circ}$C (both $p < 0.001$). At 15$^{\circ}$C, the slope was not distinguishable from zero at sun-exposed BI of 7 ($p$ = 0.063) and was positive at sun-exposed BI of 20 ($p$ = 0.018), although predicted changes remained close to zero across the displayed gust range (Figure~\ref{fig:thirty_minute_response}).
 
-Previous BI had a negative coefficient ($\beta$ = $-$0.00236, SE = 0.00049, $p < 0.001$). Because previous BI contributed to the response definition, its coefficient was treated as an adjustment rather than interpreted as a biological effect. M16 accounted for 5.1\% of the variation in short-term BI change. Residual diagnostics showed modest tail deviations from normality and little remaining temporal autocorrelation.
+Previous BI had a negative coefficient ($\beta$ = $-$0.00230, SE = 0.00048, $p < 0.001$), and time since sunrise had a small positive coefficient ($\beta$ = 0.00055, SE = 0.00027, $p$ = 0.041). These coefficients were treated as adjustments rather than biological effects. The selected model accounted for 5.3\% of the variation in short-term BI change. Residual diagnostics showed modest tail deviations from normality and little remaining temporal autocorrelation.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.98\textwidth]{analysis/outputs/30_minute/m16/figures/m16_predicted_response.png}
-\caption{Predicted 30-minute change in Butterfly Index (BI) across the three-way interaction among maximum wind gust, temperature, and sun-exposed BI in model M16. Predictions are shown on the signed cube-root $\Delta$BI scale, with pointwise 95\% confidence intervals shown by shading. Previous BI is held at its median of 37. Sun-exposed BI values of 7 and 20 represent the median and 75th percentile among observations with positive sun-exposed BI. Lines extend from 0 to the overall 99th percentile of observed maximum gust, 6.21~m/s. All observations were retained in model fitting.}
-\label{fig:m16_predicted_response}
+\includegraphics[width=0.98\textwidth]{analysis/outputs/harmonized_model_comparison/figures/thirty_minute_predicted_response.png}
+\caption{Predicted 30-minute change in Butterfly Index (BI) across the three-way interaction among maximum wind gust, temperature, and sun-exposed BI. Predictions are shown on the signed cube-root $\Delta$BI scale, with pointwise 95\% confidence intervals shown by shading. Previous BI is held at its median of 37, and time since sunrise is held at its median of 300 minutes. Sun-exposed BI values of 7 and 20 represent the median and 75th percentile among observations with positive sun-exposed BI. Lines extend from 0 to the overall 99th percentile of observed maximum gust, 6.21~m/s. All observations were retained in model fitting.}
+\label{fig:thirty_minute_response}
 \end{figure}
 
 \subsection{Next Day Window Analysis}
 
-To test whether wind was associated with changes in visible cluster size over a longer response window, we compared 74 candidate models. The best-supported model, M32, related Next Day Window change in daily maximum BI to previous-day maximum BI, window duration, and a tensor smooth interaction between maximum wind gust and cumulative sun-exposed BI. Of the 74 candidates, 67 produced rankable fits. The remaining seven generated convergence warnings and were excluded from the ranking and Akaike-weight calculation. M32 ranked first (AICc = 650.01, Akaike weight = 0.614). The control-only model with no environmental predictors, M2, ranked second ($\Delta$AICc = 3.58, Akaike weight = 0.103). We refitted M32 using restricted maximum likelihood for estimation.
+To test whether wind was associated with changes in visible cluster size over a longer response window, we compared 35 primary candidate models. The best-supported model included previous-day maximum BI, window duration, and a centered tensor interaction between maximum wind gust and cumulative sun-exposed BI (AICc = 650.01, Akaike weight = 0.368). A maximum-temperature-only model was also competitive ($\Delta$AICc = 1.89, Akaike weight = 0.143). A linear three-way interaction using temperature at the previous day's maximum BI ranked third ($\Delta$AICc = 2.99, Akaike weight = 0.082), and the adjustment-only model ranked fifth ($\Delta$AICc = 3.58, Akaike weight = 0.061). The centered tensor interaction remained first in the sensitivity analysis without previous BI, although a three-way interaction using maximum temperature was within one AICc unit ($\Delta$AICc = 0.81).
 
-Predicted Next Day Window BI change varied across combinations of maximum wind gust and cumulative sun-exposed BI. The tensor smooth interaction was supported (edf = 6.68, $F$ = 4.10, $p < 0.001$). The interaction's fitted contribution was positive at low gust speeds and low cumulative sun-exposed BI, negative at similar gust speeds with higher cumulative sun-exposed BI, and positive across parts of the intermediate wind and sun-exposed BI range (Figure~\ref{fig:interaction_wind_sun_nextday}). Sparse regions outside the reliable interpolation area were not interpreted. Previous-day maximum BI had a negative coefficient ($\beta$ = $-$0.0297, SE = 0.0060, $p < 0.001$), whereas window duration was retained as a control but was not supported ($\beta$ = $-$0.190, SE = 0.178, $p$ = 0.289). Because previous-day maximum BI contributed to the response definition, its coefficient was treated as an adjustment rather than interpreted as a biological effect.
+Within the selected model, predicted Next Day Window BI change varied across combinations of maximum wind gust and cumulative sun-exposed BI (edf = 6.68, $F$ = 4.10, $p < 0.001$). The interaction's fitted contribution was positive at low gust speeds and low cumulative sun-exposed BI, negative at similar gust speeds with higher cumulative sun-exposed BI, and positive across parts of the intermediate wind and sun-exposed BI range (Figure~\ref{fig:interaction_wind_sun_nextday}). Sparse regions outside the reliable interpolation area were not interpreted. Previous-day maximum BI had a negative coefficient ($\beta$ = $-$0.0297, SE = 0.0060, $p < 0.001$), whereas window duration was retained as an adjustment but was not supported ($\beta$ = $-$0.190, SE = 0.178, $p$ = 0.289). Because previous-day maximum BI contributed to the response definition, its coefficient was treated as an adjustment rather than interpreted as a biological effect.
 
-M32 accounted for 39.7\% of the variation in Next Day Window BI change. Residual and basis-dimension diagnostics did not indicate major model violations.
+The selected model accounted for 39.7\% of the variation in Next Day Window BI change. Residual and basis-dimension diagnostics did not indicate major model violations.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.72\textwidth]{analysis/outputs/next_day_window/figures/interaction_wind_sun_nextday.png}
-\caption{Partial effect of the interaction between maximum wind gust and cumulative sun-exposed Butterfly Index (BI) on signed square-root transformed change in daily maximum BI from model M32. Positive and negative values indicate point estimates of the interaction's contribution to the fitted response, not full response predictions. The surface does not show local uncertainty. Jittered points show observed predictor combinations. Gray areas fall outside the supported interpolation region and were not interpreted.}
+\caption{Partial effect of the centered interaction between maximum wind gust and cumulative sun-exposed Butterfly Index (BI) on signed square-root transformed change in daily maximum BI. Positive and negative values indicate point estimates of the interaction's contribution to the fitted response, not full response predictions. The surface does not show local uncertainty. Jittered points show observed predictor combinations. Gray areas fall outside the supported interpolation region and were not interpreted.}
 \label{fig:interaction_wind_sun_nextday}
 \end{figure}
 
@@ -279,178 +279,146 @@ These findings arrive at a critical moment for monarch conservation. With wester
 \appendixstart
 \begin{appendix}
 
-\section{30-Minute Wind Disruption Analysis: Candidate Models}
+\section{Candidate Model Strategy}
+
+Both analyses used a common set of environmental hypothesis templates. Let $C$ denote the required adjustment covariates, $W$ maximum gust, $S$ sun-exposed BI, and $T$ one temperature measure. Linear interactions followed marginality. Thus, a three-way interaction included all associated main effects and two-way interactions. Smooth candidates included both a centered tensor interaction and a hierarchical tensor interaction with marginal smooths.
+
+\begin{table}[H]
+\caption{Environmental predictors and adjustment covariates in the candidate comparisons.}
+\label{tab:harmonized_predictors}
+\begin{tabularx}{\textwidth}{@{}p{0.17\textwidth}XX@{}}
+\toprule
+\textbf{Role} & \textbf{30-minute window} & \textbf{Next Day Window} \\
+\midrule
+$C$ & Previous BI and minutes since sunrise & Previous-day maximum BI and window duration \\
+$W$ & Maximum gust within the paired interval & Maximum gust within the response window \\
+$S$ & Sun-exposed BI at the earlier image & Cumulative sun-exposed BI across daylight images \\
+$T$ & Mean camera temperature between paired images & Minimum temperature, maximum temperature, or temperature at the previous day's maximum BI, evaluated in separate candidates \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\caption{Shared hypothesis templates. Each temperature-dependent template was fitted once in the 30-minute analysis and separately for each of the three Next Day temperature summaries.}
+\label{tab:harmonized_templates}
+\begin{tabularx}{\textwidth}{@{}p{0.10\textwidth}p{0.34\textwidth}X@{}}
+\toprule
+\textbf{ID} & \textbf{Hypothesis} & \textbf{Fixed-effect structure} \\
+\midrule
+H00 & Controls only & $C$ \\
+H01 & Wind & $C + W$ \\
+H02 & Sun-exposed BI & $C + S$ \\
+H03 & Additive wind and sun & $C + W + S$ \\
+H04 & Linear wind by sun interaction & $C + W * S$ \\
+H05 & Centered tensor interaction & $C + ti(W,S)$ \\
+H06 & Additive wind and sun smooths & $C + s(W) + s(S)$ \\
+H07 & Hierarchical tensor interaction & $C + s(W) + s(S) + ti(W,S)$ \\
+T01 & Temperature & $C + T$ \\
+T02 & Additive wind, temperature, and sun & $C + W + T + S$ \\
+T03 & Wind by temperature & $C + W * T + S$ \\
+T04 & Wind by sun, with temperature & $C + W * S + T$ \\
+T05 & Temperature by sun, with wind & $C + T * S + W$ \\
+T06 & All linear two-way interactions & $C + W * T + W * S + T * S$ \\
+T07 & Full linear three-way interaction & $C + W * T * S$ \\
+T08 & Additive environmental smooths & $C + s(W) + s(T) + s(S)$ \\
+T09 & Smooth wind by sun interaction with temperature & $C + s(W) + s(T) + s(S) + ti(W,S)$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{30-Minute Candidate Mapping}
 \label{app:30min_models}
 
-This appendix documents the 52 named candidate models defined for the 30-minute wind disruption analysis. M20 duplicated M17, and M44 duplicated M41. These duplicates were removed before comparison, leaving 50 unique candidates.
+The primary 30-minute comparison contained the eight H templates and nine T templates, for 17 candidates. The adjustment set $C$ was previous BI and linear minutes since sunrise. The no-previous-BI sensitivity retained time since sunrise, and the no-time sensitivity retained previous BI. Each model included random intercepts for deployment and deployment-day and AR(1) correlation within deployment-day. All 51 fits completed without warnings. The full linear three-way interaction ranked first in all three candidate sets.
 
-\textbf{Model Structure.}
-All models used Generalized Additive Mixed Models (GAMM) with the following structure:
-\begin{itemize}
-\item \textbf{Response variable}: $\sqrt[3]{\Delta\mathrm{BI}}$ (cube root of BI change between consecutive 30-minute intervals)
-\item \textbf{Random effects}: Random intercepts for deployment and deployment-day
-\item \textbf{Correlation structure}: AR(1) autocorrelation within observation days
-\item \textbf{Estimation method}: Maximum likelihood for model comparison, followed by restricted maximum likelihood for the selected model
-\end{itemize}
+Table~\ref{tab:30min_candidates} gives the fixed-effect structure of every primary 30-minute candidate. In this table, $C_{30}$ is previous BI plus minutes since sunrise, $W_{30}$ is maximum gust within the paired interval, $S_{30}$ is sun-exposed BI at the earlier image, and $T_{30}$ is mean camera temperature between the paired images. Smooth terms used shrinkage thin-plate regression splines with $k=5$. Every candidate also had the random-effect and correlation structure described above.
 
-\textbf{Variable Definitions.}
-\texttt{total\_butterflies\_t\_lag}: Previous butterfly index (lagged);
-\texttt{max\_gust}: Maximum wind gust speed (m/s);
-\texttt{temperature\_avg}: Average temperature ($^{\circ}$C);
-\texttt{butterflies\_direct\_sun\_t\_lag}: Sun-exposed BI at the earlier observation;
-\texttt{time\_within\_day\_t}: Time since sunrise (hours);
-$s()$: Thin-plate regression spline smooth term;
-$ti()$: Tensor product interaction smooth;
-$*$: Linear interaction term.
-
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-1.6cm-2\tabcolsep\relax}@{}}
-\caption{Complete list of 52 named candidates defined for the 30-minute wind disruption analysis. M20 and M44 were exact duplicates and were excluded before comparison.} \label{tab:30min_candidates} \\
+\begin{longtable}{@{}p{0.13\textwidth}p{0.79\textwidth}@{}}
+\caption{The 17 primary candidates in the 30-minute model comparison.} \label{tab:30min_candidates} \\
 \toprule
-\textbf{Model} & \textbf{Formula} \\
+\textbf{ID} & \textbf{Fixed-effect structure} \\
 \midrule
 \endfirsthead
 \toprule
-\textbf{Model} & \textbf{Formula} \\
+\textbf{ID} & \textbf{Fixed-effect structure} \\
 \midrule
 \endhead
-M1  & total\_butterflies\_t\_lag \\
-M2  & total\_butterflies\_t\_lag + max\_gust \\
-M3  & total\_butterflies\_t\_lag + temperature\_avg \\
-M4  & total\_butterflies\_t\_lag + butterflies\_direct\_sun\_t\_lag \\
-M5  & total\_butterflies\_t\_lag + max\_gust + temperature\_avg \\
-M6  & total\_butterflies\_t\_lag + max\_gust + butterflies\_direct\_sun\_t\_lag \\
-M7  & total\_butterflies\_t\_lag + temperature\_avg + butterflies\_direct\_sun\_t\_lag \\
-M8  & total\_butterflies\_t\_lag + max\_gust + temperature\_avg + butterflies\_direct\_sun\_t\_lag \\
-M9  & total\_butterflies\_t\_lag + max\_gust $*$ temperature\_avg \\
-M10 & total\_butterflies\_t\_lag + max\_gust $*$ butterflies\_direct\_sun\_t\_lag \\
-M11 & total\_butterflies\_t\_lag + temperature\_avg $*$ butterflies\_direct\_sun\_t\_lag \\
-M12 & total\_butterflies\_t\_lag + max\_gust $*$ temperature\_avg + butterflies\_direct\_sun\_t\_lag \\
-M13 & total\_butterflies\_t\_lag + max\_gust $*$ butterflies\_direct\_sun\_t\_lag + temperature\_avg \\
-M14 & total\_butterflies\_t\_lag + temperature\_avg $*$ butterflies\_direct\_sun\_t\_lag + max\_gust \\
-M15 & total\_butterflies\_t\_lag + all two-way interactions \\
-M16 & total\_butterflies\_t\_lag + max\_gust $*$ temperature\_avg $*$ butterflies\_direct\_sun\_t\_lag \\
-M17 & s(total\_butterflies\_t\_lag) + s(temperature\_avg) + s(butterflies\_direct\_sun\_t\_lag) \\
-M18 & s(total\_butterflies\_t\_lag) + temperature\_avg + s(butterflies\_direct\_sun\_t\_lag) \\
-M19 & s(total\_butterflies\_t\_lag) + s(max\_gust) + temperature\_avg + s(butterflies\_direct\_sun\_t\_lag) \\
-M20 & s(total\_butterflies\_t\_lag) + s(temperature\_avg) + s(butterflies\_direct\_sun\_t\_lag) \\
-M21 & s(total\_butterflies\_t\_lag) + s(max\_gust) + s(temperature\_avg) + s(butterflies\_direct\_sun\_t\_lag) \\
-M22 & s(total\_butterflies\_t\_lag) + temperature\_avg + s(butterflies\_direct\_sun\_t\_lag) + s(time\_within\_day\_t) \\
-M23 & s(total\_butterflies\_t\_lag) + s(temperature\_avg) + s(butterflies\_direct\_sun\_t\_lag) + s(time\_within\_day\_t) \\
-M24 & s(total\_butterflies\_t\_lag) + s(max\_gust) + s(temperature\_avg) + s(butterflies\_direct\_sun\_t\_lag) + s(time\_within\_day\_t) \\
-M25 & (intercept only) \\
-M26 & max\_gust \\
-M27 & temperature\_avg \\
-M28 & butterflies\_direct\_sun\_t\_lag \\
-M29 & max\_gust + temperature\_avg \\
-M30 & max\_gust + butterflies\_direct\_sun\_t\_lag \\
-M31 & temperature\_avg + butterflies\_direct\_sun\_t\_lag \\
-M32 & max\_gust + temperature\_avg + butterflies\_direct\_sun\_t\_lag \\
-M33 & max\_gust $*$ temperature\_avg \\
-M34 & max\_gust $*$ butterflies\_direct\_sun\_t\_lag \\
-M35 & temperature\_avg $*$ butterflies\_direct\_sun\_t\_lag \\
-M36 & max\_gust $*$ temperature\_avg + butterflies\_direct\_sun\_t\_lag \\
-M37 & max\_gust $*$ butterflies\_direct\_sun\_t\_lag + temperature\_avg \\
-M38 & temperature\_avg $*$ butterflies\_direct\_sun\_t\_lag + max\_gust \\
-M39 & all two-way interactions (no lag) \\
-M40 & max\_gust $*$ temperature\_avg $*$ butterflies\_direct\_sun\_t\_lag (no lag) \\
-M41 & s(temperature\_avg) + s(butterflies\_direct\_sun\_t\_lag) \\
-M42 & temperature\_avg + s(butterflies\_direct\_sun\_t\_lag) \\
-M43 & s(max\_gust) + temperature\_avg + s(butterflies\_direct\_sun\_t\_lag) \\
-M44 & s(temperature\_avg) + s(butterflies\_direct\_sun\_t\_lag) \\
-M45 & s(max\_gust) + s(temperature\_avg) + s(butterflies\_direct\_sun\_t\_lag) \\
-M46 & temperature\_avg + s(butterflies\_direct\_sun\_t\_lag) + s(time\_within\_day\_t) \\
-M47 & s(temperature\_avg) + s(butterflies\_direct\_sun\_t\_lag) + s(time\_within\_day\_t) \\
-M48 & s(max\_gust) + s(temperature\_avg) + s(butterflies\_direct\_sun\_t\_lag) + s(time\_within\_day\_t) \\
-M49 & s(total\_butterflies\_t\_lag) + ti(max\_gust, butterflies\_direct\_sun\_t\_lag) \\
-M50 & s(total\_butterflies\_t\_lag) + s(temperature\_avg) + s(time\_within\_day\_t) + ti(max\_gust, butterflies\_direct\_sun\_t\_lag) \\
-M51 & ti(max\_gust, butterflies\_direct\_sun\_t\_lag) \\
-M52 & s(temperature\_avg) + s(time\_within\_day\_t) + ti(max\_gust, butterflies\_direct\_sun\_t\_lag) \\
+H00 & $C_{30}$ \\
+H01 & $C_{30} + W_{30}$ \\
+H02 & $C_{30} + S_{30}$ \\
+H03 & $C_{30} + W_{30} + S_{30}$ \\
+H04 & $C_{30} + W_{30} * S_{30}$ \\
+H05 & $C_{30} + ti(W_{30},S_{30})$ \\
+H06 & $C_{30} + s(W_{30}) + s(S_{30})$ \\
+H07 & $C_{30} + s(W_{30}) + s(S_{30}) + ti(W_{30},S_{30})$ \\
+T01 & $C_{30} + T_{30}$ \\
+T02 & $C_{30} + W_{30} + T_{30} + S_{30}$ \\
+T03 & $C_{30} + W_{30} * T_{30} + S_{30}$ \\
+T04 & $C_{30} + W_{30} * S_{30} + T_{30}$ \\
+T05 & $C_{30} + T_{30} * S_{30} + W_{30}$ \\
+T06 & $C_{30} + W_{30} * T_{30} + W_{30} * S_{30} + T_{30} * S_{30}$ \\
+T07 & $C_{30} + W_{30} * T_{30} * S_{30}$ \\
+T08 & $C_{30} + s(W_{30}) + s(T_{30}) + s(S_{30})$ \\
+T09 & $C_{30} + s(W_{30}) + s(T_{30}) + s(S_{30}) + ti(W_{30},S_{30})$ \\
 \bottomrule
 \end{longtable}
 
-All 50 unique candidates produced rankable fits. M16 was selected by AIC and refitted using restricted maximum likelihood. M16 included previous BI and the linear three-way interaction among maximum wind gust, average temperature, and sun-exposed BI. Complete formulas, fit outcomes, warnings, and rankings are included with the reproducibility materials.
-
-
-\section{Next Day Window Analysis: Candidate Models}
+\subsection{Next Day Candidate Mapping}
 \label{app:nextday_models}
 
-This appendix documents the 74 candidate formulas reconstructed for the Next Day Window analysis. The defined candidates were M1 through M72 and M77 through M78. Model identifiers M73 through M76 were not defined in the original analysis.
+The primary Next Day comparison contained the eight H templates and nine T templates repeated for each of the three temperature summaries, for 35 candidates. The adjustment set $C$ was previous-day maximum BI and window duration. The no-previous-BI sensitivity removed previous-day maximum BI from all 35 candidates but retained window duration. Each model included a deployment random intercept and AR(1) correlation within deployment. All 70 fits completed without warnings. The centered wind by sun-exposed BI tensor interaction ranked first in both candidate sets.
 
-\textbf{Model Structure.}
-All models used Generalized Additive Mixed Models (GAMM) with the following structure:
-\begin{itemize}
-\item \textbf{Response variable}: signed $\sqrt{|\Delta\mathrm{BI}_{\max}|}$ (signed square root of change in maximum daily BI between days)
-\item \textbf{Random effects}: Random intercept for deployment site
-\item \textbf{Correlation structure}: AR(1) autocorrelation for temporal dependence
-\item \textbf{Estimation method}: Maximum likelihood for model comparison, followed by restricted maximum likelihood for the selected model
-\end{itemize}
+Table~\ref{tab:nextday_candidates} gives the fixed-effect structure of every primary Next Day candidate. Here, $C_D$ is previous-day maximum BI plus window duration, $W_D$ is maximum gust within the response window, and $S_D$ is cumulative sun-exposed BI across daylight images. The three temperature variables are $T_{\min}$, minimum window temperature, $T_{\max}$, maximum window temperature, and $T_P$, temperature at the previous day's maximum BI. Smooth terms used shrinkage thin-plate regression splines with $k=5$. Every candidate also had the random-effect and correlation structure described above.
 
-\textbf{Variable Definitions.}
-\texttt{max\_butterflies\_t\_1}: Previous day maximum butterfly index (tested as smooth or linear);
-\texttt{lag\_duration\_hours}: Weather window duration (tested as smooth or linear);
-\texttt{temp\_min}: Minimum temperature over the Next Day Window ($^{\circ}$C);
-\texttt{temp\_max}: Maximum temperature over the Next Day Window ($^{\circ}$C);
-\texttt{temp\_at\_max\_count\_t\_1}: Temperature when max count occurred ($^{\circ}$C);
-\texttt{wind\_max\_gust}: Maximum wind gust in window (m/s);
-\texttt{sum\_butterflies\_direct\_sun}: Cumulative butterflies in direct sun;
-$s()$: Thin-plate regression spline smooth term;
-$ti()$: Tensor product interaction smooth.
-
-Models were generated programmatically across seven categories. The first number in parentheses indicates models with smooth baseline controls; the second indicates linear baseline controls.
-
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-1.6cm-2\tabcolsep\relax}@{}}
-\caption{Complete list of 74 candidate formulas reconstructed for the Next Day Window analysis.} \label{tab:nextday_candidates} \\
+\begin{longtable}{@{}p{0.18\textwidth}p{0.74\textwidth}@{}}
+\caption{The 35 primary candidates in the Next Day model comparison.} \label{tab:nextday_candidates} \\
 \toprule
-\textbf{Model} & \textbf{Description} \\
+\textbf{ID} & \textbf{Fixed-effect structure} \\
 \midrule
 \endfirsthead
 \toprule
-\textbf{Model} & \textbf{Description} \\
+\textbf{ID} & \textbf{Fixed-effect structure} \\
 \midrule
 \endhead
-M1      & Control-only model with smooth adjustment covariates \\
-M2      & Control-only model with linear adjustment covariates \\
-M3, M4  & Single: temp\_min (smooth, linear) \\
-M5, M6  & Single: temp\_max (smooth, linear) \\
-M7, M8  & Single: temp\_at\_max\_count\_t\_1 (smooth, linear) \\
-M9, M10 & Single: wind\_max\_gust (smooth, linear) \\
-M11, M12 & Single: sum\_butterflies\_direct\_sun (smooth, linear) \\
-M13, M14 & Interaction: temp\_min $\times$ temp\_max (smooth, linear) \\
-M15, M16 & Interaction: temp\_min $\times$ temp\_at\_max\_count\_t\_1 (smooth, linear) \\
-M17, M18 & Interaction: temp\_min $\times$ wind\_max\_gust (smooth, linear) \\
-M19, M20 & Interaction: temp\_min $\times$ sum\_butterflies\_direct\_sun (smooth, linear) \\
-M21, M22 & Interaction: temp\_max $\times$ temp\_at\_max\_count\_t\_1 (smooth, linear) \\
-M23, M24 & Interaction: temp\_max $\times$ wind\_max\_gust (smooth, linear) \\
-M25, M26 & Interaction: temp\_max $\times$ sum\_butterflies\_direct\_sun (smooth, linear) \\
-M27, M28 & Interaction: temp\_at\_max\_count\_t\_1 $\times$ wind\_max\_gust (smooth, linear) \\
-M29, M30 & Interaction: temp\_at\_max\_count\_t\_1 $\times$ sum\_butterflies\_direct\_sun (smooth, linear) \\
-M31, M32 & Interaction: wind\_max\_gust $\times$ sum\_butterflies\_direct\_sun (smooth, linear) \\
-M33, M34 & Additive + Interaction: temp\_min + temp\_max + interaction (smooth, linear) \\
-M35, M36 & Additive + Interaction: temp\_min + temp\_at\_max\_count\_t\_1 + interaction (smooth, linear) \\
-M37, M38 & Additive + Interaction: temp\_min + wind\_max\_gust + interaction (smooth, linear) \\
-M39, M40 & Additive + Interaction: temp\_min + sum\_butterflies\_direct\_sun + interaction (smooth, linear) \\
-M41, M42 & Additive + Interaction: temp\_max + temp\_at\_max\_count\_t\_1 + interaction (smooth, linear) \\
-M43, M44 & Additive + Interaction: temp\_max + wind\_max\_gust + interaction (smooth, linear) \\
-M45, M46 & Additive + Interaction: temp\_max + sum\_butterflies\_direct\_sun + interaction (smooth, linear) \\
-M47, M48 & Additive + Interaction: temp\_at\_max\_count\_t\_1 + wind\_max\_gust + interaction (smooth, linear) \\
-M49, M50 & Additive + Interaction: temp\_at\_max\_count\_t\_1 + sum\_butterflies\_direct\_sun + interaction (smooth, linear) \\
-M51, M52 & Additive + Interaction: wind\_max\_gust + sum\_butterflies\_direct\_sun + interaction (smooth, linear) \\
-M53, M54 & Additive: All temperature variables (smooth, linear) \\
-M55, M56 & Additive: temp\_min + temp\_max (smooth, linear) \\
-M57, M58 & Additive: temp\_min + wind\_max\_gust (smooth, linear) \\
-M59, M60 & Additive: temp\_max + wind\_max\_gust (smooth, linear) \\
-M61, M62 & Additive: temp\_at\_max\_count\_t\_1 + wind\_max\_gust (smooth, linear) \\
-M63, M64 & Additive: All temperature + wind (smooth, linear) \\
-M65, M66 & Additive: All predictors (smooth, linear) \\
-M67, M68 & All temperature main effects + all temperature interactions (smooth, linear) \\
-M69, M70 & All main effects + all temperature $\times$ wind interactions (smooth, linear) \\
-M71, M72 & FULL MODEL: All main effects + all two-way interactions (smooth, linear) \\
-M77     & Linear interaction: wind\_max\_gust $\times$ sum\_butterflies\_direct\_sun \\
-M78     & Linear interaction + temp\_min + temp\_max \\
+H00 & $C_D$ \\
+H01 & $C_D + W_D$ \\
+H02 & $C_D + S_D$ \\
+H03 & $C_D + W_D + S_D$ \\
+H04 & $C_D + W_D * S_D$ \\
+H05 & $C_D + ti(W_D,S_D)$ \\
+H06 & $C_D + s(W_D) + s(S_D)$ \\
+H07 & $C_D + s(W_D) + s(S_D) + ti(W_D,S_D)$ \\
+min-T01 & $C_D + T_{\min}$ \\
+min-T02 & $C_D + W_D + T_{\min} + S_D$ \\
+min-T03 & $C_D + W_D * T_{\min} + S_D$ \\
+min-T04 & $C_D + W_D * S_D + T_{\min}$ \\
+min-T05 & $C_D + T_{\min} * S_D + W_D$ \\
+min-T06 & $C_D + W_D * T_{\min} + W_D * S_D + T_{\min} * S_D$ \\
+min-T07 & $C_D + W_D * T_{\min} * S_D$ \\
+min-T08 & $C_D + s(W_D) + s(T_{\min}) + s(S_D)$ \\
+min-T09 & $C_D + s(W_D) + s(T_{\min}) + s(S_D) + ti(W_D,S_D)$ \\
+max-T01 & $C_D + T_{\max}$ \\
+max-T02 & $C_D + W_D + T_{\max} + S_D$ \\
+max-T03 & $C_D + W_D * T_{\max} + S_D$ \\
+max-T04 & $C_D + W_D * S_D + T_{\max}$ \\
+max-T05 & $C_D + T_{\max} * S_D + W_D$ \\
+max-T06 & $C_D + W_D * T_{\max} + W_D * S_D + T_{\max} * S_D$ \\
+max-T07 & $C_D + W_D * T_{\max} * S_D$ \\
+max-T08 & $C_D + s(W_D) + s(T_{\max}) + s(S_D)$ \\
+max-T09 & $C_D + s(W_D) + s(T_{\max}) + s(S_D) + ti(W_D,S_D)$ \\
+prev-T01 & $C_D + T_P$ \\
+prev-T02 & $C_D + W_D + T_P + S_D$ \\
+prev-T03 & $C_D + W_D * T_P + S_D$ \\
+prev-T04 & $C_D + W_D * S_D + T_P$ \\
+prev-T05 & $C_D + T_P * S_D + W_D$ \\
+prev-T06 & $C_D + W_D * T_P + W_D * S_D + T_P * S_D$ \\
+prev-T07 & $C_D + W_D * T_P * S_D$ \\
+prev-T08 & $C_D + s(W_D) + s(T_P) + s(S_D)$ \\
+prev-T09 & $C_D + s(W_D) + s(T_P) + s(S_D) + ti(W_D,S_D)$ \\
 \bottomrule
 \end{longtable}
 
-Of the 74 candidates, 67 produced rankable fits. Seven fits with convergence warnings were excluded from ranking. M32 was selected by AICc and refitted using restricted maximum likelihood. Complete formulas, fit outcomes, warnings, and rankings are included with the reproducibility materials.
+All 121 fits were compared using maximum likelihood and AICc. Akaike weights were calculated separately within each response window and sensitivity framework. The selected formulas were refitted using restricted maximum likelihood. Complete machine-readable formulas, fit outcomes, rankings, and selected-model summaries accompany the analysis code.
 
 \end{appendix}
 

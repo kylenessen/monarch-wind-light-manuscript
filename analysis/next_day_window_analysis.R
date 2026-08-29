@@ -201,7 +201,6 @@ add_candidate(77,
 add_candidate(78,
   paste("butterfly_diff_sqrt ~", smooth_base, "+ temp_min + temp_max + wind_max_gust + sum_butterflies_direct_sun + wind_max_gust:sum_butterflies_direct_sun"),
   "Linear interaction + temp_min + temp_max (with baseline + lag duration)")
-
 stopifnot(length(model_specs) == 74, identical(names(model_specs), c(paste0("M", 1:72), "M77", "M78")))
 
 fit_model_safe <- function(formula_str, method = "ML") {
