@@ -649,7 +649,10 @@ def strip_review_parts(path: Path) -> None:
         "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments",
         "http://schemas.microsoft.com/office/2011/relationships/commentsExtended",
     }
-    removable = {"word/comments.xml", "word/commentsExtended.xml"}
+    custom_properties_relationship_type = (
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties"
+    )
+    removable = {"word/comments.xml", "word/commentsExtended.xml", "docProps/custom.xml"}
     with tempfile.NamedTemporaryFile(suffix=".docx", delete=False, dir=path.parent) as temporary:
         temporary_path = Path(temporary.name)
     try:
@@ -683,11 +686,29 @@ def strip_review_parts(path: Path) -> None:
                     rels_root, xml_declaration=True, encoding="UTF-8", standalone="yes"
                 )
 
+            package_rels_path = "_rels/.rels"
+            package_rels_root = etree.fromstring(source.read(package_rels_path))
+            package_rels_changed = False
+            for relationship in list(
+                package_rels_root.findall(f"{{{relationship_namespace}}}Relationship")
+            ):
+                if relationship.get("Type") == custom_properties_relationship_type:
+                    package_rels_root.remove(relationship)
+                    package_rels_changed = True
+            if package_rels_changed:
+                overrides[package_rels_path] = etree.tostring(
+                    package_rels_root, xml_declaration=True, encoding="UTF-8", standalone="yes"
+                )
+
             content_types_path = "[Content_Types].xml"
             content_types_root = etree.fromstring(source.read(content_types_path))
             content_types_changed = False
             for override in list(content_types_root.findall(f"{{{content_type_namespace}}}Override")):
-                if override.get("PartName") in ("/word/comments.xml", "/word/commentsExtended.xml"):
+                if override.get("PartName") in (
+                    "/word/comments.xml",
+                    "/word/commentsExtended.xml",
+                    "/docProps/custom.xml",
+                ):
                     content_types_root.remove(override)
                     content_types_changed = True
             if content_types_changed:
@@ -748,6 +769,11 @@ def validate(path: Path, tables: list[TableSpec], source_commit: str) -> None:
         forbidden_parts = {name for name in names if "comment" in name.lower() or name.endswith("people.xml")}
         if forbidden_parts:
             raise RuntimeError(f"Review parts remain: {sorted(forbidden_parts)}")
+        if "docProps/custom.xml" in names:
+            raise RuntimeError("Conversion-tool custom properties remain")
+        package_relationships = archive.read("_rels/.rels")
+        if b"custom-properties" in package_relationships:
+            raise RuntimeError("Custom-properties package relationship remains")
         document_xml = archive.read("word/document.xml")
         for marker in (b"<w:ins", b"<w:del", b"<w:moveFrom", b"<w:moveTo", b"commentRange"):
             if marker in document_xml:
