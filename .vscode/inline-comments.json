@@ -9,7 +9,7 @@
     "selectedText": "At well-monitored groves,",
     "text": "I feel like this is too careful. Annecdotally this is well known about monarch behavior. Is there a careful way we can thread the needle?",
     "timestamp": "2026-08-31T18:54:20.986Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "d67f4b30-9ea1-49a9-afd5-b958d2b51f24",
@@ -21,7 +21,7 @@
     "selectedText": "and the primary focus of management activities.",
     "text": "I think this is closer to what I intended. We can clean up if not clear.",
     "timestamp": "2026-08-31T18:57:33.800Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "92fc850b-5a8e-4a50-aae9-fb793d8ffb09",
@@ -33,6 +33,6 @@
     "selectedText": "We conducted an observational field study at two blue gum eucalyptus groves at Vandenberg Space Force Base during the 2023--2024 overwintering season. We used time-lapse imagery to derive a Butterfly Index (BI) of visible cluster size and paired changes in this index with nearby wind measurements across short and overnight timescales. The Wind Disruption Hypothesis predicts that greater wind exposure will precede consistent reductions in visible cluster size, with larger reductions at higher wind speeds. By directly monitoring visible clusters across a range of nearby wind conditions, we evaluated the central prediction of the Wind Disruption Hypothesis.",
     "text": "This paragraph still feels weak. It needs to say we did this study to invetigate the wind disruption hypothesis directly. We did these things. etc. I wnat it to land strong",
     "timestamp": "2026-08-31T19:02:04.256Z",
-    "resolved": false
+    "resolved": true
   }
 ]
