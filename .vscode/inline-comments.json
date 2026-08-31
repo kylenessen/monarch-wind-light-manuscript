@@ -9,7 +9,7 @@
     "selectedText": "become strong",
     "text": "use the 2 m/s number. We should also include the prediction that they will consistently decrease with increasing wind speeds.",
     "timestamp": "2026-08-31T22:02:48.222Z",
-    "resolved": false,
+    "resolved": true,
     "editedAt": "2026-08-31T22:03:22.488Z"
   },
   {
@@ -22,7 +22,7 @@
     "selectedText": "This physiological explanation was not tested and is offered as a direction for future research.",
     "text": "This is too defensive for a final sentence. We should just cautiously propose the explaination or drop the alternative explainations entirely.",
     "timestamp": "2026-08-31T22:04:35.779Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "1810b803-d9ed-4e02-bcd5-41c27934c438",
@@ -34,7 +34,7 @@
     "selectedText": "The Wind Disruption Hypothesis predicts that strong winds disrupt overwintering western monarch butterfly (\\textit{Danaus plexippus}) clusters and cause cluster abundance to decline.",
     "text": "I think we need to open with conservation of western omonarh overwintering habitat is largely focused on managing wind protection because of the wind disruption hypothesis, then go into what it is.",
     "timestamp": "2026-08-31T22:05:34.379Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "c30bcc55-c756-42fa-8479-75d5508217f3",
@@ -46,7 +46,7 @@
     "selectedText": " visible cluster size and a sun-exposed BI. We analyzed 1,894 paired 30-minute observations and 96 Next Day Windows.",
     "text": "This is all in the weeds a little bit and we should borrow language from the intro to make it more immediately understandable.",
     "timestamp": "2026-08-31T22:06:32.328Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "2471b51c-93da-42ff-96cb-6784f2821bde",
@@ -58,7 +58,7 @@
     "selectedText": "although model-selection uncertainty was greater",
     "text": "I don't think we need to say this, and instead reinforce the observations from the 30 min analysis with the next-day analysis",
     "timestamp": "2026-08-31T22:08:39.069Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "44446927-63ed-49dd-8f7c-2377936321dc",
@@ -70,6 +70,6 @@
     "selectedText": "They do not establish that wind cannot disrupt clusters. Wind was measured near clusters rather than at butterfly positions, and visible cluster change did not directly measure butterfly movement.",
     "text": "I feel like this is too defensive. Leave that to limitaitons. I think we can safely say that we did not find evidence to support the existing predictions.",
     "timestamp": "2026-08-31T22:09:27.135Z",
-    "resolved": false
+    "resolved": true
   }
 ]
