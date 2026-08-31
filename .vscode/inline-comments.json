@@ -9,7 +9,7 @@
     "selectedText": "specific numerical criterion",
     "text": "This is very wordy and I don't know what it means. Please simply lanaguage.",
     "timestamp": "2026-08-31T18:38:29.307Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "830e0c30-f2dd-42e0-a19b-20295744ed9a",
@@ -21,7 +21,7 @@
     "selectedText": "Because abiotic conditions strongly shape invertebrate activity and habitat use",
     "text": "We need to include some nod to wind and include those extra species citations like coackroaches here. We do not need to name any of the species in text though.",
     "timestamp": "2026-08-31T18:39:11.222Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "49a44258-6dcf-451e-a32f-2fadedca60d3",
@@ -33,7 +33,7 @@
     "selectedText": "monarchs repeatedly cluster within a limited set of areas and trees",
     "text": "This doesn't convye the specificity that I originally intended. Monarchs clearly prefer certain areas of a grove over others, which persists across years. Say that compactly",
     "timestamp": "2026-08-31T18:40:23.619Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "67e9a35f-55ab-4c65-a60d-9a5e97175a17",
@@ -45,7 +45,7 @@
     "selectedText": "criterion",
     "text": "I don't like criterion, and prefer something simpler like threshold",
     "timestamp": "2026-08-31T18:41:42.201Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "afe62d02-3230-4b96-a836-0e902e45192d",
@@ -57,7 +57,7 @@
     "selectedText": "wind depend on associated conditions such as temperature and sunlight",
     "text": "This needs to be more speculative. Like wind responses could be something else, for example in response to temp and light. blah blah blah. It just needs to open the door to alternative explainations.",
     "timestamp": "2026-08-31T18:43:04.009Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "5b10e2f2-2098-418b-af89-0f941bac624d",
@@ -69,7 +69,7 @@
     "selectedText": "Butterfly Index",
     "text": "We need to properly give some sense of what this is, because it is not obvious at the outset. How can we carefully say we tried to measure changes in cluster size?",
     "timestamp": "2026-08-31T18:43:53.150Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "a93cc031-9755-4d18-aa2d-a824641bfeda",
@@ -81,7 +81,7 @@
     "selectedText": "immediate",
     "text": "immediate may be too strong of a word. short term or near term or something like that would be better. It needs to propagate throughout the doc as well.",
     "timestamp": "2026-08-31T18:44:30.300Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "8fc3cefd-5a0b-4104-8ea5-78744b8b1ca5",
@@ -93,7 +93,7 @@
     "selectedText": "next-day",
     "text": "next-day is still a good name for the analyses down the line, but here we just need to give the \"spirit\" of the time window.",
     "timestamp": "2026-08-31T18:45:01.554Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "08ee2819-09df-43ae-8945-8c44503851b3",
@@ -105,7 +105,7 @@
     "selectedText": "Under the Wind Disruption Hypothesis, greater wind exposure was expected to precede consisent reductions in visible cluster size, which became larger as wind speeds increased.",
     "text": "I made this sentence clunky, but the added specificity is helpful. Please clean up.",
     "timestamp": "2026-08-31T18:45:54.312Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "8bcb2d10-834f-4cca-9654-9529ccc9bbf8",
@@ -117,7 +117,7 @@
     "selectedText": "e evaluated this prediction while accounting for prior cluster size, approximate local temperature, time of day, and sun-exposed BI.",
     "text": "This feels too in the weeds and abetter left for methods. we could probably just delete.",
     "timestamp": "2026-08-31T18:46:30.976Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "ddcc4e31-900d-4325-805e-2bab21fec2e1",
@@ -129,6 +129,6 @@
     "selectedText": "The study therefore evaluates whether the predicted association occurred under the monitored conditions rather than providing an experimental or exact test of the historical 2~m/s criterion.",
     "text": "Oh I kind of hate how careful this statement is. We need a strong ender here that we set out to resolve the wind disruption hypothesis question by directly monitoring butterflies undervarious wind conditions. Let the reader decide the strentgh of how well we did, but let's not sell ourselves short on what we set out to do.",
     "timestamp": "2026-08-31T18:47:41.634Z",
-    "resolved": false
+    "resolved": true
   }
 ]
