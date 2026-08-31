@@ -391,12 +391,60 @@ write_csv(
   file.path(out_dir, "thirty_minute_conditional_wind_effects.csv")
 )
 
-prediction_grid <- expand.grid(
-  max_gust = seq(0, wind_max_plot, length.out = 240),
+prediction_support <- expand.grid(
   temperature_avg = temperature_values,
   butterflies_direct_sun_t_lag = sun_values,
   KEEP.OUT.ATTRS = FALSE
 ) %>%
+  as_tibble() %>%
+  mutate(
+    sun_support_low = case_when(
+      butterflies_direct_sun_t_lag == 0 ~ 0,
+      butterflies_direct_sun_t_lag == 7 ~ 1,
+      TRUE ~ 14
+    ),
+    sun_support_high = case_when(
+      butterflies_direct_sun_t_lag == 0 ~ 0,
+      butterflies_direct_sun_t_lag == 7 ~ 13,
+      TRUE ~ 30
+    )
+  ) %>%
+  pmap_dfr(function(temperature_avg, butterflies_direct_sun_t_lag,
+                    sun_support_low, sun_support_high) {
+    target_temperature <- temperature_avg
+    target_sun <- butterflies_direct_sun_t_lag
+    target_sun_low <- sun_support_low
+    target_sun_high <- sun_support_high
+    supported_rows <- thirty_minute_data %>%
+      filter(
+        abs(.data$temperature_avg - .env$target_temperature) <= 1,
+        .data$butterflies_direct_sun_t_lag >= .env$target_sun_low,
+        .data$butterflies_direct_sun_t_lag <= .env$target_sun_high
+      )
+    tibble(
+      temperature_avg = target_temperature,
+      butterflies_direct_sun_t_lag = target_sun,
+      sun_support_low = target_sun_low,
+      sun_support_high = target_sun_high,
+      support_n = nrow(supported_rows),
+      max_supported_gust = min(wind_max_plot, max(supported_rows$max_gust))
+    )
+  })
+
+prediction_grid <- prediction_support %>%
+  pmap_dfr(function(temperature_avg, butterflies_direct_sun_t_lag,
+                    sun_support_low, sun_support_high, support_n,
+                    max_supported_gust) {
+    tibble(
+      max_gust = seq(0, max_supported_gust, length.out = 240),
+      temperature_avg = temperature_avg,
+      butterflies_direct_sun_t_lag = butterflies_direct_sun_t_lag,
+      sun_support_low = sun_support_low,
+      sun_support_high = sun_support_high,
+      support_n = support_n,
+      max_supported_gust = max_supported_gust
+    )
+  }) %>%
   mutate(
     total_butterflies_t_lag = previous_bi_value,
     time_within_day_t = time_value
