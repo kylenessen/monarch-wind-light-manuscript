@@ -10,10 +10,10 @@ import shutil
 import subprocess
 import tempfile
 import zipfile
-from xml.etree import ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
 
+from lxml import etree
 from docx import Document
 from docx.enum.table import WD_ALIGN_VERTICAL, WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -106,6 +106,7 @@ def strip_latex(value: str) -> str:
     value = re.sub(r"\\sqrt\[3\]\{\\Delta(?:\\mathrm\{BI\}|BI)\}", "∛ΔBI", value)
     value = re.sub(r"\\sqrt\{\|\\Delta(?:\\mathrm\{BI\}|\\?BI)_?\{?\\max\}?\|\}", "√|ΔBImax|", value)
     value = re.sub(r"\^\{2\}", "²", value)
+    value = re.sub(r"\^2\b", "²", value)
     value = re.sub(r"_\{\\text\{([^{}]+)\}\}", r"_\1", value)
     value = re.sub(r"_\{([^{}]+)\}", r"_\1", value)
     value = value.replace("$", "")
@@ -206,6 +207,9 @@ def parse_table_block(block: str, number: int) -> TableSpec:
 
     if not parsed:
         raise RuntimeError(f"No rows parsed for {marker}")
+    if len(parsed) > 1 and parsed[0] == parsed[1]:
+        parsed.pop(1)
+        merge_rows = {index - 1 if index > 1 else index for index in merge_rows if index != 1}
     columns = max(len(row) for row in parsed if row)
     rows = [row + [""] * (columns - len(row)) for row in parsed]
     return TableSpec(marker, caption, label, rows, merge_rows)
@@ -301,7 +305,9 @@ def build_pandoc_source(original: str) -> tuple[str, list[TableSpec]]:
 
     body, tables = extract_tables(body)
     body = replace_cross_references(body, original, tables)
-    body = body.replace(r"\text{Butterfly index}", r"\mathrm{Butterfly\ index}")
+    body = body.replace(r"$^{\circ}$", "°")
+    body = body.replace(r"$^\circ$", "°")
+    body = body.replace(r"\text{Butterfly index}", r"\mathrm{Butterfly\,index}")
     body = body.replace(r"\sqrt[3]{\Delta\mathrm{BI}}", "∛ΔBI")
     body = body.replace(r"\sqrt{\lvert \Delta\mathrm{BI}_{\max} \rvert}", "√|ΔBImax|")
     body = body.replace(r"\sqrt{|\Delta{BI}_{\max}|}", "√|ΔBImax|")
@@ -426,6 +432,24 @@ def add_table_before(doc: Document, paragraph, spec: TableSpec, table_number: in
                 cell_paragraph.paragraph_format.space_before = Pt(0)
                 cell_paragraph.paragraph_format.space_after = Pt(0)
                 cell_paragraph.paragraph_format.line_spacing = 1.0
+                if table_number in {1, 5}:
+                    cell_paragraph.alignment = (
+                        WD_ALIGN_PARAGRAPH.LEFT if column_index == 1 else WD_ALIGN_PARAGRAPH.CENTER
+                    )
+                elif table_number in {2, 3, 6}:
+                    cell_paragraph.alignment = (
+                        WD_ALIGN_PARAGRAPH.LEFT if column_index == 0 else WD_ALIGN_PARAGRAPH.CENTER
+                    )
+                elif table_number == 4:
+                    cell_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                elif table_number == 7:
+                    cell_paragraph.alignment = (
+                        WD_ALIGN_PARAGRAPH.LEFT if column_index == 1 else WD_ALIGN_PARAGRAPH.CENTER
+                    )
+                else:
+                    cell_paragraph.alignment = (
+                        WD_ALIGN_PARAGRAPH.CENTER if column_index == 0 else WD_ALIGN_PARAGRAPH.LEFT
+                    )
                 if row_index == 0:
                     for run in cell_paragraph.runs:
                         run.bold = True
@@ -440,20 +464,22 @@ def add_table_before(doc: Document, paragraph, spec: TableSpec, table_number: in
                     run.italic = True
     set_repeat_table_header(table.rows[0])
     columns = len(spec.rows[0])
-    if columns == 2:
+    if table_number >= 8 and columns == 2:
         widths = [1150, 8120]
-    elif columns == 3:
+    elif table_number == 4:
         widths = [3090, 3090, 3090]
     elif columns == 4:
         widths = [5010, 1420, 1420, 1420]
+    elif table_number == 3:
+        widths = [4900, 1000, 1000, 1200, 1170]
     elif columns == 5:
         widths = [1350, 4560, 1120, 1120, 1120]
     elif columns == 6:
         widths = [950, 4800, 880, 880, 880, 880]
-    elif columns == 7:
-        widths = [700, 4150, 650, 850, 850, 1050, 1020]
-    elif columns == 8:
-        widths = [600, 3350, 600, 900, 850, 900, 850, 1220]
+    elif table_number in {1, 5}:
+        widths = [600, 4370, 500, 1000, 900, 1000, 900]
+    elif table_number == 7:
+        widths = [700, 3300, 550, 950, 850, 950, 900, 1070]
     else:
         widths = [9270 // columns] * columns
         widths[-1] += 9270 - sum(widths)
@@ -562,10 +588,12 @@ def style_document(doc: Document, tables: list[TableSpec], source_commit: str) -
         if style_name == "Image Caption" and paragraph.text.strip():
             run = OxmlElement("w:r")
             text = OxmlElement("w:t")
+            text.set(qn("xml:space"), "preserve")
             text.text = f"Figure {figure_number}. "
             run.append(text)
-            first_run = paragraph._p.find(qn("w:r"))
-            paragraph._p.insert(0 if first_run is None else paragraph._p.index(first_run), run)
+            children = list(paragraph._p)
+            insert_index = 1 if children and children[0].tag == qn("w:pPr") else 0
+            paragraph._p.insert(insert_index, run)
             paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
             figure_number += 1
         if "w:drawing" in paragraph._p.xml:
@@ -591,36 +619,64 @@ def style_document(doc: Document, tables: list[TableSpec], source_commit: str) -
 
 
 def strip_review_parts(path: Path) -> None:
-    removable = (
-        "word/comments.xml",
-        "word/commentsExtended.xml",
-        "word/commentsIds.xml",
-        "word/commentsExtensible.xml",
-        "word/people.xml",
-    )
+    word_namespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    relationship_namespace = "http://schemas.openxmlformats.org/package/2006/relationships"
+    content_type_namespace = "http://schemas.openxmlformats.org/package/2006/content-types"
+    comment_relationship_types = {
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments",
+        "http://schemas.microsoft.com/office/2011/relationships/commentsExtended",
+    }
+    removable = {"word/comments.xml", "word/commentsExtended.xml"}
     with tempfile.NamedTemporaryFile(suffix=".docx", delete=False, dir=path.parent) as temporary:
         temporary_path = Path(temporary.name)
     try:
-        with zipfile.ZipFile(path) as source, zipfile.ZipFile(temporary_path, "w", zipfile.ZIP_DEFLATED) as target:
-            for item in source.infolist():
-                if item.filename in removable:
-                    continue
-                data = source.read(item.filename)
-                if item.filename == "[Content_Types].xml":
-                    root = ET.fromstring(data)
-                    for child in list(root):
-                        part_name = child.attrib.get("PartName", "")
-                        if "comment" in part_name.lower() or part_name.endswith("/people.xml"):
-                            root.remove(child)
-                    data = ET.tostring(root, encoding="utf-8", xml_declaration=True)
-                elif item.filename == "word/_rels/document.xml.rels":
-                    root = ET.fromstring(data)
-                    for child in list(root):
-                        target_name = child.attrib.get("Target", "")
-                        if "comment" in target_name.lower() or target_name.endswith("people.xml"):
-                            root.remove(child)
-                    data = ET.tostring(root, encoding="utf-8", xml_declaration=True)
-                target.writestr(item, data)
+        with zipfile.ZipFile(path) as source:
+            overrides: dict[str, bytes] = {}
+            for story in ["word/document.xml"] + [
+                name
+                for name in source.namelist()
+                if re.fullmatch(r"word/(?:header|footer)\d+\.xml", name)
+            ]:
+                root = etree.fromstring(source.read(story))
+                changed = False
+                for tag in ("commentRangeStart", "commentRangeEnd", "commentReference"):
+                    for element in root.xpath(f".//w:{tag}", namespaces={"w": word_namespace}):
+                        element.getparent().remove(element)
+                        changed = True
+                if changed:
+                    overrides[story] = etree.tostring(
+                        root, xml_declaration=True, encoding="UTF-8", standalone="yes"
+                    )
+
+            rels_path = "word/_rels/document.xml.rels"
+            rels_root = etree.fromstring(source.read(rels_path))
+            rels_changed = False
+            for relationship in list(rels_root.findall(f"{{{relationship_namespace}}}Relationship")):
+                if relationship.get("Type") in comment_relationship_types:
+                    rels_root.remove(relationship)
+                    rels_changed = True
+            if rels_changed:
+                overrides[rels_path] = etree.tostring(
+                    rels_root, xml_declaration=True, encoding="UTF-8", standalone="yes"
+                )
+
+            content_types_path = "[Content_Types].xml"
+            content_types_root = etree.fromstring(source.read(content_types_path))
+            content_types_changed = False
+            for override in list(content_types_root.findall(f"{{{content_type_namespace}}}Override")):
+                if override.get("PartName") in ("/word/comments.xml", "/word/commentsExtended.xml"):
+                    content_types_root.remove(override)
+                    content_types_changed = True
+            if content_types_changed:
+                overrides[content_types_path] = etree.tostring(
+                    content_types_root, xml_declaration=True, encoding="UTF-8", standalone="yes"
+                )
+
+            with zipfile.ZipFile(temporary_path, "w", zipfile.ZIP_DEFLATED) as target:
+                for item in source.infolist():
+                    if item.filename in removable:
+                        continue
+                    target.writestr(item, overrides.get(item.filename, source.read(item.filename)))
         temporary_path.replace(path)
     finally:
         temporary_path.unlink(missing_ok=True)
