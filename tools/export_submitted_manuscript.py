@@ -245,11 +245,22 @@ def extract_tables(source: str) -> tuple[str, list[TableSpec]]:
 def replace_cross_references(source: str, original: str, tables: list[TableSpec]) -> str:
     figure_labels = re.findall(r"\\label\{(fig:[^}]+)\}", original)
     table_labels = [table.label for table in tables if table.label]
-    appendix_labels = re.findall(r"\\section\{[^}]+\}\s*\\label\{(app:[^}]+)\}", original)
+    appendix_maps: dict[str, str] = {}
+    appendix_start = original.find(r"\begin{appendix}")
+    if appendix_start >= 0:
+        appendix_number = 0
+        appendix_source = original[appendix_start:]
+        for match in re.finditer(
+            r"\\section\{[^{}]+\}|\\label\{(app:[^}]+)\}", appendix_source
+        ):
+            if match.group(0).startswith(r"\section"):
+                appendix_number += 1
+            elif match.group(1):
+                appendix_maps[match.group(1)] = f"Appendix {chr(64 + appendix_number)}"
     maps = {
         **{label: f"Figure {index}" for index, label in enumerate(figure_labels, 1)},
         **{label: f"Table {index}" for index, label in enumerate(table_labels, 1)},
-        **{label: f"Appendix {chr(64 + index)}" for index, label in enumerate(appendix_labels, 1)},
+        **appendix_maps,
     }
 
     source = re.sub(
@@ -259,7 +270,11 @@ def replace_cross_references(source: str, original: str, tables: list[TableSpec]
     )
     source = re.sub(
         r"Appendices~\\ref\{([^}]+)\}\s+and\s+\\ref\{([^}]+)\}",
-        lambda match: f"{maps[match.group(1)]} and {maps[match.group(2)]}",
+        lambda match: (
+            maps[match.group(1)]
+            if maps[match.group(1)] == maps[match.group(2)]
+            else f"{maps[match.group(1)]} and {maps[match.group(2)]}"
+        ),
         source,
     )
     source = re.sub(r"\\label\{(?:tab|app):[^}]+\}", "", source)
@@ -269,7 +284,7 @@ def replace_cross_references(source: str, original: str, tables: list[TableSpec]
     return source
 
 
-def build_pandoc_source(original: str) -> tuple[str, list[TableSpec]]:
+def build_pandoc_source(original: str) -> tuple[str, list[TableSpec], str, int]:
     title = extract_command(original, "Title")
     authors = extract_command(original, "Author")
     address = extract_command(original, "address")
@@ -283,19 +298,21 @@ def build_pandoc_source(original: str) -> tuple[str, list[TableSpec]]:
     body = original[body_start:body_end]
     body = re.sub(r"\\bibliography\{[^}]+\}", "", body)
     body = re.sub(r"\\reftitle\{[^}]+\}", "", body)
-    body = body.replace(r"\appendixstart", "").replace(r"\begin{appendix}", "").replace(r"\end{appendix}", "")
-    appendix_headings = (
-        "30-Minute Wind Disruption Analysis: Candidate Models",
-        "Threshold Wind Disruption Analysis: Candidate Models",
-        "Site Fidelity Analysis (Next Day Window): Candidate Models",
-        "24-Hour Robustness Analysis: Candidate Models",
-    )
-    for index, heading in enumerate(appendix_headings):
-        body = body.replace(
-            f"\\section{{{heading}}}",
-            f"\\section{{Appendix {chr(65 + index)}. {heading}}}",
-            1,
-        )
+    appendix_start = body.find(r"\begin{appendix}")
+    if appendix_start >= 0:
+        main_body = body[:appendix_start]
+        appendix_body = body[appendix_start + len(r"\begin{appendix}") :]
+        appendix_body = appendix_body.replace(r"\end{appendix}", "")
+        appendix_index = 0
+
+        def number_appendix(match: re.Match[str]) -> str:
+            nonlocal appendix_index
+            appendix_index += 1
+            return f"\\section{{Appendix {chr(64 + appendix_index)}. {match.group(1)}}}"
+
+        appendix_body = re.sub(r"\\section\{([^{}]+)\}", number_appendix, appendix_body)
+        body = main_body + appendix_body
+    body = body.replace(r"\appendixstart", "").replace(r"\end{appendix}", "")
     body = re.sub(r"\\vspace\{[^}]+\}", "", body)
 
     backmatter = (
@@ -374,7 +391,8 @@ def build_pandoc_source(original: str) -> tuple[str, list[TableSpec]]:
             "",
         )
     )
-    return wrapper, tables
+    expected_figures = len(re.findall(r"\\begin\{figure\}", original))
+    return wrapper, tables, strip_latex(title), expected_figures
 
 
 def set_repeat_table_header(row) -> None:
@@ -463,7 +481,19 @@ def scaled_widths(widths: list[int], total: int = 10466) -> list[int]:
 
 
 def add_table_before(doc: Document, paragraph, spec: TableSpec, table_number: int) -> None:
-    display_number = str(table_number) if table_number <= 7 else f"A{table_number - 7}"
+    revised_labels = {
+        "tab:deployment_metadata",
+        "tab:harmonized_predictors",
+        "tab:harmonized_templates",
+        "tab:30min_candidates",
+        "tab:nextday_candidates",
+    }
+    is_revised_table = spec.label in revised_labels
+    display_number = (
+        f"A{table_number}"
+        if is_revised_table
+        else (str(table_number) if table_number <= 7 else f"A{table_number - 7}")
+    )
     caption = paragraph.insert_paragraph_before(f"Table {display_number}. {spec.caption}")
     caption.style = "MDPI_4.1_table_caption"
     caption.paragraph_format.keep_with_next = True
@@ -481,7 +511,11 @@ def add_table_before(doc: Document, paragraph, spec: TableSpec, table_number: in
                 cell_paragraph.style = "MDPI_4.2_table_body"
                 cell_paragraph.paragraph_format.space_before = Pt(0)
                 cell_paragraph.paragraph_format.space_after = Pt(0)
-                if table_number in {1, 5}:
+                if is_revised_table:
+                    cell_paragraph.alignment = (
+                        WD_ALIGN_PARAGRAPH.CENTER if column_index == 0 else WD_ALIGN_PARAGRAPH.LEFT
+                    )
+                elif table_number in {1, 5}:
                     cell_paragraph.alignment = (
                         WD_ALIGN_PARAGRAPH.LEFT if column_index == 1 else WD_ALIGN_PARAGRAPH.CENTER
                     )
@@ -513,7 +547,15 @@ def add_table_before(doc: Document, paragraph, spec: TableSpec, table_number: in
                     run.italic = True
     set_repeat_table_header(table.rows[0])
     columns = len(spec.rows[0])
-    if table_number >= 8 and columns == 2:
+    if spec.label == "tab:deployment_metadata":
+        widths = scaled_widths([900, 2400, 1100, 1800, 1100])
+    elif spec.label == "tab:harmonized_predictors":
+        widths = scaled_widths([1200, 4100, 4100])
+    elif spec.label == "tab:harmonized_templates":
+        widths = scaled_widths([800, 2700, 6900])
+    elif spec.label in {"tab:30min_candidates", "tab:nextday_candidates"}:
+        widths = [1500, 8966]
+    elif table_number >= 8 and columns == 2:
         widths = [1300, 9166]
     elif table_number == 4:
         widths = [3489, 3489, 3488]
@@ -595,7 +637,13 @@ def add_update_fields_setting(doc: Document) -> None:
     update.set(qn("w:val"), "true")
 
 
-def style_document(doc: Document, tables: list[TableSpec], source_commit: str) -> None:
+def style_document(
+    doc: Document,
+    tables: list[TableSpec],
+    source_commit: str,
+    manuscript_title: str,
+    expected_figures: int,
+) -> None:
     author_paragraph = next(
         paragraph for paragraph in doc.paragraphs if paragraph.text.startswith("[[AUTHORS]]")
     )
@@ -709,6 +757,10 @@ def style_document(doc: Document, tables: list[TableSpec], source_commit: str) -
             continue
         if references_started:
             paragraph.style = "MDPI_8.1_references"
+            for text_node in paragraph._p.xpath(".//w:t"):
+                if text_node.text and text_node.text.strip():
+                    text_node.text = re.sub(r"^\s*\d+\.\s+", "", text_node.text, count=1)
+                    break
             previous_was_heading = False
             continue
 
@@ -746,8 +798,10 @@ def style_document(doc: Document, tables: list[TableSpec], source_commit: str) -
             spec = table_by_marker[marker]
             add_table_before(doc, paragraph, spec, tables.index(spec) + 1)
 
-    if figure_number != 14:
-        raise RuntimeError(f"Expected 13 figures, found {figure_number - 1}")
+    if figure_number - 1 != expected_figures:
+        raise RuntimeError(
+            f"Expected {expected_figures} figures, found {figure_number - 1}"
+        )
     for shape in doc.inline_shapes:
         max_width = Inches(6.7)
         max_height = Inches(7.5)
@@ -755,7 +809,7 @@ def style_document(doc: Document, tables: list[TableSpec], source_commit: str) -
         shape.width = int(shape.width * scale)
         shape.height = int(shape.height * scale)
 
-    doc.core_properties.title = "Wind Does Not Disrupt Overwintering Monarch Butterfly Clusters"
+    doc.core_properties.title = manuscript_title
     doc.core_properties.subject = f"MDPI Insects manuscript submitted from Git commit {source_commit}"
     doc.core_properties.author = "Kyle Nessen, Peter C. Ibsen, Jay E. Diffendorfer, Francis X. Villablanca"
     doc.core_properties.last_modified_by = ""
@@ -860,7 +914,13 @@ def make_reference_docx(path: Path) -> None:
             target.writestr(item, data)
 
 
-def validate(path: Path, tables: list[TableSpec], source_commit: str) -> None:
+def validate(
+    path: Path,
+    tables: list[TableSpec],
+    source_commit: str,
+    expected_figures: int,
+    strict_submitted: bool,
+) -> None:
     doc = Document(path)
     all_text = "\n".join(paragraph.text for paragraph in doc.paragraphs)
     headings = [
@@ -874,26 +934,44 @@ def validate(path: Path, tables: list[TableSpec], source_commit: str) -> None:
         "3. Results",
         "4. Discussion",
         "5. Conclusions",
-        "Appendix A. 30-Minute Wind Disruption Analysis: Candidate Models",
-        "Appendix B. Threshold Wind Disruption Analysis: Candidate Models",
-        "Appendix C. Site Fidelity Analysis (Next Day Window): Candidate Models",
-        "Appendix D. 24-Hour Robustness Analysis: Candidate Models",
         "References",
     }
+    if strict_submitted:
+        required.update(
+            {
+                "Appendix A. 30-Minute Wind Disruption Analysis: Candidate Models",
+                "Appendix B. Threshold Wind Disruption Analysis: Candidate Models",
+                "Appendix C. Site Fidelity Analysis (Next Day Window): Candidate Models",
+                "Appendix D. 24-Hour Robustness Analysis: Candidate Models",
+            }
+        )
+    else:
+        required.update(
+            {
+                "Appendix A. Monitoring Deployment Metadata",
+                "Appendix B. Candidate Model Strategy",
+            }
+        )
     missing = required.difference(headings)
     if missing:
         raise RuntimeError(f"Missing top-level sections: {sorted(missing)}")
-    if len(doc.inline_shapes) != 13:
-        raise RuntimeError(f"Expected 13 figures, found {len(doc.inline_shapes)}")
-    if len(doc.tables) != 12:
-        raise RuntimeError(f"Expected 12 tables including metadata, found {len(doc.tables)}")
+    if len(doc.inline_shapes) != expected_figures:
+        raise RuntimeError(
+            f"Expected {expected_figures} figures, found {len(doc.inline_shapes)}"
+        )
+    if len(doc.tables) != len(tables) + 1:
+        raise RuntimeError(
+            f"Expected {len(tables) + 1} tables including metadata, found {len(doc.tables)}"
+        )
     bibliography = [
         paragraph
         for paragraph in doc.paragraphs
         if paragraph.style and paragraph.style.name == "MDPI_8.1_references"
     ]
-    if len(bibliography) != 66:
+    if strict_submitted and len(bibliography) != 66:
         raise RuntimeError(f"Expected 66 bibliography entries, found {len(bibliography)}")
+    if not bibliography:
+        raise RuntimeError("No bibliography entries were exported")
     for label in (
         "Author Contributions:",
         "Funding:",
@@ -982,14 +1060,11 @@ def validate(path: Path, tables: list[TableSpec], source_commit: str) -> None:
         header_text = archive.read("word/header2.xml")
         if b"PAGE" not in header_text or b"NUMPAGES" not in header_text:
             raise RuntimeError("The running header page fields are missing")
-    if len(tables) != 11:
-        raise RuntimeError(f"Source parser found {len(tables)} tables, expected 11")
 
 
 def export(commit: str, output: Path, pandoc: str) -> None:
     resolved = run("git", "rev-parse", commit, cwd=REPO_ROOT, capture=True)
-    if resolved != EXPECTED_COMMIT:
-        raise RuntimeError(f"Expected commit {EXPECTED_COMMIT}, got {resolved}")
+    strict_submitted = resolved == EXPECTED_COMMIT
     if sha256(REFERENCE_TEMPLATE) != EXPECTED_TEMPLATE_SHA256:
         raise RuntimeError("The MDPI Insects template does not match its recorded checksum")
 
@@ -1004,7 +1079,7 @@ def export(commit: str, output: Path, pandoc: str) -> None:
         run("tar", "-xf", str(archive_path), "-C", str(source_dir))
 
         original = (source_dir / "manuscript.tex").read_text(encoding="utf-8")
-        pandoc_source, tables = build_pandoc_source(original)
+        pandoc_source, tables, manuscript_title, expected_figures = build_pandoc_source(original)
         wrapped_tex = temp_dir / "manuscript-word.tex"
         raw_docx = temp_dir / "manuscript-word-raw.docx"
         reference_docx = temp_dir / "insects-reference.docx"
@@ -1028,10 +1103,10 @@ def export(commit: str, output: Path, pandoc: str) -> None:
         )
 
         doc = Document(raw_docx)
-        style_document(doc, tables, resolved)
+        style_document(doc, tables, resolved, manuscript_title, expected_figures)
         doc.save(output)
         strip_review_parts(output)
-    validate(output, tables, resolved)
+    validate(output, tables, resolved, expected_figures, strict_submitted)
 
 
 def parse_args() -> argparse.Namespace:
