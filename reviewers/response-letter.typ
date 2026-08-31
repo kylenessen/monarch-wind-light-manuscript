@@ -52,7 +52,7 @@ Thank you for the careful and constructive reviews. We substantially shortened t
 #entry(
   [Length and statistical presentation],
   [The manuscript was too long, contained too many technical figures and tables, and devoted too much discussion to physiology that was not measured.],
-  [We substantially reduced the manuscript. We removed the simple linear regressions, the fixed 24-hour analysis, the threshold-duration analysis, and the simulation-based power analysis. We also removed their associated figures, tables, appendices, and discussion. The main text now focuses on the 30-minute and Next Day response windows and contains three figures and no main-text tables. Technical formulas and candidate mappings are confined to the appendix and public reproducibility files. The physiology section is shorter and explicitly presents thermoregulation and energetic constraints as hypotheses for future testing, not demonstrated mechanisms.]
+  [We substantially reduced the manuscript. We removed the simple linear regressions, the fixed 24-hour analysis, the threshold-duration analysis, and the simulation-based power analysis. We also removed their associated figures, tables, appendices, and discussion. The main text now focuses on the 30-minute and Next Day response windows and contains four figures and no main-text tables. Technical formulas and candidate mappings are confined to the appendix and public reproducibility files. The physiology section is shorter and explicitly presents thermoregulation and energetic constraints as hypotheses for future testing, not demonstrated mechanisms.]
 )
 
 #entry(
