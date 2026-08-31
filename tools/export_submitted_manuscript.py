@@ -106,13 +106,14 @@ def strip_latex(value: str) -> str:
     value = re.sub(r"\\sqrt\[3\]\{\\Delta(?:\\mathrm\{BI\}|BI)\}", "∛ΔBI", value)
     value = re.sub(r"\\sqrt\{\|\\Delta(?:\\mathrm\{BI\}|\\?BI)_?\{?\\max\}?\|\}", "√|ΔBImax|", value)
     value = re.sub(r"\^\{2\}", "²", value)
-    value = re.sub(r"\^2\b", "²", value)
+    value = value.replace("^2", "²")
     value = re.sub(r"_\{\\text\{([^{}]+)\}\}", r"_\1", value)
     value = re.sub(r"_\{([^{}]+)\}", r"_\1", value)
     value = value.replace("$", "")
     value = re.sub(r"\\(?:small|footnotesize|centering|raggedright|arraybackslash)\b", "", value)
     value = re.sub(r"\\[A-Za-z]+\*?(?:\[[^\]]*\])?", "", value)
     value = value.replace("{", "").replace("}", "")
+    value = value.replace("^2", "²")
     return re.sub(r"\s+", " ", value).strip()
 
 
@@ -160,10 +161,9 @@ def split_cells(row: str) -> list[str]:
 
 def parse_table_block(block: str, number: int) -> TableSpec:
     marker = f"[[TABLE_{number:02d}]]"
-    caption_match = re.search(r"\\caption\{(.+?)\}(?:\s*\\label\{[^}]+\})?", block, re.S)
-    if not caption_match:
+    if r"\caption" not in block:
         raise RuntimeError(f"Table {number} has no caption")
-    caption = strip_latex(caption_match.group(1))
+    caption = strip_latex(extract_command(block, "caption"))
     label_match = re.search(r"\\label\{([^}]+)\}", block)
     label = label_match.group(1) if label_match else None
 
@@ -176,6 +176,7 @@ def parse_table_block(block: str, number: int) -> TableSpec:
         raise RuntimeError(f"Could not parse table body for {marker}")
     body = tabular_match.group(1)
     body = re.sub(r"\\caption\{.*?\}(?:\s*\\label\{[^}]+\})?\s*\\\\", "", body, flags=re.S)
+    body = re.sub(r"\\endfirsthead.*?\\endfoot", "", body, flags=re.S)
     body = re.sub(r"\\(?:toprule|midrule|bottomrule|endfirsthead|endhead|endfoot|endlastfoot|addlinespace)\b", "", body)
     body = re.sub(r"(?<!\\)%.*", "", body)
 
@@ -276,6 +277,18 @@ def build_pandoc_source(original: str) -> tuple[str, list[TableSpec]]:
     body = re.sub(r"\\bibliography\{[^}]+\}", "", body)
     body = re.sub(r"\\reftitle\{[^}]+\}", "", body)
     body = body.replace(r"\appendixstart", "").replace(r"\begin{appendix}", "").replace(r"\end{appendix}", "")
+    appendix_headings = (
+        "30-Minute Wind Disruption Analysis: Candidate Models",
+        "Threshold Wind Disruption Analysis: Candidate Models",
+        "Site Fidelity Analysis (Next Day Window): Candidate Models",
+        "24-Hour Robustness Analysis: Candidate Models",
+    )
+    for index, heading in enumerate(appendix_headings):
+        body = body.replace(
+            f"\\section{{{heading}}}",
+            f"\\section{{Appendix {chr(65 + index)}. {heading}}}",
+            1,
+        )
     body = re.sub(r"\\vspace\{[^}]+\}", "", body)
 
     backmatter = (
@@ -307,7 +320,7 @@ def build_pandoc_source(original: str) -> tuple[str, list[TableSpec]]:
     body = replace_cross_references(body, original, tables)
     body = body.replace(r"$^{\circ}$", "°")
     body = body.replace(r"$^\circ$", "°")
-    body = body.replace(r"\text{Butterfly index}", r"\mathrm{Butterfly\,index}")
+    body = body.replace(r"\text{Butterfly index}", r"\mathrm{Butterfly\;index}")
     body = body.replace(r"\sqrt[3]{\Delta\mathrm{BI}}", "∛ΔBI")
     body = body.replace(r"\sqrt{\lvert \Delta\mathrm{BI}_{\max} \rvert}", "√|ΔBImax|")
     body = body.replace(r"\sqrt{|\Delta{BI}_{\max}|}", "√|ΔBImax|")
@@ -358,7 +371,7 @@ def set_repeat_table_header(row) -> None:
     if marker is None:
         marker = OxmlElement("w:tblHeader")
         row_properties.append(marker)
-    marker.set(qn("w:val"), "true")
+    marker.set(qn("w:val"), "1")
 
 
 def set_cell_margins(cell, top: int = 70, start: int = 90, bottom: int = 70, end: int = 90) -> None:
@@ -390,7 +403,7 @@ def set_table_geometry(table, widths: list[int]) -> None:
     if indent is None:
         indent = OxmlElement("w:tblInd")
         properties.append(indent)
-    indent.set(qn("w:w"), "90")
+    indent.set(qn("w:w"), "0")
     indent.set(qn("w:type"), "dxa")
 
     grid = table._tbl.tblGrid
@@ -401,9 +414,18 @@ def set_table_geometry(table, widths: list[int]) -> None:
         column.set(qn("w:w"), str(width))
         grid.append(column)
     for row in table.rows:
-        for index, cell in enumerate(row.cells):
-            cell.width = width = widths[min(index, len(widths) - 1)]
+        column_index = 0
+        seen_cells: set[int] = set()
+        for cell in row.cells:
+            cell_key = id(cell._tc)
+            if cell_key in seen_cells:
+                continue
+            seen_cells.add(cell_key)
             cell_properties = cell._tc.get_or_add_tcPr()
+            span_node = cell_properties.first_child_found_in("w:gridSpan")
+            span = int(span_node.get(qn("w:val"))) if span_node is not None else 1
+            width = sum(widths[column_index : column_index + span])
+            cell.width = width
             cell_width = cell_properties.first_child_found_in("w:tcW")
             if cell_width is None:
                 cell_width = OxmlElement("w:tcW")
@@ -411,6 +433,7 @@ def set_table_geometry(table, widths: list[int]) -> None:
             cell_width.set(qn("w:w"), str(width))
             cell_width.set(qn("w:type"), "dxa")
             set_cell_margins(cell)
+            column_index += span
 
 
 def add_table_before(doc: Document, paragraph, spec: TableSpec, table_number: int) -> None:
@@ -477,7 +500,7 @@ def add_table_before(doc: Document, paragraph, spec: TableSpec, table_number: in
     elif columns == 6:
         widths = [950, 4800, 880, 880, 880, 880]
     elif table_number in {1, 5}:
-        widths = [600, 4370, 500, 1000, 900, 1000, 900]
+        widths = [850, 4120, 500, 1000, 900, 1000, 900]
     elif table_number == 7:
         widths = [700, 3300, 550, 950, 850, 950, 900, 1070]
     else:
@@ -700,10 +723,10 @@ def validate(path: Path, tables: list[TableSpec], source_commit: str) -> None:
         "Data Availability",
         "Conflicts of Interest",
         "Acknowledgments",
-        "30-Minute Wind Disruption Analysis: Candidate Models",
-        "Threshold Wind Disruption Analysis: Candidate Models",
-        "Site Fidelity Analysis (Next Day Window): Candidate Models",
-        "24-Hour Robustness Analysis: Candidate Models",
+        "Appendix A. 30-Minute Wind Disruption Analysis: Candidate Models",
+        "Appendix B. Threshold Wind Disruption Analysis: Candidate Models",
+        "Appendix C. Site Fidelity Analysis (Next Day Window): Candidate Models",
+        "Appendix D. 24-Hour Robustness Analysis: Candidate Models",
         "References",
     }
     missing = required.difference(headings)
