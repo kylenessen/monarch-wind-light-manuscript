@@ -50,7 +50,7 @@ The `figures/` directory contains files used directly by the current `manuscript
 
 The current M16 interpretation figures are `m16_predicted_response.png` and `m16_conditional_wind_effect.png`. They show predicted responses and conditional wind effects at observed temperature and direct-sun conditions. The M16 diagnostics are `m16_diagnostics.png`, `m16_residual_acf.png`, and `m16_residual_pacf.png`.
 
-The root files `figures/diagnostics_30min.png` and `figures/acf_30min.png` currently match the M16 diagnostics byte for byte. The root files `figures/partial_effects_30min.png` and `figures/interaction_wind_sun_30min.png` are legacy M50 figures. They remain in place because the current manuscript still references them. They should be replaced or removed only as part of the manuscript figure rewrite.
+The root files `figures/diagnostics_30min.png` and `figures/acf_30min.png` currently match the M16 diagnostics byte for byte. The root files `figures/partial_effects_30min.png` and `figures/interaction_wind_sun_30min.png` are legacy M50 figures retained only for audit history. The revised manuscript does not reference them.
 
 The Next Day Window files are mirrored between `figures/` and `analysis/outputs/next_day_window/figures`. These pairs currently match byte for byte. The 24-hour, threshold, and linear-regression figures are retained analysis outputs or legacy provenance files. They are not referenced by the current manuscript, but their generating scripts still write them. Do not delete them until those scripts and any supplemental-material decision are resolved.
 
