@@ -74,28 +74,29 @@ def extract_command(text: str, command: str) -> str:
 
 def strip_latex(value: str) -> str:
     value = value.strip()
-    value = re.sub(r"%.*", "", value)
+    value = re.sub(r"(?<!\\)%.*", "", value)
     previous = None
     while value != previous:
         previous = value
         value = re.sub(r"\\(?:textbf|textit|emph|mathrm|textrm|texttt)\{([^{}]*)\}", r"\1", value)
     replacements = {
-        r"\\&": "&",
-        r"\\%": "%",
-        r"\\_": "_",
-        r"\\quad": " ",
-        r"\\;": " ",
-        r"\\,": " ",
+        r"\&": "&",
+        r"\%": "%",
+        r"\_": "_",
+        r"\quad": " ",
+        r"\;": " ",
+        r"\,": " ",
+        "\\ ": " ",
         r"~": " ",
-        r"\\Delta": "Δ",
-        r"\\beta": "β",
-        r"\\rho": "ρ",
-        r"\\pm": "±",
-        r"\\times": "×",
-        r"\\geq": "≥",
-        r"\\leq": "≤",
-        r"\\sim": "~",
-        r"\\circ": "°",
+        r"\Delta": "Δ",
+        r"\beta": "β",
+        r"\rho": "ρ",
+        r"\pm": "±",
+        r"\times": "×",
+        r"\geq": "≥",
+        r"\leq": "≤",
+        r"\sim": "~",
+        r"\circ": "°",
         r"$-$": "−",
         r"---": "-",
         r"--": "-",
@@ -175,7 +176,7 @@ def parse_table_block(block: str, number: int) -> TableSpec:
     body = tabular_match.group(1)
     body = re.sub(r"\\caption\{.*?\}(?:\s*\\label\{[^}]+\})?\s*\\\\", "", body, flags=re.S)
     body = re.sub(r"\\(?:toprule|midrule|bottomrule|endfirsthead|endhead|endfoot|endlastfoot|addlinespace)\b", "", body)
-    body = re.sub(r"%.*", "", body)
+    body = re.sub(r"(?<!\\)%.*", "", body)
 
     parsed: list[list[str]] = []
     merge_rows: set[int] = set()
@@ -259,7 +260,6 @@ def replace_cross_references(source: str, original: str, tables: list[TableSpec]
 def build_pandoc_source(original: str) -> tuple[str, list[TableSpec]]:
     title = extract_command(original, "Title")
     authors = extract_command(original, "Author")
-    author_names = extract_command(original, "AuthorNames")
     address = extract_command(original, "address")
     correspondence = extract_command(original, "corres")
     simple_summary = extract_command(original, "simplesumm")
@@ -306,14 +306,14 @@ def build_pandoc_source(original: str) -> tuple[str, list[TableSpec]]:
     body = body.replace(r"\sqrt{\lvert \Delta\mathrm{BI}_{\max} \rvert}", "√|ΔBImax|")
     body = body.replace(r"\sqrt{|\Delta{BI}_{\max}|}", "√|ΔBImax|")
 
+    addresses = [part.strip() for part in address.split(";") if part.strip()]
+    address_block = "\n\n".join(f"[[ADDRESS]] {part}" for part in addresses)
     frontmatter = f"""
 [[TITLE]] {title}
 
-[[AUTHORS]] {authors}
+[[AUTHORS]] \\textbf{{Authors:}} {authors}
 
-[[AUTHOR_NAMES]] {author_names}
-
-[[ADDRESS]] {address}
+{address_block}
 
 [[CORRESPONDENCE]] {correspondence}
 
@@ -452,6 +452,8 @@ def add_table_before(doc: Document, paragraph, spec: TableSpec, table_number: in
         widths = [950, 4800, 880, 880, 880, 880]
     elif columns == 7:
         widths = [700, 4150, 650, 850, 850, 1050, 1020]
+    elif columns == 8:
+        widths = [600, 3350, 600, 900, 850, 900, 850, 1220]
     else:
         widths = [9270 // columns] * columns
         widths[-1] += 9270 - sum(widths)
@@ -527,14 +529,22 @@ def style_document(doc: Document, tables: list[TableSpec], source_commit: str) -
     markers = {
         "[[TITLE]]": "Title",
         "[[AUTHORS]]": "First Paragraph",
-        "[[AUTHOR_NAMES]]": "First Paragraph",
         "[[ADDRESS]]": "Body Text",
         "[[CORRESPONDENCE]]": "Body Text",
     }
     for paragraph in doc.paragraphs:
         for marker, style_name in markers.items():
             if paragraph.text.startswith(marker):
-                paragraph.text = paragraph.text.removeprefix(marker).strip()
+                for text_node in paragraph._p.iter(qn("w:t")):
+                    if text_node.text and marker in text_node.text:
+                        text_node.text = text_node.text.replace(marker, "", 1).lstrip()
+                        break
+                leading = True
+                for text_node in paragraph._p.iter(qn("w:t")):
+                    if leading and text_node.text:
+                        text_node.text = text_node.text.lstrip()
+                    if text_node.text:
+                        leading = False
                 paragraph.style = style_name
                 if marker == "[[TITLE]]":
                     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -550,7 +560,12 @@ def style_document(doc: Document, tables: list[TableSpec], source_commit: str) -
     for paragraph in doc.paragraphs:
         style_name = paragraph.style.name if paragraph.style else ""
         if style_name == "Image Caption" and paragraph.text.strip():
-            paragraph.text = f"Figure {figure_number}. {paragraph.text.strip()}"
+            run = OxmlElement("w:r")
+            text = OxmlElement("w:t")
+            text.text = f"Figure {figure_number}. "
+            run.append(text)
+            first_run = paragraph._p.find(qn("w:r"))
+            paragraph._p.insert(0 if first_run is None else paragraph._p.index(first_run), run)
             paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
             figure_number += 1
         if "w:drawing" in paragraph._p.xml:
