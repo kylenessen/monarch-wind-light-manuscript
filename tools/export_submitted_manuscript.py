@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from copy import deepcopy
 import hashlib
 import re
 import shutil
@@ -19,14 +20,20 @@ from docx.enum.table import WD_ALIGN_VERTICAL, WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Inches, Pt, RGBColor
+from docx.shared import Inches, Pt
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-REFERENCE_DOCX = REPO_ROOT / "reference" / "manuscript_20260409.docx"
+REFERENCE_TEMPLATE = REPO_ROOT / "insects-template.dot"
 CSL = REPO_ROOT / "tools" / "acs-numeric.csl"
-EXPECTED_REFERENCE_SHA256 = "cf749bb13082d53b814a1133fd0f5c031a9b1d579f75905adadb64932134b0e0"
+EXPECTED_TEMPLATE_SHA256 = "993079177f01de14a7a9c3be76bf2e1f84abb1e9b53a8cc78b00541943123db0"
 EXPECTED_COMMIT = "12b7cc9465ce42000c7143ad6d3e10c7311aee5c"
+TEMPLATE_MAIN_CONTENT_TYPE = (
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml"
+)
+DOCUMENT_MAIN_CONTENT_TYPE = (
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"
+)
 
 
 @dataclass
@@ -294,7 +301,7 @@ def build_pandoc_source(original: str) -> tuple[str, list[TableSpec]]:
     backmatter = (
         ("authorcontributions", "Author Contributions"),
         ("funding", "Funding"),
-        ("dataavailability", "Data Availability"),
+        ("dataavailability", "Data Availability Statement"),
         ("conflictsofinterest", "Conflicts of Interest"),
         ("acknowledgments", "Acknowledgments"),
     )
@@ -314,10 +321,13 @@ def build_pandoc_source(original: str) -> tuple[str, list[TableSpec]]:
                     break
         if end is None:
             raise RuntimeError(f"Unclosed back-matter command: {command}")
-        body = body[:start] + f"\\section{{{heading}}}\n\n{content}\n" + body[end:]
+        body = body[:start] + f"[[BACKMATTER|{heading}]] {content}\n\n" + body[end:]
 
     body, tables = extract_tables(body)
     body = replace_cross_references(body, original, tables)
+    body = re.sub(r"\\subsubsection\{([^{}]+)\}", r"\\subsubsection{[[H3]] \1}", body)
+    body = re.sub(r"\\subsection\{([^{}]+)\}", r"\\subsection{[[H2]] \1}", body)
+    body = re.sub(r"\\section\{([^{}]+)\}", r"\\section{[[H1]] \1}", body)
     body = body.replace(r"$^{\circ}$", "°")
     body = body.replace(r"$^\circ$", "°")
     body = body.replace(r"\text{Butterfly index}", r"\mathrm{Butterfly\;index}")
@@ -328,25 +338,27 @@ def build_pandoc_source(original: str) -> tuple[str, list[TableSpec]]:
     addresses = [part.strip() for part in address.split(";") if part.strip()]
     address_block = "\n\n".join(f"[[ADDRESS]] {part}" for part in addresses)
     frontmatter = f"""
+[[ARTICLE_TYPE]] Article
+
 [[TITLE]] {title}
 
-[[AUTHORS]] \\textbf{{Authors:}} {authors}
+[[AUTHORS]] {authors}
 
 {address_block}
 
 [[CORRESPONDENCE]] {correspondence}
 
-\\section{{Simple Summary}}
+[[SIMPLE_SUMMARY]] Simple Summary
 
 {simple_summary}
 
-\\section{{Abstract}}
+[[ABSTRACT]] Abstract
 
 {abstract}
 
-\\section{{Keywords}}
+[[KEYWORDS]] Keywords: {keywords}
 
-{keywords}
+[[LINE]]
 """
     wrapper = "\n".join(
         (
@@ -372,6 +384,13 @@ def set_repeat_table_header(row) -> None:
         marker = OxmlElement("w:tblHeader")
         row_properties.append(marker)
     marker.set(qn("w:val"), "1")
+
+
+def keep_table_row_together(row) -> None:
+    row_properties = row._tr.get_or_add_trPr()
+    marker = row_properties.find(qn("w:cantSplit"))
+    if marker is None:
+        row_properties.append(OxmlElement("w:cantSplit"))
 
 
 def set_cell_margins(cell, top: int = 70, start: int = 90, bottom: int = 70, end: int = 90) -> None:
@@ -436,25 +455,32 @@ def set_table_geometry(table, widths: list[int]) -> None:
             column_index += span
 
 
+def scaled_widths(widths: list[int], total: int = 10466) -> list[int]:
+    scale = total / sum(widths)
+    result = [round(width * scale) for width in widths]
+    result[-1] += total - sum(result)
+    return result
+
+
 def add_table_before(doc: Document, paragraph, spec: TableSpec, table_number: int) -> None:
-    caption = paragraph.insert_paragraph_before(f"Table {table_number}. {spec.caption}")
-    caption.style = "Table Caption"
+    display_number = str(table_number) if table_number <= 7 else f"A{table_number - 7}"
+    caption = paragraph.insert_paragraph_before(f"Table {display_number}. {spec.caption}")
+    caption.style = "MDPI_4.1_table_caption"
     caption.paragraph_format.keep_with_next = True
-    caption.paragraph_format.space_after = Pt(4)
     table = doc.add_table(rows=0, cols=len(spec.rows[0]))
-    table.style = "Table"
+    table.style = "MDPI_4.1_three_line_table"
     table.alignment = WD_TABLE_ALIGNMENT.LEFT
     for row_index, values in enumerate(spec.rows):
         cells = table.add_row().cells
+        keep_table_row_together(table.rows[-1])
         for column_index, value in enumerate(values):
             cell = cells[column_index]
             cell.text = value
             cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
             for cell_paragraph in cell.paragraphs:
-                cell_paragraph.style = "Compact"
+                cell_paragraph.style = "MDPI_4.2_table_body"
                 cell_paragraph.paragraph_format.space_before = Pt(0)
                 cell_paragraph.paragraph_format.space_after = Pt(0)
-                cell_paragraph.paragraph_format.line_spacing = 1.0
                 if table_number in {1, 5}:
                     cell_paragraph.alignment = (
                         WD_ALIGN_PARAGRAPH.LEFT if column_index == 1 else WD_ALIGN_PARAGRAPH.CENTER
@@ -480,7 +506,7 @@ def add_table_before(doc: Document, paragraph, spec: TableSpec, table_number: in
             merged = cells[0].merge(cells[-1])
             merged.text = values[0]
             for cell_paragraph in merged.paragraphs:
-                cell_paragraph.style = "Compact"
+                cell_paragraph.style = "MDPI_4.2_table_body"
                 cell_paragraph.paragraph_format.space_before = Pt(1.8)
                 cell_paragraph.paragraph_format.space_after = Pt(1.8)
                 for run in cell_paragraph.runs:
@@ -488,148 +514,243 @@ def add_table_before(doc: Document, paragraph, spec: TableSpec, table_number: in
     set_repeat_table_header(table.rows[0])
     columns = len(spec.rows[0])
     if table_number >= 8 and columns == 2:
-        widths = [1150, 8120]
+        widths = [1300, 9166]
     elif table_number == 4:
-        widths = [3090, 3090, 3090]
+        widths = [3489, 3489, 3488]
     elif columns == 4:
-        widths = [5010, 1420, 1420, 1420]
+        widths = scaled_widths([5010, 1420, 1420, 1420])
     elif table_number == 3:
-        widths = [4900, 1000, 1000, 1200, 1170]
+        widths = scaled_widths([4900, 1000, 1000, 1200, 1170])
     elif columns == 5:
-        widths = [1350, 4560, 1120, 1120, 1120]
+        widths = scaled_widths([1350, 4560, 1120, 1120, 1120])
     elif columns == 6:
-        widths = [950, 4800, 880, 880, 880, 880]
+        widths = scaled_widths([950, 4800, 880, 880, 880, 880])
     elif table_number in {1, 5}:
-        widths = [850, 4120, 500, 1000, 900, 1000, 900]
+        widths = scaled_widths([850, 4120, 500, 1000, 900, 1000, 900])
     elif table_number == 7:
-        widths = [700, 3300, 550, 950, 850, 950, 900, 1070]
+        widths = scaled_widths([700, 3300, 550, 950, 850, 950, 900, 1070])
     else:
-        widths = [9270 // columns] * columns
-        widths[-1] += 9270 - sum(widths)
+        widths = [10466 // columns] * columns
+        widths[-1] += 10466 - sum(widths)
     set_table_geometry(table, widths)
     paragraph._p.addprevious(table._tbl)
     paragraph._element.getparent().remove(paragraph._element)
 
 
-def set_style_font(style, name: str, size: float, color: str | None = None, bold=None, italic=None) -> None:
-    style.font.name = name
-    style.font.size = Pt(size)
-    if color:
-        style.font.color.rgb = RGBColor.from_string(color)
-    if bold is not None:
-        style.font.bold = bold
-    if italic is not None:
-        style.font.italic = italic
-    run_properties = style.element.get_or_add_rPr()
-    fonts = run_properties.rFonts
-    if fonts is None:
-        fonts = OxmlElement("w:rFonts")
-        run_properties.insert(0, fonts)
-    for attr in ("ascii", "hAnsi", "eastAsia", "cs"):
-        fonts.set(qn(f"w:{attr}"), name)
+def remove_marker(paragraph, marker: str) -> None:
+    for run in paragraph.runs:
+        if marker in run.text:
+            run.text = run.text.replace(marker, "", 1)
+            break
+    for run in paragraph.runs:
+        if run.text:
+            run.text = run.text.lstrip()
+            break
+
+
+def bold_prefix(paragraph, prefix: str) -> None:
+    for run in paragraph.runs:
+        if not run.text:
+            continue
+        if run.text.startswith(prefix):
+            tail = run.text[len(prefix) :]
+            run.text = prefix
+            run.bold = True
+            if tail:
+                new_run = paragraph.add_run(tail)
+                new_run.bold = False
+                run._r.addnext(new_run._r)
+            return
+    raise RuntimeError(f"Could not find prefix {prefix!r} in paragraph {paragraph.text!r}")
+
+
+def metadata_table_from_template() -> OxmlElement:
+    with zipfile.ZipFile(REFERENCE_TEMPLATE) as archive:
+        root = etree.fromstring(archive.read("word/document.xml"))
+    namespace = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+    tables = root.xpath(".//w:body/w:tbl", namespaces=namespace)
+    if not tables:
+        raise RuntimeError("The Insects template has no floating metadata table")
+    table = deepcopy(tables[0])
+    replacements = ["Academic Editor:", "Received:", "Revised:", "Accepted:", "Published:"]
+    paragraphs = table.xpath(".//w:tr[1]/w:tc[1]/w:p", namespaces=namespace)
+    if len(paragraphs) < len(replacements):
+        raise RuntimeError("The Insects template metadata table is incomplete")
+    for paragraph, replacement in zip(paragraphs, replacements):
+        text_nodes = paragraph.xpath(".//w:t", namespaces=namespace)
+        if not text_nodes:
+            raise RuntimeError("A metadata paragraph has no text node")
+        text_nodes[0].text = replacement
+        for text_node in text_nodes[1:]:
+            text_node.text = ""
+    return table
+
+
+def add_update_fields_setting(doc: Document) -> None:
+    settings = doc.settings.element
+    update = settings.find(qn("w:updateFields"))
+    if update is None:
+        update = OxmlElement("w:updateFields")
+        settings.append(update)
+    update.set(qn("w:val"), "true")
 
 
 def style_document(doc: Document, tables: list[TableSpec], source_commit: str) -> None:
-    section = doc.sections[0]
-    section.page_width = Inches(8.5)
-    section.page_height = Inches(11)
-    section.left_margin = Inches(1)
-    section.right_margin = Inches(1)
-    section.top_margin = Inches(1)
-    section.bottom_margin = Inches(1)
-    section.header_distance = Inches(0.5)
-    section.footer_distance = Inches(0.5)
+    author_paragraph = next(
+        paragraph for paragraph in doc.paragraphs if paragraph.text.startswith("[[AUTHORS]]")
+    )
+    author_paragraph._p.addnext(metadata_table_from_template())
+    add_update_fields_setting(doc)
 
-    for style_name in ("Normal", "Body Text", "First Paragraph"):
-        style = doc.styles[style_name]
-        set_style_font(style, "Calibri", 11, "000000")
-        style.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
-        style.paragraph_format.space_before = Pt(0)
-        style.paragraph_format.space_after = Pt(7)
-        style.paragraph_format.line_spacing = 1.05
-        style.paragraph_format.widow_control = True
-    set_style_font(doc.styles["Title"], "Calibri", 24, "000000")
-    doc.styles["Title"].paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    doc.styles["Title"].paragraph_format.space_after = Pt(8)
-    for name, size, before in (("Heading 1", 18, 14), ("Heading 2", 15, 8), ("Heading 3", 13, 7)):
-        style = doc.styles[name]
-        set_style_font(style, "Calibri", size, "0F4761")
-        style.paragraph_format.space_before = Pt(before)
-        style.paragraph_format.space_after = Pt(4)
-        style.paragraph_format.keep_with_next = True
-        style.paragraph_format.keep_together = True
-    for name in ("Image Caption", "Table Caption", "Caption"):
-        if name in doc.styles:
-            style = doc.styles[name]
-            set_style_font(style, "Calibri", 10, "000000", italic=True)
-            style.paragraph_format.space_before = Pt(3)
-            style.paragraph_format.space_after = Pt(7)
-            style.paragraph_format.keep_together = True
-    if "Compact" in doc.styles:
-        set_style_font(doc.styles["Compact"], "Calibri", 9, "000000")
-    if "Bibliography" in doc.styles:
-        style = doc.styles["Bibliography"]
-        set_style_font(style, "Calibri", 9, "000000")
-        style.paragraph_format.space_before = Pt(0)
-        style.paragraph_format.space_after = Pt(4)
-        style.paragraph_format.left_indent = Inches(0.22)
-        style.paragraph_format.first_line_indent = Inches(-0.22)
-
-    markers = {
-        "[[TITLE]]": "Title",
-        "[[AUTHORS]]": "First Paragraph",
-        "[[ADDRESS]]": "Body Text",
-        "[[CORRESPONDENCE]]": "Body Text",
+    frontmatter_styles = {
+        "[[ARTICLE_TYPE]]": "MDPI_1.1_article_type",
+        "[[TITLE]]": "MDPI_1.2_title",
+        "[[AUTHORS]]": "MDPI_1.3_authornames",
+        "[[ADDRESS]]": "MDPI_1.6_affiliation",
+        "[[CORRESPONDENCE]]": "MDPI_1.6_affiliation",
+        "[[SIMPLE_SUMMARY]]": "MDPI_1.7_abstract",
+        "[[ABSTRACT]]": "MDPI_1.7_abstract",
+        "[[KEYWORDS]]": "MDPI_1.8_keywords",
+        "[[LINE]]": "MDPI_1.9_line",
     }
-    for paragraph in doc.paragraphs:
-        for marker, style_name in markers.items():
-            if paragraph.text.startswith(marker):
-                for text_node in paragraph._p.iter(qn("w:t")):
-                    if text_node.text and marker in text_node.text:
-                        text_node.text = text_node.text.replace(marker, "", 1).lstrip()
-                        break
-                leading = True
-                for text_node in paragraph._p.iter(qn("w:t")):
-                    if leading and text_node.text:
-                        text_node.text = text_node.text.lstrip()
-                    if text_node.text:
-                        leading = False
-                paragraph.style = style_name
-                if marker == "[[TITLE]]":
-                    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-                break
-
-    table_by_marker = {table.marker: table for table in tables}
-    for paragraph in list(doc.paragraphs):
-        if paragraph.text.strip() in table_by_marker:
-            spec = table_by_marker[paragraph.text.strip()]
-            add_table_before(doc, paragraph, spec, tables.index(spec) + 1)
-
+    body_started = False
+    references_started = False
+    current_main_section = 0
+    subsection = 0
+    subsubsection = 0
+    previous_was_heading = False
+    expect_figure_caption = False
+    expect_abstract_text = False
     figure_number = 1
+
     for paragraph in doc.paragraphs:
-        style_name = paragraph.style.name if paragraph.style else ""
-        if style_name == "Image Caption" and paragraph.text.strip():
+        text = paragraph.text.strip()
+        matched_frontmatter = False
+        for marker, style_name in frontmatter_styles.items():
+            if text.startswith(marker):
+                remove_marker(paragraph, marker)
+                paragraph.style = style_name
+                matched_frontmatter = True
+                if marker in {"[[SIMPLE_SUMMARY]]", "[[ABSTRACT]]"}:
+                    for run in paragraph.runs:
+                        run.bold = True
+                    expect_abstract_text = True
+                elif marker == "[[KEYWORDS]]":
+                    bold_prefix(paragraph, "Keywords:")
+                elif marker == "[[CORRESPONDENCE]]" and paragraph.text.startswith(
+                    "Correspondence:"
+                ):
+                    paragraph.text = f"*\t{paragraph.text}"
+                    bold_prefix(paragraph, "*")
+                break
+        if matched_frontmatter:
+            continue
+
+        text = paragraph.text.strip()
+        if expect_abstract_text and text:
+            paragraph.style = "MDPI_1.7_abstract"
+            expect_abstract_text = False
+            continue
+        if text.startswith("[[H1]]"):
+            body_started = True
+            remove_marker(paragraph, "[[H1]]")
+            heading = paragraph.text.strip()
+            if heading.startswith("Appendix "):
+                subsection = 0
+                subsubsection = 0
+            else:
+                current_main_section += 1
+                subsection = 0
+                subsubsection = 0
+                paragraph.text = f"{current_main_section}. {heading}"
+            paragraph.style = "MDPI_2.1_heading1"
+            paragraph.paragraph_format.keep_with_next = True
+            paragraph.paragraph_format.keep_together = True
+            previous_was_heading = True
+            continue
+        if text.startswith("[[H2]]"):
+            remove_marker(paragraph, "[[H2]]")
+            subsection += 1
+            subsubsection = 0
+            paragraph.text = f"{current_main_section}.{subsection}. {paragraph.text.strip()}"
+            paragraph.style = "MDPI_2.2_heading2"
+            paragraph.paragraph_format.keep_with_next = True
+            paragraph.paragraph_format.keep_together = True
+            previous_was_heading = True
+            continue
+        if text.startswith("[[H3]]"):
+            remove_marker(paragraph, "[[H3]]")
+            subsubsection += 1
+            paragraph.text = (
+                f"{current_main_section}.{subsection}.{subsubsection}. {paragraph.text.strip()}"
+            )
+            paragraph.style = "MDPI_2.3_heading3"
+            paragraph.paragraph_format.keep_with_next = True
+            paragraph.paragraph_format.keep_together = True
+            previous_was_heading = True
+            continue
+        if text.startswith("[[BACKMATTER|"):
+            marker_match = re.match(r"\[\[BACKMATTER\|([^]]+)\]\]", text)
+            if not marker_match:
+                raise RuntimeError(f"Malformed back-matter marker: {text}")
+            label = marker_match.group(1)
+            remove_marker(paragraph, marker_match.group(0))
+            paragraph.text = f"{label}: {paragraph.text.strip()}"
+            paragraph.style = "MDPI_6.2_back_matter"
+            bold_prefix(paragraph, f"{label}:")
+            previous_was_heading = False
+            continue
+        if text == "References":
+            paragraph.style = "MDPI_2.1_heading1"
+            paragraph.paragraph_format.keep_with_next = True
+            paragraph.paragraph_format.keep_together = True
+            references_started = True
+            previous_was_heading = True
+            continue
+        if references_started:
+            paragraph.style = "MDPI_8.1_references"
+            previous_was_heading = False
+            continue
+
+        if expect_figure_caption and text:
             run = OxmlElement("w:r")
-            text = OxmlElement("w:t")
-            text.set(qn("xml:space"), "preserve")
-            text.text = f"Figure {figure_number}. "
-            run.append(text)
+            text_node = OxmlElement("w:t")
+            text_node.set(qn("xml:space"), "preserve")
+            text_node.text = f"Figure {figure_number}. "
+            run.append(text_node)
             children = list(paragraph._p)
             insert_index = 1 if children and children[0].tag == qn("w:pPr") else 0
             paragraph._p.insert(insert_index, run)
-            paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+            paragraph.style = "MDPI_5.1_figure_caption"
             figure_number += 1
+            expect_figure_caption = False
+            previous_was_heading = False
+            continue
         if "w:drawing" in paragraph._p.xml:
+            paragraph.style = "MDPI_5.2_figure"
             paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
             paragraph.paragraph_format.keep_with_next = True
-            paragraph.paragraph_format.space_before = Pt(4)
-            paragraph.paragraph_format.space_after = Pt(0)
+            expect_figure_caption = True
+            previous_was_heading = False
+            continue
+        if body_started and not text.startswith("[[TABLE_"):
+            paragraph.style = (
+                "MDPI_3.2_text_no_indent" if previous_was_heading else "MDPI_3.1_text"
+            )
+            previous_was_heading = False
+
+    table_by_marker = {table.marker: table for table in tables}
+    for paragraph in list(doc.paragraphs):
+        marker = paragraph.text.strip()
+        if marker in table_by_marker:
+            spec = table_by_marker[marker]
+            add_table_before(doc, paragraph, spec, tables.index(spec) + 1)
+
     if figure_number != 14:
         raise RuntimeError(f"Expected 13 figures, found {figure_number - 1}")
-
     for shape in doc.inline_shapes:
-        max_width = Inches(5.55)
-        max_height = Inches(6.7)
+        max_width = Inches(6.7)
+        max_height = Inches(7.5)
         scale = min(1.0, max_width / shape.width, max_height / shape.height)
         shape.width = int(shape.width * scale)
         shape.height = int(shape.height * scale)
@@ -726,24 +847,33 @@ def strip_review_parts(path: Path) -> None:
         temporary_path.unlink(missing_ok=True)
 
 
+def make_reference_docx(path: Path) -> None:
+    with zipfile.ZipFile(REFERENCE_TEMPLATE) as source, zipfile.ZipFile(
+        path, "w", zipfile.ZIP_DEFLATED
+    ) as target:
+        for item in source.infolist():
+            data = source.read(item.filename)
+            if item.filename == "[Content_Types].xml":
+                data = data.replace(
+                    TEMPLATE_MAIN_CONTENT_TYPE.encode(), DOCUMENT_MAIN_CONTENT_TYPE.encode()
+                )
+            target.writestr(item, data)
+
+
 def validate(path: Path, tables: list[TableSpec], source_commit: str) -> None:
     doc = Document(path)
     all_text = "\n".join(paragraph.text for paragraph in doc.paragraphs)
-    headings = [paragraph.text for paragraph in doc.paragraphs if paragraph.style and paragraph.style.name == "Heading 1"]
+    headings = [
+        paragraph.text
+        for paragraph in doc.paragraphs
+        if paragraph.style and paragraph.style.name == "MDPI_2.1_heading1"
+    ]
     required = {
-        "Simple Summary",
-        "Abstract",
-        "Keywords",
-        "Introduction",
-        "Materials and Methods",
-        "Results",
-        "Discussion",
-        "Conclusions",
-        "Author Contributions",
-        "Funding",
-        "Data Availability",
-        "Conflicts of Interest",
-        "Acknowledgments",
+        "1. Introduction",
+        "2. Materials and Methods",
+        "3. Results",
+        "4. Discussion",
+        "5. Conclusions",
         "Appendix A. 30-Minute Wind Disruption Analysis: Candidate Models",
         "Appendix B. Threshold Wind Disruption Analysis: Candidate Models",
         "Appendix C. Site Fidelity Analysis (Next Day Window): Candidate Models",
@@ -755,17 +885,58 @@ def validate(path: Path, tables: list[TableSpec], source_commit: str) -> None:
         raise RuntimeError(f"Missing top-level sections: {sorted(missing)}")
     if len(doc.inline_shapes) != 13:
         raise RuntimeError(f"Expected 13 figures, found {len(doc.inline_shapes)}")
-    if len(doc.tables) != 11:
-        raise RuntimeError(f"Expected 11 tables, found {len(doc.tables)}")
-    bibliography = [paragraph for paragraph in doc.paragraphs if paragraph.style and paragraph.style.name == "Bibliography"]
+    if len(doc.tables) != 12:
+        raise RuntimeError(f"Expected 12 tables including metadata, found {len(doc.tables)}")
+    bibliography = [
+        paragraph
+        for paragraph in doc.paragraphs
+        if paragraph.style and paragraph.style.name == "MDPI_8.1_references"
+    ]
     if len(bibliography) != 66:
         raise RuntimeError(f"Expected 66 bibliography entries, found {len(bibliography)}")
-    if re.search(r"\\(?:cite|ref)\{|\[\[(?:TITLE|TABLE|AUTHORS)", all_text):
+    for label in (
+        "Author Contributions:",
+        "Funding:",
+        "Data Availability Statement:",
+        "Acknowledgments:",
+        "Conflicts of Interest:",
+    ):
+        if label not in all_text:
+            raise RuntimeError(f"Missing back-matter label: {label}")
+    if re.search(r"\\(?:cite|ref)\{|\[\[(?:ARTICLE|TITLE|TABLE|AUTHORS|H[123]|BACKMATTER)", all_text):
         raise RuntimeError("Raw source markers remain in the exported document")
+    forbidden_text = (
+        "How to Use This Template",
+        "Type of the Paper (Article, Review, Communication, etc.)",
+        "Firstname Lastname",
+        "keyword 1; keyword 2; keyword 3",
+    )
+    for value in forbidden_text:
+        if value in all_text:
+            raise RuntimeError(f"Template instructional text remains: {value}")
     if f"Git commit {source_commit}" not in doc.core_properties.subject:
         raise RuntimeError("Source commit metadata is missing")
     with zipfile.ZipFile(path) as archive:
         names = set(archive.namelist())
+        required_parts = {
+            "word/header1.xml",
+            "word/header2.xml",
+            "word/header3.xml",
+            "word/footer1.xml",
+            "word/footer2.xml",
+            "word/media/image3.png",
+            "word/media/image4.png",
+            "word/styles.xml",
+            "word/settings.xml",
+        }
+        missing_parts = required_parts.difference(names)
+        if missing_parts:
+            raise RuntimeError(f"Template package parts are missing: {sorted(missing_parts)}")
+        content_types = archive.read("[Content_Types].xml")
+        if DOCUMENT_MAIN_CONTENT_TYPE.encode() not in content_types:
+            raise RuntimeError("The output package is not a standard DOCX")
+        if TEMPLATE_MAIN_CONTENT_TYPE.encode() in content_types:
+            raise RuntimeError("The output package still declares a Word template")
         forbidden_parts = {name for name in names if "comment" in name.lower() or name.endswith("people.xml")}
         if forbidden_parts:
             raise RuntimeError(f"Review parts remain: {sorted(forbidden_parts)}")
@@ -778,6 +949,39 @@ def validate(path: Path, tables: list[TableSpec], source_commit: str) -> None:
         for marker in (b"<w:ins", b"<w:del", b"<w:moveFrom", b"<w:moveTo", b"commentRange"):
             if marker in document_xml:
                 raise RuntimeError(f"Review markup remains: {marker.decode(errors='ignore')}")
+        document_root = etree.fromstring(document_xml)
+        namespace = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+        sections = document_root.xpath(".//w:sectPr", namespaces=namespace)
+        if len(sections) != 1:
+            raise RuntimeError(f"Expected one section, found {len(sections)}")
+        section = sections[0]
+        page_size = section.find(qn("w:pgSz"))
+        margins = section.find(qn("w:pgMar"))
+        line_numbers = section.find(qn("w:lnNumType"))
+        if page_size is None or (page_size.get(qn("w:w")), page_size.get(qn("w:h"))) != (
+            "11906",
+            "16838",
+        ):
+            raise RuntimeError("The A4 template page size was not preserved")
+        expected_margins = {
+            "top": "1417",
+            "right": "720",
+            "bottom": "907",
+            "left": "720",
+            "header": "720",
+            "footer": "612",
+        }
+        if margins is None or any(
+            margins.get(qn(f"w:{name}")) != value for name, value in expected_margins.items()
+        ):
+            raise RuntimeError("The template margins were not preserved")
+        if line_numbers is None or line_numbers.get(qn("w:countBy")) != "1":
+            raise RuntimeError("Continuous line numbering was not preserved")
+        if section.find(qn("w:titlePg")) is None:
+            raise RuntimeError("The distinct first-page layout was not preserved")
+        header_text = archive.read("word/header2.xml")
+        if b"PAGE" not in header_text or b"NUMPAGES" not in header_text:
+            raise RuntimeError("The running header page fields are missing")
     if len(tables) != 11:
         raise RuntimeError(f"Source parser found {len(tables)} tables, expected 11")
 
@@ -786,8 +990,8 @@ def export(commit: str, output: Path, pandoc: str) -> None:
     resolved = run("git", "rev-parse", commit, cwd=REPO_ROOT, capture=True)
     if resolved != EXPECTED_COMMIT:
         raise RuntimeError(f"Expected commit {EXPECTED_COMMIT}, got {resolved}")
-    if sha256(REFERENCE_DOCX) != EXPECTED_REFERENCE_SHA256:
-        raise RuntimeError("The retained MDPI reference DOCX does not match its recorded checksum")
+    if sha256(REFERENCE_TEMPLATE) != EXPECTED_TEMPLATE_SHA256:
+        raise RuntimeError("The MDPI Insects template does not match its recorded checksum")
 
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="monarch-submitted-docx-") as temp_name:
@@ -803,7 +1007,9 @@ def export(commit: str, output: Path, pandoc: str) -> None:
         pandoc_source, tables = build_pandoc_source(original)
         wrapped_tex = temp_dir / "manuscript-word.tex"
         raw_docx = temp_dir / "manuscript-word-raw.docx"
+        reference_docx = temp_dir / "insects-reference.docx"
         wrapped_tex.write_text(pandoc_source, encoding="utf-8")
+        make_reference_docx(reference_docx)
 
         run(
             pandoc,
@@ -814,7 +1020,7 @@ def export(commit: str, output: Path, pandoc: str) -> None:
             f"--csl={CSL}",
             f"--bibliography={source_dir / 'bibliography' / 'references.bib'}",
             f"--resource-path={source_dir}",
-            f"--reference-doc={REFERENCE_DOCX}",
+            f"--reference-doc={reference_docx}",
             "--metadata=link-citations:false",
             "--metadata=reference-section-title:References",
             f"--output={raw_docx}",
