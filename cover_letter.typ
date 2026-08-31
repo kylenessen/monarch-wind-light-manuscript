@@ -13,7 +13,7 @@
 #v(0.3em)
 Dear Editor,
 
-We are pleased to submit our manuscript, "Wind Does Not Disrupt Overwintering Monarch Butterfly Clusters: Direct Empirical Test of a Three-Decade Management Assumption," for consideration in the _Insects_ Special Issue "Advances in Monarch Butterfly Biology, Conservation, and Management: From Local to Continental."
+We are pleased to submit our manuscript, "Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure," for consideration in the _Insects_ Special Issue "Advances in Monarch Butterfly Biology, Conservation, and Management: From Local to Continental."
 
 Conservation of monarch butterflies in the west largely focuses on management of overwintering habitat. For over three decades, this management has been principally guided by the Microclimate Hypothesis, which asserts that overwintering butterflies seek specific and narrow abiotic conditions for suitable habitat. Of these conditions, wind has long been considered the most important. Wind speeds exceeding 2 m/s are thought to dislodge monarchs and make habitat unsuitable. Land managers have invested substantial effort to protect the wind-sheltering properties of overwintering groves, and this threshold came to shape restoration guidance across California.
 
