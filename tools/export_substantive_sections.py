@@ -27,6 +27,7 @@ SECTION_HEADINGS = (
     "Materials and Methods",
     "Results",
     "Discussion",
+    "References",
 )
 
 FIGURE_REFERENCES = {
@@ -116,27 +117,6 @@ def set_style_font(style, name: str, size: float, color: str, bold=None, italic=
         r_fonts.set(qn(f"w:{attr}"), name)
 
 
-def remove_bibliography(doc: Document) -> None:
-    references = next(
-        (
-            p
-            for p in doc.paragraphs
-            if p.text.strip() == "References"
-            or (p.style is not None and p.style.name == "Bibliography")
-        ),
-        None,
-    )
-    if references is None:
-        return
-    body = doc._element.body
-    node = references._element
-    while node is not None:
-        following = node.getnext()
-        if node.tag != qn("w:sectPr"):
-            body.remove(node)
-        node = following
-
-
 def add_page_number(paragraph) -> None:
     paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     paragraph.paragraph_format.space_before = Pt(0)
@@ -163,8 +143,9 @@ def ensure_update_fields(doc: Document) -> None:
 
 
 def style_document(doc: Document) -> None:
-    # Narrative proposal preset. Named overrides are caption styling, page numbers,
-    # and page breaks before major sections after the Introduction.
+    # Narrative proposal preset. Named overrides are caption and bibliography
+    # styling, page numbers, and page breaks before major sections after the
+    # Introduction.
     section = doc.sections[0]
     section.start_type = WD_SECTION.CONTINUOUS
     section.page_width = Inches(8.5)
@@ -207,6 +188,16 @@ def style_document(doc: Document) -> None:
     caption_style.paragraph_format.space_after = Pt(12)
     caption_style.paragraph_format.line_spacing = 1.0
     caption_style.paragraph_format.keep_together = True
+
+    bibliography_style = doc.styles["Bibliography"]
+    set_style_font(bibliography_style, "Calibri", 10, "000000")
+    bibliography_style.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    bibliography_style.paragraph_format.left_indent = Inches(0.25)
+    bibliography_style.paragraph_format.first_line_indent = Inches(-0.25)
+    bibliography_style.paragraph_format.space_before = Pt(0)
+    bibliography_style.paragraph_format.space_after = Pt(6)
+    bibliography_style.paragraph_format.line_spacing = 1.15
+    bibliography_style.paragraph_format.widow_control = True
 
     expected_figure_number = 1
     first_heading = True
@@ -269,7 +260,7 @@ def validate_document(path: Path) -> None:
         raise RuntimeError(f"Unexpected top-level headings: {headings}")
 
     full_text = "\n".join(p.text for p in doc.paragraphs)
-    excluded = ("Simple Summary", "Abstract", "Conclusions", "References")
+    excluded = ("Simple Summary", "Abstract", "Conclusions")
     present = [label for label in excluded if label in full_text]
     if present:
         raise RuntimeError(f"Excluded section labels remain: {present}")
@@ -277,8 +268,13 @@ def validate_document(path: Path) -> None:
         raise RuntimeError("Raw LaTeX references remain in the Word document")
     if len(doc.inline_shapes) != 4:
         raise RuntimeError(f"Expected four figures, found {len(doc.inline_shapes)}")
-    if any(p.style and p.style.name == "Bibliography" for p in doc.paragraphs):
-        raise RuntimeError("Bibliography content remains in the Word document")
+    bibliography_entries = [
+        p for p in doc.paragraphs if p.style and p.style.name == "Bibliography"
+    ]
+    if len(bibliography_entries) != 37:
+        raise RuntimeError(
+            f"Expected 37 cited references, found {len(bibliography_entries)}"
+        )
     if not any("[1" in p.text for p in doc.paragraphs):
         raise RuntimeError("Numbered in-text citations were not generated")
 
@@ -305,6 +301,7 @@ def run_export(output: Path, pandoc: str) -> None:
                 f"--bibliography={BIBLIOGRAPHY}",
                 f"--resource-path={REPO_ROOT}",
                 "--metadata=link-citations:false",
+                "--metadata=reference-section-title:References",
                 f"--output={raw_docx}",
             ),
             cwd=REPO_ROOT,
@@ -312,7 +309,6 @@ def run_export(output: Path, pandoc: str) -> None:
         )
 
         doc = Document(raw_docx)
-        remove_bibliography(doc)
         style_document(doc)
         doc.save(output)
 

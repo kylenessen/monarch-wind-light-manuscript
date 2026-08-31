@@ -15,6 +15,52 @@
       </substitute>
     </names>
   </macro>
+  <macro name="issued">
+    <date variable="issued">
+      <date-part name="year"/>
+    </date>
+  </macro>
+  <macro name="publication">
+    <choose>
+      <if type="article-journal article-magazine article-newspaper" match="any">
+        <group delimiter=", ">
+          <text variable="container-title" font-style="italic"/>
+          <text macro="issued" font-weight="bold"/>
+          <text variable="volume" font-style="italic"/>
+          <text variable="issue" prefix="(" suffix=")"/>
+          <text variable="page"/>
+        </group>
+      </if>
+      <else-if type="chapter paper-conference entry-encyclopedia entry-dictionary" match="any">
+        <group delimiter=", ">
+          <text variable="container-title" prefix="In "/>
+          <text variable="publisher"/>
+          <text variable="publisher-place"/>
+          <text macro="issued"/>
+          <text variable="page" prefix="pp. "/>
+        </group>
+      </else-if>
+      <else>
+        <group delimiter=", ">
+          <text variable="publisher"/>
+          <text variable="publisher-place"/>
+          <text macro="issued"/>
+          <text variable="volume"/>
+          <text variable="page"/>
+        </group>
+      </else>
+    </choose>
+  </macro>
+  <macro name="access">
+    <choose>
+      <if variable="DOI">
+        <text variable="DOI" prefix="https://doi.org/"/>
+      </if>
+      <else-if variable="URL">
+        <text variable="URL"/>
+      </else-if>
+    </choose>
+  </macro>
   <citation collapse="citation-number">
     <sort>
       <key variable="citation-number"/>
@@ -27,7 +73,9 @@
     <layout suffix=".">
       <text variable="citation-number" suffix=". "/>
       <text macro="author" suffix=". "/>
-      <text variable="title"/>
+      <text variable="title" suffix=". "/>
+      <text macro="publication"/>
+      <text macro="access" prefix=". "/>
     </layout>
   </bibliography>
 </style>
