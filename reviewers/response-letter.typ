@@ -119,7 +119,7 @@ Thank you for the careful and constructive reviews. The manuscript is substantia
 
     We repeated both retained analyses using category lower bounds, rounded geometric midpoints, rounded arithmetic midpoints, and upper bounds. The 30-minute three-way interaction, its conditional directions, and the Next Day interaction remained supported under every mapping. The Methods, Results, and public reproducibility files report these checks.
 
-    The cameras had unobstructed views of the monitored aggregation areas, and only visible butterflies were counted. The guyed poles remained stable and did not visibly move or rotate during the included deployments. Images affected by the few pole falls were excluded. Branch movement was present and was addressed by manual classification of every image under a shared protocol. Residual short-term classification noise remains possible when a visible group falls near a BI category boundary, so we continue to interpret the response as visible BI change rather than confirmed arrival, departure, or dislodgment.],
+    The cameras had unobstructed views of the monitored aggregation areas, and only visible butterflies were counted. The guyed poles remained stable and did not visibly move or rotate during the included deployments. Branch movement was present and was addressed by manual classification of every image under a shared protocol. Residual short-term classification noise remains possible when a visible group falls near a BI category boundary, so we continue to interpret the response as visible BI change rather than confirmed arrival, departure, or dislodgment.],
 )
 
 #entry(
