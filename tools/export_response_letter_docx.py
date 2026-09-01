@@ -251,8 +251,9 @@ def export(source: Path, output: Path) -> None:
     add_body_paragraph(doc, "Dear Academic Editor and Reviewers,")
     add_body_paragraph(
         doc,
-        "Thank you for the careful and constructive reviews. We substantially shortened the "
-        "manuscript and revised its analyses, interpretation, and scope. The revised title and "
+        "Thank you for the careful and constructive reviews. The manuscript is substantially "
+        "stronger because of this feedback. We shortened the paper and revised its analyses, "
+        "interpretation, and scope. The revised title and "
         "all summary sections now describe conditional associations under the monitored "
         "conditions rather than a general or causal rejection of wind effects. We removed "
         "unsupported analyses and management recommendations, clarified the environmental and "
