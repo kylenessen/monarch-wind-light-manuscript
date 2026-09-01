@@ -1,6 +1,6 @@
 # Monarch Wind and Light Manuscript
 
-This repository contains the manuscript, analysis data, and reproducibility materials for "Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure" by Kyle Nessen, Peter C. Ibsen, Jay Diffendorfer, and Francis X. Villablanca.
+This repository contains the manuscript, analysis data, and reproducibility materials for "Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs" by Kyle Nessen, Peter C. Ibsen, Jay Diffendorfer, and Francis X. Villablanca.
 
 The manuscript extends the work in [Kyle Nessen's master's thesis](https://digitalcommons.calpoly.edu/theses/3180/) and provides the publication version of the wind analysis. The repository is intended to make the written paper, analysis inputs, statistical scripts, generated summaries, and figures traceable from source data through manuscript output.
 

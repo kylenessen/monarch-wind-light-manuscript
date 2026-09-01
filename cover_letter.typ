@@ -13,7 +13,7 @@
 #v(0.3em)
 Dear Editor,
 
-We are pleased to resubmit our revised manuscript, "Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure," for consideration in the _Insects_ Special Issue "Advances in Monarch Butterfly Biology, Conservation, and Management: From Local to Continental."
+We are pleased to resubmit our revised manuscript, "Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs," for consideration in the _Insects_ Special Issue "Advances in Monarch Butterfly Biology, Conservation, and Management: From Local to Continental."
 
 Wind protection has long been an important component of western monarch overwintering habitat management. In particular, winds at or above 2 m/s have been described as disruptive to monarch aggregations and have influenced grove restoration guidance in California.
 

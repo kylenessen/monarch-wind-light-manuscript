@@ -17,8 +17,8 @@ from docx.shared import Inches, Pt, RGBColor
 TITLE = "Point-by-Point Response"
 SUBTITLE = "Response to the Academic Editor and Reviewers"
 MANUSCRIPT_TITLE = (
-    "Wind Associations with Overwintering Monarch Butterfly Cluster Size "
-    "Depend on Temperature and Sun Exposure"
+    "Does Wind Disrupt Overwintering Monarch Butterfly Clusters? "
+    "An Observational Study of Western Monarchs"
 )
 
 

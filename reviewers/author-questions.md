@@ -1,10 +1,10 @@
 # Remaining Author Questions Before Resubmission
 
-1. Which revised title do all authors approve? The current working title is *Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure*. Two more conservative alternatives are *Conditional Wind Associations with Visible Overwintering Monarch Cluster Size* and *Wind Was Not Consistently Associated with Declines in Visible Overwintering Monarch Cluster Size*.
-
-2. After this version is circulated, have all coauthors approved the final interpretation, author-contribution statement, funding statement, acknowledgments, public-release language, and response letter? Please also confirm that any required USGS or institutional review is complete.
+1. After this version is circulated, have all coauthors approved the final interpretation, author-contribution statement, funding statement, acknowledgments, public-release language, title, and response letter? Please also confirm that any required USGS or institutional review is complete.
 
 ## Confirmed Decisions
+
+The final title is *Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs*.
 
 The processed data and analytical repository will remain public during review. The raw images and classification review software will be released upon acceptance, together with a DOI-backed archive of the final repository release.
 

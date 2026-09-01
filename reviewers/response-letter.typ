@@ -31,7 +31,7 @@
   #text(size: 13pt)[Response to the Academic Editor and Reviewers]
   #v(1em)
   *Revised manuscript title:* \
-  _#c(1)[Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure]_
+  _Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs_
   #v(0.25em)
   *Journal:* _Insects_
 ]
@@ -40,14 +40,14 @@
 
 Dear Academic Editor and Reviewers,
 
-Thank you for the careful and constructive reviews. The manuscript is substantially stronger because of this feedback. We shortened the paper and revised its analyses, interpretation, and scope. The revised title and all summary sections now describe conditional associations under the monitored conditions rather than a general or causal rejection of wind effects. We removed unsupported analyses and management recommendations, clarified the environmental and image-based measurements, repeated the candidate-model comparisons, added sensitivity analyses, and made the processed data and analytical materials public. The responses below address every comment. Manuscript sections are named directly because line numbers may change during journal production.
+Thank you for the careful and constructive reviews. The manuscript is substantially stronger because of this feedback. We shortened the paper and revised its analyses, interpretation, and scope. The revised title poses the study question without asserting a categorical answer, and all summary sections now describe conditional associations under the monitored conditions rather than a general or causal rejection of wind effects. We removed unsupported analyses and management recommendations, clarified the environmental and image-based measurements, repeated the candidate-model comparisons, added sensitivity analyses, and made the processed data and analytical materials public. The responses below address every comment. Manuscript sections are named directly because line numbers may change during journal production.
 
 #heading[Academic Editor]
 
 #entry(
   [Overall assessment],
   [The conclusions were too broad for observations from two localities during one effective field season.],
-  [We agree. The revised manuscript consistently identifies the study as observational and limits inference to two blue gum eucalyptus groves, one overwintering season, the observed cluster sizes, and nearby maximum-gust measurements. We replaced the categorical title with “Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure.” The Simple Summary, Abstract, Discussion, and Conclusions now state that the predicted consistent decline was not detected under the monitored conditions. We also removed prescriptive habitat-management recommendations and added an explicit need for replication across seasons, sites, grove structures, cluster densities, and geographic regions.],
+  [We agree. The revised manuscript consistently identifies the study as observational and limits inference to two blue gum eucalyptus groves, one overwintering season, the observed cluster sizes, and nearby maximum-gust measurements. We replaced the categorical title with the question “Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs.” The Simple Summary, Abstract, Discussion, and Conclusions now state that the predicted consistent decline was not detected under the monitored conditions. We also removed prescriptive habitat-management recommendations and added an explicit need for replication across seasons, sites, grove structures, cluster densities, and geographic regions.],
 )
 
 #entry(
