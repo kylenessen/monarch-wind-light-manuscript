@@ -33,7 +33,7 @@
     "selectedText": "To avoid extending lines through unsupported predictor combinations, each line ends at the maximum gust observed within $\\pm1\\,^{\\circ}$C of the displayed temperature and within the corresponding sun-exposed BI stratum (0, 1--13, or 14--30),",
     "text": "I want a clear justification why this was done or why it should be done. I'm concerned that this was picked up because of like previous thoughts or conversations hiding somewhere in the context of this repo when several times now I've decided to go against this and use the 99th percentile of maximum gust speed.",
     "timestamp": "2026-09-01T06:14:52.557Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "2eaf9ff8-e7c1-4114-858a-7055862f2741",
