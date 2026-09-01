@@ -135,7 +135,7 @@ Thank you for the careful and constructive reviews. The manuscript is substantia
 
     We removed the exact duplicates and did not retain the incomplete original rankings. We replaced the window-specific candidate lists with a shared set of environmental hypothesis templates while preserving the window-specific predictor definitions. The primary 30-minute comparison contains 17 candidates. Separate 17-model sensitivities omit previous BI and time since sunrise. The primary Next Day comparison contains 35 candidates, and its 35-model sensitivity omits previous-day BI. All 121 fits converged without warnings.
 
-    The corrected 30-minute best model changed to a three-way interaction among wind, temperature, and sun-exposed BI. We updated the Results, figures, and interpretation accordingly. The Next Day best model remained a wind by sun-exposed BI interaction, although its support was less decisive after correction. The overall result remains that wind alone did not predict a consistent decline in visible cluster size. Its association depended on temperature and direct sun exposure. We believe the corrected analysis and more transparent treatment of uncertainty make the paper stronger. The revised Methods, Results, appendices, and public output tables provide the full statistical details.],
+    The corrected 30-minute best model changed to a three-way interaction among wind, temperature, and sun-exposed BI. We updated the Results, figures, and interpretation accordingly. The Next Day best model remained a wind by sun-exposed BI interaction, although its support was less decisive after correction. The overall result remains that the wind association was not a consistent decline in visible cluster size. Instead, it depended on temperature and sun-exposed BI. We believe the corrected analysis and more transparent treatment of uncertainty make the paper stronger. The revised Methods, Results, appendices, and public output tables provide the full statistical details.],
 )
 
 #entry(
@@ -179,7 +179,7 @@ Thank you for the careful and constructive reviews. The manuscript is substantia
 #entry(
   [Comment 2. One season and two localities],
   [State the limited generalizability and the need for work across more sites and seasons.],
-  [We now state this limitation in the Study Design, Discussion, and Conclusions. The Conclusions call for replicated research across seasons, sites, grove structures, cluster densities, weather conditions, and regions before drawing broader inferences.],
+  [We now state this limitation in the Study Design, Discussion, and Conclusions. The Conclusions call for replicated research across seasons, sites, grove structures, cluster densities, and regions before drawing broader inferences.],
 )
 
 #entry(
@@ -191,7 +191,7 @@ Thank you for the careful and constructive reviews. The manuscript is substantia
 #entry(
   [Comment 4. Management thresholds and generalization],
   [Temper the claim that existing thresholds are broadly unsupported and call for wider replication.],
-  [We removed the management recommendations and revised the Conclusions. The manuscript now states that we did not find evidence that a single wind threshold consistently predicted declines in visible cluster size under the monitored conditions. It calls for replicated work across habitats, densities, seasons, and regions to determine whether this result extends beyond the monitored setting.],
+  [We removed the management recommendations and revised the Conclusions. The manuscript now states that we did not find evidence that a single wind threshold consistently predicted declines in visible cluster size under the monitored conditions. It calls for replicated work across seasons, sites, grove structures, cluster densities, and regions to determine whether this result extends beyond the monitored setting.],
 )
 
 #v(0.8em)
