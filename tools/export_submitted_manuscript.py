@@ -827,7 +827,12 @@ def strip_review_parts(path: Path) -> None:
     custom_properties_relationship_type = (
         "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties"
     )
-    removable = {"word/comments.xml", "word/commentsExtended.xml", "docProps/custom.xml"}
+    removable = {
+        "word/comments.xml",
+        "word/commentsExtended.xml",
+        "word/_rels/footnotes.xml.rels",
+        "docProps/custom.xml",
+    }
     with tempfile.NamedTemporaryFile(suffix=".docx", delete=False, dir=path.parent) as temporary:
         temporary_path = Path(temporary.name)
     try:
@@ -1018,6 +1023,8 @@ def validate(
         forbidden_parts = {name for name in names if "comment" in name.lower() or name.endswith("people.xml")}
         if forbidden_parts:
             raise RuntimeError(f"Review parts remain: {sorted(forbidden_parts)}")
+        if "word/_rels/footnotes.xml.rels" in names:
+            raise RuntimeError("Unused footnote relationships remain")
         if "docProps/custom.xml" in names:
             raise RuntimeError("Conversion-tool custom properties remain")
         package_relationships = archive.read("_rels/.rels")
