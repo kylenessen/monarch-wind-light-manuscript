@@ -9,7 +9,7 @@
     "selectedText": "Should the repository receive a DOI-backed archive before resubmission? The current manuscript and response promise that this will happen before publication, but Reviewer 1 requested a permanent public repository now.",
     "text": "I think promising the full dataset once accepted is fine for now.",
     "timestamp": "2026-09-01T02:38:23.985Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "cf7706d0-ff12-49c5-847f-39816ca9c3bf",
@@ -21,7 +21,7 @@
     "selectedText": "Can the raw images and classification review software be placed in a permanent archive? If not, do you approve the current statement that they are available from the corresponding author because a long-term public host has not been established?",
     "text": "See point above. We can provide all that once the paper is accepted",
     "timestamp": "2026-09-01T02:38:45.410Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "22788153-baa4-44a4-afcb-358ce65e875d",
@@ -33,7 +33,7 @@
     "selectedText": "Please confirm that cluster heights, vertical sensor-to-cluster distances, intervening vegetation, and canopy positions were not recorded systematically for any deployment. Also confirm that the wind loggers were not calibrated against a reference sensor or validated at butterfly positions.",
     "text": "Yes, all correct",
     "timestamp": "2026-09-01T02:38:58.518Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "86856433-ddfa-4ea3-8e54-d0c0dd5bd7d8",
@@ -45,7 +45,7 @@
     "selectedText": "Please confirm the image-classification workflow. The documents state that each deployment was classified once by one labeler, that labelers handled non-overlapping image sets, and that no independent counts remain for a formal agreement analysis.\n",
     "text": "All correct",
     "timestamp": "2026-09-01T02:39:08.402Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "3392b89d-3546-4b0a-a56a-88373b23f26d",
@@ -57,7 +57,7 @@
     "selectedText": "Does the journal require page and line citations in the response letter? The current letter names the revised sections because line numbers can shift during production.",
     "text": "Can you investigate this for MDPI Insects? I think the edits are susbstantial that line number edits aren't helpful at this point. They just need to reread it.",
     "timestamp": "2026-09-01T02:39:46.934Z",
-    "resolved": false
+    "resolved": true
   },
   {
     "id": "6769385b-0091-4801-889c-6d1932602d75",
@@ -69,6 +69,6 @@
     "selectedText": "Have all coauthors approved the final interpretation, author-contribution statement, funding statement, acknowledgments, public-release language, and response letter? Please also confirm that any required USGS or institutional review is complete.",
     "text": "This version goes to them next",
     "timestamp": "2026-09-01T02:40:01.384Z",
-    "resolved": false
+    "resolved": true
   }
 ]

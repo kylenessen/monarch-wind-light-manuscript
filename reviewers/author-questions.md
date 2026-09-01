@@ -1,15 +1,15 @@
-# Author Questions Before Resubmission
+# Remaining Author Questions Before Resubmission
 
 1. Which revised title do all authors approve? The current working title is *Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure*. Two more conservative alternatives are *Conditional Wind Associations with Visible Overwintering Monarch Cluster Size* and *Wind Was Not Consistently Associated with Declines in Visible Overwintering Monarch Cluster Size*.
 
-2. Should the repository receive a DOI-backed archive before resubmission? The current manuscript and response promise that this will happen before publication, but Reviewer 1 requested a permanent public repository now.
+2. After this version is circulated, have all coauthors approved the final interpretation, author-contribution statement, funding statement, acknowledgments, public-release language, and response letter? Please also confirm that any required USGS or institutional review is complete.
 
-3. Can the raw images and classification review software be placed in a permanent archive? If not, do you approve the current statement that they are available from the corresponding author because a long-term public host has not been established?
+## Confirmed Decisions
 
-4. Please confirm that cluster heights, vertical sensor-to-cluster distances, intervening vegetation, and canopy positions were not recorded systematically for any deployment. Also confirm that the wind loggers were not calibrated against a reference sensor or validated at butterfly positions.
+The processed data and analytical repository will remain public during review. The raw images and classification review software will be released upon acceptance, together with a DOI-backed archive of the final repository release.
 
-5. Please confirm the image-classification workflow. The documents state that each deployment was classified once by one labeler, that labelers handled non-overlapping image sets, and that no independent counts remain for a formal agreement analysis.
+Cluster heights, vertical sensor-to-cluster distances, intervening vegetation, and canopy positions were not recorded systematically. The wind loggers were not calibrated against a reference sensor or validated at butterfly positions.
 
-6. Does the journal require page and line citations in the response letter? The current letter names the revised sections because line numbers can shift during production.
+Each deployment was classified once by one labeler. Labelers handled non-overlapping image sets, and no independent counts remain for a formal agreement analysis.
 
-7. Have all coauthors approved the final interpretation, author-contribution statement, funding statement, acknowledgments, public-release language, and response letter? Please also confirm that any required USGS or institutional review is complete.
+MDPI requires a thorough point-by-point response but does not state that page and line citations are mandatory. Because the manuscript was substantially rewritten and line numbering may differ across submitted versions, the response letter identifies the revised sections rather than maintaining fragile line citations.
