@@ -47,7 +47,7 @@ Thank you for the careful and constructive reviews. The manuscript is substantia
 #entry(
   [Overall assessment],
   [The conclusions were too broad for observations from two localities during one effective field season.],
-  [We agree. The revised manuscript consistently identifies the study as observational and limits inference to two blue gum eucalyptus groves, one overwintering season, the observed cluster sizes, and nearby maximum-gust measurements. We replaced the categorical title with the question “Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs.” The Simple Summary, Abstract, Discussion, and Conclusions now state that the predicted consistent decline was not detected under the monitored conditions. We also removed prescriptive habitat-management recommendations and added an explicit need for replication across seasons, sites, grove structures, cluster densities, and geographic regions.],
+  [We agree. The revised manuscript consistently identifies the study as observational and limits inference to two blue gum eucalyptus groves, one overwintering season, the observed cluster sizes, and nearby maximum-gust measurements. We replaced the categorical title with the question “Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs.” The Simple Summary, Abstract, Discussion, and Conclusions now state that the predicted consistent decline was not detected under the monitored conditions. We also removed prescriptive habitat-management recommendations. The Discussion identifies the limited spatial and seasonal replication, unequal grove contributions, and possible reuse of aggregations or individual butterflies as constraints on inference.],
 )
 
 #entry(
@@ -85,7 +85,7 @@ Thank you for the careful and constructive reviews. The manuscript is substantia
 #entry(
   [Comment 3. Scope of inference],
   [Two eucalyptus groves on one installation during one season cannot support broad inference to other groves, populations, or conditions.],
-  [We now define that scope in the Study Design, Discussion, and Conclusions. The Discussion further states that nearly all 30-minute observations came from one grove and that only Spring Canyon contributed to the Next Day analysis. The Conclusions call for replicated work across seasons, sites, grove structures, cluster densities, and regions to determine whether the result extends beyond the monitored setting.],
+  [We now define that scope in the Study Design, Discussion, and Conclusions. The Discussion further states that nearly all 30-minute observations came from one grove and that only Spring Canyon contributed to the Next Day analysis. It also identifies the single season, shared installation, blue gum eucalyptus grove type, observed cluster sizes, and possible reuse of aggregations or individual butterflies as constraints on inference. The Conclusions restrict the findings to the monitored wind conditions at two groves during one season.],
 )
 
 #entry(
@@ -179,7 +179,7 @@ Thank you for the careful and constructive reviews. The manuscript is substantia
 #entry(
   [Comment 2. One season and two localities],
   [State the limited generalizability and the need for work across more sites and seasons.],
-  [We now state this limitation in the Study Design, Discussion, and Conclusions. The Conclusions call for replicated research across seasons, sites, grove structures, cluster densities, and regions before drawing broader inferences.],
+  [We now state this limitation in the Study Design and Discussion. The Discussion explains that the data came from two blue gum eucalyptus groves on one installation during one season, that nearly all 30-minute observations came from one grove, and that only that grove contributed to the Next Day analysis. The Conclusions restrict the findings to the monitored wind conditions at two groves during one season rather than generalizing to other settings.],
 )
 
 #entry(
@@ -191,7 +191,7 @@ Thank you for the careful and constructive reviews. The manuscript is substantia
 #entry(
   [Comment 4. Management thresholds and generalization],
   [Temper the claim that existing thresholds are broadly unsupported and call for wider replication.],
-  [We removed the management recommendations and revised the Conclusions. The manuscript now states that we did not find evidence that a single wind threshold consistently predicted declines in visible cluster size under the monitored conditions. It calls for replicated work across seasons, sites, grove structures, cluster densities, and regions to determine whether this result extends beyond the monitored setting.],
+  [We removed the management recommendations and revised the Conclusions. The manuscript now states that the predicted consistent decline was not detected under the monitored conditions. The Discussion identifies the limited spatial and seasonal replication, grove type, observed cluster sizes, and unequal contribution of the two groves as constraints on inference. The Conclusions are correspondingly restricted to the monitored wind conditions at two groves during one season.],
 )
 
 #v(0.8em)
