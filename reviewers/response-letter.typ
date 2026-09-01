@@ -1,3 +1,4 @@
+#let c(n, body) = body
 #set document(title: "Response to the Academic Editor and Reviewers")
 #set page(paper: "us-letter", margin: (top: 0.78in, bottom: 0.78in, x: 0.82in))
 #set text(font: "Libertinus Serif", size: 10.5pt, lang: "en")
@@ -30,7 +31,7 @@
   #text(size: 13pt)[Response to the Academic Editor and Reviewers]
   #v(1em)
   *Revised manuscript title:* \
-  _Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure_
+  _#c(1)[Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure]_
   #v(0.25em)
   *Journal:* _Insects_
 ]
@@ -46,19 +47,19 @@ Thank you for the careful and constructive reviews. We substantially shortened t
 #entry(
   [Overall assessment],
   [The conclusions were too broad for observations from two localities during one effective field season.],
-  [We agree. The revised manuscript consistently identifies the study as observational and limits inference to two blue gum eucalyptus groves, one overwintering season, the observed cluster sizes, and nearby maximum-gust measurements. We replaced the categorical title with “Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure.” The Simple Summary, Abstract, Discussion, and Conclusions now state that the predicted consistent decline was not detected under the monitored conditions. We also removed prescriptive habitat-management recommendations and added an explicit need for replication across seasons, sites, grove structures, cluster densities, and geographic regions.]
+  [We agree. The revised manuscript consistently identifies the study as observational and limits inference to two blue gum eucalyptus groves, one overwintering season, the observed cluster sizes, and nearby maximum-gust measurements. We replaced the categorical title with “Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure.” The Simple Summary, Abstract, Discussion, and Conclusions now state that the predicted consistent decline was not detected under the monitored conditions. We also removed prescriptive habitat-management recommendations and added an explicit need for replication across seasons, sites, grove structures, cluster densities, and geographic regions.],
 )
 
 #entry(
   [Length and statistical presentation],
   [The manuscript was too long, contained too many technical figures and tables, and devoted too much discussion to physiology that was not measured.],
-  [We substantially reduced the manuscript. We removed the simple linear regressions, the fixed 24-hour analysis, the threshold-duration analysis, and the simulation-based power analysis. We also removed their associated figures, tables, appendices, and discussion. The main text now focuses on the 30-minute and Next Day response windows and contains four figures and no main-text tables. Technical formulas and candidate mappings are confined to the appendix and public reproducibility files. The physiology section is shorter and explicitly presents thermoregulation and energetic constraints as hypotheses for future testing, not demonstrated mechanisms.]
+  [We substantially reduced the manuscript. We removed the simple linear regressions, the fixed 24-hour analysis, the threshold-duration analysis, and the simulation-based power analysis. We also removed their associated figures, tables, appendices, and discussion. The main text now focuses on our strongest results, the 30-minute and Next Day response windows, and contains four figures and no main-text tables. Technical formulas and candidate mappings are confined to the appendix and public reproducibility files. The physiology section is shorter and explicitly presents thermoregulation and energetic constraints as hypotheses for future testing, not demonstrated mechanisms.],
 )
 
 #entry(
   [Western monarch decline framing],
   [Broad statements about western monarch decline were contentious and distracted from the management question.],
-  [We removed the population-decline framing from the Simple Summary, Abstract, Introduction, Discussion, and Conclusions. The revised Introduction begins with overwintering aggregation ecology and focuses directly on the history and evaluation of wind-related habitat assumptions.]
+  [We removed the population-decline framing from the Simple Summary, Abstract, Introduction, Discussion, and Conclusions. The revised Introduction begins with overwintering aggregation ecology and focuses directly on the history and evaluation of wind-related habitat assumptions.],
 )
 
 #heading[Reviewer 1]
@@ -66,49 +67,49 @@ Thank you for the careful and constructive reviews. We substantially shortened t
 #entry(
   [General comments],
   [The study provides useful site-specific observational evidence, but the environmental measurements, replication, physiological claims, and management recommendations did not support the original broad conclusions.],
-  [We agree with this scope. The revision addresses these concerns in the manuscript itself. Claims are limited to the monitored setting, measurement limitations are stated in the Methods and Discussion, physiological explanations are framed as hypotheses, and broad management recommendations have been removed.]
+  [We agree with this scope. The revision addresses these concerns in the manuscript itself. Claims are limited to the monitored setting, measurement limitations are stated in the Methods and Discussion, physiological explanations are framed as hypotheses, and broad management recommendations have been removed.],
 )
 
 #entry(
   [Comment 1. Observational design and categorical claims],
   [Revise the title and all summary sections so the claims are restricted to the monitored sites, season, cluster sizes, and wind metrics.],
-  [We revised the title, Simple Summary, Abstract, final Introduction paragraph, Discussion, and Conclusions. The paper now reports that stronger nearby maximum gusts were not consistently followed by declines in visible cluster size under the monitored conditions. It does not state that wind cannot disrupt monarch clusters generally, and it does not describe wind as experimentally manipulated.]
+  [We revised the title, Simple Summary, Abstract, final Introduction paragraph, Discussion, and Conclusions. The paper now reports that stronger nearby maximum gusts were not consistently followed by declines in visible cluster size under the monitored conditions. It does not state that wind cannot disrupt monarch clusters generally, and it does not describe wind as experimentally manipulated.],
 )
 
 #entry(
   [Comment 2. Historical framing],
   [Distinguish Mexican and California studies, separate original findings from later interpretations, and clarify which studies directly evaluated wind.],
-  [We rewrote the historical section of the Introduction. It now distinguishes early physiological and weather studies from Mexico, occupied-versus-unoccupied microenvironment studies in central California, later qualitative wind accounts, and subsequent management guidance. It also states that the studies supporting the 2 m/s value did not directly quantify cluster responses during measured wind exposure. We no longer attribute a uniform California-wide environmental envelope or a direct wind test to the original studies.]
+  [We rewrote the historical section of the Introduction. It now distinguishes early physiological and weather studies from Mexico, occupied-versus-unoccupied microenvironment studies in central California, later qualitative wind accounts, and subsequent management guidance. It also states that the studies supporting the 2 m/s value did not directly quantify cluster responses during measured wind exposure. We no longer attribute a uniform California-wide environmental envelope or a direct wind test to the original studies.],
 )
 
 #entry(
   [Comment 3. Scope of inference],
   [Two eucalyptus groves on one installation during one season cannot support broad inference to other groves, populations, or conditions.],
-  [We now define that scope in the Study Design, Discussion, and Conclusions. The Discussion further states that nearly all 30-minute observations came from one grove and that only Spring Canyon contributed to the Next Day analysis. The Conclusions call for replicated work across seasons, sites, grove structures, cluster densities, and regions before management guidance is revised.]
+  [We now define that scope in the Study Design, Discussion, and Conclusions. The Discussion further states that nearly all 30-minute observations came from one grove and that only Spring Canyon contributed to the Next Day analysis. The Conclusions call for replicated work across seasons, sites, grove structures, cluster densities, and regions before management guidance is revised.],
 )
 
 #entry(
   [Comment 4. Wind-sensor placement and representativeness],
   [Report placement, canopy context, calibration, validation, and treatment of wind direction for each deployment.],
-  [The Monitoring System subsection now reports pole heights of 5.4 to 9.4 m and horizontal cluster distances of 4.2 to 16.5 m. Appendix A provides the recorded height, horizontal distance, and camera bearing for every analyzed deployment. Cluster heights, vertical sensor-to-cluster distances, intervening vegetation, and canopy positions were not recorded systematically, so we state that they cannot be reconstructed. We also state that the loggers were screened for gross abnormalities and compared during overlapping deployments but were not calibrated against a reference sensor or validated at butterfly positions. Wind direction was not analyzed because the focal historical prediction concerned wind-speed magnitude and the logger compass headings were not considered reliable enough for directional inference after prolonged coastal exposure. Throughout the manuscript, the values are described as nearby pole-position measurements rather than within-canopy exposure at individual butterflies.]
+  [The Monitoring System subsection now reports pole heights of 5.4 to 9.4 m and horizontal cluster distances of 4.2 to 16.5 m. Appendix A provides the recorded height, horizontal distance, and camera bearing for every analyzed deployment. Cluster heights, vertical sensor-to-cluster distances, intervening vegetation, and canopy positions were not recorded systematically, so we state that they cannot be reconstructed. We also state that the loggers were screened for gross abnormalities and compared during overlapping deployments but were not calibrated against a reference sensor or validated at butterfly positions. Wind direction was not analyzed because the focal historical prediction concerned wind-speed magnitude and the logger compass headings were not considered reliable enough for directional inference after prolonged coastal exposure. Throughout the manuscript, the values are described as nearby pole-position measurements rather than within-canopy exposure at individual butterflies.],
 )
 
 #entry(
   [Comment 5. Historical threshold and gust metric],
   [A one-minute interval containing a maximum gust above 2 m/s is not equivalent to one minute of sustained exposure above that value.],
-  [We agree. We removed the threshold-duration analysis, its model appendix, and all associated claims. The manuscript retains maximum gusts only as descriptive and continuous predictors. It explicitly states that one-minute maximum-gust records near the clusters do not measure sustained exposure above 2 m/s at butterfly positions and therefore do not provide an exact test of the historical threshold formulation.]
+  [We agree. We removed the threshold-duration analysis, its model appendix, and all associated claims. The manuscript retains maximum gusts only as descriptive and continuous predictors. It explicitly states that one-minute maximum-gust records near the clusters do not measure sustained exposure above 2 m/s at butterfly positions and therefore do not provide an exact test of the historical threshold formulation.],
 )
 
 #entry(
   [Comment 6. Direct sunlight and irradiance],
   [The number of visible butterflies in direct sunlight is not an independent measurement of solar irradiance and may be related to the response.],
-  [We replaced irradiance-like terminology with “sun-exposed Butterfly Index,” or “sun-exposed BI.” This variable is defined as the BI subtotal from occupied image cells classified as receiving direct sunlight. The Methods and Discussion state that it is not a physical measurement of irradiance or light intensity and that it depends on visible cluster size, behavior, visibility, and canopy geometry. We therefore interpret the interaction as a conditional association involving sun-exposed BI, not an independent irradiance effect.]
+  [We replaced irradiance-like terminology with “sun-exposed Butterfly Index,” or “sun-exposed BI.” This variable is defined as the BI subtotal from occupied image cells classified as receiving direct sunlight. The Methods and Discussion state that it is not a physical measurement of irradiance or light intensity and that it depends on visible cluster size, behavior, visibility, and canopy geometry. We therefore interpret the interaction as a conditional association involving sun-exposed BI, not an independent irradiance effect.],
 )
 
 #entry(
   [Comment 7. Camera temperature and unmeasured conditions],
   [Clarify temperature validation and the absence of humidity, vapor pressure deficit, precipitation, and surface-wetness measurements.],
-  [The camera temperatures were not independently validated against calibrated environmental sensors. The Methods now describe them as approximate local measurements that may reflect camera housing and solar exposure as well as ambient air temperature. The Discussion notes that the displayed temperatures are not precise air or butterfly body temperatures. We also state that solar irradiance, humidity, vapor pressure deficit, precipitation, and surface wetness were not measured. These omissions limit causal attribution because unmeasured conditions may covary with wind and visible cluster change.]
+  [The camera temperatures were not independently validated against calibrated environmental sensors. The Methods now describe them as approximate local measurements that may reflect camera housing and solar exposure as well as ambient air temperature. The Discussion notes that the displayed temperatures are not precise air or butterfly body temperatures. We also state that solar irradiance, humidity, vapor pressure deficit, precipitation, and surface wetness were not measured. These omissions limit causal attribution because unmeasured conditions may covary with wind and visible cluster change.],
 )
 
 #entry(
@@ -116,15 +117,15 @@ Thank you for the careful and constructive reviews. We substantially shortened t
   [Address coarse BI categories, lower-bound coding, inter-observer agreement, independent counts, alternative category values, and wind-related changes in image position or visibility.],
   [We now define BI as an index of visible cluster size rather than a count of individual butterflies. Each deployment was classified once by one labeler, and observers classified non-overlapping image sets. Formal inter-observer agreement and retrospective validation against independent counts are therefore not possible, and the manuscript states this directly. Adding observer as a fixed effect did not improve the 30-minute fit (likelihood-ratio p = 0.957), but we present this only as a check for mean observer differences, not as an agreement statistic.
 
-We repeated both retained analyses using category lower bounds, rounded geometric midpoints, rounded arithmetic midpoints, and upper bounds. The 30-minute three-way interaction, its conditional directions, and the Next Day interaction remained supported under every mapping. The Methods, Results, and public reproducibility files report these checks.
+    We repeated both retained analyses using category lower bounds, rounded geometric midpoints, rounded arithmetic midpoints, and upper bounds. The 30-minute three-way interaction, its conditional directions, and the Next Day interaction remained supported under every mapping. The Methods, Results, and public reproducibility files report these checks.
 
-The poles were guyed and the camera view remained fixed within each deployment, but camera, pole, and vegetation movement during high winds was not quantified. We added this limitation. Wind-driven branch movement could redistribute a visible aggregation among grid cells and create short-term BI error. We therefore interpret changes as visible BI change, not confirmed arrival, departure, or dislodgment.]
+    The poles were guyed and the camera view remained fixed within each deployment, but camera, pole, and vegetation movement during high winds was not quantified. We added this limitation. Wind-driven branch movement could redistribute a visible aggregation among grid cells and create short-term BI error. We therefore interpret changes as visible BI change, not confirmed arrival, departure, or dislodgment.],
 )
 
 #entry(
   [Comment 9. Deployment independence and site fidelity],
   [Clarify the biological unit of replication and avoid inferring site fidelity from a single camera view.],
-  [A deployment is now defined as an uninterrupted monitoring period with one pole position, fixed camera configuration, cluster view, and wind logger. Servicing or repositioning began a new deployment. Deployments are observation and time-series units, not independent biological populations, and multiple deployments may have included the same aggregation or individual butterflies. We removed “site fidelity” terminology and use “Next Day Window analysis.” A camera view cannot distinguish movement to an unmonitored branch or tree from departure, so the response is described only as change in visible cluster size between days.]
+  [A deployment is now defined as an uninterrupted monitoring period with one pole position, fixed camera configuration, cluster view, and wind logger. Servicing or repositioning began a new deployment. Deployments are observation and time-series units, not independent biological populations, and multiple deployments may have included the same aggregation or individual butterflies. We removed “site fidelity” terminology and use “Next Day Window analysis.” A camera view cannot distinguish movement to an unmonitored branch or tree from departure, so the response is described only as change in visible cluster size between days.],
 )
 
 #entry(
@@ -132,39 +133,39 @@ The poles were guyed and the camera view remained fixed within each deployment, 
   [Remove duplicate candidates, repeat affected analyses, and explain how the original Next Day convergence failures affected inference.],
   [Thank you for identifying the duplicated candidates. Your comment prompted a complete audit and repetition of both retained comparisons. The audit also identified a separate problem in the original workflow. Candidates with different fixed-effect structures had been ranked using AIC values from restricted maximum-likelihood fits. We corrected this by comparing candidates with maximum likelihood and AICc, then refitting selected formulas with restricted maximum likelihood for estimates, uncertainty, figures, and diagnostics.
 
-We removed the exact duplicates and did not retain the incomplete original rankings. We replaced the window-specific candidate lists with a shared set of environmental hypothesis templates while preserving the window-specific predictor definitions. The primary 30-minute comparison contains 17 candidates. Separate 17-model sensitivities omit previous BI and time since sunrise. The primary Next Day comparison contains 35 candidates, and its 35-model sensitivity omits previous-day BI. All 121 fits converged without warnings.
+    We removed the exact duplicates and did not retain the incomplete original rankings. We replaced the window-specific candidate lists with a shared set of environmental hypothesis templates while preserving the window-specific predictor definitions. The primary 30-minute comparison contains 17 candidates. Separate 17-model sensitivities omit previous BI and time since sunrise. The primary Next Day comparison contains 35 candidates, and its 35-model sensitivity omits previous-day BI. All 121 fits converged without warnings.
 
-The corrected 30-minute winner changed from the previously reported M50 structure to the full linear wind by temperature by sun-exposed BI interaction, corresponding to legacy M16. It received an AICc of 8052.02 and weight greater than 0.9999 in the primary set and remained first in both adjustment sensitivities. In the Next Day analysis, the centered wind by sun-exposed BI tensor interaction, corresponding to legacy M32, remained first, but support was not decisive. Its AICc weight was 0.368, a maximum-temperature-only model was within two AICc units, and the adjustment-only model was 3.58 units higher. The revised Methods, Results, appendices, and public output tables report the full strategy and uncertainty.]
+    The corrected 30-minute winner changed from the previously reported M50 structure to the full linear wind by temperature by sun-exposed BI interaction, corresponding to legacy M16. It received an AICc of 8052.02 and weight greater than 0.9999 in the primary set and remained first in both adjustment sensitivities. In the Next Day analysis, the centered wind by sun-exposed BI tensor interaction, corresponding to legacy M32, remained first, but support was not decisive. Its AICc weight was 0.368, a maximum-temperature-only model was within two AICc units, and the adjustment-only model was 3.58 units higher. The revised Methods, Results, appendices, and public output tables report the full strategy and uncertainty.],
 )
 
 #entry(
   [Comment 11. Power analysis and inferential strength],
   [Translate the standardized effect into biologically meaningful BI change and account for measurement and replication uncertainty, or moderate the claim.],
-  [We agree that the simulation-based power analysis did not include key measurement and replication uncertainties and that its standardized effects could not be translated confidently into meaningful visible-cluster changes. We removed the power-analysis Methods, Results, table, and “strong evidence” language. The revised interpretation is that we did not detect the predicted consistent wind-disruption pattern under the monitored conditions.]
+  [We agree that the simulation-based power analysis did not include key measurement and replication uncertainties and that its standardized effects could not be translated confidently into meaningful visible-cluster changes. We removed the power-analysis Methods, Results, table, and “strong evidence” language. The revised interpretation is that we did not detect the predicted consistent wind-disruption pattern under the monitored conditions.],
 )
 
 #entry(
   [Comment 12. Grounded butterflies],
   [Document systematic ground searches or remove the absence of grounded butterflies as evidence.],
-  [We removed the claim that no grounded butterflies were observed and do not use ground observations as evidence against wind disruption.]
+  [We removed the claim that no grounded butterflies were observed and do not use ground observations as evidence against wind disruption.],
 )
 
 #entry(
   [Comment 13. Physiological mechanisms and management],
   [Present unmeasured physiological processes as hypotheses and reduce management recommendations that were not experimentally evaluated.],
-  [We shortened the physiological discussion and explicitly state that thermoregulation and energetic constraints are possible explanations for future testing. The study did not measure irradiance, thoracic temperature, convective heat transfer, metabolic expenditure, lipid depletion, or movement among roosts. We removed recommendations to simplify buffers, increase wind access, open canopies, or thin groves. The Conclusions now state that the results raise questions about a single-threshold formulation in the monitored setting but do not establish that existing guidance is broadly invalid.]
+  [We shortened the physiological discussion and explicitly state that thermoregulation and energetic constraints are possible explanations for future testing. The study did not measure irradiance, thoracic temperature, convective heat transfer, metabolic expenditure, lipid depletion, or movement among roosts. We removed recommendations to simplify buffers, increase wind access, open canopies, or thin groves. The Conclusions now state that the results raise questions about a single-threshold formulation in the monitored setting but do not establish that existing guidance is broadly invalid.],
 )
 
 #entry(
   [Comment 14. Public reproducibility materials],
   [Deposit processed data, metadata, protocols, model formulas, and code in a permanent public repository rather than making them available only on request.],
-  [We changed the Data Availability statement and made the version-controlled repository public at #link("https://github.com/kylenessen/monarch-wind-light-manuscript")[github.com/kylenessen/monarch-wind-light-manuscript]. It contains processed data, deployment metadata, image classifications, analysis code, candidate formulas, fit outcomes, selected-model summaries, sensitivity outputs, and generated figures. The illustrated classification protocol is public at #link("https://kylenessen.github.io/monarch_trailcam_classifier/")[kylenessen.github.io/monarch_trailcam_classifier]. The repository also documents the OCR and manual-review procedure and preserves the reviewed image-derived temperature values. The original OCR extraction utility is not part of the repository, and we state this rather than claiming it is available. Raw images and the classification review software remain available from the corresponding author because a long-term public host has not been established. A DOI-backed archive of the final repository release will be created before publication.]
+  [We changed the Data Availability statement and made the version-controlled repository public at #link("https://github.com/kylenessen/monarch-wind-light-manuscript")[github.com/kylenessen/monarch-wind-light-manuscript]. It contains processed data, deployment metadata, image classifications, analysis code, candidate formulas, fit outcomes, selected-model summaries, sensitivity outputs, and generated figures. The illustrated classification protocol is public at #link("https://kylenessen.github.io/monarch_trailcam_classifier/")[kylenessen.github.io/monarch_trailcam_classifier]. The repository also documents the OCR and manual-review procedure and preserves the reviewed image-derived temperature values. The original OCR extraction utility is not part of the repository, and we state this rather than claiming it is available. Raw images and the classification review software remain available from the corresponding author because a long-term public host has not been established. A DOI-backed archive of the final repository release will be created before publication.],
 )
 
 #entry(
   [Minor comment 1. Pesticide terminology],
   [Herbicides are pesticides, so the original wording was redundant.],
-  [The sentence containing this distinction was removed when the Introduction was shortened. No herbicide-versus-pesticide wording remains in the revised manuscript.]
+  [The sentence containing this distinction was removed when the Introduction was shortened. No herbicide-versus-pesticide wording remains in the revised manuscript.],
 )
 
 #heading[Reviewer 2]
@@ -172,25 +173,25 @@ The corrected 30-minute winner changed from the previously reported M50 structur
 #entry(
   [Comment 1. Study-site photographs],
   [Add photographs to help readers understand field conditions.],
-  [We added a three-panel figure to the Materials and Methods. It shows the monitoring pole within a blue gum eucalyptus grove, the wind logger and camera positioned near an aggregation, and a representative near-infrared image used for BI classification.]
+  [We added a three-panel figure to the Materials and Methods. It shows the monitoring pole within a blue gum eucalyptus grove, the wind logger and camera positioned near an aggregation, and a representative near-infrared image used for BI classification.],
 )
 
 #entry(
   [Comment 2. One season and two localities],
   [State the limited generalizability and the need for work across more sites and seasons.],
-  [We now state this limitation in the Study Design, Discussion, and Conclusions. The Conclusions call for replicated research across seasons, sites, grove structures, cluster densities, weather conditions, and regions before broader inference or changes to management guidance.]
+  [We now state this limitation in the Study Design, Discussion, and Conclusions. The Conclusions call for replicated research across seasons, sites, grove structures, cluster densities, weather conditions, and regions before broader inference or changes to management guidance.],
 )
 
 #entry(
   [Comment 3. Representativeness of wind measurements],
   [Clarify whether pole-apex measurements represent wind within the canopy at butterfly positions.],
-  [We agree that equivalence cannot be assumed. The Methods and Appendix report the available placement information and the measurements that were not recorded. The Discussion states that wind was measured near the clusters but not validated within the canopy at butterfly positions. All results are therefore framed as associations with nearby pole-position maximum gusts, not direct measurements of the wind experienced by each butterfly.]
+  [We agree that equivalence cannot be assumed. The Methods and Appendix report the available placement information and the measurements that were not recorded. The Discussion states that wind was measured near the clusters but not validated within the canopy at butterfly positions. All results are therefore framed as associations with nearby pole-position maximum gusts, not direct measurements of the wind experienced by each butterfly.],
 )
 
 #entry(
   [Comment 4. Management thresholds and generalization],
   [Temper the claim that existing thresholds are broadly unsupported and call for wider replication.],
-  [We removed the broad management recommendations and revised the Conclusions. The manuscript now states that the findings raise questions about applying a single wind threshold in the monitored setting, not that all wind-related management thresholds are invalid. It calls for controlled and replicated work across habitats, densities, seasons, and regions before management guidance is revised.]
+  [We removed the broad management recommendations and revised the Conclusions. The manuscript now states that the findings raise questions about applying a single wind threshold in the monitored setting, not that all wind-related management thresholds are invalid. It calls for controlled and replicated work across habitats, densities, seasons, and regions before management guidance is revised.],
 )
 
 #v(0.8em)

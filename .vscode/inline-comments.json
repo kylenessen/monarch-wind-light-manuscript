@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "a51756e4-4551-4365-bdd9-201fae67e215",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 41,
+    "startChar": 0,
+    "endLine": 41,
+    "endChar": 51,
+    "selectedText": "Thank you for the careful and constructive reviews.",
+    "text": "It would be nice to say that our manuscript is much stronger for the feedback.",
+    "timestamp": "2026-09-01T02:01:37.500Z",
+    "resolved": false
+  },
+  {
+    "id": "96458ea3-3694-4118-be92-9452589a718c",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 33,
+    "startChar": 3,
+    "endLine": 33,
+    "endChar": 116,
+    "selectedText": "#c(1)[Wind Associations with Overwintering Monarch Butterfly Cluster Size Depend on Temperature and Sun Exposure]",
+    "text": "We need to work on the title",
+    "timestamp": "2026-09-01T02:02:03.166Z",
+    "resolved": false
+  },
+  {
+    "id": "5a0b5312-c233-4d57-8a68-bdcc357a044d",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 61,
+    "startChar": 3,
+    "endLine": 61,
+    "endChar": 281,
+    "selectedText": "We removed the population-decline framing from the Simple Summary, Abstract, Introduction, Discussion, and Conclusions. The revised Introduction begins with overwintering aggregation ecology and focuses directly on the history and evaluation of wind-related habitat assumptions.",
+    "text": "worth emphasizing that we limit the introduction strictly to what is necessary to help understand the motivation for the study.",
+    "timestamp": "2026-09-01T02:04:44.806Z",
+    "resolved": false
+  },
+  {
+    "id": "9034b727-d641-4110-b3bc-531d17d3a4a1",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 87,
+    "startChar": 233,
+    "endLine": 87,
+    "endChar": 384,
+    "selectedText": "The Conclusions call for replicated work across seasons, sites, grove structures, cluster densities, and regions before management guidance is revised.",
+    "text": "Is this true? did you add this? I don't recall writing that.",
+    "timestamp": "2026-09-01T02:06:28.547Z",
+    "resolved": false
+  },
+  {
+    "id": "e614aece-0d14-43ca-a5ea-c3fdb2d11d2a",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 93,
+    "startChar": 622,
+    "endLine": 93,
+    "endChar": 852,
+    "selectedText": "Wind direction was not analyzed because the focal historical prediction concerned wind-speed magnitude and the logger compass headings were not considered reliable enough for directional inference after prolonged coastal exposure.",
+    "text": "It was also difficult to control for canopy that the wind would have to move through a given location.",
+    "timestamp": "2026-09-01T02:08:02.671Z",
+    "resolved": false
+  },
+  {
+    "id": "431e6f1d-2df3-4c6b-a20f-9fc8ee6549a0",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 99,
+    "startChar": 3,
+    "endLine": 99,
+    "endChar": 417,
+    "selectedText": "We agree. We removed the threshold-duration analysis, its model appendix, and all associated claims. The manuscript retains maximum gusts only as descriptive and continuous predictors. It explicitly states that one-minute maximum-gust records near the clusters do not measure sustained exposure above 2 m/s at butterfly positions and therefore do not provide an exact test of the historical threshold formulation.]",
+    "text": "worth also mentioning that all wind metrics were highly correlated with each other, so we chose the simplest and most direct test of how we interpreted the wind disruption hypothesis. The results would ber similar if we chose a different wind metric",
+    "timestamp": "2026-09-01T02:09:08.762Z",
+    "resolved": false
+  },
+  {
+    "id": "e70f7d67-22e0-414b-ae58-8a80a64f4298",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 111,
+    "startChar": 358,
+    "endLine": 111,
+    "endChar": 482,
+    "selectedText": "We also state that solar irradiance, humidity, vapor pressure deficit, precipitation, and surface wetness were not measured.",
+    "text": "Do we need to say this in the manuscript?",
+    "timestamp": "2026-09-01T02:10:28.610Z",
+    "resolved": false
+  },
+  {
+    "id": "415186e6-027b-42c3-ac46-56a6bfa9a6f6",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 111,
+    "startChar": 483,
+    "endLine": 111,
+    "endChar": 602,
+    "selectedText": "These omissions limit causal attribution because unmeasured conditions may covary with wind and visible cluster change.",
+    "text": "I don't like this sentene and I think we should remove it. The reason we didn't measure all those other things is because our study was building on previous work that measured those parameters. Our focus was wind.",
+    "timestamp": "2026-09-01T02:11:33.226Z",
+    "resolved": false
+  },
+  {
+    "id": "7b37f3af-d068-48e3-9098-ad58f4fa9bcc",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 121,
+    "startChar": 4,
+    "endLine": 121,
+    "endChar": 410,
+    "selectedText": "The poles were guyed and the camera view remained fixed within each deployment, but camera, pole, and vegetation movement during high winds was not quantified. We added this limitation. Wind-driven branch movement could redistribute a visible aggregation among grid cells and create short-term BI error. We therefore interpret changes as visible BI change, not confirmed arrival, departure, or dislodgment.",
+    "text": "The cameras had unobstructed views of areas where butterflies could aggregate. If we didn't see them, they weren't counted. Poles were stable and did not move or rotate during the study. In the few cases where poles fell, those images were not included in the deployment. Branch movement was present, but accoutned for by the manual classification of the classifiers. This may result in some short term noise where butterfly categories that straddle two categories may get mislabled in the wind. We had protocols however to make those decisions consistent and we think the error added is minimal.",
+    "timestamp": "2026-09-01T02:15:15.199Z",
+    "resolved": false
+  },
+  {
+    "id": "f0b680a2-72d7-42a9-830f-efdf79fcec49",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 137,
+    "startChar": 4,
+    "endLine": 137,
+    "endChar": 724,
+    "selectedText": "The corrected 30-minute winner changed from the previously reported M50 structure to the full linear wind by temperature by sun-exposed BI interaction, corresponding to legacy M16. It received an AICc of 8052.02 and weight greater than 0.9999 in the primary set and remained first in both adjustment sensitivities. In the Next Day analysis, the centered wind by sun-exposed BI tensor interaction, corresponding to legacy M32, remained first, but support was not decisive. Its AICc weight was 0.368, a maximum-temperature-only model was within two AICc units, and the adjustment-only model was 3.58 units higher. The revised Methods, Results, appendices, and public output tables report the full strategy and uncertainty.",
+    "text": "not sure we need all the stats here, they can review the manuscript. Just note that the best model changed to the three way interaction, and we have updated the results and following interpreation as a result. We believe the overall story remains that wind alone does not predict changes in visible butterfly size, and it is conditional on temperature and light. We think the paper is stronger for the change.",
+    "timestamp": "2026-09-01T02:17:49.081Z",
+    "resolved": false
+  },
+  {
+    "id": "abba1aff-7949-4661-8d4c-a7d52c51354e",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 155,
+    "startChar": 312,
+    "endLine": 155,
+    "endChar": 412,
+    "selectedText": "We removed recommendations to simplify buffers, increase wind access, open canopies, or thin groves.",
+    "text": "we removed all management recommendations and simply report what we found and offer an possible explaination.",
+    "timestamp": "2026-09-01T02:19:04.338Z",
+    "resolved": false
+  },
+  {
+    "id": "273fa89e-6aa3-4b9d-8a9b-0b48ce2cade4",
+    "filePath": "reviewers/response-letter.typ",
+    "startLine": 155,
+    "startChar": 414,
+    "endLine": 155,
+    "endChar": 533,
+    "selectedText": "he Conclusions now state that the results raise questions about a single-threshold formulation in the monitored setting",
+    "text": "Do we even do this? We should just say we didn't find evidence",
+    "timestamp": "2026-09-01T02:19:28.638Z",
+    "resolved": false
+  }
+]
