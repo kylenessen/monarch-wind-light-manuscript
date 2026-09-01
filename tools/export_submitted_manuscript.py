@@ -827,6 +827,9 @@ def strip_review_parts(path: Path) -> None:
     custom_properties_relationship_type = (
         "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties"
     )
+    hyperlink_relationship_type = (
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink"
+    )
     removable = {
         "word/comments.xml",
         "word/commentsExtended.xml",
@@ -861,6 +864,30 @@ def strip_review_parts(path: Path) -> None:
                 if relationship.get("Type") in comment_relationship_types:
                     rels_root.remove(relationship)
                     rels_changed = True
+            relationship_ids = {
+                relationship.get("Id")
+                for relationship in rels_root.findall(
+                    f"{{{relationship_namespace}}}Relationship"
+                )
+            }
+            document_root = etree.fromstring(source.read("word/document.xml"))
+            creative_commons_links = document_root.xpath(
+                ".//w:hyperlink[@r:id='rId8']",
+                namespaces={
+                    "w": word_namespace,
+                    "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+                },
+            )
+            if creative_commons_links and "rId8" not in relationship_ids:
+                relationship = etree.Element(
+                    f"{{{relationship_namespace}}}Relationship",
+                    Id="rId8",
+                    Type=hyperlink_relationship_type,
+                    Target="https://creativecommons.org/licenses/by/4.0/",
+                    TargetMode="External",
+                )
+                rels_root.append(relationship)
+                rels_changed = True
             if rels_changed:
                 overrides[rels_path] = etree.tostring(
                     rels_root, xml_declaration=True, encoding="UTF-8", standalone="yes"
@@ -1036,6 +1063,30 @@ def validate(
                 raise RuntimeError(f"Review markup remains: {marker.decode(errors='ignore')}")
         document_root = etree.fromstring(document_xml)
         namespace = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+        relationship_namespace = (
+            "http://schemas.openxmlformats.org/package/2006/relationships"
+        )
+        office_relationship_namespace = (
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+        )
+        relationship_root = etree.fromstring(archive.read("word/_rels/document.xml.rels"))
+        declared_relationships = {
+            relationship.get("Id")
+            for relationship in relationship_root.findall(
+                f"{{{relationship_namespace}}}Relationship"
+            )
+        }
+        referenced_relationships = set(
+            document_root.xpath(
+                "//@r:id | //@r:embed | //@r:link",
+                namespaces={"r": office_relationship_namespace},
+            )
+        )
+        missing_relationships = referenced_relationships.difference(declared_relationships)
+        if missing_relationships:
+            raise RuntimeError(
+                f"Document relationships are missing: {sorted(missing_relationships)}"
+            )
         sections = document_root.xpath(".//w:sectPr", namespaces=namespace)
         if len(sections) != 1:
             raise RuntimeError(f"Expected one section, found {len(sections)}")
