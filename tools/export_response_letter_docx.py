@@ -128,8 +128,8 @@ def parse_entries(source: str) -> list[tuple[str, str, str]]:
             groups.append(clean_typst(group))
         entries.append((groups[0], groups[1], groups[2]))
         position = cursor
-    if len(entries) != 23:
-        raise RuntimeError(f"Expected 23 response entries, found {len(entries)}")
+    if len(entries) != 35:
+        raise RuntimeError(f"Expected 35 response entries, found {len(entries)}")
     return entries
 
 
@@ -265,6 +265,7 @@ def export(source: Path, output: Path) -> None:
 
     academic_editor_count = 3
     reviewer_one_count = 16
+    reviewer_two_count = 4
     heading = doc.add_paragraph(style="Heading 1")
     heading.add_run("Academic Editor")
     for index, entry in enumerate(entries):
@@ -274,13 +275,23 @@ def export(source: Path, output: Path) -> None:
         elif index == academic_editor_count + reviewer_one_count:
             heading = doc.add_paragraph(style="Heading 1")
             heading.add_run("Reviewer 2")
+        elif index == academic_editor_count + reviewer_one_count + reviewer_two_count:
+            heading = doc.add_paragraph(style="Heading 1")
+            heading.add_run("Internal USGS Review, Zach Ancona")
+            add_body_paragraph(
+                doc,
+                "The comments in this section were recovered from the internal-review "
+                "annotations transcribed into the manuscript source. Repeated comments on "
+                "the same terminology or caption issue are consolidated below.",
+            )
         add_entry(doc, *entry)
 
     add_body_paragraph(
         doc,
-        "We again thank the Academic Editor and both reviewers. Their comments led to a shorter, "
-        "more transparent manuscript with narrower claims, corrected model comparisons, clearer "
-        "measurement limitations, and stronger reproducibility materials.",
+        "We again thank the Academic Editor, the journal reviewers, and Zach Ancona for their "
+        "careful comments. Their reviews led to a shorter, more transparent manuscript with "
+        "narrower claims, corrected model comparisons, clearer measurement limitations, and "
+        "stronger reproducibility materials.",
     )
     add_body_paragraph(doc, "Sincerely,")
     add_body_paragraph(

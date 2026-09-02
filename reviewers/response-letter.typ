@@ -194,9 +194,85 @@ Thank you for the careful and constructive reviews. The manuscript is substantia
   [We removed the management recommendations and revised the Conclusions. The manuscript now states that the predicted consistent decline was not detected under the monitored conditions. The Discussion identifies the limited spatial and seasonal replication, grove type, observed cluster sizes, and unequal contribution of the two groves as constraints on inference. The Conclusions are correspondingly restricted to the monitored wind conditions at two groves during one season.],
 )
 
+#heading[Internal USGS Review, Zach Ancona]
+
+The comments in this section were recovered from the internal-review annotations transcribed into the manuscript source. Repeated comments on the same terminology or caption issue are consolidated below.
+
+#entry(
+  [Overall assessment],
+  [Use the name and abbreviation for the Wind Disruption Hypothesis consistently. The modeling and statistical sections were outside the reviewer’s main expertise, but the paper remained understandable and the framing and explanation were strong.],
+  [We thank Zach for the careful review and encouraging assessment. We treated the modeling observation as context rather than a request for a technical change. The manuscript was subsequently revised further in response to the journal reviews, with the statistical methods, candidate comparisons, diagnostics, and sensitivity analyses described more explicitly.],
+)
+
+#entry(
+  [Comment 1. Wind Disruption Hypothesis terminology],
+  [The manuscript alternated between “Wind Disruption Hypothesis” and “Disruptive Wind Hypothesis,” and between WDH and DWH. Use one form consistently throughout.],
+  [We agree. We standardized the term as “Wind Disruption Hypothesis.” The current manuscript uses the full term rather than alternating between names or abbreviations.],
+)
+
+#entry(
+  [Comment 2. Site identifiers],
+  [Define UDMH before using it and make the Spring Canyon reference clear.],
+  [We clarified both site identifiers in the Study Design and Sites subsection. Spring Canyon is introduced as Spring Canyon (SC), Western Monarch Thanksgiving Count site 2712. UDMH is identified as Western Monarch Thanksgiving Count site 2822, with its coordinates and grove description.],
+)
+
+#entry(
+  [Comment 3. Monitoring-system opening],
+  [The opening sentence describing the equipment and changes in monarch abundance was difficult to read and should be reworded.],
+  [We rewrote and reorganized the monitoring description. The current Monitoring System and Deployment Units subsection begins directly with the pole-mounted equipment and then explains camera placement, image acquisition, wind logging, and the definition of a deployment. Visible cluster size and the Butterfly Index are defined separately in the Image Classification and Derived Variables subsection.],
+)
+
+#entry(
+  [Comment 4. Sentence structure and colon use],
+  [Several sentences used colons where the relationship between the clauses or listed items was unclear, including the sampling-interval tradeoffs and the definition of the threshold predictor. Recast these as direct sentences.],
+  [We revised the identified sentences. The current manuscript presents the monitoring intervals, predictor definitions, and model structures in direct prose and does not retain the unclear colon constructions. The threshold-duration analysis discussed in the earlier draft was later removed in response to the journal review.],
+)
+
+#entry(
+  [Comment 5. Undefined acronyms],
+  [Define SC before using it. Avoid REML unless it has been defined, or write out the full statistical term if it is used only once.],
+  [We agree. SC is defined at first use as Spring Canyon. The current statistical methods write out “restricted maximum likelihood” when explaining how selected formulas were refitted, so readers do not need an undefined abbreviation.],
+)
+
+#entry(
+  [Comment 6. Standalone figures and BI captions],
+  [Figures should stand alone. Define BI as Butterfly Index in the relevant captions, and introduce “Butterfly Index (BI)” before continuing to use the abbreviation.],
+  [We revised the figure captions so retained figures define BI or spell out Butterfly Index. The Methods define Butterfly Index (BI) before the abbreviation is used throughout the analyses. The earlier temporal-window diagram associated with one of these comments was later removed.],
+)
+
+#entry(
+  [Comment 7. Cumulative sunlight predictor],
+  [Clarify why cumulative direct sun exposure was retained in the longer-window analysis.],
+  [We expanded the definition and rationale. The current Methods define cumulative sun-exposed BI as the sum of sun-exposed BI across daylight images within the response window. It combines exposure duration with the indexed abundance visible in sunlit cells and serves as the longer-window solar-exposure predictor used to evaluate its conditional relationship with wind.],
+)
+
+#entry(
+  [Comment 8. Tables not visible in the review copy],
+  [Two statistical tables did not display in the review copy, so they could not be evaluated.],
+  [Thank you for flagging the rendering problem. Those original tables are no longer part of the main text after the journal revision. The revised appendix contains the complete candidate definitions and rankings, and the same model information is available in machine-readable form with the public reproducibility materials.],
+)
+
+#entry(
+  [Comment 9. Wind and sunlight interaction explanation],
+  [The sentence describing the response at high numbers of butterflies in sunlight used an unclear colon and did not explain the sunlight condition as expected.],
+  [We rewrote the interaction results. The current 30-minute analysis describes conditional wind slopes separately by temperature and sun-exposed BI. It states where slopes were negative, positive, or not distinguishable from zero and avoids the earlier sentence construction. The revised figure presents these conditional predictions directly.],
+)
+
+#entry(
+  [Comment 10. Future-research wording],
+  [Avoid saying that a proposed physiological model should be the next line of inquiry. Bureau review may view that wording as overly directive. Present it as something that could be investigated.],
+  [We agree. The current Discussion presents physiological and energetic responses as a possible explanation that requires direct testing. The Conclusions call this a plausible direction for future research rather than prescribing the next study.],
+)
+
+#entry(
+  [Comment 11. Prescriptive management language],
+  [Avoid “recommend” when discussing how researchers or land managers should view the hypotheses. Use less directive language such as “suggest,” “consider,” or “propose.”],
+  [We initially replaced “recommend” with less directive wording. During the journal revision, we went further and removed the management recommendations. The current manuscript limits its conclusions to the observed associations and the need for broader testing.],
+)
+
 #v(0.8em)
 
-We again thank the Academic Editor and both reviewers. Their comments led to a shorter, more transparent manuscript with narrower claims, corrected model comparisons, clearer measurement limitations, and stronger reproducibility materials.
+We again thank the Academic Editor, the journal reviewers, and Zach Ancona for their careful comments. Their reviews led to a shorter, more transparent manuscript with narrower claims, corrected model comparisons, clearer measurement limitations, and stronger reproducibility materials.
 
 Sincerely,
 
