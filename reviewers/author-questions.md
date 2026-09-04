@@ -1,6 +1,8 @@
-# Remaining Author Questions Before Resubmission
+# Final Author Checks Before Resubmission
 
-1. After this version is circulated, have all coauthors approved the final interpretation, author-contribution statement, funding statement, acknowledgments, public-release language, title, and response letter? Please also confirm that any required USGS or institutional review is complete.
+The working submission plan is to resubmit the revision before the remaining USGS approval and ScienceBase release processes are complete. Both must be complete before publication. The cover letter and confidential editorial-office note request that MDPI hold all online publication until the corresponding author confirms completion.
+
+Before the files are uploaded, verify that the final interpretation, author-contribution statement, funding statement, acknowledgments, public-release language, title, and response letter reflect the version approved for submission by the authors.
 
 ## Confirmed Decisions
 
