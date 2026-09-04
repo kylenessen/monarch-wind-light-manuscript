@@ -14,6 +14,6 @@ Camera temperature values were read from image overlays with a custom optical-ch
 
 ## Data Availability Notes
 
-The raw image files and the software used to view and edit classifications are not included in this repository because of storage constraints. They can be provided separately, but a long-term public hosting location has not yet been established. A DOI-backed archive of the final repository release will be created before publication.
+The raw image files and the software used to view and edit classifications are not included in this repository because of storage constraints. They can be provided separately during review. A USGS ScienceBase release of the supporting data and metadata is in preparation and will be made publicly available before publication.
 
 Deployments with no butterfly detections are also excluded from this repository. In those cases, the pole location and wind data still exist, but are not included here.
