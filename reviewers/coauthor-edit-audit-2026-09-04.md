@@ -8,7 +8,7 @@ The email reports Francis's approval. It does not independently document approva
 
 The source folder is `/Users/kylenessen/Library/CloudStorage/OneDrive-CalPoly/Manuscript`. The clean manuscript was last modified internally on September 3 at 17:00 UTC. The tracked manuscript contains seven insertion and deletion records attributed to Guest User on September 2 at 13:36 to 13:39 UTC. These records represent two statistical wording edits. Other shared-file changes were made directly in existing text and are detectable by comparing the files, even though they have no separate recent revision record.
 
-The SHA-256 of the shared clean manuscript is `8ca213ee119877049c104529f2eecaed637225fe11eb3488633b7345729ad57c`. The SHA-256 of the shared response letter is `238a1bc4d2ad9edb13215ba339fa7fabdac38989b2725663c007dac9495d0e07`.
+The SHA-256 of the shared clean manuscript is `8ca213ee119877049c104529f2eecaed637225fe11eb3488633b7345729ad57c`. The SHA-256 of the shared tracked manuscript is `53691829969e9e2140e9ce3b06cc951110573e970e950ad2b068048d8be4293c`. The SHA-256 of the shared response letter is `238a1bc4d2ad9edb13215ba339fa7fabdac38989b2725663c007dac9495d0e07`.
 
 Read-only source snapshots, extracted accepted text, raw revision records, paragraph differences, and the pre-edit LaTeX are preserved locally in `exports/coauthor-audit-20260904/`. The shared folder was not modified. The pre-existing local Word changes and editor annotations were not overwritten or committed.
 
@@ -36,6 +36,10 @@ The numbered Word citations were mapped to existing BibTeX keys. No new bibliogr
 
 ## Differences deliberately retained
 
-Seven reference URLs in the shared clean manuscript predate the repository's September 2 bibliography correction at `a393764`. The corrected repository URLs were retained. Older Appendix B references in the tracked comparison were not copied over the current references to Appendices B and C. The original submission Word file is byte-identical between the shared folder and repository. The response letter has identical accepted paragraph text, despite package and metadata differences. No comments were found in the two shared manuscript files or the response letter.
+Seven reference URLs in the shared clean manuscript predate the repository's September 2 bibliography correction at `a393764`. The corrected repository URLs were retained. The LaTeX references target Appendix B.1 and B.2. The old Word exporter collapsed these to Appendix B. That export defect was corrected while preparing the fresh Word copy. The original submission Word file is byte-identical between the shared folder and repository. The response letter has identical accepted paragraph text, despite package and metadata differences. No comments were found in the two shared manuscript files or the response letter.
 
 The existing local revised Word file also has uncommitted formatting and mathematical-character changes. It was preserved as found. Fresh submission artifacts are written separately so that those local changes and the shared review evidence remain intact.
+
+## Export corrections discovered during verification
+
+Visual review of the fresh Word export exposed existing converter defects. The converter dropped the min and max operators from temperature subscripts in the candidate tables, numbered appendix subsections as 5.1 and 5.2, and omitted A from appendix table references. The converter now preserves T_min and T_max, uses B.1 and B.2, and matches references to the displayed table numbers A1 through A5. These fixes affect export fidelity, not the LaTeX analysis or coauthor wording.

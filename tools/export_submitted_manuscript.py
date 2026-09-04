@@ -104,6 +104,8 @@ def strip_latex(value: str) -> str:
         r"\leq": "≤",
         r"\sim": "~",
         r"\circ": "°",
+        r"\min": "min",
+        r"\max": "max",
         r"$-$": "−",
         r"---": "-",
         r"--": "-",
@@ -249,17 +251,28 @@ def replace_cross_references(source: str, original: str, tables: list[TableSpec]
     appendix_start = original.find(r"\begin{appendix}")
     if appendix_start >= 0:
         appendix_number = 0
+        appendix_subsection = 0
+        appendix_suffix = ""
         appendix_source = original[appendix_start:]
         for match in re.finditer(
-            r"\\section\{[^{}]+\}|\\label\{(app:[^}]+)\}", appendix_source
+            r"\\(?:sub)?section\{[^{}]+\}|\\label\{(app:[^}]+)\}", appendix_source
         ):
             if match.group(0).startswith(r"\section"):
                 appendix_number += 1
+                appendix_subsection = 0
+                appendix_suffix = ""
+            elif match.group(0).startswith(r"\subsection"):
+                appendix_subsection += 1
+                appendix_suffix = f".{appendix_subsection}"
             elif match.group(1):
-                appendix_maps[match.group(1)] = f"Appendix {chr(64 + appendix_number)}"
+                appendix_maps[match.group(1)] = f"Appendix {chr(64 + appendix_number)}{appendix_suffix}"
+    revised_tables = "tab:deployment_metadata" in table_labels
     maps = {
         **{label: f"Figure {index}" for index, label in enumerate(figure_labels, 1)},
-        **{label: f"Table {index}" for index, label in enumerate(table_labels, 1)},
+        **{
+            label: f"Table A{index}" if revised_tables else f"Table {index}"
+            for index, label in enumerate(table_labels, 1)
+        },
         **appendix_maps,
     }
 
@@ -664,6 +677,7 @@ def style_document(
     body_started = False
     references_started = False
     current_main_section = 0
+    current_appendix = None
     subsection = 0
     subsubsection = 0
     previous_was_heading = False
@@ -704,9 +718,11 @@ def style_document(
             remove_marker(paragraph, "[[H1]]")
             heading = paragraph.text.strip()
             if heading.startswith("Appendix "):
+                current_appendix = heading.split()[1].rstrip(".")
                 subsection = 0
                 subsubsection = 0
             else:
+                current_appendix = None
                 current_main_section += 1
                 subsection = 0
                 subsubsection = 0
@@ -720,7 +736,8 @@ def style_document(
             remove_marker(paragraph, "[[H2]]")
             subsection += 1
             subsubsection = 0
-            paragraph.text = f"{current_main_section}.{subsection}. {paragraph.text.strip()}"
+            section_prefix = current_appendix or current_main_section
+            paragraph.text = f"{section_prefix}.{subsection}. {paragraph.text.strip()}"
             paragraph.style = "MDPI_2.2_heading2"
             paragraph.paragraph_format.keep_with_next = True
             paragraph.paragraph_format.keep_together = True
@@ -730,7 +747,7 @@ def style_document(
             remove_marker(paragraph, "[[H3]]")
             subsubsection += 1
             paragraph.text = (
-                f"{current_main_section}.{subsection}.{subsubsection}. {paragraph.text.strip()}"
+                f"{current_appendix or current_main_section}.{subsection}.{subsubsection}. {paragraph.text.strip()}"
             )
             paragraph.style = "MDPI_2.3_heading3"
             paragraph.paragraph_format.keep_with_next = True

@@ -8,7 +8,7 @@
 #set text(font: "New Computer Modern", size: 11pt)
 #set par(justify: true)
 
-31 August 2026
+4 September 2026
 
 #v(0.3em)
 Dear Editor,
