@@ -15,13 +15,9 @@ Dear Editor,
 
 We are pleased to resubmit our revised manuscript, "Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs," for consideration in the _Insects_ Special Issue "Advances in Monarch Butterfly Biology, Conservation, and Management: From Local to Continental."
 
-Wind protection has long been an important component of western monarch overwintering habitat management. We tested the predicted decline in cluster size by pairing time-lapse images with nearby wind measurements. The observational study included repeated measurements across 80 days at two overwintering groves during one season.
+The revised manuscript is shorter, limits its claims to the monitored conditions, corrects the model-comparison workflow, and makes the processed data and analytical materials public. We believe its empirical monitoring, methodological transparency, and conservation relevance fit the scope of the special issue. We thank the reviewers for their helpful comments. The manuscript is much stronger because of them.
 
-Stronger maximum gusts were not consistently followed by decreases in visible cluster size. The association depended on approximate local temperature and sun-exposed Butterfly Index. The conditional patterns provide a basis for future tests of physiological and energetic mechanisms, but the present study did not measure those mechanisms directly.
-
-The revised manuscript is shorter, limits its claims to the monitored conditions, corrects the model-comparison workflow, and makes the processed data and analytical materials public. It identifies priorities for replication across sites, seasons, grove structures, and cluster densities. We believe its empirical monitoring, methodological transparency, and conservation relevance fit the scope of the special issue.
-
-The processed data, model formulas, analysis code, model outputs, classification protocol, and classification software are publicly available. A USGS ScienceBase release of the underlying photographs, metadata, classifications, wind measurements, and reviewed study temperature values is in preparation and will be publicly available before publication.
+The processed data, model formulas, analysis code, model outputs, classification protocol, and classification software are publicly available on GitHub. A USGS ScienceBase release of the underlying photographs, metadata, classifications, wind measurements, and reviewed study temperature values is in preparation and will be publicly available before publication.
 
 Two authors are affiliated with the U.S. Geological Survey. The manuscript must complete the remaining USGS approval and data-release processes before publication. We therefore ask that _Insects_ not publish the accepted article online until the corresponding author confirms that these requirements are complete. Please confirm that this publication hold has been recorded.
 

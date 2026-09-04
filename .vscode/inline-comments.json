@@ -1,50 +1,14 @@
 [
   {
-    "id": "a1ab7e6b-ba22-4299-baa8-11085e402afd",
-    "filePath": "manuscript.tex",
-    "startLine": 92,
-    "startChar": 0,
-    "endLine": 92,
-    "endChar": 192,
-    "selectedText": "We mounted monitoring equipment on freestanding fiberglass telescopic poles with a maximum extension of 15~m (Max-Gain Systems, Inc., Marietta, GA) supported by triangular bases and guy lines.",
-    "text": "reference photo figure",
-    "timestamp": "2026-09-01T06:10:34.087Z",
-    "resolved": true
-  },
-  {
-    "id": "5a65f024-e7fc-410f-9bc6-14839259b57f",
-    "filePath": "manuscript.tex",
-    "startLine": 98,
-    "startChar": 162,
-    "endLine": 98,
-    "endChar": 408,
-    "selectedText": "Directional exposure at the butterflies also could not be inferred from a pole heading without measurements of the intervening canopy and its effects on airflow. Surrounding canopy structure and its influence on local airflow were not quantified.",
-    "text": "What's more accurate to say is that the intervening canopy around the poles and the clusters was variable And canopy has a strong effect on wind. So it's not clear how we would control for that. I'm not saying use these words exactly, but I want you to give a good reason. Um And also like bring back that the direction recordings was not reliable and so we threw it out. Look in the git history.",
-    "timestamp": "2026-09-01T06:13:18.725Z",
-    "resolved": true
-  },
-  {
-    "id": "479509a7-4ac4-41a2-997d-4af4b673ce77",
-    "filePath": "manuscript.tex",
-    "startLine": 177,
-    "startChar": 500,
-    "endLine": 177,
-    "endChar": 741,
-    "selectedText": "To avoid extending lines through unsupported predictor combinations, each line ends at the maximum gust observed within $\\pm1\\,^{\\circ}$C of the displayed temperature and within the corresponding sun-exposed BI stratum (0, 1--13, or 14--30),",
-    "text": "I want a clear justification why this was done or why it should be done. I'm concerned that this was picked up because of like previous thoughts or conversations hiding somewhere in the context of this repo when several times now I've decided to go against this and use the 99th percentile of maximum gust speed.",
-    "timestamp": "2026-09-01T06:14:52.557Z",
-    "resolved": true
-  },
-  {
-    "id": "2eaf9ff8-e7c1-4114-858a-7055862f2741",
-    "filePath": "manuscript.tex",
-    "startLine": 224,
-    "startChar": 662,
-    "endLine": 224,
-    "endChar": 859,
-    "selectedText": "Branch movement was present and was handled through manual image classification under a shared protocol, although it could add short-term noise when visible groups fell near BI category boundaries.",
-    "text": "This makes it sound like the other images weren't done manually. All images were done classified manually. I think it's better to say that branch movement could introduce situituations where the movement of the clusters could split it could change the category. Like some small percentage of the classifications. I feel like I don't really need to explain this. I know the reviewer mentioned it, but you know, basically like there's a little bit of noise because we divide the image into cells and butterflies sometimes move within that cells because of branch movement. But we had protocols for that. We try to be consistent and any noise introduced is uh minimal and random and probably not biased. I realize those are claims that probably need to be supported and I don't want to support them. I just want to kind of make this problem go away.",
-    "timestamp": "2026-09-01T06:18:04.420Z",
-    "resolved": true
+    "id": "ea62a1a8-ddbb-4226-b45b-866ed50348a7",
+    "filePath": "cover_letter.typ",
+    "startLine": 17,
+    "startChar": 313,
+    "endLine": 17,
+    "endChar": 412,
+    "selectedText": "We thank the reviewers for their helpful comments. The manuscript is much stronger because of them.",
+    "text": "A bit clunky, but I want to acknowledge that.",
+    "timestamp": "2026-09-04T18:38:58.789Z",
+    "resolved": false
   }
 ]
