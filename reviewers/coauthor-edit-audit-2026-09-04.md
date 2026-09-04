@@ -74,3 +74,8 @@ The September 2 comments and changes are consistent with the user's account of J
 Both comment threads remain marked unresolved in Word. The candidate-model wording concerns were addressed by the 13-edit reconciliation. The redundancy comment was not. The sentence Candidate weights were calculated separately within each response window remains in the first model-comparison paragraph, while a later paragraph explains separately calculated Akaike weights in more detail. Removing the earlier sentence would address that remaining comment without changing the analysis. No further manuscript text was changed during this date inspection.
 
 The shared files have the same SHA-256 checksums as the snapshots from the first inspection. The comments were already present. The earlier claim that there were no comments was an inspection error, not a subsequent file update.
+
+
+## Final comment applied
+
+At the user's request, removed Candidate weights were calculated separately within each response window from the first model-comparison paragraph. The fuller description of Akaike weights in the later model-fitting paragraph remains. This addresses comment 389. All 13 previously recovered wording and citation edits were verified as still present. The manuscript now incorporates both review stages and the additional redundancy comment.
