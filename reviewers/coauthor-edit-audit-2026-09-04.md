@@ -50,7 +50,7 @@ The clean LaTeX manuscript builds to 18 pages with no unresolved citations or re
 
 The clean PDF, body-text comparison PDF, response letter, and cover letter were rendered and visually inspected. The 18-file LaTeX source archive was extracted to a separate directory and successfully rebuilt. The statistical review folder was packaged without changing its data, scripts, or results. ZIP integrity checks passed.
 
-Prepared files are in `exports/resubmission-2026-09-04/`, with a README explaining the file roles and the comparison format. `SHA256SUMS.txt` records the deliverable checksums. The 35-page comparison retains deleted body text against submission commit `12b7cc9`. It presents front matter and table interiors in their current form, and references to removed figures and tables retain historical numbers. Final numbering is authoritative in the clean manuscript.
+Prepared files are in `exports/resubmission-2026-09-04/`, with a README explaining the file roles and the comparison format. `SHA256SUMS.txt` records the deliverable checksums. The 35-page comparison retains deleted text against submission commit `12b7cc9` and marks changes in the title, Simple Summary, Abstract, body, author contributions, Data Availability Statement, Conflicts of Interest, and Acknowledgments. Table interiors remain complete current units, and references to removed figures and tables retain historical numbers. Final numbering is authoritative in the clean manuscript.
 
 The coauthor changes are committed at `611a34e`. Word conversion fixes and the refreshed cover date are committed at `47defad`. The shared OneDrive files and the two pre-existing local modifications remain untouched. No journal submission, email, data release, or DOI publication was performed.
 
