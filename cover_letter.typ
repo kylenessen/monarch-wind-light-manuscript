@@ -15,13 +15,13 @@ Dear Editor,
 
 We are pleased to resubmit our revised manuscript, "Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs," for consideration in the _Insects_ Special Issue "Advances in Monarch Butterfly Biology, Conservation, and Management: From Local to Continental."
 
-The revised manuscript is shorter, limits its claims to the monitored conditions, corrects the model-comparison workflow, and makes the processed data and analytical materials public. We believe its empirical monitoring, methodological transparency, and conservation relevance fit the scope of the special issue. We thank the reviewers for their helpful comments. The manuscript is much stronger because of them.
+The revised manuscript is shorter, limits its claims to the monitored conditions, corrects the model-comparison workflow, and makes the processed data and analytical materials public. We believe its empirical monitoring, methodological transparency, and conservation relevance fit the scope of the special issue. We are grateful to the reviewers for their careful comments, which substantially improved the manuscript.
 
 The processed data, model formulas, analysis code, model outputs, classification protocol, and classification software are publicly available on GitHub. A USGS ScienceBase release of the underlying photographs, metadata, classifications, wind measurements, and reviewed study temperature values is in preparation and will be publicly available before publication.
 
 Two authors are affiliated with the U.S. Geological Survey. The manuscript must complete the remaining USGS approval and data-release processes before publication. We therefore ask that _Insects_ not publish the accepted article online until the corresponding author confirms that these requirements are complete. Please confirm that this publication hold has been recorded.
 
-A clean LaTeX archive and clean PDF are provided as the authoritative revised manuscript. We have also provided a comparison PDF generated from the original and revised LaTeX sources. It shows additions and deletions for the editor and reviewers and is intended as a review aid only.
+The resubmission includes a clean LaTeX source archive and compiled PDF, a comparison PDF showing additions and deletions from the original submission, and a point-by-point response to the Academic Editor and reviewers. The clean files provide the authoritative revised manuscript, while the comparison PDF is intended as a review aid.
 
 We confirm that neither the manuscript nor any parts of its content are currently under consideration for publication with or published in another journal. All authors have approved the manuscript and agree with its submission to _Insects_.
 
