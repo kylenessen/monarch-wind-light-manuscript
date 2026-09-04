@@ -16,4 +16,4 @@ Thank you for the constructive comments. We added photographs of both study grov
 
 ## Confidential Note to the Editorial Office
 
-Two authors are affiliated with the U.S. Geological Survey. The manuscript must complete the remaining USGS approval and data-release processes before publication. Please do not publish the accepted article online until the corresponding author confirms that these requirements are complete. Please confirm that this publication hold has been recorded. The same request appears in the cover letter.
+Two authors are affiliated with the U.S. Geological Survey. The required USGS approval process has been initiated, and the associated ScienceBase release is being prepared. We expect these parallel steps to be completed during the journal's review and production process. Both must be complete before final publication. We therefore ask that editorial review and production proceed as usual, with final online publication held until the corresponding author confirms completion. Please confirm that this publication hold has been recorded. The same request appears in the cover letter.

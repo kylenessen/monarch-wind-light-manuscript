@@ -19,7 +19,7 @@ The revised manuscript is shorter, limits its claims to the monitored conditions
 
 The processed data, model formulas, analysis code, model outputs, classification protocol, and classification software are publicly available on GitHub. A USGS ScienceBase release of the underlying photographs, metadata, classifications, wind measurements, and reviewed study temperature values is in preparation and will be publicly available before publication.
 
-Two authors are affiliated with the U.S. Geological Survey. The manuscript must complete the remaining USGS approval and data-release processes before publication. We therefore ask that _Insects_ not publish the accepted article online until the corresponding author confirms that these requirements are complete. Please confirm that this publication hold has been recorded.
+Two authors are affiliated with the U.S. Geological Survey. The required USGS approval process has been initiated, and the ScienceBase release described above is being prepared. We expect these parallel steps to be completed during the journal's review and production process. Both must be complete before final publication. We therefore ask that editorial review and production proceed as usual, with final online publication held until the corresponding author confirms completion. Please confirm that this publication hold has been recorded.
 
 The resubmission includes a clean LaTeX source archive and compiled PDF, a comparison PDF showing additions and deletions from the original submission, and a point-by-point response to the Academic Editor and reviewers. The clean files provide the authoritative revised manuscript, while the comparison PDF is intended as a review aid.
 

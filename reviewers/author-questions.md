@@ -1,6 +1,6 @@
 # Final Author Checks Before Resubmission
 
-The working submission plan is to resubmit the revision before the remaining USGS approval and ScienceBase release processes are complete. Both must be complete before publication. The cover letter and confidential editorial-office note request that MDPI hold all online publication until the corresponding author confirms completion.
+The working submission plan is to resubmit while the USGS approval and ScienceBase release processes are underway. Both must be complete before final publication. The cover letter and confidential editorial-office note ask MDPI to continue editorial review and production while holding final online publication until the corresponding author confirms completion.
 
 Before the files are uploaded, verify that the final interpretation, author-contribution statement, funding statement, acknowledgments, public-release language, title, and response letter reflect the version approved for submission by the authors.
 
