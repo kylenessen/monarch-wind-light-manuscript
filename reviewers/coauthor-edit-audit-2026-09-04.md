@@ -43,3 +43,13 @@ The existing local revised Word file also has uncommitted formatting and mathema
 ## Export corrections discovered during verification
 
 Visual review of the fresh Word export exposed existing converter defects. The converter dropped the min and max operators from temperature subscripts in the candidate tables, numbered appendix subsections as 5.1 and 5.2, and omitted A from appendix table references. The converter now preserves T_min and T_max, uses B.1 and B.2, and matches references to the displayed table numbers A1 through A5. These fixes affect export fidelity, not the LaTeX analysis or coauthor wording.
+
+## Verification and prepared files
+
+The clean LaTeX manuscript builds to 18 pages with no unresolved citations or references and no overfull boxes. All 13 replacement strings were checked against the committed manuscript. The fresh Word export renders to 18 pages. Every page was inspected, and the affected pages were inspected again after correcting the exporter. All 27 temperature-specific Next Day candidate rows preserve their expected min, max, or previous-temperature symbols. Appendix headings, subsection references, and table references were checked against the source.
+
+The clean PDF, body-text comparison PDF, response letter, and cover letter were rendered and visually inspected. The 18-file LaTeX source archive was extracted to a separate directory and successfully rebuilt. The statistical review folder was packaged without changing its data, scripts, or results. ZIP integrity checks passed.
+
+Prepared files are in `exports/resubmission-2026-09-04/`, with a README explaining the file roles and the comparison format. `SHA256SUMS.txt` records the deliverable checksums. The 35-page comparison retains deleted body text against submission commit `12b7cc9`. It presents front matter and table interiors in their current form, and references to removed figures and tables retain historical numbers. Final numbering is authoritative in the clean manuscript.
+
+The coauthor changes are committed at `611a34e`. Word conversion fixes and the refreshed cover date are committed at `47defad`. The shared OneDrive files and the two pre-existing local modifications remain untouched. No journal submission, email, data release, or DOI publication was performed.
