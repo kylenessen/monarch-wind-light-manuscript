@@ -14,6 +14,6 @@ Camera temperature values were read from image overlays with a custom optical-ch
 
 ## Data Availability Notes
 
-The raw image files and the software used to view and edit classifications are not included in this repository because of storage constraints. They can be provided separately during review. A USGS ScienceBase release of the supporting data and metadata is in preparation and will be made publicly available before publication.
+The raw image files are not included in this repository because of storage constraints. A USGS ScienceBase release containing the original photographs, deployment metadata, image classifications, wind measurements, and reviewed image-derived temperature values used in this study is in preparation and will be made publicly available before publication. The source code for the custom image-classification software is available at <https://github.com/kylenessen/monarch_trailcam_classifier>.
 
 Deployments with no butterfly detections are also excluded from this repository. In those cases, the pole location and wind data still exist, but are not included here.
