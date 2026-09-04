@@ -36,7 +36,7 @@ The numbered Word citations were mapped to existing BibTeX keys. No new bibliogr
 
 ## Differences deliberately retained
 
-Seven reference URLs in the shared clean manuscript predate the repository's September 2 bibliography correction at `a393764`. The corrected repository URLs were retained. The LaTeX references target Appendix B.1 and B.2. The old Word exporter collapsed these to Appendix B. That export defect was corrected while preparing the fresh Word copy. The original submission Word file is byte-identical between the shared folder and repository. The response letter has identical accepted paragraph text, despite package and metadata differences. No comments were found in the two shared manuscript files or the response letter.
+Seven reference URLs in the shared clean manuscript predate the repository's September 2 bibliography correction at `a393764`. The corrected repository URLs were retained. The LaTeX references target Appendix B.1 and B.2. The old Word exporter collapsed these to Appendix B. That export defect was corrected while preparing the fresh Word copy. The original submission Word file is byte-identical between the shared folder and repository. The response letter has identical accepted paragraph text, despite package and metadata differences. Correction from the follow-up inspection. The tracked manuscript contains three comment entries in two threads. The earlier report that it contained no comments was incorrect. The clean manuscript and response letter contain no comments.
 
 The existing local revised Word file also has uncommitted formatting and mathematical-character changes. It was preserved as found. Fresh submission artifacts are written separately so that those local changes and the shared review evidence remain intact.
 
@@ -53,3 +53,24 @@ The clean PDF, body-text comparison PDF, response letter, and cover letter were 
 Prepared files are in `exports/resubmission-2026-09-04/`, with a README explaining the file roles and the comparison format. `SHA256SUMS.txt` records the deliverable checksums. The 35-page comparison retains deleted body text against submission commit `12b7cc9`. It presents front matter and table interiors in their current form, and references to removed figures and tables retain historical numbers. Final numbering is authoritative in the clean manuscript.
 
 The coauthor changes are committed at `611a34e`. Word conversion fixes and the refreshed cover date are committed at `47defad`. The shared OneDrive files and the two pre-existing local modifications remain untouched. No journal submission, email, data release, or DOI publication was performed.
+
+
+## Follow-up inspection of review dates
+
+The user reported that Jay reviewed at least one day before Francis. A complete inspection of the Word XML confirms an earlier review on September 2 and document saves on September 3. All times below are Pacific daylight time, converted from the UTC timestamps stored in Word.
+
+| Date and time | Evidence |
+| --- | --- |
+| September 2, 00:34 | Comment 358 asks whether candidates means candidate models and says the term needs explanation. |
+| September 2, 00:38 | Reply 359 directs attention to changes in section 2.4.3. |
+| September 2, 00:42 | Comment 389 says the sentence about calculating candidate weights separately repeats the later AICc and ranking explanation. |
+| September 2, 06:36 to 06:39 | Seven tracked insertion and deletion records implement the two candidate-model wording changes. |
+| September 3, 10:00 | Last-modified timestamp stored in the clean Word file. |
+| September 3, 10:01 | Last-modified timestamp stored in the tracked Word file. |
+| September 3, 10:09 | Francis's supplied email reports his clarification edits and approval to resubmit. |
+
+The September 2 comments and changes are consistent with the user's account of Jay's earlier review. The September 3 saves are consistent with Francis's later review. The later wording changes do not carry individual revision timestamps, so the save dates cannot establish the exact time of every direct edit.
+
+Both comment threads remain marked unresolved in Word. The candidate-model wording concerns were addressed by the 13-edit reconciliation. The redundancy comment was not. The sentence Candidate weights were calculated separately within each response window remains in the first model-comparison paragraph, while a later paragraph explains separately calculated Akaike weights in more detail. Removing the earlier sentence would address that remaining comment without changing the analysis. No further manuscript text was changed during this date inspection.
+
+The shared files have the same SHA-256 checksums as the snapshots from the first inspection. The comments were already present. The earlier claim that there were no comments was an inspection error, not a subsequent file update.
