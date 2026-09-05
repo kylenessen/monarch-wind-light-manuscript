@@ -23,8 +23,8 @@
 
 # Generated manuscript exports
 exports/
-manuscript.pdf
-cover_letter.pdf
+/manuscript.pdf
+/cover_letter.pdf
 
 # Temporary discovery reports
 reports/*.html
