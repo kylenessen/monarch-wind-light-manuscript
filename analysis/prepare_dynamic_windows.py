@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
-"""
-Dynamic window analysis data preprocessing for monarch butterfly study
-Creates day-to-day comparisons with weather metrics calculated over dynamic time windows:
-1. 24-hour window: from time of max count (t-1) to +24 hours
-2. Next Day Window: from time of max count (t-1) to the last observation on day t
-
-Key difference from original: includes overnight temperature and wind data
-"""
+"""Prepare Next Day Window data, including overnight temperature and wind."""
 
 import pandas as pd
 import numpy as np
@@ -843,8 +836,6 @@ def main():
                        help='Maximum photos per day for valid day')
 
     # Output options
-    parser.add_argument('--output-24hr', default='data/monarch_daily_lag_analysis_24hr_window.csv',
-                       help='Output CSV for 24-hour window analysis')
     parser.add_argument('--output-nextday', default='data/monarch_daily_lag_analysis_nextday_window.csv',
                        help='Output CSV for Next Day Window analysis')
 
@@ -882,17 +873,6 @@ def main():
         # Filter valid days
         valid_days = filter_valid_days(daily_df, args.min_photos, args.max_photos)
 
-        # Create 24-hour window lag pairs
-        print("\n" + "="*60)
-        lag_df_24hr = create_dynamic_lag_pairs(
-            valid_days, butterfly_with_temp, temp_24hr_df, deployments_df,
-            args.wind_db_dir, window_type='24hr'
-        )
-
-        # Save 24-hour window dataset
-        lag_df_24hr.to_csv(args.output_24hr, index=False)
-        print(f"\n✅ 24-hour window dataset saved to {args.output_24hr}")
-
         # Create Next Day Window lag pairs
         print("\n" + "="*60)
         lag_df_nextday = create_dynamic_lag_pairs(
@@ -904,15 +884,10 @@ def main():
         lag_df_nextday.to_csv(args.output_nextday, index=False)
         print(f"\n✅ Next Day Window dataset saved to {args.output_nextday}")
 
-        # Summary comparison
+        # Summary
         print("\n" + "="*60)
         print("ANALYSIS COMPLETED SUCCESSFULLY")
         print("="*60)
-        print(f"\n24-Hour Window Analysis:")
-        print(f"  - Lag pairs: {len(lag_df_24hr)}")
-        print(f"  - Mean duration: {lag_df_24hr['lag_duration_hours'].mean():.2f} hours")
-        print(f"  - Median completeness: {lag_df_24hr['metrics_complete'].median():.3f}")
-
         print(f"\nNext Day Window Analysis:")
         print(f"  - Lag pairs: {len(lag_df_nextday)}")
         print(f"  - Mean duration: {lag_df_nextday['lag_duration_hours'].mean():.2f} hours")
@@ -920,7 +895,6 @@ def main():
         print(f"  - Median completeness: {lag_df_nextday['metrics_complete'].median():.3f}")
 
         print(f"\nOutput files:")
-        print(f"  - {args.output_24hr}")
         print(f"  - {args.output_nextday}")
         print(f"\nCompleted: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print("="*60)

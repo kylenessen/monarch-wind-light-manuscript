@@ -4,7 +4,7 @@ This directory contains the source data used to generate the analysis CSV files 
 
 The `deployments/` directory contains hand-labeled image classifications in JSON format. The `wind/` directory contains the SQLite databases exported from each wind sensor. The `deployments.csv` file describes deployment metadata, including the camera or wind sensor, deployment location, and deployment duration. The `temperature_data_2023.csv` file contains temperature values extracted from the field images.
 
-The generated datasets for the two analyses retained in the manuscript are `monarch_analysis_lag30min.csv` and `monarch_daily_lag_analysis_nextday_window.csv`. The fixed 24-hour dataset remains as a reproducibility record for an analysis removed during peer review. See `analysis/README.md` for the scripts and commands used to regenerate the retained datasets and model outputs.
+The generated datasets for the two analyses retained in the manuscript are `monarch_analysis_lag30min.csv` and `monarch_daily_lag_analysis_nextday_window.csv`. See the [analysis guide](../analysis/README.md) for the scripts and commands used to regenerate the retained datasets and model outputs.
 
 ## Classification and Temperature Protocols
 
@@ -17,3 +17,5 @@ Camera temperature values were read from image overlays with a custom optical-ch
 The raw image files are not included in this repository because of storage constraints. A USGS ScienceBase release containing the original photographs, deployment metadata, image classifications, wind measurements, and reviewed image-derived temperature values used in this study is in preparation and will be made publicly available before publication. The source code for the custom image-classification software is available at <https://github.com/kylenessen/monarch_trailcam_classifier>.
 
 Deployments with no butterfly detections are also excluded from this repository. In those cases, the pole location and wind data still exist, but are not included here.
+
+The [draft release tables](release/README.md) provide open-format copies of the source records and a field dictionary. They are a working release product with documented gaps. Use the two analysis CSV files above to reproduce the manuscript with the R scripts.

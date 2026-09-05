@@ -1,6 +1,0 @@
-Any top-5 model with s(max_gust)? Yes
-M16,FALSE
-M40,FALSE
-M22,FALSE
-M23,FALSE
-M24,TRUE

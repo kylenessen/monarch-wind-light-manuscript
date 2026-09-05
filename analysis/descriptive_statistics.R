@@ -94,9 +94,6 @@ per_deployment_bi <- unique_obs %>%
 next_day <- read_csv(here("data", "monarch_daily_lag_analysis_nextday_window.csv"), show_col_types = FALSE) %>%
   filter(metrics_complete >= 0.95)
 
-hr24 <- read_csv(here("data", "monarch_daily_lag_analysis_24hr_window.csv"), show_col_types = FALSE) %>%
-  filter(metrics_complete >= 0.95)
-
 metrics <- bind_rows(
   metric("30-minute pairs", "paired rows", nrow(lag_data)),
   metric("30-minute pairs", "unique observation frames", nrow(unique_obs)),
@@ -127,13 +124,7 @@ metrics <- bind_rows(
   summarise_numeric(next_day, "butterfly_diff", "Next Day Window", "change in maximum Butterfly Index"),
   summarise_numeric(next_day, "wind_max_gust", "Next Day Window", "maximum wind gust"),
   summarise_numeric(next_day, "sum_butterflies_direct_sun", "Next Day Window", "cumulative butterflies in direct sun"),
-  summarise_numeric(next_day, "lag_duration_hours", "Next Day Window", "window duration hours"),
-  metric("24-hour robustness", "filtered rows", nrow(hr24), "metrics_complete >= 0.95"),
-  summarise_numeric(hr24, "max_butterflies_t_1", "24-hour robustness", "previous day maximum Butterfly Index"),
-  summarise_numeric(hr24, "butterfly_diff", "24-hour robustness", "change in maximum Butterfly Index"),
-  summarise_numeric(hr24, "wind_max_gust", "24-hour robustness", "maximum wind gust"),
-  summarise_numeric(hr24, "sum_butterflies_direct_sun", "24-hour robustness", "cumulative butterflies in direct sun"),
-  summarise_numeric(hr24, "lag_duration_hours", "24-hour robustness", "window duration hours")
+  summarise_numeric(next_day, "lag_duration_hours", "Next Day Window", "window duration hours")
 )
 
 write_csv(metrics, file.path(out_dir, "descriptive_statistics.csv"))

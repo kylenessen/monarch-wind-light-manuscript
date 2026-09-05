@@ -1,21 +1,20 @@
-# Monarch Wind and Light Manuscript
+# Does Wind Disrupt Overwintering Monarch Butterfly Clusters?
 
-This repository contains the manuscript, analysis data, and reproducibility materials for "Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs" by Kyle Nessen, Peter C. Ibsen, Jay Diffendorfer, and Francis X. Villablanca.
+An observational study of western monarchs by Kyle Nessen, Peter C. Ibsen, Jay E. Diffendorfer, and Francis X. Villablanca.
 
-The manuscript extends the work in [Kyle Nessen's master's thesis](https://digitalcommons.calpoly.edu/theses/3180/) and provides the publication version of the wind analysis. The repository is intended to make the written paper, analysis inputs, statistical scripts, generated summaries, and figures traceable from source data through manuscript output.
+[Read the manuscript](output/pdf/manuscript.pdf). This is the revised submission, including its appendices. The study extends [Kyle Nessen's master's thesis](https://digitalcommons.calpoly.edu/theses/3180/).
 
-## Repository Contents
+To explore the evidence, start with the [data guide](data/README.md) and the [analysis guide](analysis/README.md). The [complete model comparisons](analysis/outputs/harmonized_model_comparison/README.md) and [Butterfly Index sensitivity checks](analysis/outputs/bi_category_sensitivity/README.md) include the saved results, so reading them does not require running code.
 
-`manuscript.tex` is the main LaTeX manuscript file. `manuscript.pdf` is the compiled manuscript output when present in a local checkout.
+The manuscript source is [manuscript.tex](manuscript.tex). Its four figures are the [monitoring photograph](figures/methods_photo.png), [descriptive figure](figures/descriptive_bi.png), [30-minute predictions](analysis/outputs/harmonized_model_comparison/figures/thirty_minute_predicted_response.png), and [Next Day interaction](analysis/outputs/next_day_window/figures/interaction_wind_sun_nextday.png). [bibliography/](bibliography/) contains the references. [Definitions/](Definitions/) contains the journal's LaTeX template and supporting assets.
 
-The `data/` directory contains the deployment metadata, hand-labeled classification files, wind sensor databases, temperature data, and generated analysis CSV files used by the statistical analyses. See `data/README.md` for details about included data and data availability limits.
+To compile the paper, install a TeX distribution with `latexmk` and run these commands from the repository root. The saved figures are sufficient. No analysis rerun is required.
 
-The `analysis/` directory contains the Python data preparation scripts, R analysis scripts, model outputs, generated summaries, and analysis provenance notes. See `analysis/README.md` for the commands used to regenerate the analysis datasets and figures.
+```sh
+mkdir -p output/pdf
+latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=output/pdf manuscript.tex
+```
 
-The `figures/` directory contains manuscript figures and supporting source files. The `bibliography/` and `Definitions/` directories contain the BibTeX references and journal template files used to build the manuscript.
+The [analysis guide](analysis/README.md) documents Python and R setup and the commands for regenerating inputs, results, and figures. The source classifications, wind databases, and reviewed temperature records are included. Original photographs are excluded for storage reasons. A USGS ScienceBase release is in preparation. See the [data availability notes](data/README.md) and [draft release tables](data/release/README.md) for scope and known gaps.
 
-## Reproducibility
-
-Run Python scripts with `uv` from the repository root. Run R scripts with `Rscript` from the repository root. The focused commands for rebuilding analysis datasets and manuscript figures are documented in `analysis/README.md`.
-
-Raw image files are not included in this repository because of storage constraints. They will be included in the planned USGS ScienceBase release described in `data/README.md`. The classification protocol is available at <https://kylenessen.github.io/monarch_trailcam_classifier/>, and the source code for the custom image-classification software is maintained at <https://github.com/kylenessen/monarch_trailcam_classifier>.
+Both submission states are preserved as Git branches. [first-submission](https://github.com/kylenessen/monarch-wind-light-manuscript/tree/first-submission) records the original submission at `12b7cc9`. [second-submission](https://github.com/kylenessen/monarch-wind-light-manuscript/tree/second-submission) records the revised submission at `a2a57f8`, before repository cleanup. The second branch also preserves the reviewer responses, cover letter, submitted Word files, revision notes, and superseded analyses. To revisit a submission locally, commit or stash any current changes, then use `git switch first-submission` or `git switch second-submission`. Return with `git switch main`.

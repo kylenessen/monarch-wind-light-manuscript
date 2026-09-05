@@ -1,1 +1,0 @@
-Interaction surface not generated because selected model M16 does not contain the wind by visible-sun tensor smooth.

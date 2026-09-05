@@ -1,2 +1,2 @@
 model,n,adjusted_r_squared,scale,formula
-M32,96,0.39664369755327933,41.05550494818962,"butterfly_diff_sqrt ~ max_butterflies_t_1 + lag_duration_hours + ti(wind_max_gust, sum_butterflies_direct_sun)"
+H05,96,0.39664369755327933,41.05550494818962,"butterfly_diff_sqrt ~ max_butterflies_t_1 + lag_duration_hours + ti(wind_max_gust, sum_butterflies_direct_sun)"
