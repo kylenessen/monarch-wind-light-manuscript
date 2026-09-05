@@ -2,12 +2,10 @@
 
 scripts <- c(
   "analysis/descriptive_statistics.R",
-  "analysis/linear_regression_figures.R",
-  "analysis/wind_at_clusters_histogram.R",
-  "analysis/thirty_minute_gamm_analysis.R",
-  "analysis/threshold_wind_disruption_analysis.R",
-  "analysis/next_day_window_analysis.R",
-  "analysis/twenty_four_hour_robustness_analysis.R"
+  "analysis/descriptive_figures.R",
+  "analysis/wind_at_clusters_statistics.R",
+  "analysis/harmonized_model_comparison.R",
+  "analysis/next_day_window_analysis.R"
 )
 
 for (script in scripts) {

@@ -1,6 +1,0 @@
-Model,Terms,AICc,Delta_AICc,Weight
-M31,Interaction: wind_max_gust × sum_butterflies_direct_sun (smooth),636.332,0,0.5073
-M23,Interaction: temp_max × wind_max_gust (smooth),639.92,3.588,0.0844
-M29,Interaction: temp_at_max_count_t_1 × sum_butterflies_direct_sun (smooth),640.756,4.424,0.0555
-M19,Interaction: temp_min × sum_butterflies_direct_sun (smooth),641.108,4.776,0.0466
-M51,Additive + Interaction: wind_max_gust + sum_butterflies_direct_sun + wind_max_gust×sum_butterflies_direct_sun (smooth),641.723,5.391,0.0342

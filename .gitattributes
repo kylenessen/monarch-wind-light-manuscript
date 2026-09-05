@@ -1,0 +1,2 @@
+# PDF files are binary artifacts, including PDFs with uncompressed streams.
+*.pdf binary

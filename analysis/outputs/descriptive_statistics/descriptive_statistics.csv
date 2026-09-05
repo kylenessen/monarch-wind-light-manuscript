@@ -77,39 +77,3 @@ Next Day Window,window duration hours standard deviation,3.655,NA,NA
 Next Day Window,window duration hours median,30.583,NA,NA
 Next Day Window,window duration hours first quartile,26,NA,NA
 Next Day Window,window duration hours third quartile,33.375,NA,NA
-24-hour robustness,filtered rows,94,metrics_complete >= 0.95,NA
-24-hour robustness,previous day maximum Butterfly Index minimum,0,NA,NA
-24-hour robustness,previous day maximum Butterfly Index maximum,770,NA,NA
-24-hour robustness,previous day maximum Butterfly Index mean,141.968,NA,NA
-24-hour robustness,previous day maximum Butterfly Index standard deviation,142.649,NA,NA
-24-hour robustness,previous day maximum Butterfly Index median,119,NA,NA
-24-hour robustness,previous day maximum Butterfly Index first quartile,24.5,NA,NA
-24-hour robustness,previous day maximum Butterfly Index third quartile,232.25,NA,NA
-24-hour robustness,change in maximum Butterfly Index minimum,-376,NA,NA
-24-hour robustness,change in maximum Butterfly Index maximum,464,NA,NA
-24-hour robustness,change in maximum Butterfly Index mean,-10.915,NA,NA
-24-hour robustness,change in maximum Butterfly Index standard deviation,113.316,NA,NA
-24-hour robustness,change in maximum Butterfly Index median,-5.5,NA,NA
-24-hour robustness,change in maximum Butterfly Index first quartile,-43.75,NA,NA
-24-hour robustness,change in maximum Butterfly Index third quartile,16.75,NA,NA
-24-hour robustness,maximum wind gust minimum,2,NA,NA
-24-hour robustness,maximum wind gust maximum,12.8,NA,NA
-24-hour robustness,maximum wind gust mean,4.329,NA,NA
-24-hour robustness,maximum wind gust standard deviation,1.8,NA,NA
-24-hour robustness,maximum wind gust median,4.1,NA,NA
-24-hour robustness,maximum wind gust first quartile,3.2,NA,NA
-24-hour robustness,maximum wind gust third quartile,4.9,NA,NA
-24-hour robustness,cumulative butterflies in direct sun minimum,0,NA,NA
-24-hour robustness,cumulative butterflies in direct sun maximum,1122,NA,NA
-24-hour robustness,cumulative butterflies in direct sun mean,108.755,NA,NA
-24-hour robustness,cumulative butterflies in direct sun standard deviation,177.104,NA,NA
-24-hour robustness,cumulative butterflies in direct sun median,29,NA,NA
-24-hour robustness,cumulative butterflies in direct sun first quartile,3.25,NA,NA
-24-hour robustness,cumulative butterflies in direct sun third quartile,144.25,NA,NA
-24-hour robustness,window duration hours minimum,24,NA,NA
-24-hour robustness,window duration hours maximum,24,NA,NA
-24-hour robustness,window duration hours mean,24,NA,NA
-24-hour robustness,window duration hours standard deviation,0,NA,NA
-24-hour robustness,window duration hours median,24,NA,NA
-24-hour robustness,window duration hours first quartile,24,NA,NA
-24-hour robustness,window duration hours third quartile,24,NA,NA

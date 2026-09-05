@@ -1,2 +1,0 @@
-model,n,adjusted_r_squared,scale,formula
-M31,94,0.23192263630442156,52.88100755928272,"butterfly_diff_sqrt ~ s(max_butterflies_t_1, k = 5) + ti(wind_max_gust, sum_butterflies_direct_sun)"

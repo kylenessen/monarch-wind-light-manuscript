@@ -18,14 +18,13 @@
 *.pdfsync
 
 # Local editor state
-.vscode/*
-!.vscode/inline-comments.json
+.vscode/
 .idea/
 
 # Generated manuscript exports
 exports/
-manuscript.pdf
-cover_letter.pdf
+/manuscript.pdf
+/cover_letter.pdf
 
 # Temporary discovery reports
 reports/*.html
@@ -46,3 +45,13 @@ Nessen_et_al_Insects_submission.zip
 # Personal signature image (not versioned)
 Signature.png
 figures/methods_photo.psd
+
+# Local review and submission working files
+.claude/
+output/word/
+reviewers/
+reference/
+cover_letter.typ
+insects-template.dot
+output/pdf/cover-letter.pdf
+output/pdf/response-letter.pdf

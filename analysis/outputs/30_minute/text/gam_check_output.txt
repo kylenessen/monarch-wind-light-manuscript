@@ -1,3 +1,0 @@
-
-'gamm' based fit - care required with interpretation.
-Checks based on working residuals may be misleading.

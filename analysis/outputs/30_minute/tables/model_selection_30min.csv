@@ -1,6 +1,0 @@
-Model,Terms,AIC,Delta_AIC,Weight,Wind_p
-M16,"Previous butterfly count (linear), Interaction: Maximum wind speed x Temperature x Butterflies in direct sun",8053.947,0,0.9997,0.238
-M40,Interaction: Maximum wind speed x Temperature x Butterflies in direct sun,8071.487,17.54,2e-4,0.128
-M22,"Previous butterfly count, Temperature (linear), Butterflies in direct sun, Time since sunrise",8073.104,19.157,1e-4,NA
-M23,"Previous butterfly count, Temperature, Butterflies in direct sun, Time since sunrise",8074.033,20.086,0,NA
-M24,"Previous butterfly count, Maximum wind speed, Temperature, Butterflies in direct sun, Time since sunrise",8077.673,23.726,0,0.522
