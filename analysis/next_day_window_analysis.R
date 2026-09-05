@@ -93,16 +93,196 @@ data <- read_csv(here("data", "monarch_daily_lag_analysis_nextday_window.csv"), 
     !is.na(sum_butterflies_direct_sun)
   )
 
-model <- gamm(
-  butterfly_diff_sqrt ~ max_butterflies_t_1 + lag_duration_hours + ti(wind_max_gust, sum_butterflies_direct_sun),
-  data = data,
-  random = list(deployment_id = ~1),
-  correlation = corAR1(form = ~ observation_order_t | deployment_id),
-  method = "REML"
+# Reconstruct the original candidate search. The source defines M1-M72 and
+# M77-M78. M73-M76 are not defined candidates and are not invented here.
+k_baseline <- 5
+k_lag <- 5
+weather_predictors <- c(
+  "temp_min", "temp_max", "temp_at_max_count_t_1",
+  "wind_max_gust", "sum_butterflies_direct_sun"
 )
+random_structure <- list(deployment_id = ~1)
+correlation_structure <- corAR1(form = ~ observation_order_t | deployment_id)
+model_specs <- list()
+model_descriptions <- list()
+add_candidate <- function(id, formula_str, description) {
+  if (id <= 72 || id >= 77) {
+    model_specs[[paste0("M", id)]] <<- formula_str
+    model_descriptions[[paste0("M", id)]] <<- description
+  }
+}
+smooth_base <- "s(max_butterflies_t_1, k = 5, bs = \"ts\") + s(lag_duration_hours, k = 5, bs = \"ts\")"
+linear_base <- "max_butterflies_t_1 + lag_duration_hours"
+model_num <- 1
+add_candidate(model_num, paste("butterfly_diff_sqrt ~", smooth_base), "Null (smooth baseline)")
+model_num <- model_num + 1
+add_candidate(model_num, paste("butterfly_diff_sqrt ~", linear_base), "Null (linear baseline)")
+model_num <- model_num + 1
 
-model_table <- read_csv(file.path(out_dir, "model_comparison_comprehensive.csv"), show_col_types = FALSE)
+for (pred in weather_predictors) {
+  add_candidate(model_num, paste("butterfly_diff_sqrt ~", smooth_base, "+ s(", pred, ")"),
+                paste0("Single: ", pred, " (smooth)"))
+  model_num <- model_num + 1
+  add_candidate(model_num, paste("butterfly_diff_sqrt ~", linear_base, "+ s(", pred, ")"),
+                paste0("Single: ", pred, " (linear)"))
+  model_num <- model_num + 1
+}
+
+interaction_pairs <- combn(weather_predictors, 2, simplify = FALSE)
+for (pair in interaction_pairs) {
+  pair_term <- paste0("ti(", pair[1], ", ", pair[2], ")")
+  add_candidate(model_num, paste("butterfly_diff_sqrt ~", smooth_base, "+", pair_term),
+                paste0("Interaction: ", pair[1], " x ", pair[2], " (smooth)"))
+  model_num <- model_num + 1
+  add_candidate(model_num, paste("butterfly_diff_sqrt ~", linear_base, "+", pair_term),
+                paste0("Interaction: ", pair[1], " x ", pair[2], " (linear)"))
+  model_num <- model_num + 1
+}
+
+for (pair in interaction_pairs) {
+  pair_main <- paste0("s(", pair[1], ") + s(", pair[2], ") + ti(", pair[1], ", ", pair[2], ")")
+  add_candidate(model_num, paste("butterfly_diff_sqrt ~", smooth_base, "+", pair_main),
+                paste0("Additive + Interaction: ", pair[1], " + ", pair[2], " + ", pair[1], " x ", pair[2], " (smooth)"))
+  model_num <- model_num + 1
+  add_candidate(model_num, paste("butterfly_diff_sqrt ~", linear_base, "+", pair_main),
+                paste0("Additive + Interaction: ", pair[1], " + ", pair[2], " + ", pair[1], " x ", pair[2], " (linear)"))
+  model_num <- model_num + 1
+}
+
+additive_combos <- list(
+  list(preds = c("temp_min", "temp_max", "temp_at_max_count_t_1"), desc = "All temperature"),
+  list(preds = c("temp_min", "temp_max"), desc = "temp_min + temp_max"),
+  list(preds = c("temp_min", "wind_max_gust"), desc = "temp_min + wind_max_gust"),
+  list(preds = c("temp_max", "wind_max_gust"), desc = "temp_max + wind_max_gust"),
+  list(preds = c("temp_at_max_count_t_1", "wind_max_gust"), desc = "temp_at_max_count_t_1 + wind_max_gust"),
+  list(preds = c("temp_min", "temp_max", "temp_at_max_count_t_1", "wind_max_gust"), desc = "All temp + wind"),
+  list(preds = weather_predictors, desc = "All predictors (additive)")
+)
+for (combo in additive_combos) {
+  preds_str <- paste0("s(", combo$preds, ")", collapse = " + ")
+  add_candidate(model_num, paste("butterfly_diff_sqrt ~", smooth_base, "+", preds_str),
+                paste0("Additive: ", combo$desc, " (smooth)"))
+  model_num <- model_num + 1
+  add_candidate(model_num, paste("butterfly_diff_sqrt ~", linear_base, "+", preds_str),
+                paste0("Additive: ", combo$desc, " (linear)"))
+  model_num <- model_num + 1
+}
+
+temp_preds <- c("temp_min", "temp_max", "temp_at_max_count_t_1")
+temp_pairs <- combn(temp_preds, 2, simplify = FALSE)
+temp_main <- paste0("s(", temp_preds, ")", collapse = " + ")
+temp_interactions <- paste0("ti(", vapply(temp_pairs, `[[`, character(1), 1), ", ",
+                            vapply(temp_pairs, `[[`, character(1), 2), ")", collapse = " + ")
+add_candidate(model_num, paste("butterfly_diff_sqrt ~", smooth_base, "+", temp_main, "+", temp_interactions),
+              "All temp + all temp interactions (smooth)")
+model_num <- model_num + 1
+add_candidate(model_num, paste("butterfly_diff_sqrt ~", linear_base, "+", temp_main, "+", temp_interactions),
+              "All temp + all temp interactions (linear)")
+model_num <- model_num + 1
+temp_wind_interactions <- paste0("ti(", temp_preds, ", wind_max_gust)", collapse = " + ")
+all_main <- paste0("s(", weather_predictors, ")", collapse = " + ")
+add_candidate(model_num, paste("butterfly_diff_sqrt ~", smooth_base, "+", all_main, "+", temp_wind_interactions),
+              "All additive + all temp x wind interactions (smooth)")
+model_num <- model_num + 1
+add_candidate(model_num, paste("butterfly_diff_sqrt ~", linear_base, "+", all_main, "+", temp_wind_interactions),
+              "All additive + all temp x wind interactions (linear)")
+model_num <- model_num + 1
+all_interactions <- paste0("ti(", vapply(interaction_pairs, `[[`, character(1), 1), ", ",
+                           vapply(interaction_pairs, `[[`, character(1), 2), ")", collapse = " + ")
+add_candidate(model_num, paste("butterfly_diff_sqrt ~", smooth_base, "+", all_main, "+", all_interactions),
+              "FULL MODEL: All terms + all interactions (smooth)")
+model_num <- model_num + 1
+add_candidate(model_num, paste("butterfly_diff_sqrt ~", linear_base, "+", all_main, "+", all_interactions),
+              "FULL MODEL: All terms + all interactions (linear)")
+
+add_candidate(77,
+  paste("butterfly_diff_sqrt ~", smooth_base, "+ wind_max_gust + sum_butterflies_direct_sun + wind_max_gust:sum_butterflies_direct_sun"),
+  "Linear interaction: wind_max_gust x sum_butterflies_direct_sun (with baseline + lag duration)")
+add_candidate(78,
+  paste("butterfly_diff_sqrt ~", smooth_base, "+ temp_min + temp_max + wind_max_gust + sum_butterflies_direct_sun + wind_max_gust:sum_butterflies_direct_sun"),
+  "Linear interaction + temp_min + temp_max (with baseline + lag duration)")
+stopifnot(length(model_specs) == 74, identical(names(model_specs), c(paste0("M", 1:72), "M77", "M78")))
+
+fit_model_safe <- function(formula_str, method = "ML") {
+  warnings <- character()
+  tryCatch({
+    model <- withCallingHandlers(
+      gamm(
+        as.formula(formula_str), data = data,
+        random = random_structure,
+        correlation = correlation_structure,
+        method = method
+      ),
+      warning = function(w) {
+        warnings <<- c(warnings, conditionMessage(w))
+        invokeRestart("muffleWarning")
+      }
+    )
+    list(model = model, error = "", warning = paste(unique(warnings), collapse = " | "))
+  }, error = function(e) {
+    list(model = NULL, error = conditionMessage(e), warning = paste(unique(warnings), collapse = " | "))
+  })
+}
+
+fit_results <- lapply(model_specs, fit_model_safe, method = "ML")
+names(fit_results) <- names(model_specs)
+fits_ml <- lapply(fit_results, `[[`, "model")
+names(fits_ml) <- names(model_specs)
+fit_errors <- vapply(fit_results, `[[`, character(1), "error")
+fit_warnings <- vapply(fit_results, `[[`, character(1), "warning")
+has_convergence_warning <- grepl("convergence", fit_warnings, ignore.case = TRUE)
+names(has_convergence_warning) <- names(model_specs)
+
+model_rows <- lapply(names(model_specs), function(id) {
+  fit <- fits_ml[[id]]
+  if (is.null(fit) || is.null(fit$lme) || has_convergence_warning[[id]]) {
+    status <- if (has_convergence_warning[[id]]) "convergence_failure" else "failure"
+    return(tibble(
+      model = id, description = model_descriptions[[id]], formula = model_specs[[id]],
+      status = status, error = fit_errors[[id]], warning = fit_warnings[[id]], n = nrow(data),
+      likelihood_method = "ML", AIC = NA_real_, BIC = NA_real_, logLik = NA_real_,
+      df = NA_real_, AICc = NA_real_, delta_AICc = NA_real_, weight_AICc = NA_real_
+    ))
+  }
+  loglik_val <- tryCatch(as.numeric(logLik(fit$lme)), error = function(e) NA_real_)
+  df_val <- tryCatch(as.numeric(attr(logLik(fit$lme), "df")), error = function(e) NA_real_)
+  n_val <- tryCatch(as.integer(nobs(fit$lme)), error = function(e) nrow(data))
+  aic_val <- tryCatch(AIC(fit$lme), error = function(e) NA_real_)
+  bic_val <- tryCatch(BIC(fit$lme), error = function(e) NA_real_)
+  aicc_val <- if (is.finite(aic_val) && is.finite(df_val) && n_val > df_val + 1) {
+    aic_val + (2 * df_val * (df_val + 1)) / (n_val - df_val - 1)
+  } else NA_real_
+  tibble(
+    model = id, description = model_descriptions[[id]], formula = model_specs[[id]],
+    status = "success", error = "", warning = fit_warnings[[id]], n = n_val, likelihood_method = "ML",
+    AIC = aic_val, BIC = bic_val, logLik = loglik_val, df = df_val,
+    AICc = aicc_val, delta_AICc = NA_real_, weight_AICc = NA_real_
+  )
+})
+model_table <- bind_rows(model_rows)
+rankable <- model_table$status == "success" & is.finite(model_table$AICc)
+if (!any(rankable)) {
+  stop("No Next Day candidate model produced a finite ML AICc value.")
+}
+min_aicc <- min(model_table$AICc[rankable])
+model_table$delta_AICc[rankable] <- model_table$AICc[rankable] - min_aicc
+model_table$weight_AICc[rankable] <- exp(-0.5 * model_table$delta_AICc[rankable]) /
+  sum(exp(-0.5 * model_table$delta_AICc[rankable]))
+write_csv(model_table, file.path(out_dir, "model_comparison_comprehensive.csv"))
+ranked_models <- model_table %>% filter(status == "success", is.finite(AICc)) %>% arrange(delta_AICc)
+selected_id <- ranked_models$model[1]
+selected_reml <- fit_model_safe(model_specs[[selected_id]], method = "REML")
+if (is.null(selected_reml$model) || is.null(selected_reml$model$lme) ||
+    grepl("convergence", selected_reml$warning, ignore.case = TRUE)) {
+  stop("Selected model REML refit failed: ", selected_reml$error,
+       selected_reml$warning)
+}
+model <- selected_reml$model
+fits <- fits_ml
+fits[[selected_id]] <- model
+
 top5 <- model_table %>%
+  filter(status == "success") %>%
   arrange(delta_AICc) %>%
   slice(1:5) %>%
   transmute(
@@ -126,11 +306,11 @@ smooths <- as.data.frame(model_summary$s.table) %>%
 write_csv(bind_rows(parametric, smooths), file.path(out_dir, "nextday_model_summary.csv"))
 
 fit_stats <- tibble(
-  model = "M32",
+  model = selected_id,
   n = nrow(data),
   adjusted_r_squared = model_summary$r.sq,
   scale = model_summary$scale,
-  formula = "butterfly_diff_sqrt ~ max_butterflies_t_1 + lag_duration_hours + ti(wind_max_gust, sum_butterflies_direct_sun)"
+  formula = model_specs[[selected_id]]
 )
 write_csv(fit_stats, file.path(out_dir, "nextday_model_fit_statistics.csv"))
 
@@ -189,7 +369,7 @@ interaction_wind_sun_nextday <- create_binned_interaction_plot(
   x_var = "wind_max_gust",
   y_var = "sum_butterflies_direct_sun",
   data = data,
-  xlab = "Maximum wind speed (m/s)",
+  xlab = "Maximum wind gust (m/s)",
   ylab = "Butterflies in direct sun",
   n = 400,
   limits = c(-16, 16),

@@ -1,0 +1,51 @@
+Model,Formula,Status,Error,Warning,n,Likelihood_Method,LogLik,df,AIC,Delta_AIC,Weight
+M1,butterfly_difference_cbrt ~ total_butterflies_t_lag,success,,,1894,ML,-4063.026284106627,6,8138.052568213254,84.10542516870555,5.452795884198118e-19
+M2,butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust,success,,,1894,ML,-4061.7187336462557,7,8137.437467292511,83.49032424796314,7.416290086332296e-19
+M3,butterfly_difference_cbrt ~ total_butterflies_t_lag + temperature_avg,success,,,1894,ML,-4060.5327485443813,7,8135.065497088763,81.11835404421436,2.4280269010817983e-18
+M4,butterfly_difference_cbrt ~ total_butterflies_t_lag + butterflies_direct_sun_t_lag,success,,,1894,ML,-4046.25152838969,7,8106.50305677938,52.55591373483185,3.8681971639270986e-12
+M5,butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust + temperature_avg,success,,,1894,ML,-4059.803472415082,8,8135.606944830164,81.65980178561585,1.8521647348257092e-18
+M6,butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust + butterflies_direct_sun_t_lag,success,,,1894,ML,-4044.4190485330055,8,8104.838097066011,50.890954021462676,8.893035177690983e-12
+M7,butterfly_difference_cbrt ~ total_butterflies_t_lag + temperature_avg + butterflies_direct_sun_t_lag,success,,,1894,ML,-4041.288389280602,8,8098.576778561204,44.62963551665598,2.0355325347247023e-10
+M8,butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust + temperature_avg + butterflies_direct_sun_t_lag,success,,,1894,ML,-4040.5880018495754,9,8099.176003699151,45.22886065460261,1.5085439340359476e-10
+M9,butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust * temperature_avg,success,,,1894,ML,-4054.9910993981757,9,8127.982198796351,74.03505575180316,8.382473230630955e-17
+M10,butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust * butterflies_direct_sun_t_lag,success,,,1894,ML,-4040.7144312777327,9,8099.4288625554655,45.48171951091717,1.3293837318724517e-10
+M11,butterfly_difference_cbrt ~ total_butterflies_t_lag + temperature_avg * butterflies_direct_sun_t_lag,success,,,1894,ML,-4041.1973785049104,9,8100.394757009821,46.44761396527247,8.201797529580713e-11
+M12,butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust * temperature_avg + butterflies_direct_sun_t_lag,success,,,1894,ML,-4035.3931123992716,10,8090.786224798543,36.83908175399483,1.0008645413287596e-8
+M13,butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust * butterflies_direct_sun_t_lag + temperature_avg,success,,,1894,ML,-4036.919375050853,10,8093.838750101706,39.89160705715767,2.175343556853582e-9
+M14,butterfly_difference_cbrt ~ total_butterflies_t_lag + temperature_avg * butterflies_direct_sun_t_lag + max_gust,success,,,1894,ML,-4040.498737549233,10,8100.997475098466,47.05033205391737,6.067789051847907e-11
+M15,butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust * temperature_avg + max_gust * butterflies_direct_sun_t_lag + temperature_avg * butterflies_direct_sun_t_lag,success,,,1894,ML,-4032.3989158647146,12,8088.797831729429,34.85068868488088,2.7048885294813648e-8
+M16,butterfly_difference_cbrt ~ total_butterflies_t_lag + max_gust * temperature_avg * butterflies_direct_sun_t_lag,success,,,1894,ML,-4013.973571522274,13,8053.947143044548,0,0.9997243388747235
+M17,butterfly_difference_cbrt ~ s(total_butterflies_t_lag) + s(temperature_avg) + s(butterflies_direct_sun_t_lag),success,,,1894,ML,-4038.0242139220645,11,8098.048427844129,44.10128479958075,2.6509891407744264e-10
+M18,butterfly_difference_cbrt ~ s(total_butterflies_t_lag) + temperature_avg + s(butterflies_direct_sun_t_lag),success,,,1894,ML,-4040.1283284044985,10,8100.256656808997,46.30951376444864,8.788143131857938e-11
+M19,butterfly_difference_cbrt ~ s(total_butterflies_t_lag) + s(max_gust) + temperature_avg + s(butterflies_direct_sun_t_lag),success,,,1894,ML,-4039.258150960415,12,8102.51630192083,48.56915887628202,2.8393662778372086e-11
+M21,butterfly_difference_cbrt ~ s(total_butterflies_t_lag) + s(max_gust) + s(temperature_avg) + s(butterflies_direct_sun_t_lag),success,,,1894,ML,-4036.766070053607,13,8099.532140107214,45.584997062665934,1.262478307044443e-10
+M22,butterfly_difference_cbrt ~ s(total_butterflies_t_lag) + temperature_avg + s(butterflies_direct_sun_t_lag) + s(time_within_day_t),success,,,1894,ML,-4024.5518804933436,12,8073.103760986687,19.156617942138837,6.919481193448514e-5
+M23,butterfly_difference_cbrt ~ s(total_butterflies_t_lag) + s(temperature_avg) + s(butterflies_direct_sun_t_lag) + s(time_within_day_t),success,,,1894,ML,-4024.0167394556047,13,8074.033478911209,20.086335866661102,4.346982092597484e-5
+M24,butterfly_difference_cbrt ~ s(total_butterflies_t_lag) + s(max_gust) + s(temperature_avg) + s(butterflies_direct_sun_t_lag) + s(time_within_day_t),success,,,1894,ML,-4023.8367442880135,15,8077.673488576027,23.726345531478728,7.043196342806082e-6
+M25,butterfly_difference_cbrt ~ 1,success,,,1894,ML,-4080.1587170597195,5,8170.317434119439,116.3702910748907,5.375175266876327e-26
+M26,butterfly_difference_cbrt ~ max_gust,success,,,1894,ML,-4079.4435777478575,6,8170.887155495715,116.9400124511667,4.042771586964606e-26
+M27,butterfly_difference_cbrt ~ temperature_avg,success,,,1894,ML,-4072.449431060031,6,8156.898862120062,102.95171907551412,4.407562880881702e-23
+M28,butterfly_difference_cbrt ~ butterflies_direct_sun_t_lag,success,,,1894,ML,-4065.2964744122655,6,8142.592948824531,88.64580577998277,5.632330337227591e-20
+M29,butterfly_difference_cbrt ~ max_gust + temperature_avg,success,,,1894,ML,-4071.430101244521,7,8156.860202489042,102.91305944449414,4.493589014298793e-23
+M30,butterfly_difference_cbrt ~ max_gust + butterflies_direct_sun_t_lag,success,,,1894,ML,-4061.3723270445153,7,8136.7446540890305,82.79751104448223,1.0486466756599271e-18
+M31,butterfly_difference_cbrt ~ temperature_avg + butterflies_direct_sun_t_lag,success,,,1894,ML,-4054.635441441702,7,8123.270882883404,69.32373983885554,8.839372317758738e-16
+M32,butterfly_difference_cbrt ~ max_gust + temperature_avg + butterflies_direct_sun_t_lag,success,,,1894,ML,-4052.9138463314393,8,8121.827692662879,67.8805496183304,1.8188890208890613e-15
+M33,butterfly_difference_cbrt ~ max_gust * temperature_avg,success,,,1894,ML,-4065.4937200343084,8,8146.987440068617,93.04029702406842,6.258013119705924e-21
+M34,butterfly_difference_cbrt ~ max_gust * butterflies_direct_sun_t_lag,success,,,1894,ML,-4056.915323809011,8,8129.830647618022,75.88350457347406,3.326492997176514e-17
+M35,butterfly_difference_cbrt ~ temperature_avg * butterflies_direct_sun_t_lag,success,,,1894,ML,-4054.519305647038,8,8125.038611294076,71.09146824952768,3.6522801238223937e-16
+M36,butterfly_difference_cbrt ~ max_gust * temperature_avg + butterflies_direct_sun_t_lag,success,,,1894,ML,-4045.9099791385324,9,8109.819958277065,55.87281523251659,7.366354132753317e-13
+M37,butterfly_difference_cbrt ~ max_gust * butterflies_direct_sun_t_lag + temperature_avg,success,,,1894,ML,-4048.2502136312414,9,8114.500427262483,60.55328421793456,7.094171233286833e-14
+M38,butterfly_difference_cbrt ~ temperature_avg * butterflies_direct_sun_t_lag + max_gust,success,,,1894,ML,-4052.822883469433,9,8123.645766938866,69.69862389431728,7.328521876587792e-16
+M39,butterfly_difference_cbrt ~ max_gust * temperature_avg + max_gust * butterflies_direct_sun_t_lag + temperature_avg * butterflies_direct_sun_t_lag,success,,,1894,ML,-4042.218512538624,11,8106.437025077248,52.489882032699825,3.998040637372336e-12
+M40,butterfly_difference_cbrt ~ max_gust * temperature_avg * butterflies_direct_sun_t_lag,success,,,1894,ML,-4023.743649817967,12,8071.487299635934,17.540156591385312,1.5526860663683437e-4
+M41,butterfly_difference_cbrt ~ s(temperature_avg) + s(butterflies_direct_sun_t_lag),success,,,1894,ML,-4050.436926297387,9,8118.873852594774,64.9267095502255,7.965708735797512e-15
+M42,butterfly_difference_cbrt ~ temperature_avg + s(butterflies_direct_sun_t_lag),success,,,1894,ML,-4054.6354415697188,8,8125.2708831394375,71.32374009488922,3.251822932275291e-16
+M43,butterfly_difference_cbrt ~ s(max_gust) + temperature_avg + s(butterflies_direct_sun_t_lag),success,,,1894,ML,-4052.9138459864753,10,8125.827691972951,71.88054892840228,2.46159945734307e-16
+M45,butterfly_difference_cbrt ~ s(max_gust) + s(temperature_avg) + s(butterflies_direct_sun_t_lag),success,,,1894,ML,-4048.3529474979096,11,8118.705894995819,64.75875195127082,8.663551306955933e-15
+M46,butterfly_difference_cbrt ~ temperature_avg + s(butterflies_direct_sun_t_lag) + s(time_within_day_t),success,,,1894,ML,-4038.1219194841087,10,8096.2438389682175,42.296695923669176,6.535358924491737e-10
+M47,butterfly_difference_cbrt ~ s(temperature_avg) + s(butterflies_direct_sun_t_lag) + s(time_within_day_t),success,,,1894,ML,-4036.536915154684,11,8095.073830309368,41.12668726481934,1.1730961145589506e-9
+M48,butterfly_difference_cbrt ~ s(max_gust) + s(temperature_avg) + s(butterflies_direct_sun_t_lag) + s(time_within_day_t),success,,,1894,ML,-4036.1051328033354,13,8098.210265606671,44.26312256212259,2.444923782776414e-10
+M49,"butterfly_difference_cbrt ~ s(total_butterflies_t_lag) + ti(max_gust, butterflies_direct_sun_t_lag)",success,,,1894,ML,-4050.1171724701144,10,8120.234344940229,66.28720189568048,4.0345700784100276e-15
+M50,"butterfly_difference_cbrt ~ s(total_butterflies_t_lag) + s(temperature_avg) + s(time_within_day_t) + ti(max_gust, butterflies_direct_sun_t_lag)",success,,,1894,ML,-4027.2318120240125,14,8082.463624048025,28.516481003476656,6.421035837507186e-7
+M51,"butterfly_difference_cbrt ~ ti(max_gust, butterflies_direct_sun_t_lag)",success,,,1894,ML,-4064.7150495502046,8,8145.430099100409,91.482956055861,1.3633543989552266e-20
+M52,"butterfly_difference_cbrt ~ s(temperature_avg) + s(time_within_day_t) + ti(max_gust, butterflies_direct_sun_t_lag)",success,,,1894,ML,-4037.763297701915,12,8099.52659540383,45.57945235928128,1.265983197064533e-10

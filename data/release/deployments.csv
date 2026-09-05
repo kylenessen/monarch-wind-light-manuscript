@@ -1,0 +1,21 @@
+deployment_id,grove,camera_name,wind_sensor_name,deployed_at_local,recovered_at_local,camera_height_m,horizontal_distance_to_cluster_m,view_direction_degrees,latitude,longitude,primary_observer,view_id,field_video_url,notes
+SC1,Spring Canyon,EM03,JazzPlay,2023-11-17 11:40:00,2023-12-15 11:00:00,7.0,4.2,90,34.6318631241188,-120.618244611051,Skyler,1A,https://youtu.be/-zeGd_WTeWo,Location and height estimated after deployment
+SC10,Spring Canyon,JINX,StarDust,2024-01-05 16:06:04.149,2024-01-31 20:30:00,5.9,7.5,320,34.6312571527367,-120.618104598629,Emery,2A,https://youtu.be/0zLjm9PA6YM,"Swapped cameras from SC4
+
+This camera fell during a storm and was destroyed on impact."
+SC12,Spring Canyon,NOVA,BlueLake,2024-01-27 13:00:00.224,2024-02-04 10:50:00,7.1,12.6,230,34.6316194737745,-120.617960900372,Vincent,4A,https://youtu.be/4uLZIZqlgPE,This pole fell because a tree fell. 
+SC2,Spring Canyon,LYNX,FoxTrail,2023-11-17 14:00:00,2023-11-19 13:10:00.583,6.2,6.8,155,34.6318422984987,-120.618617450556,Vincent,5A,https://youtu.be/N5hJl9ISmds,Location and heights taken after deployment
+SC4,Spring Canyon,ZEST,StarDust,2023-12-03 14:30:00.855,2024-01-05 14:30:00.003,5.6,6.3,335,34.6312828749816,-120.618133548903,Kevin,2A,https://youtu.be/RW91J3HMm_4,Guess on count. Check end time
+SC6,Spring Canyon,EM03,BlueLake,2023-12-15 13:20:00.661,2024-01-05 14:10:00.15,6.9,12.6,210,34.6316091220451,-120.617929872462,Vincent,4A,https://youtu.be/MqmH5L3lXbk,
+SC7,Spring Canyon,IRIS,FunStorm,2023-12-15 14:45:00.707,2024-01-05 16:25:00.65,6.1,4.1,200,34.6316932933342,-120.618537083028,Vincent,8A,https://youtu.be/UYxXEPVmqLY,
+SC8,Spring Canyon,EM03,BlueLake,2024-01-05 15:30:00.808,2024-01-27 11:40:00,6.4,16.5,220,34.6316027255854,-120.617962854402,Skyler,4A,https://youtu.be/AOWrySdh1z8,"Tilted up from SC6 to get the upper branches over road.
+
+Two clips seized causing it to tilt but not fall."
+SC9,Spring Canyon,WASP,StarDust,2024-01-05 16:02:00.252,2024-01-31 20:30:00,5.4,6.7,100,34.6312712689514,-120.618134924842,Vincent,9A,https://youtu.be/EUo4zfKfiAo,"Checking to see if clusters reform on this sunny side
+
+This camera also fell and was damaged duringa storm"
+SLC6_2,SLC 6,WASP,MoonTide,2023-12-03 13:02:00.913,2024-01-05 13:02:00.942,7.5,7.6,20,34.5844897403737,-120.629130754224,Vincent,11A,https://youtu.be/r8f3oCAFK9k,Hoping butterflies show up
+UDMH2,UDMH,GOLD,JoyHouse,2024-01-05 12:20:00.545,2024-01-06 04:00:00.857,8.6,6.8,360,34.6722004190266,-120.595223248665,Skyler,14A,https://youtu.be/57Jut_Rt1zE,Fell over early on.
+UDMH4,UDMH,LUNA,MoonTide,2024-01-18 15:50:00.719,2024-01-22 03:20:00.986,9.4,6.2,350,34.6720776776833,-120.595036234382,Skyler,16A,https://youtu.be/1j0kNCEX0LQ,"Setup with Ray!
+
+Unfortunately fell a few days later. Popped ground anchor."

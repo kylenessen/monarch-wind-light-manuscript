@@ -1,2 +1,0 @@
-model,n,adjusted_r_squared,scale,formula
-M50,1894,0.06360831653832599,4.034016563966236,"butterfly_difference_cbrt ~ s(total_butterflies_t_lag) + s(temperature_avg) + s(time_within_day_t) + ti(max_gust, butterflies_direct_sun_t_lag)"

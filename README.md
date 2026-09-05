@@ -1,6 +1,6 @@
 # Monarch Wind and Light Manuscript
 
-This repository contains the manuscript, analysis data, and reproducibility materials for "Wind Does Not Disrupt Overwintering Monarch Butterfly Clusters: Direct Empirical Test of a Three-Decade Management Assumption" by Kyle Nessen, Peter C. Ibsen, Jay Diffendorfer, and Francis X. Villablanca.
+This repository contains the manuscript, analysis data, and reproducibility materials for "Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs" by Kyle Nessen, Peter C. Ibsen, Jay Diffendorfer, and Francis X. Villablanca.
 
 The manuscript extends the work in [Kyle Nessen's master's thesis](https://digitalcommons.calpoly.edu/theses/3180/) and provides the publication version of the wind analysis. The repository is intended to make the written paper, analysis inputs, statistical scripts, generated summaries, and figures traceable from source data through manuscript output.
 
@@ -18,4 +18,4 @@ The `figures/` directory contains manuscript figures and supporting source files
 
 Run Python scripts with `uv` from the repository root. Run R scripts with `Rscript` from the repository root. The focused commands for rebuilding analysis datasets and manuscript figures are documented in `analysis/README.md`.
 
-Raw image files and the classification review software are not included in this repository because of storage constraints. See `data/README.md` for the current data availability notes.
+Raw image files are not included in this repository because of storage constraints. They will be included in the planned USGS ScienceBase release described in `data/README.md`. The classification protocol is available at <https://kylenessen.github.io/monarch_trailcam_classifier/>, and the source code for the custom image-classification software is maintained at <https://github.com/kylenessen/monarch_trailcam_classifier>.

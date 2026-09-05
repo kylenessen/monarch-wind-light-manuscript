@@ -1,0 +1,25 @@
+AUTHOR'S REPLY TO THE ACADEMIC EDITOR
+
+Revised manuscript title: Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs
+
+Thank you for the careful and constructive review. We have addressed each comment below. The complete marked manuscript is included with the resubmission.
+
+Comment 1. Overall assessment
+The manuscript has been reviewed by two peer-reviewers, and both feel that the manuscript has merit, and it addresses a topic of conservation concern, though both reviewers noted similar problems with the methodology, and with the interpretation of results. Specifically, both reviewers pointed out (rightly so) that the entire project hinges on observations of just two localities, and from only one field season. Moreover, both reviewers point out that the findings from this limited study appear to be overly exaggerated, or at least, are not as concrete as the authors have claimed. I would agree with both of these assessments. As such, the authors are invited to revise the paper, if possible, to address these concerns.
+
+In addition, from my own read of this paper, I noted two other concerns that should be addressed in a re-write, listed below.
+
+Response 1
+We agree. The revised manuscript consistently identifies the study as observational and limits inference to two blue gum eucalyptus groves, one overwintering season, the observed cluster sizes, and nearby maximum-gust measurements. We replaced the categorical title with the question “Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs.” The Simple Summary, Abstract, Discussion, and Conclusions now state that the predicted consistent decline was not detected under the monitored conditions. We also removed prescriptive habitat-management recommendations. The Discussion identifies the limited spatial and seasonal replication, unequal grove contributions, and possible reuse of aggregations or individual butterflies as constraints on inference.
+
+Comment 2. Length and statistical presentation
+First, this manuscript is currently much too long, especially given the sample size issues noted above. The introduction takes forever to get through, for example. Also, there are 12 figures, and 5 tables, and the paper itself is 41 pages. Surely some of the more technical figures about the stats can be moved to an appendix. Also, there is some unnecessary discussion about monarch physiology later in the discussion, when this was not actually measured in the study.
+
+Response 2
+We substantially reduced the manuscript. We removed the simple linear regressions, the fixed 24-hour analysis, the threshold-duration analysis, and the simulation-based power analysis. We also removed their associated figures, tables, appendices, and discussion. The main text now focuses on our strongest results, the 30-minute and Next Day response windows, and contains four figures and no main-text tables. Technical formulas and candidate mappings are confined to the appendix and public reproducibility files. The physiology section is shorter and explicitly presents thermoregulation and energetic constraints as hypotheses for future testing, not demonstrated mechanisms.
+
+Comment 3. Western monarch decline framing
+Second, there is much language in the paper and abstract about the dogmatic "decline" of the western monarch, which is based solely on counts of monarchs at the wintering colonies. This is a contentious issue, with many scientists now reporting how counts of monarchs in other life stages are not showing the same declines, or at least, they are not the same trajectory. Also, the messaging around the "decline" is now even thought to be the motivating factor behind the rise in non-native milkweed plantings, and captive-rearing of monarchs, both of which then give rise to greater infection prevalence of the OE parasite. The authors should consider how these statements have in itself, made things worse for monarchs. To address this main concern, the authors could simply remove the bits about the monarchs declining, and focus solely on the management implications for this work. Removing these would not detract from the main message of the paper, and, it would even help with the point above about length.
+
+Response 3
+We removed the population-decline framing from the Simple Summary, Abstract, Introduction, Discussion, and Conclusions. The revised Introduction is limited to the ecological and historical background needed to explain the motivation for the study and the wind-related prediction we evaluated.

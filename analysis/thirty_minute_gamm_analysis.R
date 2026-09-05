@@ -1,8 +1,6 @@
 #!/usr/bin/env Rscript
 
-# Focused export script for the 30-minute GAM analysis
-# Produces minimal assets required for the thesis report.
-# Outputs are written to thesis_exports/30_min/{figures,tables,text}.
+# Reproducible 30-minute GAMM candidate comparison and selected-model export.
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -47,8 +45,7 @@ model_data <- dat %>%
     !is.na(butterflies_direct_sun_t_lag),
     !is.na(observation_order_within_day_t),
     !is.na(deployment_day),
-    !is.na(deployment_id),
-    !is.na(Observer)
+    !is.na(deployment_id)
   )
 
 n_obs <- nrow(model_data)
@@ -56,9 +53,11 @@ n_periods <- dplyr::n_distinct(model_data$deployment_day)
 n_sites <- if ("grove" %in% names(model_data)) dplyr::n_distinct(model_data$grove) else dplyr::n_distinct(model_data$deployment_id)
 
 # ----------------------------------------------------------------------------
-# Model set (48 candidates, M1-M48)
+# Model set. M20 and M44 are exact duplicates of M17 and M41.
+# They are excluded without renumbering so the original candidate IDs remain
+# traceable to the exploratory analysis.
 # ----------------------------------------------------------------------------
-random_structure <- list(deployment_id = ~1, Observer = ~1, deployment_day = ~1)
+random_structure <- list(deployment_id = ~1, deployment_day = ~1)
 correlation_structure <- corAR1(form = ~ observation_order_within_day_t | deployment_day)
 
 model_specs <- list(
@@ -137,60 +136,56 @@ model_specs <- c(model_specs, list(
   "M52" = "butterfly_difference_cbrt ~ s(temperature_avg) + s(time_within_day_t) + ti(max_gust, butterflies_direct_sun_t_lag)"
 ))
 
-fit_model <- function(formula_str, data) {
-  tryCatch(
-    {
+model_specs <- model_specs[!names(model_specs) %in% c("M20", "M44")]
+
+fit_model <- function(formula_str, data, method = "ML") {
+  warnings <- character()
+  tryCatch({
+    model <- withCallingHandlers(
       gamm(as.formula(formula_str),
         data = data,
         random = random_structure,
         correlation = correlation_structure,
-        method = "REML"
-      )
-    },
-    error = function(e) NULL
-  )
+        method = method
+      ),
+      warning = function(w) {
+        warnings <<- c(warnings, conditionMessage(w))
+        invokeRestart("muffleWarning")
+      }
+    )
+    list(model = model, error = "", warning = paste(unique(warnings), collapse = " | "))
+  }, error = function(e) {
+    list(model = NULL, error = conditionMessage(e), warning = paste(unique(warnings), collapse = " | "))
+  })
 }
 
 cat(sprintf("Fitting %d candidate models...\n", length(model_specs)))
-fits <- lapply(model_specs, fit_model, data = model_data)
-ok <- !vapply(fits, is.null, logical(1))
-fits <- fits[ok]
-specs_ok <- model_specs[names(fits)]
-have_lme <- vapply(fits, function(x) !is.null(x$lme), logical(1))
-if (!all(have_lme)) {
-  warning("Dropping ", sum(!have_lme), " fits without lme component: ", paste(names(fits)[!have_lme], collapse = ", "))
-  fits <- fits[have_lme]
-  specs_ok <- specs_ok[names(fits)]
-}
-cat(sprintf("%d models fitted successfully.\n", length(fits)))
+fit_results <- lapply(model_specs, fit_model, data = model_data, method = "ML")
+names(fit_results) <- names(model_specs)
+fits_ml <- lapply(fit_results, `[[`, "model")
+names(fits_ml) <- names(model_specs)
+fit_error <- vapply(fit_results, function(x) {
+  x$error
+}, character(1))
+fit_warning <- vapply(fit_results, `[[`, character(1), "warning")
+has_convergence_warning <- grepl("convergence", fit_warning, ignore.case = TRUE)
+names(has_convergence_warning) <- names(model_specs)
+ok <- vapply(fits_ml, function(x) !is.null(x) && !is.null(x$lme), logical(1)) &
+  !has_convergence_warning
+cat(sprintf("%d models fitted successfully. %d failed.\n", sum(ok), sum(!ok)))
 
 # ----------------------------------------------------------------------------
 # AIC ranking + helper utilities
 # ----------------------------------------------------------------------------
-aic_tbl <- purrr::map_dfr(names(fits), function(nm) {
-  m <- fits[[nm]]
-  if (is.null(m$lme)) {
-    return(NULL)
-  }
+aic_tbl <- purrr::map_dfr(names(model_specs), function(nm) {
+  m <- fits_ml[[nm]]
+  if (!ok[[nm]]) return(NULL)
   aic_val <- tryCatch(AIC(m$lme), error = function(e) NA_real_)
-  if (is.na(aic_val)) {
-    return(NULL)
-  }
   loglik_val <- tryCatch(as.numeric(logLik(m$lme)), error = function(e) NA_real_)
-  if (is.na(loglik_val)) {
-    return(NULL)
-  }
-  df_val <- tryCatch(attr(logLik(m$lme), "df"), error = function(e) NA_real_)
-  if (is.na(df_val)) {
-    return(NULL)
-  }
-  tibble(
-    Model = nm,
-    Formula = specs_ok[[nm]],
-    AIC = aic_val,
-    LogLik = loglik_val,
-    df = df_val
-  )
+  df_val <- tryCatch(as.numeric(attr(logLik(m$lme), "df")), error = function(e) NA_real_)
+  if (!is.finite(aic_val) || !is.finite(loglik_val) || !is.finite(df_val)) return(NULL)
+  tibble(Model = nm, Formula = model_specs[[nm]], AIC = aic_val,
+         LogLik = loglik_val, df = df_val, Likelihood_Method = "ML")
 }) %>%
   arrange(.data$AIC) %>%
   mutate(
@@ -199,7 +194,46 @@ aic_tbl <- purrr::map_dfr(names(fits), function(nm) {
   )
 
 best_id <- aic_tbl$Model[1]
-best <- fits[[best_id]]
+if (length(best_id) == 0 || is.na(best_id)) {
+  stop("No 30-minute candidate model produced a finite ML AIC value.")
+}
+best_reml_result <- fit_model(model_specs[[best_id]], model_data, method = "REML")
+if (is.null(best_reml_result$model) || is.null(best_reml_result$model$lme) ||
+    grepl("convergence", best_reml_result$warning, ignore.case = TRUE)) {
+  stop("Selected model REML refit failed: ", best_reml_result$error,
+       best_reml_result$warning)
+}
+best <- best_reml_result$model
+fits <- fits_ml
+fits[[best_id]] <- best
+
+audit_tbl <- purrr::map_dfr(names(model_specs), function(nm) {
+  m <- fits_ml[[nm]]
+  if (!ok[[nm]]) {
+    status <- if (has_convergence_warning[[nm]]) "convergence_failure" else "failure"
+    return(tibble(
+      Model = nm, Formula = model_specs[[nm]], Status = status,
+      Error = fit_error[[nm]], Warning = fit_warning[[nm]], n = nrow(model_data),
+      Likelihood_Method = "ML", LogLik = NA_real_, df = NA_real_,
+      AIC = NA_real_, Delta_AIC = NA_real_, Weight = NA_real_
+    ))
+  }
+  loglik_val <- tryCatch(as.numeric(logLik(m$lme)), error = function(e) NA_real_)
+  df_val <- tryCatch(as.numeric(attr(logLik(m$lme), "df")), error = function(e) NA_real_)
+  aic_val <- tryCatch(AIC(m$lme), error = function(e) NA_real_)
+  tibble(
+    Model = nm, Formula = model_specs[[nm]], Status = "success", Error = "",
+    Warning = fit_warning[[nm]],
+    n = nrow(model_data), Likelihood_Method = "ML", LogLik = loglik_val,
+    df = df_val, AIC = aic_val, Delta_AIC = NA_real_, Weight = NA_real_
+  )
+})
+audit_ok <- audit_tbl$Status == "success" & is.finite(audit_tbl$AIC)
+audit_min <- min(audit_tbl$AIC[audit_ok])
+audit_tbl$Delta_AIC[audit_ok] <- audit_tbl$AIC[audit_ok] - audit_min
+audit_tbl$Weight[audit_ok] <- exp(-0.5 * audit_tbl$Delta_AIC[audit_ok]) /
+  sum(exp(-0.5 * audit_tbl$Delta_AIC[audit_ok]))
+readr::write_csv(audit_tbl, file.path(export_dir, "model_audit_30min.csv"))
 
 # Helper to get a nice, human-readable term list from a formula
 humanize <- function(x) {
@@ -290,74 +324,24 @@ includes_wind_smooth <- vapply(top_models$Model, function(id) {
   any(grepl("s\\(max_gust\\)", st))
 }, logical(1))
 
-# Build paragraph text programmatically
-best_terms <- rownames(summary(best$gam)$s.table)
-label_smooth <- function(term) {
-  if (startsWith(term, "s(") && endsWith(term, ")")) {
-    inner <- substr(term, 3, nchar(term) - 1)
-    return(humanize(inner))
-  }
-  if (startsWith(term, "ti(") && endsWith(term, ")")) {
-    inner <- substr(term, 4, nchar(term) - 1)
-    parts <- trimws(strsplit(inner, ",", fixed = TRUE)[[1]])
-    parts_h <- humanize(parts)
-    if (all(c("Maximum wind speed", "Butterflies in direct sun") %in% parts_h)) {
-      return("wind x sun interaction")
-    }
-    return(paste("tensor interaction of", paste(parts_h, collapse = " and ")))
-  }
-  humanize(term)
-}
-plain_terms <- vapply(best_terms, label_smooth, character(1))
-
-term_sentence <- paste(plain_terms, collapse = ", ")
-
 best_weight <- aic_tbl$Weight[1]
 delta_next <- round(next_best$Delta_AIC, 1)
 
-wind_models_top <- top_models %>% filter(grepl("max_gust", Formula, fixed = TRUE))
-wind_in_top5 <- nrow(wind_models_top)
-
-best_wind_p <- NA_character_
-alt_wind_sentence <- "Wind variables did not appear among the top five models."
-if (wind_in_top5 > 0) {
-  wind_models_vec <- wind_models_top$Model
-  best_contains_wind <- best_id %in% wind_models_vec
-  if (best_contains_wind) {
-    pval_best <- get_wind_p(fits[[best_id]])
-    best_wind_p <- if (is.na(pval_best)) "NA" else format.pval(pval_best, digits = 3)
-  }
-
-  alt_candidates <- wind_models_vec[wind_models_vec != best_id]
-  if (length(alt_candidates) > 0) {
-    alt_id <- alt_candidates[1]
-    alt_delta <- round(aic_tbl$AIC[aic_tbl$Model == alt_id] - aic_tbl$AIC[aic_tbl$Model == best_id], 1)
-    alt_pval <- get_wind_p(fits[[alt_id]])
-    alt_p_text <- if (is.na(alt_pval)) "NA" else format.pval(alt_pval, digits = 3)
-    include_phrase <- if (best_contains_wind) glue::glue("including {best_id}") else "excluding the best model"
-    alt_wind_sentence <- glue::glue(
-      "Wind variables appeared in {wind_in_top5} of the top five models ({include_phrase}). The strongest alternative wind model, {alt_id}, trailed {best_id} (Delta AIC = {alt_delta}) with wind p = {alt_p_text}."
-    )
-  } else {
-    alt_wind_sentence <- glue::glue(
-      "Wind variables appeared only in the best model ({best_id}) with p = {best_wind_p}."
-    )
-  }
-}
-
 para <- glue::glue(
-  "Environmental factors, but not wind alone, drove Delta BI in {n_obs} ",
-  "paired observations from {n_periods} monitoring periods at {n_sites} overwintering site{ifelse(n_sites==1,'','s')} during the 2023-2024 season. ",
-  "Testing of {nrow(aic_tbl)} candidate models identified {best_id} as the best-fit model. ",
-  "Model {best_id} included smooth terms for {term_sentence}, achieving an AIC value of {format(round(aic_tbl$AIC[1], 3), nsmall = 1)}. ",
-  "{best_id} captured {format(round(best_weight, 3), nsmall = 3)} of the model weight across {nrow(aic_tbl)} candidates (AIC = {round(aic_tbl$AIC[1],1)}), with the next best model Delta AIC = {delta_next}. ",
-  alt_wind_sentence
+  "The 30-minute analysis used {n_obs} paired observations from {n_periods} monitoring periods at {n_sites} overwintering site{ifelse(n_sites==1,'','s')} during the 2023-2024 season. ",
+  "We compared {length(model_specs)} unique candidate models using maximum likelihood. ",
+  "Of these, {nrow(aic_tbl)} produced rankable fits. Model {best_id} ranked first and included {readable_terms(model_specs[[best_id]])}. ",
+  "It had an AIC of {format(round(aic_tbl$AIC[1], 3), nsmall = 3)}, an Akaike weight of {format(round(best_weight, 4), nsmall = 4)}, and a Delta AIC of {delta_next} relative to the next-ranked model. ",
+  "Model {best_id} was then refitted using restricted maximum likelihood for coefficient estimation."
 )
 
 writeLines(as.character(para), file.path(text_dir, "paragraph.md"))
 
 # Best model equation (plain)
-eq_plain <- paste("butterfly_difference_cbrt ~", aic_tbl$Formula[1], "+ random(deployment_id, Observer, deployment_day) + AR1(within deployment_day)")
+eq_plain <- paste(
+  aic_tbl$Formula[1],
+  "+ random(deployment_id, deployment_day) + AR1(within deployment_day)"
+)
 writeLines(eq_plain, file.path(text_dir, "best_model_equation.txt"))
 writeLines(best_id, file.path(text_dir, "best_model_id.txt"))
 
@@ -377,14 +361,17 @@ smooth_terms <- as.data.frame(sm) %>%
   tibble::rownames_to_column("term") %>%
   tibble::as_tibble() %>%
   mutate(term_type = "smooth")
-readr::write_csv(bind_rows(parametric_terms, smooth_terms), file.path(tab_dir, "m50_summary.csv"))
+readr::write_csv(
+  bind_rows(parametric_terms, smooth_terms),
+  file.path(tab_dir, "selected_model_summary.csv")
+)
 readr::write_csv(tibble(
   model = best_id,
   n = n_obs,
   adjusted_r_squared = summary(best$gam)$r.sq,
   scale = summary(best$gam)$scale,
-  formula = specs_ok[[best_id]]
-), file.path(tab_dir, "m50_fit_statistics.csv"))
+  formula = model_specs[[best_id]]
+), file.path(tab_dir, "selected_model_fit_statistics.csv"))
 
 # ----------------------------------------------------------------------------
 # Bivariate plot: wind speed vs Delta BI
@@ -645,7 +632,9 @@ if (length(plots) > 0) {
 # Export a binned high-res surface for wind x sun interaction
 src_file <- here("analysis", "lib", "plot_binned_interaction.R")
 if (file.exists(src_file)) source(src_file)
-if (exists("create_binned_interaction_plot")) {
+has_wind_sun_tensor <- any(grepl("ti\\(max_gust,butterflies_direct_sun_t_lag\\)",
+                                  rownames(sm), fixed = FALSE))
+if (exists("create_binned_interaction_plot") && has_wind_sun_tensor) {
   interaction_sizes <- reference_sizes(7, 0.70)
   p_inter_binned <- create_binned_interaction_plot(
     gam_model = best$gam,
@@ -671,6 +660,12 @@ if (exists("create_binned_interaction_plot")) {
   )
   ggsave(file.path(fig_dir, "interaction_wind_sun_30min.png"), p_inter_binned, width = 7, height = 6, dpi = 300, bg = "white")
   ggsave(here("figures", "interaction_wind_sun_30min.png"), p_inter_binned, width = 7, height = 6, dpi = 600, bg = "white")
+} else {
+  writeLines(
+    paste("Interaction surface not generated because selected model", best_id,
+          "does not contain the wind by visible-sun tensor smooth."),
+    file.path(text_dir, "interaction_figure_status.txt")
+  )
 }
 
 # ----------------------------------------------------------------------------
@@ -683,52 +678,11 @@ wind_smooth_in_top <- tibble(
 readr::write_csv(wind_smooth_in_top, file.path(tab_dir, "top5_wind_smooth_presence.csv"))
 writeLines(c(
   sprintf("Any top-5 model with s(max_gust)? %s", ifelse(any(includes_wind_smooth), "Yes", "No")),
-  paste(capture.output(print(wind_smooth_in_top)), collapse = "\n")
+  paste(wind_smooth_in_top$Model, wind_smooth_in_top$Includes_s_max_gust, sep = ",")
 ), file.path(text_dir, "wind_smooth_check.txt"))
 
 # ----------------------------------------------------------------------------
-# Request 7: Sensitivity - minutes above 2 m/s vs max gust
-# ----------------------------------------------------------------------------
-if ("minutes_above_threshold" %in% names(model_data)) {
-  # Construct two comparable GAMMs using best model structure but swap wind metric
-  # Base RHS without wind elements
-  rhs_base <- aic_tbl$Formula[1]
-  # If best model already has max_gust, we replace it; otherwise we append a wind smooth for comparison
-  if (grepl("max_gust", rhs_base, fixed = TRUE)) {
-    rhs_gust <- rhs_base
-    rhs_mins <- gsub("s?\\(max_gust\\)", "s(minutes_above_threshold)", rhs_base)
-  } else {
-    # Add smooth wind metric on top of best structure for a paired comparison
-    rhs_gust <- paste0(rhs_base, " + s(max_gust)")
-    rhs_mins <- paste0(rhs_base, " + s(minutes_above_threshold)")
-  }
-
-  fit_gust <- fit_model(paste("butterfly_difference_cbrt ~", rhs_gust), model_data)
-  fit_mins <- fit_model(paste("butterfly_difference_cbrt ~", rhs_mins), model_data)
-  if (!is.null(fit_gust) && !is.null(fit_mins) &&
-    !is.null(fit_gust$lme) && !is.null(fit_mins$lme)) {
-    aic_gust <- tryCatch(AIC(fit_gust$lme), error = function(e) NA_real_)
-    aic_mins <- tryCatch(AIC(fit_mins$lme), error = function(e) NA_real_)
-    if (is.finite(aic_gust) && is.finite(aic_mins)) {
-      sens <- tibble(
-        Model = c("Best+max_gust", "Best+minutes_above_2ms"),
-        AIC = c(aic_gust, aic_mins)
-      ) %>%
-        arrange(AIC) %>%
-        mutate(Delta_AIC = round(AIC - min(AIC), 3))
-
-      sens_tex <- kable(sens,
-        format = "latex", booktabs = TRUE,
-        caption = "Sensitivity: wind metric (max gust vs minutes > 2 m/s)"
-      )
-      writeLines(sens_tex, file.path(tab_dir, "sensitivity_wind_metric.tex"))
-      readr::write_csv(sens, file.path(tab_dir, "sensitivity_wind_metric.csv"))
-    }
-  }
-}
-
-# ----------------------------------------------------------------------------
-# Request 8: Model diagnostics with autocorrelation plots
+# Model diagnostics with autocorrelation plots
 # ----------------------------------------------------------------------------
 res_df <- tibble(
   fitted = fitted(best$lme),

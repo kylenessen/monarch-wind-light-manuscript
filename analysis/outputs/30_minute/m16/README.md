@@ -1,0 +1,9 @@
+# M16 full output bundle
+
+This directory contains the complete focused export for the selected 30-minute model M16. The model was selected by maximum-likelihood AIC comparison and refitted using restricted maximum likelihood for coefficient estimation.
+
+The `tables` directory contains the fixed effects with confidence intervals, model-fit statistics, variance components, conditional wind effects, figure prediction values, and residual diagnostic statistics. The `text` directory contains the complete printed model output, figure conditions, and R session information.
+
+The primary interpretation figures are `m16_predicted_response.png` and `m16_conditional_wind_effect.png`. They use representative observed conditions and the manuscript's existing figure style. The manuscript response figure places maximum wind gust on the x-axis, uses line color for sun-exposed BI, and separates temperatures into panels. The displayed sun-exposed BI values are 0, 7, and 20. Values of 7 and 20 are the median and 75th percentile among observations with positive sun-exposed BI. The figure displays fitted values on the signed cube-root response scale. Each line spans 0 to the overall 99th percentile of maximum gust, 6.21 m/s. All observations were retained in model fitting. Values above zero indicate increases in BI, and values below zero indicate decreases. The remaining figures show the conditional wind effect, residual diagnostics, ACF, and PACF.
+
+The raw main-effect coefficients should not be interpreted independently because M16 contains a three-way interaction and its predictors were not centered. In particular, the raw maximum-wind coefficient is conditional on temperature equal to zero, which falls outside the observed range. The prediction and conditional-effect figures provide the appropriate interpretation at observed temperatures and sun-exposed BI values.
