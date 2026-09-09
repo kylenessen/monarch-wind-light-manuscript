@@ -2,6 +2,8 @@
 
 This directory contains draft open-format tables for the USGS data release associated with the monarch wind and light manuscript. These files are generated from the repository sources by `analysis/prepare_data_release.py`. The source JSON, SQLite databases, and manuscript analysis files remain unchanged.
 
+The [data release working plan](PLAN.md) records the expanded scope for both seasons, including observations not used in the manuscript. It also inventories source wind records omitted by the current deployment filters and identifies overlapping deployment assignments. The tables described here are the existing draft and do not yet cover that expanded scope.
+
 Run the preparation command from the repository root.
 
 ```sh
