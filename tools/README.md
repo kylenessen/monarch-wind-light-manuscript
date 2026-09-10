@@ -2,13 +2,25 @@
 
 `export_season_photos.py` makes an independent copy of the raw second-season archive, using the `ID` and `deployment_ID` fields in the camera GeoPackage. It never renames or writes to source photographs. JPEG names use the recorded EXIF capture timestamp without filtering dates, correcting clocks, or splitting deployments. Unreadable dates and timestamp collisions retain their original paths under the deployment's `review_needed` folder. Other media retain their paths under `other_media`.
 
-Create an inventory in a new destination, then copy its files. Run from the repository with its Python environment installed. Pillow is included through the existing matplotlib dependency.
+Use one command to inventory, copy, and verify the entire archive. The script declares its own Pillow dependency for `uv`, so it can also run as a standalone file copied onto the portable drive. Rerun the same command to resume an interrupted inventory or transfer.
 
 ```sh
-uv run tools/export_season_photos.py plan SOURCE_FOLDER CAMERAS_GPKG NEW_DESTINATION
-uv run tools/export_season_photos.py copy NEW_DESTINATION
+uv run tools/export_season_photos.py run SOURCE_FOLDER CAMERAS_GPKG NEW_DESTINATION --background
 ```
 
-The destination contains a camera metadata snapshot, deployment mapping, SQLite inventory, and CSV manifest. Each copy is checked with SHA-256 before publication. Existing destination files are never overwritten. A repeated copy command resumes unfinished records and accepts an existing file only when its contents match the source. Sources whose size or modification time changed since planning are flagged. `copy --limit 5` can be used for an initial small batch before resuming the complete export.
+`--background` detaches the job from the terminal or assistant session. On macOS it prevents idle system sleep while running. The job writes `NEW_DESTINATION.log` and `NEW_DESTINATION.status.json` alongside the export folder. The status becomes `completed`, `interrupted`, or `failed`, with details when something needs attention. No supervision or intermediate commands are required. Omit `--background` to run in the foreground.
+
+When the source and destination share an APFS volume, the script uses independent copy-on-write clones. These initially share disk blocks, but editing or deleting a copy does not change the original. This avoids requiring enough free space for a second physical copy of the entire archive. A small independence probe checks clone support before choosing this method. On other filesystems the script makes ordinary copies and checks that sufficient space is available. It never falls back silently from clones to a full-size transfer.
+
+The destination contains a camera metadata snapshot, deployment mapping, SQLite inventory, and CSV manifest. Each copy is checked with SHA-256 before publication. Existing destination files are never overwritten. A repeated command resumes unfinished records and accepts an existing file only when its contents match the source. Sources whose size or modification time changed since planning are flagged. A process lock prevents two unattended runs from writing to the same export concurrently. Existing completed copies are left alone on resumption.
+
+For this portable drive, use the standalone script and camera snapshot in `/Volumes/MonarchSSD/data_release`.
+
+```sh
+cd /Volumes/MonarchSSD/data_release
+uv run export_season_photos.py run 'raw/VSFB 2025' cameras.gpkg VSFB_2025_Deployment_Review --background
+```
+
+The separate `plan` and `copy` commands remain available for existing exports. Run the regression checks from the repository with `uv run --no-sync python -m unittest discover -s tools -p 'test_export_season_photos.py'`.
 
 Leave the export unchanged until copying finishes. Manual changes afterward are not reflected in the original manifest. Source archives and the first-season photo folders remain separate from this review copy.
