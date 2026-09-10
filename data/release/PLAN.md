@@ -2,6 +2,8 @@
 
 Started September 9, 2026 on branch `data-release`. The initial inventory below describes repository commit `f5857fe`. This is a working plan for the broader release, separate from the descriptions of the current draft products in [README.md](README.md).
 
+The [QGIS source investigation](SOURCE_INVENTORY.md) subsequently located 19 first-season deployments and 10 later-season camera records in the `masters` repository. It identifies the missing temperature deployment metadata, a reused SC12 identifier, and the remaining gaps in later-season dates and wind archives. The baseline counts below describe the existing draft before those sources are imported.
+
 ## Agreed scope
 
 Release all available study photographs, wind records, reviewed temperature records, and supporting deployment information from both seasons. Include deployments and observations that were not used in the manuscript, including deployments without butterfly detections. Make the observations useful for independent reuse. Include compact analysis CSVs for the two retained manuscript results.
