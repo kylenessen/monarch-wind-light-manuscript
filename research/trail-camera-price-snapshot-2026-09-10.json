@@ -1,0 +1,78 @@
+{
+  "checked_at": "2026-09-10T20:44:39.771906-07:00",
+  "currency": "USD",
+  "products": [
+    {
+      "name": "GardePro A80 Pro Wi-Fi Trail Camera",
+      "source": "https://gardepro.com/products/gardepro-a80-pro-wi-fi-trail-camera.js",
+      "variants": [
+        {
+          "title": "1-Pack / None",
+          "price_usd": 119.99,
+          "available": true,
+          "variant_id": 52551389413665
+        },
+        {
+          "title": "2-Pack / None",
+          "price_usd": 225.99,
+          "available": true,
+          "variant_id": 52551389610273
+        },
+        {
+          "title": "4-Pack / None",
+          "price_usd": 429.99,
+          "available": true,
+          "variant_id": 52551389806881
+        }
+      ]
+    },
+    {
+      "name": "GardePro E6 2.0 Pro Wi-Fi Trail Camera",
+      "source": "https://gardepro.com/products/gardepro-e6-2-0-pro-wifi-trail-camera.js",
+      "variants": [
+        {
+          "title": "US/CA / 1-Pack / None",
+          "price_usd": 89.99,
+          "available": true,
+          "variant_id": 52030904926497
+        },
+        {
+          "title": "US/CA / 2-Pack / None",
+          "price_usd": 169.99,
+          "available": true,
+          "variant_id": 52030905090337
+        },
+        {
+          "title": "US/CA / 4-Pack / None",
+          "price_usd": 329.99,
+          "available": true,
+          "variant_id": 52030905254177
+        }
+      ]
+    },
+    {
+      "name": "GardePro E8 2.0 Pro Wi-Fi Trail Camera",
+      "source": "https://gardepro.com/products/e8-2-0-pro.js",
+      "variants": [
+        {
+          "title": "1-Pack / None",
+          "price_usd": 99.99,
+          "available": true,
+          "variant_id": 51494455574817
+        },
+        {
+          "title": "2-Pack / None",
+          "price_usd": 189.99,
+          "available": true,
+          "variant_id": 51494455673121
+        },
+        {
+          "title": "4-Pack / None",
+          "price_usd": 339.99,
+          "available": true,
+          "variant_id": 51494455771425
+        }
+      ]
+    }
+  ]
+}
