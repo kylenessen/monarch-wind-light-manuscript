@@ -24,3 +24,13 @@ uv run export_season_photos.py run 'raw/VSFB 2025' cameras.gpkg VSFB_2025_Deploy
 The separate `plan` and `copy` commands remain available for existing exports. Run the regression checks from the repository with `uv run --no-sync python -m unittest discover -s tools -p 'test_export_season_photos.py'`.
 
 Leave the export unchanged until copying finishes. Manual changes afterward are not reflected in the original manifest. Source archives and the first-season photo folders remain separate from this review copy.
+
+## Recording durations
+
+`camera_recording_duration.py` reads the saved inventory and camera snapshot without opening or changing photos. It reports the longest timestamp segment for each camera, splitting at gaps greater than 24 hours by default. All other segments remain documented, so stray old clock dates do not inflate the main duration. The report includes exact endpoints, elapsed days, photo counts, typical intervals, gaps, duplicate timestamps, and empty cameras. These observed spans do not establish battery life or explain why recording ended. Videos do not contribute to the photo timestamp spans.
+
+```sh
+uv run tools/camera_recording_duration.py /Volumes/MonarchSSD/data_release/VSFB_2025_Deployment_Review --output /Volumes/MonarchSSD/data_release/VSFB_2025_duration_report
+```
+
+The command writes Markdown and JSON reports. Use `--gap-hours` to adjust the segment boundary. Reports use the export inventory as recorded during copying, so later manual changes to images are not included. Run the duration checks with `uv run --no-sync python -m unittest discover -s tools -p 'test_camera_recording_duration.py'`.
