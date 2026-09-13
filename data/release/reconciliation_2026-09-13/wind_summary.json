@@ -3,10 +3,13 @@
     "repository": "/Users/kylenessen/.codex/worktrees/0dbf/monarch-wind-light-manuscript",
     "portable/raw": "/Volumes/MonarchSSD/data_release/raw"
   },
+  "excluded_deployments": {
+    "2024-2025/AIR1": "Excluded at user request on September 13, 2026. Camera VEXX photographs are unavailable and the deployment is considered lost for the current release."
+  },
   "interval_sources": {
-    "/Volumes/MonarchSSD/data_release/reconciled_2026-09-13/photo_intervals_2025.csv": "3e577c5d2cdfccb6f62caff554735c9f4eb28c3915eb4f2b3bca9f0762e5e842",
-    "/Users/kylenessen/GitHub/masters/VSFB_Monarchs/deployments.gpkg": "37dc7cb3d9e57a2cb92cd1d83fcb31d745f035879a31b9a16e9d9b6423a211f8",
-    "/Volumes/MonarchSSD/data_release/VSFB_2025_Deployment_Review/metadata/cameras.gpkg": "a12f2690cacf10d9212aa6689b308e28d0f00feaf65b31c6512a45a3956bf852"
+    "/Volumes/MonarchSSD/data_release/reconciled_2026-09-13/photo_intervals_2025.csv": "77c8f137b66e6a6c46d61b6b4527ae7a7833ee80b2d3286407234a91bf50d963",
+    "/Volumes/MonarchSSD/data_release/reconciled_2026-09-13/source_metadata/deployments_2024.gpkg": "37dc7cb3d9e57a2cb92cd1d83fcb31d745f035879a31b9a16e9d9b6423a211f8",
+    "/Volumes/MonarchSSD/data_release/reconciled_2026-09-13/source_metadata/cameras_2025.gpkg": "a12f2690cacf10d9212aa6689b308e28d0f00feaf65b31c6512a45a3956bf852"
   },
   "filename_aliases": {
     "oc sw catfable": "CatFable"

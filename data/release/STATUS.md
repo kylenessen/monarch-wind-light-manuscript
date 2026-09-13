@@ -2,6 +2,8 @@
 
 Updated September 13, 2026 after the user completed photograph review. The 2025 photo set has been finalized at 167,821 images. Wind sources have been merged, deduplicated, and filtered by assigned sensor and deployment interval. There are 725,714 distinct retained measurements and 757,260 deployment-linked rows. The [reconciliation report](reconciliation_2026-09-13/README.md) records the completed work, available outputs, exact rules, and remaining gaps. Full spatial deployment products, missing wind sources, final documentation, and release validation remain unfinished. This investigation did not check a live ScienceBase submission or USGS approval system.
 
+AIR1 / VEXX is excluded from the current release at the user's request. There are 28 active deployment intervals. [The field interpretation](reconciliation_2026-09-13/FIELD_INTERPRETATION.md) also clarifies that SC12's regular wind sequence ends December 23, with only 69 later zero-valued readings on January 14. Battery failure is unconfirmed for both SC12 and PS01.
+
 The supplied Pismo XML has been inspected strictly as a structural example. [METADATA_REVIEW.md](METADATA_REVIEW.md) records its section mapping, draft descriptive text, and current USGS guidance. No submission XML has yet been finalized. The new image manifest accounts for the user's cleanup and the 60 subsequent renames. The older observations below document the initial investigation and are superseded where the reconciliation report provides newer results.
 
 ## Where the work lives

@@ -17,6 +17,7 @@ import pandas as pd
 MEASUREMENTS = ["wind_speed_m_s", "wind_gust_m_s", "wind_direction_degrees"]
 IDENTITY = ["wind_sensor_name", "timestamp_recorded", *MEASUREMENTS]
 ALIASES = {"oc sw catfable": "CatFable"}
+EXCLUSION_FILE = Path(__file__).resolve().parents[1] / "data/release/deployment_exclusions.json"
 
 FIELD_DESCRIPTIONS = {
     "deployment_key": "Unique release join key formed as season/deployment_id. Distinguishes the two SC12 deployments.",
@@ -90,7 +91,8 @@ def digest(path):
         return hashlib.file_digest(handle, "sha256").hexdigest()
 
 
-def get_intervals(deployments_gpkg, cameras_gpkg, photo_intervals):
+def get_intervals(deployments_gpkg, cameras_gpkg, photo_intervals, exclusions=None):
+    exclusions = exclusions or {}
     with read_only(deployments_gpkg) as db:
         first = pd.read_sql_query('SELECT deployment_id,camera_name,wind_meter_name,Deployed_time,Recovered_time,notes FROM deployments', db)
     with read_only(cameras_gpkg) as db:
@@ -98,10 +100,13 @@ def get_intervals(deployments_gpkg, cameras_gpkg, photo_intervals):
     photos = pd.read_csv(photo_intervals, keep_default_na=False)
     if photos["deployment_key"].duplicated().any():
         raise ValueError("Repeated photo interval key")
-    if set(photos.deployment_id) != set(second.deployment_ID):
+    excluded_second = {k.split("/", 1)[1] for k in exclusions if k.startswith("2024-2025/")}
+    if set(photos.deployment_id) - excluded_second != set(second.deployment_ID) - excluded_second:
         raise ValueError("Camera metadata and photo intervals do not match")
     records = []
     for r in first.itertuples(index=False):
+        if f"2023-2024/{r.deployment_id}" in exclusions:
+            continue
         sensor = "" if r.wind_meter_name in (None, "NA", "") else r.wind_meter_name
         records.append({"season": "2023-2024", "deployment_id": r.deployment_id,
                         "camera_name": r.camera_name, "wind_sensor_name": sensor,
@@ -110,6 +115,8 @@ def get_intervals(deployments_gpkg, cameras_gpkg, photo_intervals):
                         "photo_count_for_interval": "", "notes": r.notes or ""})
     by_id = photos.set_index("deployment_id")
     for r in second.itertuples(index=False):
+        if f"2024-2025/{r.deployment_ID}" in exclusions:
+            continue
         p = by_id.loc[r.deployment_ID]
         records.append({"season": "2024-2025", "deployment_id": r.deployment_ID,
                         "camera_name": r.ID, "wind_sensor_name": r.wind_meter_ID,
@@ -179,7 +186,8 @@ def interval_matches(frame, start, end):
 
 def reconcile(repo, raw, photos, deployments_gpkg, cameras_gpkg, output):
     output.mkdir(parents=True, exist_ok=True)
-    intervals = get_intervals(deployments_gpkg, cameras_gpkg, photos)
+    exclusions = json.loads(EXCLUSION_FILE.read_text()) if EXCLUSION_FILE.exists() else {}
+    intervals = get_intervals(deployments_gpkg, cameras_gpkg, photos, exclusions)
     canonical = {s.casefold(): s for s in intervals.wind_sensor_name if s}
     paths = [("repository/" + str(p.relative_to(repo)), p) for p in sorted((repo / "data/wind").glob("*.s3db"))]
     paths += [("portable/raw/" + str(p.relative_to(raw)), p) for p in sorted(raw.rglob("*.s3db"))]
@@ -262,6 +270,7 @@ def reconcile(repo, raw, photos, deployments_gpkg, cameras_gpkg, output):
     intervals.drop(columns=["_start", "_end"]).to_csv(output / "deployment_intervals.csv", index=False)
     wind.loc[wind.timestamp_conflict].to_csv(output / "wind_timestamp_conflicts.csv", index=False)
     provenance = {"source_roots": {"repository": str(repo), "portable/raw": str(raw)},
+                  "excluded_deployments": exclusions,
                   "interval_sources": {str(p): digest(p) for p in [photos, deployments_gpkg, cameras_gpkg]},
                   "filename_aliases": ALIASES,
                   "interval_rule": "Assigned sensor and inclusive recorded-time bounds. No clock correction.",

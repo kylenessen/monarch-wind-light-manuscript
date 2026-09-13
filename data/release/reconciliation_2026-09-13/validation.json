@@ -78,5 +78,7 @@
   ],
   "baseline_exclusion_explanation": "Nine original draft rows occur at the whole second immediately before a fractional deployment start. The new filter preserves exact source boundaries instead of truncating them.",
   "photo_filenames_match_current_exif": true,
-  "remaining_review_files": 0
+  "remaining_review_files": 0,
+  "excluded_deployments_absent_from_active_tables": true,
+  "active_deployment_intervals": 28
 }

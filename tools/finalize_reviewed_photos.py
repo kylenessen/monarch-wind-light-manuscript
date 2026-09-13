@@ -15,6 +15,8 @@ from datetime import datetime
 
 from PIL import Image
 
+EXCLUSION_FILE = Path(__file__).resolve().parents[1] / "data/release/deployment_exclusions.json"
+
 
 def digest(path):
     with path.open("rb") as handle:
@@ -87,6 +89,7 @@ def apply_moves(root, plan):
 
 def run(root, output, exclusions):
     root = root.resolve()
+    excluded_deployments = json.loads(EXCLUSION_FILE.read_text()) if EXCLUSION_FILE.exists() else {}
     output.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect((root / "metadata/inventory.sqlite").as_uri() + "?mode=ro", uri=True) as db:
         db.row_factory = sqlite3.Row
@@ -108,6 +111,10 @@ def run(root, output, exclusions):
     files, seen, photo_times = [], set(), {}
     for directory in sorted(root.iterdir()):
         if not directory.is_dir() or directory.name == "metadata" or directory.name.startswith("."):
+            continue
+        if f"2024-2025/{directory.name}" in excluded_deployments:
+            if any(p.is_file() and not p.name.startswith(".") for p in directory.rglob("*")):
+                raise ValueError(f"Excluded deployment now contains files and needs review: {directory.name}")
             continue
         photo_times[directory.name] = []
         for path in sorted(directory.rglob("*")):
@@ -159,6 +166,7 @@ def run(root, output, exclusions):
               ["original_export_path", "source_relative", "deployment_id", "reason"])
     write_csv(output / "photo_intervals_2025.csv", intervals, list(intervals[0]))
     summary = {"renamed_review_files": len(plan), "retained_files": len(files),
+               "excluded_deployments": excluded_deployments,
                "retained_photos": sum(bool(r["capture_time_recorded"]) for r in files),
                "absent_after_review": len(removed), "interval_exclusions": exclusions,
                "intervals": intervals}

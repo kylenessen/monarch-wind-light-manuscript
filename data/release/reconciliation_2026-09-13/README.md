@@ -4,6 +4,8 @@ Prepared September 13, 2026 after the user completed photograph review. The user
 
 The complete outputs are in `/Volumes/MonarchSSD/data_release/reconciled_2026-09-13`. This repository directory preserves the small summaries and field definitions. The large wind table, source-row links, image manifest, and removed-file accounting remain on the portable drive.
 
+The user subsequently excluded AIR1 / VEXX from the current release because its photographs are unavailable. The decision is stored in `../deployment_exclusions.json` and honored by both preparation scripts. Active interval and coverage tables now contain 28 deployments. [FIELD_INTERPRETATION.md](FIELD_INTERPRETATION.md) records the evidence for shared SC9/SC10 wind and the incomplete second-season recording sequences.
+
 ## Photographs
 
 All 60 remaining review images were renamed and returned to their deployment folders. They were distinct photographs in five deployments with repeated November 3 timestamps. The first occurrence uses `deployment_YYYYMMDDHHMMSS.JPG`. The second uses `deployment_YYYYMMDDHHMMSS_02.JPG`. No timestamp or image-content changes were made. The suffix distinguishes filenames without inventing a capture time. The move journal records the original and current paths and verified SHA-256 values.
@@ -52,9 +54,8 @@ SC9 and SC10 have overlapping StarDust assignments in the source metadata. Each 
 | UDMH05 | JADE | LeftLion | No matching database found |
 | BC01 | APEX | EchoBuzz | No matching database found |
 | ARC1 | ORCA | BoltZoom | No matching database found |
-| AIR1 | VEXX | FireSong | No photo interval available |
 
-Available wind spans end before the cleaned photo spans for PS01 and SC12. The reports describe available observations, not full coverage. The source deployment notes identify corrupted wind data at first-season UDMH1. Its 18,922 in-window records are retained with a quality note rather than being treated as validated readings.
+Available wind spans end before the cleaned photo spans for PS01 and SC12. The reports describe available observations, not full coverage. In particular, SC12's regular sequence stops December 23. Its January 14 endpoint consists of 69 zero-valued records after a 22-day gap and may reflect a later connection or test. See the field interpretation before treating those rows as continued field recording. The source deployment notes identify corrupted wind data at first-season UDMH1. Its 18,922 in-window records are retained with a quality note rather than being treated as validated readings.
 
 The recorded clocks are compared directly, as in the existing first-season scripts. Repeated photo timestamps show that timezone labels cannot simply be generalized to all sources. The new fields say `timestamp_recorded`, and no UTC alignment or clock correction is claimed. All matched wind databases have Units code 2, the same as the manuscript source databases. Numeric wind values retain the existing release's meters-per-second and degree conventions.
 
@@ -67,7 +68,7 @@ The new first-season filter retains fractional seconds in the GeoPackage boundar
 | `wind_measurements.csv` | One distinct measurement association per season and deployment, with shared measurement IDs and quality flags. |
 | `wind_record_sources.csv` | Links each retained measurement to every corresponding original database row. |
 | `wind_source_inventory.csv` | Source checksums, row accounting, raw timestamp ranges, sensor matching, and device settings. |
-| `deployment_intervals.csv` | The 29 first- and second-season filtering records, including unavailable intervals. This is not a full replacement spatial deployment table. |
+| `deployment_intervals.csv` | The 28 active first- and second-season filtering records. AIR1 is excluded. This is not a full replacement spatial deployment table. |
 | `deployment_wind_coverage.csv` | Counts, coverage endpoints, and explicit reasons for missing wind data. |
 | `wind_timestamp_conflicts.csv` | Conflict report. Currently contains headers and no records. |
 | `reviewed_image_manifest.csv` | Current files linked to original paths, EXIF times, and checksums. |
@@ -79,6 +80,7 @@ The new first-season filter retains fractional seconds in the GeoPackage boundar
 | `photo_summary.json` and `wind_summary.json` | Totals, rules, source identities, and coverage summaries. |
 | `validation.json` | Independent checks and the nine explained differences from the old draft. |
 | `source_metadata/` | Frozen copies of the first-season deployment and second-season camera GeoPackages used for this run. |
+| `deployment_exclusions.json` | User-authorized omissions from the active release. Source records remain preserved. |
 
 ## Reproduction and validation
 

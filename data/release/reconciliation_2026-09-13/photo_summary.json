@@ -7,15 +7,6 @@
   "intervals": [
     {
       "season": "2024-2025",
-      "deployment_id": "AIR1",
-      "deployment_key": "2024-2025/AIR1",
-      "photo_count_for_interval": 0,
-      "start_time_recorded": "",
-      "end_time_recorded": "",
-      "boundary_basis": "no_photos"
-    },
-    {
-      "season": "2024-2025",
       "deployment_id": "ARC1",
       "deployment_key": "2024-2025/ARC1",
       "photo_count_for_interval": 8432,
@@ -95,5 +86,8 @@
       "end_time_recorded": "2025-04-11T11:40:01",
       "boundary_basis": "user_reviewed_photos"
     }
-  ]
+  ],
+  "excluded_deployments": {
+    "2024-2025/AIR1": "Excluded at user request on September 13, 2026. Camera VEXX photographs are unavailable and the deployment is considered lost for the current release."
+  }
 }

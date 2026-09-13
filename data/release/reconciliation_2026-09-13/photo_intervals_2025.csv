@@ -1,5 +1,4 @@
 season,deployment_id,deployment_key,photo_count_for_interval,start_time_recorded,end_time_recorded,boundary_basis
-2024-2025,AIR1,2024-2025/AIR1,0,,,no_photos
 2024-2025,ARC1,2024-2025/ARC1,8432,2024-11-17T13:30:01,2025-01-15T11:20:01,user_reviewed_photos
 2024-2025,BC01,2024-2025/BC01,22289,2024-11-07T14:20:50,2025-04-11T11:30:01,user_reviewed_photos
 2024-2025,CR01,2024-2025/CR01,25042,2024-10-19T15:40:01,2025-04-11T13:10:01,user_reviewed_photos
