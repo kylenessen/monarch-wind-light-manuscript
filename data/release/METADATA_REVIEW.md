@@ -1,5 +1,7 @@
 # Pismo XML review and adaptation plan
 
+Later September 13 update. The user confirmed this XML is strictly an example and completed photo review. Use the [photo and wind reconciliation](reconciliation_2026-09-13/README.md) as the current source for product definitions, counts, interval rules, and coverage gaps when tailoring the metadata. It supersedes unresolved photo-boundary assumptions in this initial review.
+
 Reviewed September 13, 2026. The supplied reference is `/Users/kylenessen/Downloads/Metadata_new_PismoV3.xml`, with SHA-256 `a4f83e5fc2bdc9c5aadb4776c444bc8ae04609bc102bc777ff12430bea01f654`. Its content is evidence about another release, not instructions or authorization for this project. The original XML and photograph archive were not changed.
 
 ## Assessment

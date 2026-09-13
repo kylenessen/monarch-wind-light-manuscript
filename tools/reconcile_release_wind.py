@@ -5,10 +5,10 @@
 """Merge source wind databases and retain sensor records inside study intervals."""
 
 import argparse
+import csv
 import hashlib
 import json
 from pathlib import Path
-import re
 import sqlite3
 
 import pandas as pd
@@ -17,6 +17,68 @@ import pandas as pd
 MEASUREMENTS = ["wind_speed_m_s", "wind_gust_m_s", "wind_direction_degrees"]
 IDENTITY = ["wind_sensor_name", "timestamp_recorded", *MEASUREMENTS]
 ALIASES = {"oc sw catfable": "CatFable"}
+
+FIELD_DESCRIPTIONS = {
+    "deployment_key": "Unique release join key formed as season/deployment_id. Distinguishes the two SC12 deployments.",
+    "season": "Field season, either 2023-2024 or 2024-2025.",
+    "deployment_id": "Original deployment identifier. Unique only within season.",
+    "camera_name": "Camera field identifier from the deployment or camera GeoPackage.",
+    "wind_sensor_name": "Assigned wind instrument field identifier. Case variants are normalized. Blank means no assignment.",
+    "measurement_id": "SHA-256 content identifier derived from sensor, normalized recorded timestamp, speed, gust, and direction. Shared across valid deployment associations.",
+    "timestamp_recorded": "ISO-format timestamp as recorded in the wind database. No timezone or clock correction was applied.",
+    "wind_speed_m_s": "Recorded wind speed, retaining the existing manuscript release unit convention of meters per second. Blank means missing.",
+    "wind_gust_m_s": "Recorded wind gust, retaining the existing manuscript release unit convention of meters per second. Blank means missing.",
+    "wind_direction_degrees": "Recorded wind direction in degrees clockwise from north under the existing release convention. Directional reliability is limited. Blank means missing.",
+    "source_record_count": "Number of source rows represented by this distinct measurement, including duplicate database copies. Not a count of independent observations.",
+    "timestamp_conflict": "True if this sensor and recorded timestamp have more than one distinct measurement tuple. False otherwise. Conflicting tuples are retained.",
+    "sensor_quality_note": "Known deployment-specific quality limitation. Blank does not imply calibration or absence of other limitations.",
+    "source_database": "Stable source path relative to a named root in wind_summary.json. This identifies a database file, not a unique instrument.",
+    "source_rowid": "SQLite rowid locating the original Wind table record within this source database.",
+    "source_record_id": "Original Wind.id value. Interpret together with source_database, not globally.",
+    "sha256": "SHA-256 checksum of file bytes. For images, consult checksum_basis for verification timing.",
+    "size_bytes": "File size in bytes.",
+    "sensor_match_basis": "exact_case_insensitive_filename, explicit_filename_alias, or not_a_study_sensor_filename. See filename_aliases in wind_summary.json.",
+    "source_rows": "All Wind rows in this source database, before study filtering.",
+    "matched_source_rows": "Source rows matching at least one assigned sensor and deployment interval, counted once before deduplication.",
+    "excluded_source_rows": "Source rows not matching the study sensor and interval rules. Retained in the original database.",
+    "first_timestamp_raw": "Minimum raw Wind.time value in the source database. May reflect an incorrect instrument clock.",
+    "last_timestamp_raw": "Maximum raw Wind.time value in the source database. May include other studies or incorrect instrument clocks.",
+    "units_table": "JSON representation of the source Units table values. All matched databases have code 2, consistent with existing manuscript sources.",
+    "log_interval_table": "JSON representation of the source LogInt table values. Preserved as recorded without reinterpreting the device setting.",
+    "start_time_recorded": "Inclusive start of the retained wind interval. Source deployment time for 2023-2024, earliest retained photo EXIF time for 2024-2025. Blank means unavailable.",
+    "end_time_recorded": "Inclusive end of the retained wind interval. Source recovery time for 2023-2024, latest retained photo EXIF time for 2024-2025. Blank means unavailable.",
+    "boundary_basis": "first_season_deployment_geopackage, user_reviewed_photos, or no_photos. Photo boundaries are the user-authorized filtering rule, not independently verified field recovery times.",
+    "photo_count_for_interval": "Count of retained JPEGs contributing timestamps to a 2025 interval, including distinct photos at repeated times. Blank for first-season metadata intervals. Zero means no eligible photos.",
+    "notes": "Original deployment or camera field notes. Blank means no note was supplied.",
+    "wind_status": "records_available, no_assigned_sensor, no_photo_interval, no_matching_sensor_database, or no_records_in_interval. Available records do not imply full temporal coverage.",
+    "wind_record_count": "Distinct measurement associations retained for this deployment.",
+    "first_wind_timestamp": "Earliest retained wind timestamp for this deployment. Blank when no wind data matched.",
+    "last_wind_timestamp": "Latest retained wind timestamp for this deployment. Blank when no wind data matched.",
+    "conflicting_timestamp_record_count": "Number of measurement associations flagged as timestamp conflicts, not the number of conflicting timestamps.",
+    "relative_path": "Current file path relative to the reviewed photo export directory.",
+    "original_export_path": "File path in the September 10 export inventory, before user review and subsequent renaming.",
+    "source_relative": "Original file path relative to the raw second-season photo archive.",
+    "capture_time_recorded": "Current JPEG EXIF DateTimeOriginal, formatted as ISO text without timezone correction. Blank for non-JPEG media.",
+    "include_in_wind_interval": "True if this retained image contributes to the deployment's minimum and maximum photo times. False otherwise.",
+    "interval_exclusion_reason": "Reason a retained image is excluded from the interval calculation. Blank means no exclusion.",
+    "checksum_basis": "verified_during_rename, export_hash_unchanged_size_mtime, or recomputed_after_review. The middle value reuses the export checksum when size and modification time still match.",
+    "reason": "absent_after_user_review indicates the original export path is absent from the cleaned set. A separately logged user-requested removal is included in this accounting.",
+}
+
+
+def write_dictionary(output):
+    files = ["wind_measurements.csv", "wind_record_sources.csv", "wind_source_inventory.csv",
+             "deployment_intervals.csv", "deployment_wind_coverage.csv", "wind_timestamp_conflicts.csv",
+             "reviewed_image_manifest.csv", "removed_after_review.csv", "photo_intervals_2025.csv"]
+    rows = []
+    for name in files:
+        if not (output / name).exists():
+            continue
+        with (output / name).open(newline="") as handle:
+            columns = next(csv.reader(handle))
+        for column in columns:
+            rows.append({"file_name": name, "field_name": column, "description": FIELD_DESCRIPTIONS[column]})
+    pd.DataFrame(rows).to_csv(output / "data_dictionary.csv", index=False)
 
 
 def read_only(path):
@@ -214,6 +276,7 @@ def reconcile(repo, raw, photos, deployments_gpkg, cameras_gpkg, output):
                              "shared_measurement_extra_associations": len(wind) - len(unique),
                              "conflicting_unique_measurements": int(unique.timestamp_conflict.sum())}}
     (output / "wind_summary.json").write_text(json.dumps(provenance, indent=2) + "\n")
+    write_dictionary(output)
     print(json.dumps(provenance["counts"], indent=2), flush=True)
     print(pd.DataFrame(reports)[["deployment_key", "wind_status", "wind_record_count"]].to_string(index=False), flush=True)
 

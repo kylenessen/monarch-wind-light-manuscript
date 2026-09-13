@@ -1,5 +1,7 @@
 # Data release working plan
 
+September 13 update. The user clarified that wind data from the overlapping Pismo study should be excluded. Retain only rows matching a study sensor and interval, and remove exact measurement duplicates across source files. For 2025, the cleaned photographs define the interval endpoints. The [completed reconciliation](reconciliation_2026-09-13/README.md) implements these instructions and supersedes earlier proposals below to include unmatched wind records in the release. Source databases and exclusion counts remain available for provenance.
+
 Started September 9, 2026 on branch `data-release`. The initial inventory below describes repository commit `f5857fe`. This is a working plan for the broader release, separate from the descriptions of the current draft products in [README.md](README.md).
 
 The [QGIS source investigation](SOURCE_INVENTORY.md) subsequently located 19 first-season deployments and 10 later-season camera records in the `masters` repository. It identifies the missing temperature deployment metadata, a reused SC12 identifier, and the remaining gaps in later-season dates and wind archives. The baseline counts below describe the existing draft before those sources are imported.

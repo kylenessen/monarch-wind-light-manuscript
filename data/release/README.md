@@ -1,5 +1,7 @@
 # Draft USGS Data Release Tables
 
+The September 13 [photo and wind reconciliation](reconciliation_2026-09-13/README.md) is the current work product for these components. It uses the user-reviewed 2025 photos for interval boundaries and combines all located wind sources while excluding unrelated sensor/time records. The CSVs immediately in this directory remain the earlier manuscript-source drafts described below. The complete new outputs are on MonarchSSD, with small summaries and a dictionary preserved in the linked report directory.
+
 This directory contains draft open-format tables for the USGS data release associated with the monarch wind and light manuscript. These files are generated from the repository sources by `analysis/prepare_data_release.py`. The source JSON, SQLite databases, and manuscript analysis files remain unchanged.
 
 The [data release working plan](PLAN.md) records the expanded scope for both seasons, including observations not used in the manuscript. It also inventories source wind records omitted by the current deployment filters and identifies overlapping deployment assignments. The tables described here are the existing draft and do not yet cover that expanded scope.

@@ -1,8 +1,8 @@
 # Data release status
 
-Investigated September 13, 2026 using the repository, prior project tasks, and the mounted MonarchSSD drive. The release is in preparation. Draft tables exist and the second-season photograph review export is complete. The complete deployment and wind products, photo review, final documentation, and release validation remain unfinished. This investigation did not check a live ScienceBase submission or USGS approval system.
+Updated September 13, 2026 after the user completed photograph review. The 2025 photo set has been finalized at 167,821 images. Wind sources have been merged, deduplicated, and filtered by assigned sensor and deployment interval. There are 725,714 distinct retained measurements and 757,260 deployment-linked rows. The [reconciliation report](reconciliation_2026-09-13/README.md) records the completed work, available outputs, exact rules, and remaining gaps. Full spatial deployment products, missing wind sources, final documentation, and release validation remain unfinished. This investigation did not check a live ScienceBase submission or USGS approval system.
 
-The supplied Pismo XML has now been inspected as a metadata reference. [METADATA_REVIEW.md](METADATA_REVIEW.md) records its reusable structure, content issues, section mapping, draft descriptive text, and current USGS guidance. It is the same example release already cited by our dictionary. No submission XML has yet been finalized. The user is reviewing and cleaning the 2025 photographs, so the final photo manifest must account for changes after the September 10 export.
+The supplied Pismo XML has been inspected strictly as a structural example. [METADATA_REVIEW.md](METADATA_REVIEW.md) records its section mapping, draft descriptive text, and current USGS guidance. No submission XML has yet been finalized. The new image manifest accounts for the user's cleanup and the 60 subsequent renames. The older observations below document the initial investigation and are superseded where the reconciliation report provides newer results.
 
 ## Where the work lives
 
