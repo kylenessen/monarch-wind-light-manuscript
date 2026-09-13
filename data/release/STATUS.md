@@ -2,6 +2,8 @@
 
 Investigated September 13, 2026 using the repository, prior project tasks, and the mounted MonarchSSD drive. The release is in preparation. Draft tables exist and the second-season photograph review export is complete. The complete deployment and wind products, photo review, final documentation, and release validation remain unfinished. This investigation did not check a live ScienceBase submission or USGS approval system.
 
+The supplied Pismo XML has now been inspected as a metadata reference. [METADATA_REVIEW.md](METADATA_REVIEW.md) records its reusable structure, content issues, section mapping, draft descriptive text, and current USGS guidance. It is the same example release already cited by our dictionary. No submission XML has yet been finalized. The user is reviewing and cleaning the 2025 photographs, so the final photo manifest must account for changes after the September 10 export.
+
 ## Where the work lives
 
 The task named Start data release branch owns branch `data-release` in `/Users/kylenessen/.codex/worktrees/0dbf/monarch-wind-light-manuscript`. Its last implementation-era commit is `d663c5a`, dated September 9. It contains [PLAN.md](PLAN.md) and [SOURCE_INVENTORY.md](SOURCE_INVENTORY.md). The agreed scope includes both seasons and observations outside the manuscript, including deployments without butterfly detections.
