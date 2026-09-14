@@ -8,7 +8,7 @@ This release preserves observations from both monitoring seasons at Vandenberg S
 
 [deployments.csv](deployments.csv) contains 28 rows. One row per camera deployment, including identifiers, WGS84 location, boundaries and known limitations.
 
-[photo_index.csv](photo_index.csv) contains 223,887 rows. One row per retained JPEG photograph. Links images to the deployment table and collection folders.
+[photo_index.csv](photo_index.csv) contains 226,860 rows. One row per retained JPEG photograph. Links images to the deployment table and collection folders.
 
 [classifications.csv](classifications.csv) contains 8,299 rows. One row per saved image classification, with counts of grid-cell categories and Butterfly Index totals. Unclassified placeholders are omitted from this summary.
 
@@ -22,7 +22,9 @@ Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDD
 
 Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. Missing CSV values are empty fields. [data_dictionary.csv](data_dictionary.csv) defines the table fields.
 
-Timestamps preserve recorded device times and have no UTC offset. The cameras and wind meters do not automatically adjust for daylight saving time. No clock conversion is applied when building this release.
+Timestamps use device clock times without a UTC offset. The cameras and wind meters do not automatically adjust for daylight saving time. TGR1 photo times were reconstructed as described below. Other timestamps are preserved as recorded.
+
+TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time.
 
 Coordinates are camera locations in WGS84, EPSG 4326, expressed in decimal degrees. Deployment-specific recording information is in deployments.csv.
 

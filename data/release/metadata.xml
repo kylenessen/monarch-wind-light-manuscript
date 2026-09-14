@@ -15,7 +15,7 @@
     <descript>
       <abstract>Observations from monarch monitoring at Vandenberg Space Force Base during the 2023-2024 and 2024-2025 overwintering seasons. Includes deployment information, photographs, wind measurements, native classification JSON and a tabular summary, and reviewed camera-overlay temperatures. The archive includes monitoring beyond the subset analyzed in the associated manuscript.</abstract>
       <purpose>Preserve monitoring observations for future research. Manuscript analysis inputs, scripts and results are maintained at https://github.com/kylenessen/monarch-wind-light-manuscript.</purpose>
-      <supplinf>Timestamps preserve recorded device times and have no UTC offset. The cameras and wind meters do not automatically adjust for daylight saving time. No clock conversion is applied when building this release. Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. An _02 suffix distinguishes a second photograph with the same timestamp. photo_index.csv lists every image path. Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes the saved classifications for use without the software. See classifications/README.md for the JSON structure and software links.</supplinf>
+      <supplinf>Timestamps use device clock times without a UTC offset. The cameras and wind meters do not automatically adjust for daylight saving time. TGR1 photo times were reconstructed as described below. Other timestamps are preserved as recorded. TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time. Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. An _02 suffix distinguishes a second photograph with the same timestamp. photo_index.csv lists every image path. Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes the saved classifications for use without the software. See classifications/README.md for the JSON structure and software links.</supplinf>
     </descript>
     <timeperd>
       <timeinfo>
@@ -73,8 +73,12 @@
     </posacc>
     <lineage>
       <procstep>
-        <procdesc>First-season deployment intervals and positions were read from the original deployment GeoPackage. Second-season retained photograph EXIF extrema set the release boundaries. Only coordinate representations were transformed to WGS84. No instrument or image timestamps were changed.</procdesc>
+        <procdesc>First-season deployment intervals and positions were read from the original deployment GeoPackage. Second-season retained photograph EXIF extrema set the release boundaries. Coordinates were transformed to WGS84 where needed. Deployment and wind timestamps were preserved.</procdesc>
         <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time. The first and last image times were anchored to December 15, 2023 at 16:34:52.663 and January 5, 2024 at 08:10:01.412. Intermediate times were linearly scaled by elapsed camera time after removing the 31-day calendar jump. EXIF capture, creation and modification times were updated in release copies, including fractional seconds. Image pixels and original source photographs were unchanged.</procdesc>
+        <procdate>20260914</procdate>
       </procstep>
       <procstep>
         <procdesc>Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. An _02 suffix distinguishes a second photograph with the same timestamp. photo_index.csv lists every image path.</procdesc>
@@ -267,7 +271,7 @@
       </attr>
       <attr>
         <attrlabl>timestamp_recorded</attrlabl>
-        <attrdef>Recorded date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -314,7 +318,7 @@
       </attr>
       <attr>
         <attrlabl>timestamp_recorded</attrlabl>
-        <attrdef>Recorded date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -457,7 +461,7 @@
       </attr>
       <attr>
         <attrlabl>timestamp_recorded</attrlabl>
-        <attrdef>Recorded date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -496,7 +500,7 @@
       </attr>
       <attr>
         <attrlabl>timestamp_recorded</attrlabl>
-        <attrdef>Recorded date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -528,7 +532,7 @@
       </attr>
     </detailed>
     <overview>
-      <eaover>Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. An _02 suffix distinguishes a second photograph with the same timestamp. photo_index.csv lists every image path. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes the saved classifications for use without the software. See classifications/README.md for the JSON structure and software links. deployments.csv contains 28 rows. photo_index.csv contains 223,887 rows. classifications.csv contains 8,299 rows. temperature_measurements.csv contains 56,066 rows. wind_measurements.csv contains 757,260 rows.</eaover>
+      <eaover>Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. An _02 suffix distinguishes a second photograph with the same timestamp. photo_index.csv lists every image path. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes the saved classifications for use without the software. See classifications/README.md for the JSON structure and software links. deployments.csv contains 28 rows. photo_index.csv contains 226,860 rows. classifications.csv contains 8,299 rows. temperature_measurements.csv contains 56,066 rows. wind_measurements.csv contains 757,260 rows.</eaover>
       <eadetcit>data_dictionary.csv, README.md and classifications/README.md in this package. Classifier source code https://github.com/kylenessen/monarch_trailcam_classifier.</eadetcit>
     </overview>
   </eainfo>

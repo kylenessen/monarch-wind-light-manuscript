@@ -13,7 +13,7 @@ SC8,EM03,BlueLake,2024-01-05T15:30:00.808,2024-01-27T11:40:00.000,first_season_d
 SC9,WASP,StarDust,2024-01-05T16:02:00.252,2024-01-31T20:30:00.000,first_season_deployment_geopackage,34.63127127,-120.61813492,5.4,6.7,100,Vincent,
 SLC6_1,NOVA,OakTrust,2023-12-03T11:20:00.603,2023-12-20T12:20:00.555,first_season_deployment_geopackage,34.58467772,-120.62878857,6.8,5.0,280,,
 SLC6_2,WASP,MoonTide,2023-12-03T13:02:00.913,2024-01-05T13:02:00.942,first_season_deployment_geopackage,34.58448974,-120.62913075,7.5,7.6,20,Vincent,
-TGR1,ZEST,JoyHouse,2023-12-15T16:34:52.663,2024-01-05T08:10:01.412,first_season_deployment_geopackage,34.7506181,-120.61229055,5.1,,65,,Source notes report that the camera date was not set. No reviewed photographs are included for this deployment.
+TGR1,ZEST,JoyHouse,2023-12-15T16:34:52.663,2024-01-05T08:10:01.412,first_season_deployment_geopackage,34.7506181,-120.61229055,5.1,,65,,"TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time."
 UDMH1,LUNA,SunRuler,2024-01-05T10:50:00.969,2024-01-18T14:30:00.334,first_season_deployment_geopackage,34.67234821,-120.59519474,8.3,5.4,160,,
 UDMH2,GOLD,JoyHouse,2024-01-05T12:20:00.545,2024-01-06T04:00:00.857,first_season_deployment_geopackage,34.67220042,-120.59522325,8.6,6.8,360,Skyler,
 UDMH3,GOLD,TreeTalk,2024-01-18T15:10:00.339,2024-01-31T19:40:00.000,first_season_deployment_geopackage,34.67229034,-120.59522888,9.6,4.9,360,,

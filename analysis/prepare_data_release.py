@@ -37,9 +37,15 @@ DEPLOYMENT_ID_NOTE = (
     "Use deployment_id and image_filename together to link image records."
 )
 CLOCK_NOTE = (
-    "Timestamps preserve recorded device times and have no UTC offset. "
+    "Timestamps use device clock times without a UTC offset. "
     "The cameras and wind meters do not automatically adjust for daylight saving time. "
-    "No clock conversion is applied when building this release."
+    "TGR1 photo times were reconstructed as described below. Other timestamps are preserved as recorded."
+)
+TGR1_NOTE = (
+    "TGR1 photo metadata and filenames use reconstructed capture times, aligned to the "
+    "deployment start and end using elapsed time in the numbered image sequence. "
+    "The camera calendar jump was removed and recording gaps were retained. "
+    "The visible timestamp overlay still shows the incorrect camera date and time."
 )
 FILENAME_NOTE = (
     "Photographs are stored in photos/deployment_id/ and named "
@@ -76,7 +82,7 @@ DESCRIPTIONS = {
     "primary_observer": ("Primary image classifier assigned to the deployment.", "text"),
     "data_quality_note": ("Deployment-specific recording, coverage or timing information.", "text"),
     "image_filename": ("Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.", "identifier"),
-    "timestamp_recorded": ("Recorded date and time in ISO 8601 format without a UTC offset.", "recorded clock"),
+    "timestamp_recorded": ("Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.", "recorded clock"),
     "relative_path": ("Photo path relative to the package root, grouped by deployment_id.", "path"),
     "record_user_id": ("User identifier saved in the classification JSON.", "identifier"),
     "classification_confirmed": ("Confirmation flag in the classification JSON. The summary includes confirmed records and saved annotations.", "boolean"),
@@ -150,6 +156,8 @@ def stage_photos(archive, package, deployment, photos):
         source_id = source_ids.get((row.season, row.deployment_id), row.deployment_id)
         source = archive / ("raw/Camelot_Photos" if row.season == "2023-2024"
                             else "VSFB_2025_Deployment_Review") / source_id
+        if row.deployment_id == "TGR1":
+            source = archive / "corrected_photos/TGR1"
         target = package / "photos" / row.deployment_id
         legacy = package / "photos" / row.season / row.deployment_id
         if legacy.exists() or legacy.is_symlink():
@@ -206,7 +214,7 @@ def deployments(staging):
         assert source["camera_name" if earlier else "ID"] == row.camera_name
         notes = []
         if earlier and row.deployment_id == "TGR1":
-            notes.append("Source notes report that the camera date was not set. No reviewed photographs are included for this deployment.")
+            notes.append(TGR1_NOTE)
         if not earlier and row.deployment_id == "PS01":
             notes.append("Wind records end January 31, 2025 at 04:04.")
         if not earlier and row.deployment_id == "SC12":
@@ -250,6 +258,11 @@ def photo_index(archive, staging, deployment):
         relative = release_photo_path(row.season, row.relative_path)
         records.append((*key, names[key], relative.name,
                         row.capture_time_recorded, f"photos/{relative}"))
+    tgr1 = pd.read_csv(ROOT / "data/release_working/tgr1_photo_times.csv")
+    for row in tgr1.itertuples(index=False):
+        records.append(("2023-2024", "TGR1", names[("2023-2024", "TGR1")],
+                        row.image_filename, row.timestamp_recorded,
+                        f"photos/TGR1/{row.image_filename}"))
     return pd.DataFrame(records, columns=["season", "deployment_id", "camera_name", "image_filename", "timestamp_recorded", "relative_path"])
 
 
@@ -315,7 +328,7 @@ def metadata_xml(tables, field_dictionary):
     add(root, "idinfo/citation/citeinfo/geoform", "tabular digital data, JSON image annotations and digital photographs")
     add(root, "idinfo/descript/abstract", "Observations from monarch monitoring at Vandenberg Space Force Base during the 2023-2024 and 2024-2025 overwintering seasons. Includes deployment information, photographs, wind measurements, native classification JSON and a tabular summary, and reviewed camera-overlay temperatures. The archive includes monitoring beyond the subset analyzed in the associated manuscript.")
     add(root, "idinfo/descript/purpose", "Preserve monitoring observations for future research. Manuscript analysis inputs, scripts and results are maintained at https://github.com/kylenessen/monarch-wind-light-manuscript.")
-    add(root, "idinfo/descript/supplinf", CLOCK_NOTE + " " + FILENAME_NOTE + " " + DEPLOYMENT_ID_NOTE + " " + CLASSIFICATION_NOTE)
+    add(root, "idinfo/descript/supplinf", CLOCK_NOTE + " " + TGR1_NOTE + " " + FILENAME_NOTE + " " + DEPLOYMENT_ID_NOTE + " " + CLASSIFICATION_NOTE)
     dep = tables["deployments"]
     add(root, "idinfo/timeperd/timeinfo/rngdates/begdate", dep.start_time_recorded.min()[:10].replace("-", ""))
     add(root, "idinfo/timeperd/timeinfo/rngdates/enddate", dep.end_time_recorded.max()[:10].replace("-", ""))
@@ -339,7 +352,8 @@ def metadata_xml(tables, field_dictionary):
     add(root, "dataqual/posacc/horizpa/horizpar", "First-season coordinates are WGS84 source deployment points. Second-season camera points were transformed from EPSG 3498, NAD83(NSRS2007) / California zone 5 in US survey feet, to EPSG 4326 using pyproj with longitude-first output. Positional accuracy was not independently measured. Decimal precision is not an accuracy estimate.")
     lineage = ET.SubElement(root.find("dataqual"), "lineage")
     for text in (
-        "First-season deployment intervals and positions were read from the original deployment GeoPackage. Second-season retained photograph EXIF extrema set the release boundaries. Only coordinate representations were transformed to WGS84. No instrument or image timestamps were changed.",
+        "First-season deployment intervals and positions were read from the original deployment GeoPackage. Second-season retained photograph EXIF extrema set the release boundaries. Coordinates were transformed to WGS84 where needed. Deployment and wind timestamps were preserved.",
+        TGR1_NOTE + " The first and last image times were anchored to December 15, 2023 at 16:34:52.663 and January 5, 2024 at 08:10:01.412. Intermediate times were linearly scaled by elapsed camera time after removing the 31-day calendar jump. EXIF capture, creation and modification times were updated in release copies, including fractional seconds. Image pixels and original source photographs were unchanged.",
         FILENAME_NOTE,
         DEPLOYMENT_ID_NOTE,
         "Wind records from 92 SQLite databases were matched to the assigned wind meter and inclusive deployment interval. Whitespace and numeric representations were normalized. Identical sensor, time, speed, gust and direction tuples were deduplicated. Source IDs were not treated as globally unique. Off-interval and unrelated observations were omitted. Conflicting measurement tuples would be retained for review. Raw source databases remain unchanged.",
@@ -348,7 +362,7 @@ def metadata_xml(tables, field_dictionary):
     ):
         step = ET.SubElement(lineage, "procstep")
         add(step, "procdesc", text)
-        add(step, "procdate", "20260913")
+        add(step, "procdate", "20260914" if text.startswith(TGR1_NOTE) else "20260913")
     add(root, "spdoinfo/indspref", "Photographs and tabular observations relate to camera deployment points through deployment_id.")
     add(root, "spdoinfo/direct", "Point")
     add(root, "spdoinfo/ptvctinf/sdtsterm/sdtstype", "Entity point")
@@ -411,7 +425,7 @@ def validate(tables):
     classification = tables["classifications"]
     assert classification.sun_exposed_butterfly_index.le(classification.butterfly_index).all()
     return dict(table_rows={name: len(frame) for name, frame in tables.items()},
-                schema_and_join_checks="passed", clock_corrections_applied=False)
+                schema_and_join_checks="passed", photo_time_reconstruction="TGR1 deployment endpoints")
 
 
 def stage_classifications(destination):
@@ -463,7 +477,7 @@ def release_readme(tables):
         + contents + "\n\n" + CLASSIFICATION_NOTE + "\n\n" + FILENAME_NOTE + "\n\n"
         + DEPLOYMENT_ID_NOTE + " Missing CSV values are empty fields. "
         "[data_dictionary.csv](data_dictionary.csv) defines the table fields.\n\n"
-        + CLOCK_NOTE + "\n\n"
+        + CLOCK_NOTE + "\n\n" + TGR1_NOTE + "\n\n"
         "Coordinates are camera locations in WGS84, EPSG 4326, expressed in decimal degrees. "
         "Deployment-specific recording information is in deployments.csv.\n\n"
         + WIND_NOTE + " Wind measurements are provided as recorded within deployment intervals.\n\n"

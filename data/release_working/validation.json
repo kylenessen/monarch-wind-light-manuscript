@@ -1,14 +1,14 @@
 {
   "table_rows": {
     "deployments": 28,
-    "photo_index": 223887,
+    "photo_index": 226860,
     "classifications": 8299,
     "temperature_measurements": 56066,
     "wind_measurements": 757260
   },
   "schema_and_join_checks": "passed",
-  "clock_corrections_applied": false,
-  "photo_paths_resolve": 223887,
+  "photo_time_reconstruction": "TGR1 deployment endpoints",
+  "photo_paths_resolve": 226860,
   "deployment_ids_globally_unique": true,
   "photo_filenames_globally_unique": true,
   "deployment_id_corrections": {

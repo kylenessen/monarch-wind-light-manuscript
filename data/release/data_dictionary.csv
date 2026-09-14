@@ -15,12 +15,12 @@ deployments.csv,data_quality_note,"Deployment-specific recording, coverage or ti
 photo_index.csv,deployment_id,"Camera deployment identifier, unique across both seasons.",identifier,empty field,,
 photo_index.csv,camera_name,Field name assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
 photo_index.csv,image_filename,Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
-photo_index.csv,timestamp_recorded,Recorded date and time in ISO 8601 format without a UTC offset.,recorded clock,empty field,2023-11-17T11:40:01,2025-04-11T14:10:01
+photo_index.csv,timestamp_recorded,Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.,recorded clock,empty field,2023-11-17T11:40:01,2025-04-11T14:10:01
 photo_index.csv,relative_path,"Photo path relative to the package root, grouped by deployment_id.",path,empty field,,
 classifications.csv,deployment_id,"Camera deployment identifier, unique across both seasons.",identifier,empty field,,
 classifications.csv,camera_name,Field name assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
 classifications.csv,image_filename,Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
-classifications.csv,timestamp_recorded,Recorded date and time in ISO 8601 format without a UTC offset.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-04T10:50:01
+classifications.csv,timestamp_recorded,Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-04T10:50:01
 classifications.csv,primary_observer,Primary image classifier assigned to the deployment.,text,empty field,,
 classifications.csv,record_user_id,User identifier saved in the classification JSON.,identifier,empty field,,
 classifications.csv,classification_confirmed,Confirmation flag in the classification JSON. The summary includes confirmed records and saved annotations.,boolean,empty field,False,True
@@ -37,11 +37,11 @@ classifications.csv,sun_exposed_butterfly_index,BI subtotal for occupied grid ce
 temperature_measurements.csv,deployment_id,"Camera deployment identifier, unique across both seasons.",identifier,empty field,,
 temperature_measurements.csv,camera_name,Field name assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
 temperature_measurements.csv,image_filename,Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
-temperature_measurements.csv,timestamp_recorded,Recorded date and time in ISO 8601 format without a UTC offset.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-05T14:05:01
+temperature_measurements.csv,timestamp_recorded,Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-05T14:05:01
 temperature_measurements.csv,temperature_c,Camera-overlay temperature extracted using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer.,degrees Celsius,empty field,0.0,37.0
 wind_measurements.csv,deployment_id,"Camera deployment identifier, unique across both seasons.",identifier,empty field,,
 wind_measurements.csv,wind_sensor_name,Field name assigned to the wind meter. A meter may serve multiple camera views or deployments.,identifier,empty field,,
-wind_measurements.csv,timestamp_recorded,Recorded date and time in ISO 8601 format without a UTC offset.,recorded clock,empty field,2023-11-17T11:40:00,2025-01-31T04:04:00
+wind_measurements.csv,timestamp_recorded,Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.,recorded clock,empty field,2023-11-17T11:40:00,2025-01-31T04:04:00
 wind_measurements.csv,wind_speed_m_s,Wind speed reported in the logger speed field for the recording interval.,meters per second,empty field,0.0,9.7
 wind_measurements.csv,wind_gust_m_s,"Maximum wind gust reported in the logger gust field for the recording interval, normally one minute.",meters per second,empty field,0.0,119.0
 wind_measurements.csv,wind_direction_degrees,"Logger wind-direction value from 0 to 360 degrees, reported clockwise from north.",degrees,empty field,0.0,360.0
