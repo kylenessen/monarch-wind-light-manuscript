@@ -7,7 +7,11 @@
   "corresponding_email": "knessen@calpoly.edu",
   "second_season_temperature_scope": "No data exist, confirmed by investigator",
   "package_documentation_matches_repository": true,
-  "sha256": "a914f1669c6dc57903b9a39a05de6871ec209e9705c546ddf1b72c71f573ba1d",
-  "word_count_approximate": 2519,
-  "deployment_id_correction": "Second-season IRIS/RockWall deployment is SC13. First-season NOVA/BlueLake remains SC12."
+  "sha256": "4fb0030c98202ade8b527a9351eccce34ebd7faaff069811f76d0d62fb20d525",
+  "word_count_approximate": 2502,
+  "deployment_id_correction": "Second-season IRIS/RockWall deployment is SC13. First-season NOVA/BlueLake remains SC12.",
+  "join_key": "deployment_id",
+  "photo_path_pattern": "photos/deployment_id/image_filename",
+  "season_column_removed": true,
+  "data_dictionary_rows": 73
 }
