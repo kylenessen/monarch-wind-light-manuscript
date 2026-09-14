@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sqlite3
 from pathlib import Path
@@ -27,6 +28,17 @@ from shapely import from_wkb
 from release_schema import analysis_30_minute, analysis_next_day, has_classification
 
 ROOT = Path(__file__).resolve().parents[1]
+DEPLOYMENT_ID_CORRECTIONS = json.loads(
+    (ROOT / "data/release_working/deployment_id_corrections.json").read_text()
+)
+DEPLOYMENT_ID_NOTE = (
+    "Deployment identifiers are unique across the release. SC12 identifies the first-season "
+    "NOVA camera and BlueLake wind meter. SC13 identifies the second-season IRIS camera and "
+    "RockWall wind meter. The investigator corrected the second-season source label SC12 to "
+    "SC13. This correction applies to deployment and wind table identifiers, photo filenames "
+    "and photo paths. Original source labels are retained in the internal provenance mapping. "
+    "Photograph contents, recorded times and measurement values are unchanged."
+)
 CLASSIFICATION_REVIEW_NOTE = (
     "Investigator review retained SC1_20231120133001.JPG as a valid zero-BI classification "
     "and assigned Skyler as primary observer, following the majority of SC1 classifications. "
@@ -70,8 +82,8 @@ WIND_NOTE = (
 )
 
 DESCRIPTIONS = {
-    "season": ("Field season. Use season together with deployment_id as the deployment key, because SC12 recurs across seasons.", "identifier"),
-    "deployment_id": ("Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024.", "identifier"),
+    "season": ("Field season. Retain season when combining deployment and observation tables.", "identifier"),
+    "deployment_id": ("Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024.", "identifier"),
     "camera_name": ("Field name assigned to the camera. Join deployments using season and deployment_id.", "identifier"),
     "wind_sensor_name": ("Field name assigned to the wind meter. A meter may serve multiple camera views or deployments.", "identifier"),
     "start_time_recorded": ("Deployment start from the original first-season deployment layer, or earliest retained EXIF capture time in the reviewed second-season photos. Source fractional seconds are preserved.", "recorded clock"),
@@ -158,6 +170,62 @@ def read_gpkg(path, table, geometry):
     return frame
 
 
+def release_deployment_id(season, source_id):
+    return DEPLOYMENT_ID_CORRECTIONS.get(f"{season}/{source_id}", source_id)
+
+
+def release_photo_path(season, relative_path):
+    path = Path(relative_path)
+    source_id = path.parts[0]
+    release_id = release_deployment_id(season, source_id)
+    if release_id == source_id:
+        return path
+    if len(path.parts) != 2 or not path.name.startswith(source_id + "_"):
+        raise ValueError(f"Unexpected reviewed photo path {path}")
+    return Path(release_id) / (release_id + path.name[len(source_id):])
+
+
+def stage_photos(archive, package, deployment, photos):
+    """Expose release names without rewriting source images or duplicating their bytes."""
+    source_ids = {(key.split("/", 1)[0], value): key.split("/", 1)[1]
+                  for key, value in DEPLOYMENT_ID_CORRECTIONS.items()}
+    for row in deployment.itertuples(index=False):
+        source_id = source_ids.get((row.season, row.deployment_id), row.deployment_id)
+        source = archive / ("raw/Camelot_Photos" if row.season == "2023-2024"
+                            else "VSFB_2025_Deployment_Review") / source_id
+        target = package / "photos" / row.season / row.deployment_id
+        if source_id == row.deployment_id:
+            if not source.is_dir():
+                continue
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if not target.exists():
+                target.symlink_to(source, target_is_directory=True)
+            elif target.resolve() != source.resolve():
+                raise ValueError(f"Existing photo link points to a different source {target}")
+            continue
+        if target.is_symlink():
+            raise ValueError(f"Renamed photo directory must not be a symlink {target}")
+        target.mkdir(parents=True, exist_ok=True)
+        selected = photos.loc[photos.season.eq(row.season) & photos.deployment_id.eq(row.deployment_id)]
+        for photo in selected.itertuples(index=False):
+            original = source / (source_id + photo.image_filename[len(row.deployment_id):])
+            renamed = target / photo.image_filename
+            if not renamed.exists():
+                os.link(original, renamed)
+            if not os.path.samefile(original, renamed):
+                raise ValueError(f"Renamed photo differs from original {renamed}")
+        if {p.name for p in target.iterdir()} != set(selected.image_filename):
+            raise ValueError(f"Unexpected files in renamed photo directory {target}")
+        previous = target.with_name(source_id)
+        if previous.is_symlink() and previous.resolve() == source.resolve():
+            previous.unlink()
+        elif previous.exists() or previous.is_symlink():
+            raise ValueError(f"Unexpected obsolete release path {previous}")
+    for relative_path in photos.relative_path:
+        if not (package / relative_path).is_file():
+            raise ValueError(f"Released photo path does not resolve {relative_path}")
+
+
 def deployments(staging):
     intervals = pd.read_csv(staging / "deployment_intervals.csv", keep_default_na=False)
     excluded = json.loads((ROOT / "data/release_working/deployment_exclusions.json").read_text())
@@ -181,7 +249,7 @@ def deployments(staging):
             notes.append("Regular wind sequence ends December 23, 2024 at 12:51. After a 22-day gap, 69 zero-speed and zero-gust records occur January 14, 2025. Their field or servicing context is uncertain. Values are preserved.")
         if not earlier and row.deployment_id not in ("PS01", "SC12"):
             notes.append("No located wind records match the assigned sensor and reviewed photo interval.")
-        records.append(dict(season=row.season, deployment_id=row.deployment_id,
+        records.append(dict(season=row.season, deployment_id=release_deployment_id(row.season, row.deployment_id),
             camera_name=row.camera_name, wind_sensor_name=row.wind_sensor_name,
             start_time_recorded=row.start_time_recorded, end_time_recorded=row.end_time_recorded,
             boundary_basis="first_season_deployment_geopackage" if earlier else "reviewed_photo_exif",
@@ -212,11 +280,12 @@ def photo_index(archive, staging, deployment):
                             f"photos/{key[0]}/{folder.name}/{path.name}"))
     manifest = pd.read_csv(staging / "reviewed_image_manifest.csv", keep_default_na=False)
     for row in manifest.itertuples(index=False):
-        key = (row.season, row.deployment_id)
+        key = (row.season, release_deployment_id(row.season, row.deployment_id))
         if key not in names:
             continue
-        records.append((*key, names[key], Path(row.relative_path).name,
-                        row.capture_time_recorded, f"photos/{row.season}/{row.relative_path}"))
+        relative = release_photo_path(row.season, row.relative_path)
+        records.append((*key, names[key], relative.name,
+                        row.capture_time_recorded, f"photos/{row.season}/{relative}"))
     return pd.DataFrame(records, columns=["season", "deployment_id", "camera_name", "image_filename", "timestamp_recorded", "relative_path"])
 
 
@@ -290,7 +359,7 @@ def metadata_xml(tables, field_dictionary):
     add(root, "idinfo/citation/citeinfo/geoform", "tabular digital data and digital photographs")
     add(root, "idinfo/descript/abstract", "Draft release of available observations from two monarch overwintering monitoring seasons. Includes deployment locations and recorded intervals, photographs, first-season ordinal image classifications and reviewed camera-overlay temperatures, wind observations from both seasons where available, and two first-season manuscript analysis tables. Unclassified photographs do not establish butterfly absence. BI is an index of visible cluster size rather than a count of individual butterflies.")
     add(root, "idinfo/descript/purpose", "Preserve field observations for reuse and provide inputs for reproducing the associated wind and light analyses. Analysis scripts are maintained in the repository, not distributed as data-release files. Repository https://github.com/kylenessen/monarch-wind-light-manuscript. Pin the final release commit before publication.")
-    add(root, "idinfo/descript/supplinf", CLOCK_NOTE + " " + FILENAME_NOTE)
+    add(root, "idinfo/descript/supplinf", CLOCK_NOTE + " " + FILENAME_NOTE + " " + DEPLOYMENT_ID_NOTE)
     dep = tables["deployments"]
     add(root, "idinfo/timeperd/timeinfo/rngdates/begdate", dep.start_time_recorded.min()[:10].replace("-", ""))
     add(root, "idinfo/timeperd/timeinfo/rngdates/enddate", dep.end_time_recorded.max()[:10].replace("-", ""))
@@ -316,6 +385,7 @@ def metadata_xml(tables, field_dictionary):
     for text in (
         "First-season deployment intervals and positions were read from the original deployment GeoPackage. Second-season retained photograph EXIF extrema set the release boundaries. Only coordinate representations were transformed to WGS84. No instrument or image timestamps were changed.",
         FILENAME_NOTE,
+        DEPLOYMENT_ID_NOTE,
         "Wind records from 92 SQLite databases were matched to the assigned wind meter and inclusive deployment interval. Whitespace and numeric representations were normalized. Identical sensor, time, speed, gust and direction tuples were deduplicated. Source IDs were not treated as globally unique. Off-interval and unrelated observations were omitted. Conflicting measurement tuples would be retained for review. Raw source databases remain unchanged.",
         "Saved classification categories were summarized into grid-cell counts and lower-bound BI. Confirmed records, records with a saved user, nondefault annotations and investigator-accepted records are retained. Other untouched unconfirmed zero placeholders are omitted. Reviewed first-season camera-overlay temperatures were copied without recalibration. No new temperature extraction was performed. " + CLASSIFICATION_REVIEW_NOTE,
         "Historical analysis inputs were reduced to columns used by the retained analyses and renamed to BI, delta BI and explicit weather terms. Selection rules and input values were preserved. The next-day table applies the historical coverage threshold of 0.95 and complete-case filter. The time covariate is minutes since the first daily observation, not a calculated sunrise time.",
@@ -362,10 +432,13 @@ def metadata_xml(tables, field_dictionary):
 def validate(tables):
     dep = tables["deployments"]
     assert not dep.duplicated(["season", "deployment_id"]).any()
+    assert dep.deployment_id.is_unique, "Deployment identifiers must be unique across seasons"
     assert dep.latitude.between(34, 35).all() and dep.longitude.between(-121, -120).all()
     keys = set(zip(dep.season, dep.deployment_id))
     photos = tables["photo_index"]
     assert not photos.duplicated(["season", "deployment_id", "image_filename"]).any()
+    assert photos.image_filename.is_unique, "Released photo filenames must be globally unique"
+    assert photos.relative_path.is_unique
     for name in ("photo_index", "classifications", "temperature_measurements", "wind_measurements"):
         frame = tables[name]
         assert set(zip(frame.season, frame.deployment_id)) <= keys, name
@@ -422,6 +495,8 @@ def main():
     temp = temp.merge(dep[["season", "deployment_id", "camera_name"]], on=["season", "deployment_id"], validate="many_to_one")
     temp = temp[["season", "deployment_id", "camera_name", "image_filename", "timestamp_recorded", "temperature_c"]]
     wind = pd.read_csv(staging / "wind_measurements.csv", low_memory=False)
+    wind["deployment_id"] = [release_deployment_id(season, identifier)
+                             for season, identifier in zip(wind.season, wind.deployment_id)]
     wind = wind.merge(dep[["season", "deployment_id"]], on=["season", "deployment_id"], validate="many_to_one")
     wind = wind[["season", "deployment_id", "wind_sensor_name", "timestamp_recorded", "wind_speed_m_s", "wind_gust_m_s", "wind_direction_degrees"]]
     tables = dict(deployments=dep, photo_index=photos, classifications=classifications(dep), temperature_measurements=temp, wind_measurements=wind, **tables)
@@ -430,15 +505,15 @@ def main():
     xml = metadata_xml(tables, fields)
     authors, email = manuscript_authors_and_contact()
     readme = "# Monarch monitoring data release draft\n\nAuthors in manuscript order. " + ", ".join(authors) + ".\n\nCorresponding author. " + authors[0] + ", " + email + ".\n\n" + "\n\n".join(f"{name}.csv. {TABLES[name]} Contains {len(frame):,} rows." for name, frame in tables.items())
-    readme += "\n\n" + CLOCK_NOTE + "\n\n" + FILENAME_NOTE + "\n\n" + WIND_NOTE
+    readme += "\n\n" + CLOCK_NOTE + "\n\n" + FILENAME_NOTE + "\n\n" + DEPLOYMENT_ID_NOTE + "\n\n" + WIND_NOTE
     readme += "\n\nCoordinates are longitude and latitude in WGS84, EPSG 4326, expressed in decimal degrees. Later camera coordinates were transformed from EPSG 3498. First-season source geometries were already EPSG 4326. They represent camera positions, not separate wind-meter positions. Coordinate precision does not establish positional accuracy.\n\n"
-    readme += "Missing CSV values are empty fields. Join observations using season and deployment_id. SC12 occurs in both seasons. Retain the season when combining tables. Only the analysis tables omit season because they contain first-season data exclusively. Wind observations shared by SC9 and SC10 must not be counted as independent measurements.\n\n"
-    readme += "The temperature table preserves the previously reviewed overlay values. The investigator confirmed that no second-season temperature data exist. Butterfly classifications cover the first season only. Review deployment data_quality_note before using wind. UDMH1 has source-reported corruption. PS01 stops before the camera stops. SC12 has a long gap followed by zero-valued January records of uncertain context. No gap filling or new sensor corrections were performed.\n\n"
+    readme += "Missing CSV values are empty fields. Join observations using deployment_id, retaining season for context and consistency checks. Only the analysis tables omit season because they contain first-season data exclusively. Wind observations shared by SC9 and SC10 must not be counted as independent measurements.\n\n"
+    readme += "The temperature table preserves the previously reviewed overlay values. The investigator confirmed that no second-season temperature data exist. Butterfly classifications cover the first season only. Review deployment data_quality_note before using wind. UDMH1 has source-reported corruption. PS01 stops before the camera stops. SC13 has a long gap followed by zero-valued January records of uncertain context. No gap filling or new sensor corrections were performed.\n\n"
     readme += "The analysis CSVs are renamed, reduced copies of the historical manuscript inputs. They do not recompute weather summaries from the broader reconciled wind archive. That archive includes additional deployments and preserves exact source boundary seconds. Analysis reproduction and re-derivation from the broader observational archive are distinct operations. The time covariate is minutes since the first daily observation, not calculated astronomical sunrise.\n\n"
     readme += CLASSIFICATION_REVIEW_NOTE + "\n\n"
     readme += "data_dictionary.csv defines every data column. metadata.xml is a draft for coauthor and USGS contact review, with explicit REVIEW_REQUIRED fields. Authors and corresponding contact follow the manuscript at the investigator's instruction. The DOI, USGS metadata identifier, institutional metadata contact, distribution terms and final approval remain to be finalized with USGS colleagues before publication. XML well-formedness alone is not FGDC validation.\n\n"
     readme += "Analysis scripts remain at https://github.com/kylenessen/monarch-wind-light-manuscript. Use the release CSVs with the matching repository version. Run Rscript analysis/run_results_analyses.R from that repository root. A final public commit link must be pinned before distribution. Scripts are not included in this package.\n\n"
-    readme += "The local staging package uses directory links for photos to avoid copying the full archive. Before upload, create ordinary photo archives containing only the JPEG paths listed in photo_index.csv, preserving photos/season/deployment_id/ paths. Do not distribute symbolic links or unlisted source files.\n"
+    readme += "The local staging package uses directory links for most photo collections and file hard links for the renamed SC13 collection to avoid copying image bytes. Before upload, create ordinary photo archives containing only the JPEG paths listed in photo_index.csv, preserving photos/season/deployment_id/ paths. Do not distribute symbolic links or unlisted source files.\n"
     package = args.package_dir or args.archive / "publication_package"
     for destination in (args.output_dir, package):
         destination.mkdir(parents=True, exist_ok=True)
@@ -447,16 +522,11 @@ def main():
         fields.to_csv(destination / "data_dictionary.csv", index=False, na_rep="")
         (destination / "metadata.xml").write_bytes(xml)
         (destination / "README.md").write_text(readme)
-    for row in dep.itertuples(index=False):
-        source = args.archive / ("raw/Camelot_Photos" if row.season == "2023-2024" else "VSFB_2025_Deployment_Review") / row.deployment_id
-        if not source.is_dir():
-            continue
-        target = package / "photos" / row.season / row.deployment_id
-        target.parent.mkdir(parents=True, exist_ok=True)
-        if not target.exists():
-            target.symlink_to(source, target_is_directory=True)
-        elif target.resolve() != source.resolve():
-            raise ValueError(f"Existing photo link points to a different source {target}")
+    stage_photos(args.archive, package, dep, photos)
+    validation["photo_paths_resolve"] = len(photos)
+    validation["deployment_ids_globally_unique"] = True
+    validation["photo_filenames_globally_unique"] = True
+    validation["deployment_id_corrections"] = DEPLOYMENT_ID_CORRECTIONS
     (ROOT / "data/release_working/validation.json").write_text(json.dumps(validation, indent=2) + "\n")
     print(json.dumps(validation, indent=2))
     print(f"Public staging package {package}")
