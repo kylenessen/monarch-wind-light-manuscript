@@ -1,35 +1,37 @@
-# Draft USGS Data Release Tables
+# Monarch monitoring data release draft
 
-The September 13 [photo and wind reconciliation](reconciliation_2026-09-13/README.md) is the current work product for these components. It uses the user-reviewed 2025 photos for interval boundaries and combines all located wind sources while excluding unrelated sensor/time records. The CSVs immediately in this directory remain the earlier manuscript-source drafts described below. The complete new outputs are on MonarchSSD, with small summaries and a dictionary preserved in the linked report directory.
+deployments.csv. One row per season and camera deployment, including identifiers, WGS84 location, boundaries and known limitations. Contains 28 rows.
 
-This directory contains draft open-format tables for the USGS data release associated with the monarch wind and light manuscript. These files are generated from the repository sources by `analysis/prepare_data_release.py`. The source JSON, SQLite databases, and manuscript analysis files remain unchanged.
+photo_index.csv. One row per retained JPEG photograph. Links images to the deployment table and collection folders. Contains 223,887 rows.
 
-The [data release working plan](PLAN.md) records the expanded scope for both seasons, including observations not used in the manuscript. It also inventories source wind records omitted by the current deployment filters and identifies overlapping deployment assignments. The tables described here are the existing draft and do not yet cover that expanded scope.
+classifications.csv. One row per image with evidence of classification, with ordinal cell primitives and BI totals. Unclassified placeholders are omitted. Covers the first season only. Contains 8,298 rows.
 
-Run the preparation command from the repository root.
+temperature_measurements.csv. One row per reviewed first-season image-overlay temperature record, including missing temperature values. No second-season temperature extraction was supplied. Contains 56,066 rows.
 
-```sh
-uv run analysis/prepare_data_release.py
-```
+wind_measurements.csv. One row per distinct wind observation associated with an assigned deployment interval. Identical observations within an instrument are deduplicated. SC9 and SC10 share StarDust observations because both deployment records assign that sensor during overlapping intervals. These shared rows are not independent measurements. Contains 757,260 rows.
 
-## Current tables
+analysis_30_minute.csv. Retained 30-minute manuscript input, with only variables used by the primary analyses, descriptive summaries and focused observer sensitivity. Both-zero BI pairs were excluded upstream. Photo-pair tolerance is five minutes. Row order and values are preserved. Contains 1,894 rows.
 
-`deployments.csv` contains the deployment metadata currently available in the repository. `classifications.csv` summarizes each image classification while preserving the ordinal cell-category counts needed to recalculate the Butterfly Index with alternative category values. `temperature_measurements.csv` contains the reviewed camera-overlay temperature extractions. `wind_measurements.csv` contains wind records assigned to the deployment intervals in `deployments.csv`.
+analysis_next_day.csv. Retained next-day manuscript input after >=95 percent overall coverage and complete-case selection. Deployment-days contain 15-25 daytime observations, consecutive days are paired, and pairs with both daily maxima zero are excluded. Coverage is the geometric mean of temperature, wind and daylight-image coverage. Source observation-order gaps are preserved. Signed square-root delta BI is calculated in R. Contains 96 rows.
 
-`analysis_30_minute.csv` and `analysis_next_day.csv` contain only the identifiers, responses, predictors, adjustment variables, correlation-order variables, and data-coverage fields needed for the two retained manuscript analyses. The next-day table contains the 96 records that passed the manuscript requirement of at least 95 percent overall data completeness.
+Camera and wind-meter clocks do not automatically apply daylight saving time. For the 2024-2025 season, timestamps remain on the recorded device clocks. No daylight saving or UTC conversion was applied to either series during release preparation. Apparent image lighting and civil clock time may therefore differ by one hour. Repeated clock times identify distinct photos and are retained. The investigator reports accounting for seasonal clock changes during first-season processing, but the exact historical procedure has not been recovered. Existing first-season timestamps are preserved. No UTC offset or independently verified camera-to-logger synchronization is asserted.
 
-`data_dictionary.csv` follows the table and field structure used by the example USGS ScienceBase release at <https://www.sciencebase.gov/catalog/item/68d307bad4be025f6ad24e66>. It gives a description, units, and observed minimum and maximum for every released field.
+Photographs are grouped in photos/season/deployment_id/. Image filenames use deployment_id_YYYYMMDDHHMMSS.JPG, corresponding to the format code %Y%m%d%H%M%S. The deployment identifier may itself contain an underscore. The timestamp has a four-digit year followed by two-digit month, day, 24-hour hour, minute and second. It carries no timezone. For the reviewed second season it comes from the photo EXIF capture time. Existing first-season canonical filenames are preserved. Distinct second-season photos sharing a timestamp use the unsuffixed name and an _02 suffix before .JPG. This suffix is a collision counter, not a fractional second, ordering guarantee, or clock correction. The photo index links every released filename to its deployment folder. One collection-level description applies to all images in each deployment folder. Individual photo metadata records are not required.
 
-## Time and measurement conventions
+Wind speed and gust are in meters per second. Direction is reported in degrees clockwise from north, with 360 representing north. The instrument manual specifies a 16-point sensor with 22.5-degree resolution and averaged logging. The database contains integer directions throughout 0 to 360, so exported observations are not restricted to 45-degree increments. The investigator considers direction 0 invalid or suspect. That interpretation has not been confirmed in the manufacturer manual, so original zeros are retained and should not be treated as confirmed north. Blank is missing. Zero speed or gust is not automatically invalid. Manual https://rainwise.com/downloads/windsoft/WindLog140805%20.pdf, section 7.2. Matching source databases use Units code 2, consistent with the manuscript m/s convention.
 
-All timestamps are local Pacific Standard Time. All currently represented deployments occurred outside daylight-saving time. Temperature values are approximate local camera readings in degrees Celsius. Wind speed and gust values are in meters per second. Wind directions are degrees clockwise from north.
+Coordinates are longitude and latitude in WGS84, EPSG 4326, expressed in decimal degrees. Later camera coordinates were transformed from EPSG 3498. First-season source geometries were already EPSG 4326. They represent camera positions, not separate wind-meter positions. Coordinate precision does not establish positional accuracy.
 
-Butterfly Index is an index of visible cluster size. It is not a count of individually identified butterflies. The index assigns the lower-bound values 0, 1, 10, and 100 to the four image-cell categories. Sun-exposed Butterfly Index is the subtotal from occupied cells marked as receiving direct sunlight.
+Missing CSV values are empty fields. Join observations using season and deployment_id. SC12 occurs in both seasons. Retain the season when combining tables. Only the analysis tables omit season because they contain first-season data exclusively. Wind observations shared by SC9 and SC10 must not be counted as independent measurements.
 
-## Known gaps requiring review
+The temperature table preserves the previously reviewed overlay values. No second-season temperature extraction or butterfly classification was supplied. Review deployment data_quality_note before using wind. UDMH1 has source-reported corruption. PS01 stops before the camera stops. SC12 has a long gap followed by zero-valued January records of uncertain context. No gap filling or new sensor corrections were performed.
 
-The temperature table contains six deployment identifiers that are not yet present in the repository deployment table. They are SC3, SC5, SC11, SLC6_1, UDMH1, and UDMH3. Their metadata should be added from the spatial deployment records when those records become available.
+The analysis CSVs are renamed, reduced copies of the historical manuscript inputs. They do not recompute weather summaries from the broader reconciled wind archive. That archive includes additional deployments and preserves exact source boundary seconds. Analysis reproduction and re-derivation from the broader observational archive are distinct operations. The time covariate is minutes since the first daily observation, not calculated astronomical sunrise.
 
-Five images used in the current 30-minute manuscript input are marked unconfirmed in the source classification JSON. Four have nonzero Butterfly Index values and a stored user identifier. The draft release preserves the `classification_confirmed` field and does not alter the manuscript analysis. These records should be reviewed before the release is finalized.
+Pending classification review. The historical analysis includes SC1_20231120133001.JPG, an unconfirmed all-zero source record with no observer. It is omitted from classifications as an unclassified placeholder. The historical analysis value is preserved pending an explicit decision about reanalysis. Other unconfirmed records are retained only where saved annotations or a saved user provide evidence of classification.
 
-The current tables cover the 2023 to 2024 season. The 2024 to 2025 photographs, classifications, deployment metadata, wind measurements, and any temperature records have not yet been incorporated. The image inventory and photograph archive will be added after those files become available.
+data_dictionary.csv defines every data column. metadata.xml is a draft with explicit REVIEW_REQUIRED fields. Release author order, DOI, USGS metadata identifier, shared contact, distribution terms and final approval must be supplied before publication. XML well-formedness alone is not FGDC validation.
+
+Analysis scripts remain at https://github.com/kylenessen/monarch-wind-light-manuscript. Use the release CSVs with the matching repository version. Run Rscript analysis/run_results_analyses.R from that repository root. A final public commit link must be pinned before distribution. Scripts are not included in this package.
+
+The local staging package uses directory links for photos to avoid copying the full archive. Before upload, create ordinary photo archives containing only the JPEG paths listed in photo_index.csv, preserving photos/season/deployment_id/ paths. Do not distribute symbolic links or unlisted source files.

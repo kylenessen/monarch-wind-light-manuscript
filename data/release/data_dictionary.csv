@@ -1,87 +1,79 @@
-Table Name,Field Name,Description,Units,Min,Max
-deployments,deployment_id,Unique identifier for a camera and wind-sensor deployment.,N/A,N/A,N/A
-deployments,grove,Monarch overwintering grove where the equipment was deployed.,N/A,N/A,N/A
-deployments,camera_name,Field name assigned to the trail camera.,N/A,N/A,N/A
-deployments,wind_sensor_name,Field name assigned to the wind sensor and used in the source database filename.,N/A,N/A,N/A
-deployments,deployed_at_local,Local date and time when the deployment began.,PST,2023-11-17 11:40:00,2024-01-27 13:00:00.224
-deployments,recovered_at_local,Local date and time when the deployment ended.,PST,2023-11-19 13:10:00.583,2024-02-04 10:50:00
-deployments,camera_height_m,Height of the camera above the ground.,meters,5.4,9.4
-deployments,horizontal_distance_to_cluster_m,Estimated horizontal distance from the camera to the monitored monarch cluster.,meters,4.1,16.5
-deployments,view_direction_degrees,"Compass direction in which the camera faced, measured clockwise from north.",degrees,20,360
-deployments,latitude,Latitude of the deployment location.,decimal degrees,34.5844897403737,34.6722004190266
-deployments,longitude,Longitude of the deployment location.,decimal degrees,-120.629130754224,-120.595036234382
-deployments,primary_observer,Name of the primary person responsible for classifying images from the deployment.,N/A,N/A,N/A
-deployments,view_id,Identifier for the monitored camera view.,N/A,N/A,N/A
-deployments,field_video_url,"URL for the deployment field video, when available.",N/A,N/A,N/A
-deployments,notes,Field notes associated with the deployment.,N/A,N/A,N/A
-classifications,image_filename,Canonical filename of the classified image.,N/A,N/A,N/A
-classifications,deployment_id,Deployment identifier encoded in the image filename.,N/A,N/A,N/A
-classifications,timestamp_local,Image acquisition date and time parsed from the filename.,PST,2023-11-17 11:40:01,2024-02-04 10:50:01
-classifications,primary_observer,Primary image classifier assigned to the deployment.,N/A,N/A,N/A
-classifications,record_user_id,User identifier stored with the final classification record. This can identify a later reviewer or editor.,N/A,N/A,N/A
-classifications,classification_confirmed,Whether the classification software marked the image record as confirmed.,boolean,False,True
-classifications,is_night,Whether the image was identified as a nighttime image.,boolean,False,True
-classifications,night_flag_source,"Source used for the nighttime indicator, either the classification record or a legacy time interval.",N/A,N/A,N/A
-classifications,cells_0,Number of image grid cells classified as containing zero butterflies.,integer,0,720
-classifications,cells_1_9,Number of image grid cells classified in the 1 to 9 category.,integer,0,62
-classifications,cells_10_99,Number of image grid cells classified in the 10 to 99 category.,integer,0,29
-classifications,cells_100_999,Number of image grid cells classified in the 100 to 999 category.,integer,0,7
-classifications,sun_exposed_cells_1_9,Number of directly sun-exposed occupied cells in the 1 to 9 category.,integer,0,46
-classifications,sun_exposed_cells_10_99,Number of directly sun-exposed occupied cells in the 10 to 99 category.,integer,0,18
-classifications,sun_exposed_cells_100_999,Number of directly sun-exposed occupied cells in the 100 to 999 category.,integer,0,2
-classifications,butterfly_index,"Visible cluster-size index calculated with category lower bounds of 0, 1, 10, and 100.",Butterfly Index units,0,950
-classifications,sun_exposed_butterfly_index,Butterfly Index subtotal from occupied cells classified as receiving direct sunlight.,Butterfly Index units,0,295
-temperature_measurements,image_filename,Canonical filename of the source image.,N/A,N/A,N/A
-temperature_measurements,deployment_id,Deployment identifier encoded in the image filename.,N/A,N/A,N/A
-temperature_measurements,timestamp_local,Image acquisition date and time parsed from the filename.,PST,2023-11-17 11:40:01,2024-02-05 14:05:01
-temperature_measurements,temperature_c,Approximate local temperature extracted from the camera image overlay and reviewed manually.,degrees Celsius,0,37
-temperature_measurements,ocr_confidence,Confidence score recorded by the OCR extraction workflow.,proportion,0.0331730436145927,1
-temperature_measurements,extraction_status,Whether the temperature came from successful OCR or manual entry.,N/A,N/A,N/A
-wind_measurements,deployment_id,Deployment associated with the wind measurement.,N/A,N/A,N/A
-wind_measurements,wind_sensor_name,Field name assigned to the wind sensor.,N/A,N/A,N/A
-wind_measurements,timestamp_local,Local date and time of the wind measurement.,PST,2023-11-17 11:40:00,2024-02-04 09:19:00
-wind_measurements,wind_speed_m_s,Sustained wind speed recorded by the sensor.,meters per second,0,7.5
-wind_measurements,wind_gust_m_s,Wind gust speed recorded by the sensor.,meters per second,0,12.8
-wind_measurements,wind_direction_degrees,"Wind direction recorded by the sensor, measured clockwise from north.",degrees,0,360
-analysis_30_minute,deployment_id,Deployment associated with the paired observations.,N/A,N/A,N/A
-analysis_30_minute,deployment_day_id,Unique identifier for a deployment and calendar day.,N/A,N/A,N/A
-analysis_30_minute,observation_order,Sequential position of the current image within its deployment day.,integer,2,22
-analysis_30_minute,previous_image_filename,Filename of the earlier image in the pair.,N/A,N/A,N/A
-analysis_30_minute,previous_timestamp_local,Acquisition date and time of the earlier image.,PST,2023-11-17 12:00:01,2024-02-04 08:30:01
-analysis_30_minute,current_image_filename,Filename of the later image in the pair.,N/A,N/A,N/A
-analysis_30_minute,current_timestamp_local,Acquisition date and time of the later image.,PST,2023-11-17 12:30:01,2024-02-04 09:00:01
-analysis_30_minute,lag_minutes,Elapsed time between the paired images.,minutes,29.9666666666667,30.0333333333333
-analysis_30_minute,previous_butterfly_index,Butterfly Index in the earlier image.,Butterfly Index units,0,770
-analysis_30_minute,current_butterfly_index,Butterfly Index in the later image.,Butterfly Index units,0,950
-analysis_30_minute,butterfly_index_change,Current Butterfly Index minus previous Butterfly Index.,Butterfly Index units,-471,369
-analysis_30_minute,butterfly_index_change_signed_cuberoot,Signed cube-root transformation of Butterfly Index change used as the model response.,transformed Butterfly Index units,-7.78049036148142,7.1725809000888
-analysis_30_minute,previous_sun_exposed_butterfly_index,Sun-exposed Butterfly Index in the earlier image.,Butterfly Index units,0,295
-analysis_30_minute,previous_temperature_c,Approximate local temperature in the earlier image.,degrees Celsius,3,30
-analysis_30_minute,current_temperature_c,Approximate local temperature in the later image.,degrees Celsius,3,30
-analysis_30_minute,mean_temperature_c,Mean temperature of the paired images.,degrees Celsius,3,30
-analysis_30_minute,maximum_wind_gust_m_s,Maximum recorded wind gust between the paired images.,meters per second,0,12.4
-analysis_30_minute,minutes_since_sunrise,Minutes elapsed since local sunrise for the current image.,minutes,29.9833333333333,630.016666666667
-analysis_30_minute,primary_observer,Primary image classifier assigned to the deployment.,N/A,N/A,N/A
-analysis_next_day,deployment_id,Deployment associated with the paired monitoring days.,N/A,N/A,N/A
-analysis_next_day,observation_order,Sequential position of the current day within the deployment series.,integer,2,33
-analysis_next_day,previous_date,Calendar date of the previous monitoring day.,PST date,2023-11-18,2024-02-02
-analysis_next_day,current_date,Calendar date of the current monitoring day.,PST date,2023-11-19,2024-02-03
-analysis_next_day,previous_day_maximum_timestamp_local,Date and time of maximum Butterfly Index on the previous day.,PST,2023-11-18 06:30:02,2024-02-02 08:00:01
-analysis_next_day,current_day_maximum_timestamp_local,Date and time of maximum Butterfly Index on the current day.,PST,2023-11-19 07:30:01,2024-02-03 11:30:01
-analysis_next_day,window_start_local,Beginning of the analysis window at the previous day's maximum Butterfly Index.,PST,2023-11-18 06:30:02,2024-02-02 08:00:01
-analysis_next_day,window_end_local,End of the analysis window at the current day's final daytime image.,PST,2023-11-19 17:00:01,2024-02-03 17:30:01
-analysis_next_day,window_duration_hours,Duration of the analysis window.,hours,24,34.6666666666667
-analysis_next_day,overall_data_completeness,"Geometric mean of temperature, wind, and image data coverage.",proportion,0.9565215107137,0.999835769417313
-analysis_next_day,temperature_data_coverage,Proportion of expected temperature observations present in the window.,proportion,1,1
-analysis_next_day,wind_data_coverage,Proportion of expected wind observations present in the window.,proportion,0.875153478408527,0.999507389162561
-analysis_next_day,image_data_coverage,Proportion of expected daylight image observations present in the window.,proportion,0.897959183673469,1
-analysis_next_day,previous_day_maximum_butterfly_index,Maximum Butterfly Index on the previous monitoring day.,Butterfly Index units,0,770
-analysis_next_day,current_day_maximum_butterfly_index,Maximum Butterfly Index on the current monitoring day.,Butterfly Index units,0,770
-analysis_next_day,butterfly_index_change,Current-day maximum Butterfly Index minus previous-day maximum Butterfly Index.,Butterfly Index units,-376,464
-analysis_next_day,butterfly_index_change_signed_square_root,Signed square-root transformation of maximum Butterfly Index change used as the model response.,transformed Butterfly Index units,-19.3907194296653,21.540659228538
-analysis_next_day,minimum_temperature_c,Minimum temperature in the analysis window.,degrees Celsius,3,14
-analysis_next_day,maximum_temperature_c,Maximum temperature in the analysis window.,degrees Celsius,14,32
-analysis_next_day,temperature_at_previous_day_maximum_c,Temperature at the previous day's maximum Butterfly Index.,degrees Celsius,5,22
-analysis_next_day,maximum_wind_gust_m_s,Maximum recorded wind gust in the analysis window.,meters per second,2,12.8
-analysis_next_day,cumulative_sun_exposed_butterfly_index,Sum of sun-exposed Butterfly Index across daylight images in the analysis window.,Butterfly Index units,0,1122
-analysis_next_day,primary_observer,Primary image classifier assigned to the deployment.,N/A,N/A,N/A
+table,column,description,units,missing_value,observed_minimum,observed_maximum
+deployments.csv,season,"Field season. Use season together with deployment_id as the deployment key, because SC12 recurs across seasons.",identifier,empty field,,
+deployments.csv,deployment_id,Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024.,identifier,empty field,,
+deployments.csv,camera_name,Field name assigned to the camera. Join deployments using season and deployment_id.,identifier,empty field,,
+deployments.csv,wind_sensor_name,Field name assigned to the wind meter. A meter may serve multiple camera views or deployments.,identifier,empty field,,
+deployments.csv,start_time_recorded,"Deployment start from the original first-season deployment layer, or earliest retained EXIF capture time in the reviewed second-season photos. Source fractional seconds are preserved.",recorded clock,empty field,2023-11-17T11:40:00.000,2024-11-17T13:30:01
+deployments.csv,end_time_recorded,"Deployment end from the original first-season deployment layer, or latest retained EXIF capture time in the reviewed second-season photos. This is not necessarily the last wind observation.",recorded clock,empty field,2023-11-19T13:10:00.583,2025-04-11T14:10:01
+deployments.csv,boundary_basis,first_season_deployment_geopackage means source deployment-layer boundaries. reviewed_photo_exif means minimum and maximum retained photo EXIF times.,text,empty field,,
+deployments.csv,latitude,"Latitude of the camera deployment in WGS84, EPSG 4326. Coordinate precision does not establish positional accuracy.",decimal degrees,empty field,34.58434444,34.88680926
+deployments.csv,longitude,"Longitude of the camera deployment in WGS84, EPSG 4326. Western longitudes are negative.",decimal degrees,empty field,-120.63312527,-120.56154322
+deployments.csv,camera_height_m,Recorded camera height above ground.,meters,empty field,1.0,9.6
+deployments.csv,horizontal_distance_to_cluster_m,Recorded horizontal viewing distance from camera to butterfly cluster.,meters,empty field,4.1,33.8
+deployments.csv,view_direction_degrees,Recorded camera viewing direction clockwise from north.,degrees,empty field,10,360
+deployments.csv,primary_observer,Primary classifier assigned to the deployment in the manuscript metadata. This does not identify an independent replicate observer for every image.,text,empty field,,
+deployments.csv,data_quality_note,"Known recording, coverage or timing limitations. Empty means no additional deployment-specific note here, not certification of error-free observations.",text,empty field,,
+photo_index.csv,season,"Field season. Use season together with deployment_id as the deployment key, because SC12 recurs across seasons.",identifier,empty field,,
+photo_index.csv,deployment_id,Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024.,identifier,empty field,,
+photo_index.csv,camera_name,Field name assigned to the camera. Join deployments using season and deployment_id.,identifier,empty field,,
+photo_index.csv,image_filename,Canonical photo filename. Join with season and deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
+photo_index.csv,timestamp_recorded,Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products.,recorded clock,empty field,2023-11-17T11:40:01,2025-04-11T14:10:01
+photo_index.csv,relative_path,"Photo path relative to the package root, grouped by season and deployment_id.",path,empty field,,
+classifications.csv,season,"Field season. Use season together with deployment_id as the deployment key, because SC12 recurs across seasons.",identifier,empty field,,
+classifications.csv,deployment_id,Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024.,identifier,empty field,,
+classifications.csv,camera_name,Field name assigned to the camera. Join deployments using season and deployment_id.,identifier,empty field,,
+classifications.csv,image_filename,Canonical photo filename. Join with season and deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
+classifications.csv,timestamp_recorded,Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-04T10:50:01
+classifications.csv,primary_observer,Primary classifier assigned to the deployment in the manuscript metadata. This does not identify an independent replicate observer for every image.,text,empty field,,
+classifications.csv,record_user_id,"User identifier saved in the annotation record, possibly a later editor. Blank means absent from the source. The assigned primary observer is reported separately.",identifier,empty field,,
+classifications.csv,classification_confirmed,True if the annotation software marked the record confirmed. Unconfirmed records are included only when a user or a nondefault annotation provides evidence of classification.,boolean,empty field,False,True
+classifications.csv,is_night,"Night flag from the annotation record, or historical SC1/SC2 night intervals when the flag was absent. This is an existing classification convention, not a newly inferred timezone.",boolean,empty field,False,True
+classifications.csv,cells_0,Number of image grid cells assigned to butterfly category 0. Retained primitives support alternative category mappings.,grid cells,empty field,0,720
+classifications.csv,cells_1_9,Number of image grid cells assigned to butterfly category 1-9. Retained primitives support alternative category mappings.,grid cells,empty field,0,62
+classifications.csv,cells_10_99,Number of image grid cells assigned to butterfly category 10-99. Retained primitives support alternative category mappings.,grid cells,empty field,0,29
+classifications.csv,cells_100_999,Number of image grid cells assigned to butterfly category 100-999. Retained primitives support alternative category mappings.,grid cells,empty field,0,7
+classifications.csv,sun_exposed_cells_1_9,Number of occupied grid cells in category 1-9 marked as receiving direct sunlight.,grid cells,empty field,0,46
+classifications.csv,sun_exposed_cells_10_99,Number of occupied grid cells in category 10-99 marked as receiving direct sunlight.,grid cells,empty field,0,18
+classifications.csv,sun_exposed_cells_100_999,Number of occupied grid cells in category 100-999 marked as receiving direct sunlight.,grid cells,empty field,0,2
+classifications.csv,butterfly_index,"Butterfly Index, BI, of visible cluster size. Sum of grid-cell category lower bounds, using 0, 1, 10 and 100 for categories 0, 1-9, 10-99 and 100-999. This is not an individual butterfly count.",BI units,empty field,0,950
+classifications.csv,sun_exposed_butterfly_index,"BI subtotal for occupied grid cells marked directSun, or legacy sunlight. Cannot exceed total BI. No change or delta is included in this observation table.",BI units,empty field,0,295
+temperature_measurements.csv,season,"Field season. Use season together with deployment_id as the deployment key, because SC12 recurs across seasons.",identifier,empty field,,
+temperature_measurements.csv,deployment_id,Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024.,identifier,empty field,,
+temperature_measurements.csv,camera_name,Field name assigned to the camera. Join deployments using season and deployment_id.,identifier,empty field,,
+temperature_measurements.csv,image_filename,Canonical photo filename. Join with season and deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
+temperature_measurements.csv,timestamp_recorded,Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-05T14:05:01
+temperature_measurements.csv,temperature_c,"Approximate local camera temperature extracted from the image overlay, with prior manual review of OCR. Existing reviewed values are preserved. This is not a newly calibrated ambient-air measurement.",degrees Celsius,empty field,0.0,37.0
+wind_measurements.csv,season,"Field season. Use season together with deployment_id as the deployment key, because SC12 recurs across seasons.",identifier,empty field,,
+wind_measurements.csv,deployment_id,Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024.,identifier,empty field,,
+wind_measurements.csv,wind_sensor_name,Field name assigned to the wind meter. A meter may serve multiple camera views or deployments.,identifier,empty field,,
+wind_measurements.csv,timestamp_recorded,Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products.,recorded clock,empty field,2023-11-17T11:40:00,2025-01-31T04:04:00
+wind_measurements.csv,wind_speed_m_s,Wind speed reported in the logger speed field for the recording interval.,meters per second,empty field,0.0,9.7
+wind_measurements.csv,wind_gust_m_s,"Maximum wind gust reported in the logger gust field for the recording interval, normally one minute.",meters per second,empty field,0.0,119.0
+wind_measurements.csv,wind_direction_degrees,"Wind speed and gust are in meters per second. Direction is reported in degrees clockwise from north, with 360 representing north. The instrument manual specifies a 16-point sensor with 22.5-degree resolution and averaged logging. The database contains integer directions throughout 0 to 360, so exported observations are not restricted to 45-degree increments. The investigator considers direction 0 invalid or suspect. That interpretation has not been confirmed in the manufacturer manual, so original zeros are retained and should not be treated as confirmed north. Blank is missing. Zero speed or gust is not automatically invalid. Manual https://rainwise.com/downloads/windsoft/WindLog140805%20.pdf, section 7.2. Matching source databases use Units code 2, consistent with the manuscript m/s convention.",degrees,empty field,0.0,360.0
+analysis_30_minute.csv,deployment_id,Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024.,identifier,empty field,,
+analysis_30_minute.csv,deployment_day_id,Deployment and calendar-day grouping used for random intercepts and within-day residual correlation in the 30-minute analysis.,identifier,empty field,,
+analysis_30_minute.csv,observation_order,"Original sequence index of the current observation within deployment-day for the 30-minute analysis, or current day within deployment for next-day analysis. Gaps are retained for AR(1) correlation.",integer,empty field,2,22
+analysis_30_minute.csv,previous_image_filename,Earlier photo in the retained 30-minute pair. First-season photo_index provides its path.,identifier,empty field,,
+analysis_30_minute.csv,previous_timestamp_recorded,Recorded earlier image time in the retained pair. No new timezone conversion.,recorded clock,empty field,2023-11-17 12:00:01,2024-02-04 08:30:01
+analysis_30_minute.csv,current_image_filename,Later photo in the retained 30-minute pair. First-season photo_index provides its path.,identifier,empty field,,
+analysis_30_minute.csv,current_timestamp_recorded,Recorded later image time in the retained pair. No new timezone conversion.,recorded clock,empty field,2023-11-17 12:30:01,2024-02-04 09:00:01
+analysis_30_minute.csv,previous_bi,BI of the earlier image. Adjustment covariate and input to descriptive statistics.,BI units,empty field,0.0,770.0
+analysis_30_minute.csv,current_bi,BI of the later image. Used in descriptive and occupied-cluster wind summaries.,BI units,empty field,0.0,950.0
+analysis_30_minute.csv,delta_bi,Change in BI. Current minus previous image BI for 30-minute pairs. Current-day maximum minus previous-day maximum BI for next-day pairs.,BI units,empty field,-471.0,369.0
+analysis_30_minute.csv,delta_bi_signed_cuberoot,"Signed cube root of delta_bi, the 30-minute model response. Stored transformation preserved from the manuscript input.",transformed BI units,empty field,-7.780490361481424,7.1725809000887955
+analysis_30_minute.csv,previous_sun_exposed_bi,Sun-exposed BI of the earlier image in the 30-minute pair.,BI units,empty field,0.0,295.0
+analysis_30_minute.csv,mean_temperature_c,Arithmetic mean of the earlier and later image-overlay temperatures.,degrees Celsius,empty field,3.0,30.0
+analysis_30_minute.csv,maximum_wind_gust_m_s,"Maximum recorded gust in the analysis window. The 30-minute preparation uses a fixed 30-minute wind window ending at the later image, even if the photo pair differs by up to five minutes.",meters per second,empty field,0.0,12.4
+analysis_30_minute.csv,minutes_since_first_daily_observation,"Minutes since the first observation in the upstream deployment-day series. Historical code called this time_within_day_t. The manuscript called it time since sunrise, but the code does not calculate astronomical sunrise.",minutes,empty field,29.983333333333334,630.0166666666667
+analysis_30_minute.csv,minutes_gust_at_or_above_2_m_s,"Number of source one-minute records with gust >= 2 m/s in the 30-minute window. Used in descriptive summaries. This counts minute maxima, not continuous exposure above a threshold.",one-minute records,empty field,0,31
+analysis_30_minute.csv,primary_observer,Primary classifier assigned to the deployment in the manuscript metadata. This does not identify an independent replicate observer for every image.,text,empty field,,
+analysis_next_day.csv,deployment_id,Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024.,identifier,empty field,,
+analysis_next_day.csv,observation_order,"Original sequence index of the current observation within deployment-day for the 30-minute analysis, or current day within deployment for next-day analysis. Gaps are retained for AR(1) correlation.",integer,empty field,2,33
+analysis_next_day.csv,previous_day_maximum_bi,Maximum BI on the earlier day. Adjustment covariate in next-day models.,BI units,empty field,0.0,770.0
+analysis_next_day.csv,delta_bi,Change in BI. Current minus previous image BI for 30-minute pairs. Current-day maximum minus previous-day maximum BI for next-day pairs.,BI units,empty field,-376.0,464.0
+analysis_next_day.csv,window_duration_hours,Duration from previous-day maximum BI time to current-day final daytime observation.,hours,empty field,24.0,34.666666666666664
+analysis_next_day.csv,minimum_temperature_c,Minimum reviewed camera-overlay temperature in the next-day window.,degrees Celsius,empty field,3.0,14.0
+analysis_next_day.csv,maximum_temperature_c,Maximum reviewed camera-overlay temperature in the next-day window.,degrees Celsius,empty field,14.0,32.0
+analysis_next_day.csv,temperature_at_previous_day_maximum_c,Reviewed camera-overlay temperature at the earlier day's maximum BI.,degrees Celsius,empty field,5.0,22.0
+analysis_next_day.csv,maximum_wind_gust_m_s,"Maximum recorded gust in the analysis window. The 30-minute preparation uses a fixed 30-minute wind window ending at the later image, even if the photo pair differs by up to five minutes.",meters per second,empty field,2.0,12.8
+analysis_next_day.csv,cumulative_sun_exposed_bi,"Sum of sun-exposed BI across daytime image observations in the next-day window. Combines the indexed abundance in sunlit cells and the number of observations, not a continuous radiation dose.",BI units,empty field,0.0,1122.0

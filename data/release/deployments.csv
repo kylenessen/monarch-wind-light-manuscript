@@ -1,21 +1,29 @@
-deployment_id,grove,camera_name,wind_sensor_name,deployed_at_local,recovered_at_local,camera_height_m,horizontal_distance_to_cluster_m,view_direction_degrees,latitude,longitude,primary_observer,view_id,field_video_url,notes
-SC1,Spring Canyon,EM03,JazzPlay,2023-11-17 11:40:00,2023-12-15 11:00:00,7.0,4.2,90,34.6318631241188,-120.618244611051,Skyler,1A,https://youtu.be/-zeGd_WTeWo,Location and height estimated after deployment
-SC10,Spring Canyon,JINX,StarDust,2024-01-05 16:06:04.149,2024-01-31 20:30:00,5.9,7.5,320,34.6312571527367,-120.618104598629,Emery,2A,https://youtu.be/0zLjm9PA6YM,"Swapped cameras from SC4
-
-This camera fell during a storm and was destroyed on impact."
-SC12,Spring Canyon,NOVA,BlueLake,2024-01-27 13:00:00.224,2024-02-04 10:50:00,7.1,12.6,230,34.6316194737745,-120.617960900372,Vincent,4A,https://youtu.be/4uLZIZqlgPE,This pole fell because a tree fell. 
-SC2,Spring Canyon,LYNX,FoxTrail,2023-11-17 14:00:00,2023-11-19 13:10:00.583,6.2,6.8,155,34.6318422984987,-120.618617450556,Vincent,5A,https://youtu.be/N5hJl9ISmds,Location and heights taken after deployment
-SC4,Spring Canyon,ZEST,StarDust,2023-12-03 14:30:00.855,2024-01-05 14:30:00.003,5.6,6.3,335,34.6312828749816,-120.618133548903,Kevin,2A,https://youtu.be/RW91J3HMm_4,Guess on count. Check end time
-SC6,Spring Canyon,EM03,BlueLake,2023-12-15 13:20:00.661,2024-01-05 14:10:00.15,6.9,12.6,210,34.6316091220451,-120.617929872462,Vincent,4A,https://youtu.be/MqmH5L3lXbk,
-SC7,Spring Canyon,IRIS,FunStorm,2023-12-15 14:45:00.707,2024-01-05 16:25:00.65,6.1,4.1,200,34.6316932933342,-120.618537083028,Vincent,8A,https://youtu.be/UYxXEPVmqLY,
-SC8,Spring Canyon,EM03,BlueLake,2024-01-05 15:30:00.808,2024-01-27 11:40:00,6.4,16.5,220,34.6316027255854,-120.617962854402,Skyler,4A,https://youtu.be/AOWrySdh1z8,"Tilted up from SC6 to get the upper branches over road.
-
-Two clips seized causing it to tilt but not fall."
-SC9,Spring Canyon,WASP,StarDust,2024-01-05 16:02:00.252,2024-01-31 20:30:00,5.4,6.7,100,34.6312712689514,-120.618134924842,Vincent,9A,https://youtu.be/EUo4zfKfiAo,"Checking to see if clusters reform on this sunny side
-
-This camera also fell and was damaged duringa storm"
-SLC6_2,SLC 6,WASP,MoonTide,2023-12-03 13:02:00.913,2024-01-05 13:02:00.942,7.5,7.6,20,34.5844897403737,-120.629130754224,Vincent,11A,https://youtu.be/r8f3oCAFK9k,Hoping butterflies show up
-UDMH2,UDMH,GOLD,JoyHouse,2024-01-05 12:20:00.545,2024-01-06 04:00:00.857,8.6,6.8,360,34.6722004190266,-120.595223248665,Skyler,14A,https://youtu.be/57Jut_Rt1zE,Fell over early on.
-UDMH4,UDMH,LUNA,MoonTide,2024-01-18 15:50:00.719,2024-01-22 03:20:00.986,9.4,6.2,350,34.6720776776833,-120.595036234382,Skyler,16A,https://youtu.be/1j0kNCEX0LQ,"Setup with Ray!
-
-Unfortunately fell a few days later. Popped ground anchor."
+season,deployment_id,camera_name,wind_sensor_name,start_time_recorded,end_time_recorded,boundary_basis,latitude,longitude,camera_height_m,horizontal_distance_to_cluster_m,view_direction_degrees,primary_observer,data_quality_note
+2023-2024,SC1,EM03,JazzPlay,2023-11-17T11:40:00.000,2023-12-15T11:00:00.000,first_season_deployment_geopackage,34.63186312,-120.61824461,7.0,4.2,90,Skyler,
+2023-2024,SC10,JINX,StarDust,2024-01-05T16:06:04.149,2024-01-31T20:30:00.000,first_season_deployment_geopackage,34.63125715,-120.6181046,5.9,7.5,320,Emery,
+2023-2024,SC11,IRIS,FunStorm,2024-01-05T16:45:00.444,2024-02-05T14:05:00.373,first_season_deployment_geopackage,34.6317224,-120.61848193,6.1,,90,,
+2023-2024,SC12,NOVA,BlueLake,2024-01-27T13:00:00.224,2024-02-04T10:50:00.000,first_season_deployment_geopackage,34.63161947,-120.6179609,7.1,12.6,230,Vincent,
+2023-2024,SC2,LYNX,FoxTrail,2023-11-17T14:00:00.000,2023-11-19T13:10:00.583,first_season_deployment_geopackage,34.6318423,-120.61861745,6.2,6.8,155,Vincent,
+2023-2024,SC3,ECHO,,2023-11-19T15:40:01.032,2023-12-03T08:55:00.000,first_season_deployment_geopackage,34.63134134,-120.61806358,,,30,,
+2023-2024,SC4,ZEST,StarDust,2023-12-03T14:30:00.855,2024-01-05T14:30:00.003,first_season_deployment_geopackage,34.63128287,-120.61813355,5.6,6.3,335,Kevin,
+2023-2024,SC5,APEX,PugSnore,2023-12-03T16:30:00.183,2024-01-31T19:40:00.314,first_season_deployment_geopackage,34.63150053,-120.61756112,8.3,5.7,320,,
+2023-2024,SC6,EM03,BlueLake,2023-12-15T13:20:00.661,2024-01-05T14:10:00.150,first_season_deployment_geopackage,34.63160912,-120.61792987,6.9,,210,Vincent,
+2023-2024,SC7,IRIS,FunStorm,2023-12-15T14:45:00.707,2024-01-05T16:25:00.650,first_season_deployment_geopackage,34.63169329,-120.61853708,6.1,4.1,200,Vincent,
+2023-2024,SC8,EM03,BlueLake,2024-01-05T15:30:00.808,2024-01-27T11:40:00.000,first_season_deployment_geopackage,34.63160273,-120.61796285,6.4,16.5,220,Skyler,
+2023-2024,SC9,WASP,StarDust,2024-01-05T16:02:00.252,2024-01-31T20:30:00.000,first_season_deployment_geopackage,34.63127127,-120.61813492,5.4,6.7,100,Vincent,
+2023-2024,SLC6_1,NOVA,OakTrust,2023-12-03T11:20:00.603,2023-12-20T12:20:00.555,first_season_deployment_geopackage,34.58467772,-120.62878857,6.8,5.0,280,,
+2023-2024,SLC6_2,WASP,MoonTide,2023-12-03T13:02:00.913,2024-01-05T13:02:00.942,first_season_deployment_geopackage,34.58448974,-120.62913075,7.5,7.6,20,Vincent,
+2023-2024,TGR1,ZEST,JoyHouse,2023-12-15T16:34:52.663,2024-01-05T08:10:01.412,first_season_deployment_geopackage,34.7506181,-120.61229055,5.1,,65,,Source notes report that the camera date was not set. No reviewed photographs are included for this deployment.
+2023-2024,UDMH1,LUNA,SunRuler,2024-01-05T10:50:00.969,2024-01-18T14:30:00.334,first_season_deployment_geopackage,34.67234821,-120.59519474,8.3,5.4,160,,Source field notes describe wind data as corrupted. Recorded values are preserved and require caution.
+2023-2024,UDMH2,GOLD,JoyHouse,2024-01-05T12:20:00.545,2024-01-06T04:00:00.857,first_season_deployment_geopackage,34.67220042,-120.59522325,8.6,6.8,360,Skyler,
+2023-2024,UDMH3,GOLD,TreeTalk,2024-01-18T15:10:00.339,2024-01-31T19:40:00.000,first_season_deployment_geopackage,34.67229034,-120.59522888,9.6,4.9,360,,
+2023-2024,UDMH4,LUNA,MoonTide,2024-01-18T15:50:00.719,2024-01-22T03:20:00.986,first_season_deployment_geopackage,34.67207768,-120.59503623,9.4,6.2,350,Skyler,
+2024-2025,ARC1,ORCA,BoltZoom,2024-11-17T13:30:01,2025-01-15T11:20:01,reviewed_photo_exif,34.73900814,-120.56154322,1.75,17.6,10,,No located wind records match the assigned sensor and reviewed photo interval.
+2024-2025,BC01,APEX,EchoBuzz,2024-11-07T14:20:50,2025-04-11T11:30:01,reviewed_photo_exif,34.64376882,-120.59821907,2.0,33.8,320,,No located wind records match the assigned sensor and reviewed photo interval.
+2024-2025,CR01,GOLD,VineLoop,2024-10-19T15:40:01,2025-04-11T13:10:01,reviewed_photo_exif,34.75768955,-120.58232621,1.5,24.9,360,,No located wind records match the assigned sensor and reviewed photo interval.
+2024-2025,MM01,NOVA,LeafWind,2024-10-19T11:10:01,2025-04-11T14:10:01,reviewed_photo_exif,34.8553279,-120.60444164,1.2,28.2,300,,No located wind records match the assigned sensor and reviewed photo interval.
+2024-2025,PS01,EM03,JoyHouse,2024-10-19T14:06:58,2025-03-27T19:30:01,reviewed_photo_exif,34.88680926,-120.63312527,1.4,8.5,40,,"Available wind series ends January 31, 2025 at 04:04. Cause of cessation is unknown."
+2024-2025,SC12,IRIS,RockWall,2024-10-31T12:50:01,2025-02-15T06:20:01,reviewed_photo_exif,34.63164548,-120.61793258,1.0,27.7,215,,"Regular wind sequence ends December 23, 2024 at 12:51. After a 22-day gap, 69 zero-speed and zero-gust records occur January 14, 2025. Their field or servicing context is uncertain. Values are preserved."
+2024-2025,SLC6_3,KIWI,BarkRoar,2024-11-07T12:31:08,2024-12-08T19:50:12,reviewed_photo_exif,34.58434444,-120.62908099,1.25,25.4,350,,No located wind records match the assigned sensor and reviewed photo interval.
+2024-2025,TGR2,MOSS,CatFable,2024-11-17T11:10:00,2025-04-11T13:30:01,reviewed_photo_exif,34.75125437,-120.61189431,1.5,24.5,200,,No located wind records match the assigned sensor and reviewed photo interval.
+2024-2025,UDMH05,JADE,LeftLion,2024-10-31T15:00:01,2025-04-11T11:40:01,reviewed_photo_exif,34.67247303,-120.59520343,1.75,20.5,140,,No located wind records match the assigned sensor and reviewed photo interval.

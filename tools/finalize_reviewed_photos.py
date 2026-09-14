@@ -15,7 +15,7 @@ from datetime import datetime
 
 from PIL import Image
 
-EXCLUSION_FILE = Path(__file__).resolve().parents[1] / "data/release/deployment_exclusions.json"
+EXCLUSION_FILE = Path(__file__).resolve().parents[1] / "data/release_working/deployment_exclusions.json"
 
 
 def digest(path):

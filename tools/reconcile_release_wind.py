@@ -17,7 +17,7 @@ import pandas as pd
 MEASUREMENTS = ["wind_speed_m_s", "wind_gust_m_s", "wind_direction_degrees"]
 IDENTITY = ["wind_sensor_name", "timestamp_recorded", *MEASUREMENTS]
 ALIASES = {"oc sw catfable": "CatFable"}
-EXCLUSION_FILE = Path(__file__).resolve().parents[1] / "data/release/deployment_exclusions.json"
+EXCLUSION_FILE = Path(__file__).resolve().parents[1] / "data/release_working/deployment_exclusions.json"
 
 FIELD_DESCRIPTIONS = {
     "deployment_key": "Unique release join key formed as season/deployment_id. Distinguishes the two SC12 deployments.",

@@ -1,0 +1,41 @@
+deployment_key,season,deployment_id,camera_name,wind_sensor_name,start_time_recorded,end_time_recorded,boundary_basis,photo_count_for_interval,notes
+2023-2024/SC3,2023-2024,SC3,ECHO,,2023-11-19T15:40:01.032,2023-12-03T08:55:00.000,first_season_deployment_geopackage,,Makeshift camera to catch butterflies during launch. Got two launches on camera including one boost back 
+2023-2024/SLC6_1,2023-2024,SLC6_1,NOVA,OakTrust,2023-12-03T11:20:00.603,2023-12-20T12:20:00.555,first_season_deployment_geopackage,,"Not much activity when setting up, but easy spot and a few sunners. 
+
+Ultimately fell down. Deleted all the photos while on the ground. End time is last good photo"
+2023-2024/SLC6_2,2023-2024,SLC6_2,WASP,MoonTide,2023-12-03T13:02:00.913,2024-01-05T13:02:00.942,first_season_deployment_geopackage,,Hoping butterflies show up
+2023-2024/SC4,2023-2024,SC4,ZEST,StarDust,2023-12-03T14:30:00.855,2024-01-05T14:30:00.003,first_season_deployment_geopackage,,Guess on count. Check end time
+2023-2024/SC5,2023-2024,SC5,APEX,PugSnore,2023-12-03T16:30:00.183,2024-01-31T19:40:00.314,first_season_deployment_geopackage,,"No monarchs here, but usually a reliable site.
+
+This pole ultimately was hit by a large fallen tree."
+2023-2024/SC6,2023-2024,SC6,EM03,BlueLake,2023-12-15T13:20:00.661,2024-01-05T14:10:00.150,first_season_deployment_geopackage,,
+2023-2024/SC7,2023-2024,SC7,IRIS,FunStorm,2023-12-15T14:45:00.707,2024-01-05T16:25:00.650,first_season_deployment_geopackage,,
+2023-2024/TGR1,2023-2024,TGR1,ZEST,JoyHouse,2023-12-15T16:34:52.663,2024-01-05T08:10:01.412,first_season_deployment_geopackage,,Forgot to set date on images. 
+2023-2024/SC1,2023-2024,SC1,EM03,JazzPlay,2023-11-17T11:40:00.000,2023-12-15T11:00:00.000,first_season_deployment_geopackage,,Location and height estimated after deployment
+2023-2024/SC2,2023-2024,SC2,LYNX,FoxTrail,2023-11-17T14:00:00.000,2023-11-19T13:10:00.583,first_season_deployment_geopackage,,Location and heights taken after deployment
+2023-2024/UDMH1,2023-2024,UDMH1,LUNA,SunRuler,2024-01-05T10:50:00.969,2024-01-18T14:30:00.334,first_season_deployment_geopackage,,Wind data is corrupted. 
+2023-2024/UDMH2,2023-2024,UDMH2,GOLD,JoyHouse,2024-01-05T12:20:00.545,2024-01-06T04:00:00.857,first_season_deployment_geopackage,,Fell over early on.
+2023-2024/SC8,2023-2024,SC8,EM03,BlueLake,2024-01-05T15:30:00.808,2024-01-27T11:40:00.000,first_season_deployment_geopackage,,"Tilted up from SC6 to get the upper branches over road.
+
+Two clips seized causing it to tilt but not fall."
+2023-2024/SC9,2023-2024,SC9,WASP,StarDust,2024-01-05T16:02:00.252,2024-01-31T20:30:00.000,first_season_deployment_geopackage,,"Checking to see if clusters reform on this sunny side
+
+This camera also fell and was damaged duringa storm"
+2023-2024/SC10,2023-2024,SC10,JINX,StarDust,2024-01-05T16:06:04.149,2024-01-31T20:30:00.000,first_season_deployment_geopackage,,"Swapped cameras from SC4
+
+This camera fell during a storm and was destroyed on impact."
+2023-2024/SC11,2023-2024,SC11,IRIS,FunStorm,2024-01-05T16:45:00.444,2024-02-05T14:05:00.373,first_season_deployment_geopackage,,Last camera to survive Spring Canyon. Only one that didn’t get knocked down
+2023-2024/UDMH3,2023-2024,UDMH3,GOLD,TreeTalk,2024-01-18T15:10:00.339,2024-01-31T19:40:00.000,first_season_deployment_geopackage,,
+2023-2024/UDMH4,2023-2024,UDMH4,LUNA,MoonTide,2024-01-18T15:50:00.719,2024-01-22T03:20:00.986,first_season_deployment_geopackage,,"Setup with Ray!
+
+Unfortunately fell a few days later. Popped ground anchor."
+2023-2024/SC12,2023-2024,SC12,NOVA,BlueLake,2024-01-27T13:00:00.224,2024-02-04T10:50:00.000,first_season_deployment_geopackage,,This pole fell because a tree fell. 
+2024-2025/MM01,2024-2025,MM01,NOVA,LeafWind,2024-10-19T11:10:01,2025-04-11T14:10:01,user_reviewed_photos,25074,97%
+2024-2025/PS01,2024-2025,PS01,EM03,JoyHouse,2024-10-19T14:06:58,2025-03-27T19:30:01,user_reviewed_photos,22929,View distance is right euc trunk. Wind meter obscured by branches
+2024-2025/CR01,2024-2025,CR01,GOLD,VineLoop,2024-10-19T15:40:01,2025-04-11T13:10:01,user_reviewed_photos,25042,96%
+2024-2025/SC12,2024-2025,SC12,IRIS,RockWall,2024-10-31T12:50:01,2025-02-15T06:20:01,user_reviewed_photos,15374,
+2024-2025/UDMH05,2024-2025,UDMH05,JADE,LeftLion,2024-10-31T15:00:01,2025-04-11T11:40:01,user_reviewed_photos,23309,
+2024-2025/SLC6_3,2024-2025,SLC6_3,KIWI,BarkRoar,2024-11-07T12:31:08,2024-12-08T19:50:12,user_reviewed_photos,4483,
+2024-2025/BC01,2024-2025,BC01,APEX,EchoBuzz,2024-11-07T14:20:50,2025-04-11T11:30:01,user_reviewed_photos,22289,
+2024-2025/TGR2,2024-2025,TGR2,MOSS,CatFable,2024-11-17T11:10:00,2025-04-11T13:30:01,user_reviewed_photos,20889,
+2024-2025/ARC1,2024-2025,ARC1,ORCA,BoltZoom,2024-11-17T13:30:01,2025-01-15T11:20:01,user_reviewed_photos,8432,
