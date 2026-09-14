@@ -16,7 +16,7 @@ The earlier numerical comparison is preserved in analysis_verification.json.
 
 Both seasons use the same public fields and photos/deployment_id/ paths. Deployment
 times are named start_time and end_time and displayed as YYYY-MM-DD HH:MM:SS.
-Observer information is retained with classifications, not in the deployment table. The release
+Saved user identifiers are retained with classifications. The release
 retains one photograph per deployment and capture timestamp. Thirty additional
 exposures sharing timestamps were excluded at the investigator's request. Their
 originals remain in the source archive. Locations are approximate cellphone GPS

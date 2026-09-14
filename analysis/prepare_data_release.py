@@ -80,7 +80,6 @@ DESCRIPTIONS = {
     "camera_height_m": ("Recorded camera height above ground.", "meters"),
     "horizontal_distance_to_cluster_m": ("Recorded horizontal viewing distance from camera to butterfly cluster.", "meters"),
     "view_direction_degrees": ("Recorded camera viewing direction clockwise from north.", "degrees"),
-    "primary_observer": ("Primary image classifier assigned to the deployment.", "text"),
     "data_quality_note": ("Deployment-specific recording, coverage or timing information.", "text"),
     "image_filename": ("Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.", "identifier"),
     "timestamp_recorded": ("Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.", "recorded clock"),
@@ -280,7 +279,6 @@ def photo_index(archive, staging, deployment):
 
 
 def classifications(deployment):
-    observers = deployment.query("season == '2023-2024'").set_index("deployment_id").primary_observer.to_dict()
     cameras = deployment.query("season == '2023-2024'").set_index("deployment_id").camera_name.to_dict()
     legacy = {"SC1": [("20231117174001", "20231118062001"), ("20231118172501", "20231119061501"), ("20231119171001", "20231120062001"), ("20231120172001", "20231121063001")],
               "SC2": [("20231117172501", "20231118062001"), ("20231118171501", "20231119061501")]}
@@ -295,7 +293,7 @@ def classifications(deployment):
             night = record.get("isNight", any(a <= compact <= b for a, b in legacy.get(path.stem, [])))
             row = dict(season="2023-2024", deployment_id=path.stem, camera_name=cameras[path.stem],
                 image_filename=filename, timestamp_recorded=pd.to_datetime(compact, format="%Y%m%d%H%M%S").isoformat(),
-                primary_observer=observers[path.stem], record_user_id=record.get("user", ""),
+                record_user_id=record.get("user", ""),
                 classification_confirmed=bool(record.get("confirmed")), is_night=bool(night))
             counts = dict.fromkeys(weights, 0)
             sun = dict.fromkeys(weights, 0)

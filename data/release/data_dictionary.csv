@@ -19,7 +19,6 @@ classifications.csv,deployment_id,"Camera deployment identifier, unique across b
 classifications.csv,camera_name,Field name assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
 classifications.csv,image_filename,Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
 classifications.csv,timestamp_recorded,Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-04T10:50:01
-classifications.csv,primary_observer,Primary image classifier assigned to the deployment.,text,empty field,,
 classifications.csv,record_user_id,User identifier saved in the classification JSON.,identifier,empty field,,
 classifications.csv,classification_confirmed,Confirmation flag in the classification JSON. The summary includes confirmed records and saved annotations.,boolean,empty field,False,True
 classifications.csv,is_night,"Night flag from the annotation record, supplemented by the recorded SC1 and SC2 night intervals when the flag is absent.",boolean,empty field,False,True

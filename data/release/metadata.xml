@@ -313,14 +313,6 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>primary_observer</attrlabl>
-        <attrdef>Primary image classifier assigned to the deployment. Units text. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
         <attrlabl>record_user_id</attrlabl>
         <attrdef>User identifier saved in the classification JSON. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
