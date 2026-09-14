@@ -11,5 +11,11 @@
   "analysis_images_without_classification": [],
   "schema_and_join_checks": "passed",
   "raw_data_modified": false,
-  "clock_corrections_applied": false
+  "clock_corrections_applied": false,
+  "photo_paths_resolve": 223887,
+  "deployment_ids_globally_unique": true,
+  "photo_filenames_globally_unique": true,
+  "deployment_id_corrections": {
+    "2024-2025/SC12": "SC13"
+  }
 }

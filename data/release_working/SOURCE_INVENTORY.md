@@ -1,5 +1,7 @@
 # QGIS deployment source investigation
 
+Release update. The investigator corrected the second-season IRIS and RockWall deployment to SC13. First-season SC12 remains unchanged. The release builder applies deployment_id_corrections.json to public identifiers and photo paths. The source labels described below are preserved in the original layers and historical reconciliation records.
+
 Inspected September 9, 2026. Sources were read without modifying the `masters` repository. The source directory is `/Users/kylenessen/GitHub/masters/VSFB_Monarchs`.
 
 The active project is `VSFB_Monarchs.qgs`. Its `deployments`, `cameras`, and `wind_meters` layers reference `deployments.gpkg`, `cameras.gpkg`, and `wind_meters.gpkg` in that directory. The project and camera GeoPackage have uncommitted changes. Findings describe those working files, including the current camera deployment IDs.

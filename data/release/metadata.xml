@@ -15,7 +15,7 @@
     <descript>
       <abstract>Draft release of available observations from two monarch overwintering monitoring seasons. Includes deployment locations and recorded intervals, photographs, first-season ordinal image classifications and reviewed camera-overlay temperatures, wind observations from both seasons where available, and two first-season manuscript analysis tables. Unclassified photographs do not establish butterfly absence. BI is an index of visible cluster size rather than a count of individual butterflies.</abstract>
       <purpose>Preserve field observations for reuse and provide inputs for reproducing the associated wind and light analyses. Analysis scripts are maintained in the repository, not distributed as data-release files. Repository https://github.com/kylenessen/monarch-wind-light-manuscript. Pin the final release commit before publication.</purpose>
-      <supplinf>Camera and wind-meter clocks do not automatically apply daylight saving time. For the 2024-2025 season, timestamps remain on the recorded device clocks. No daylight saving or UTC conversion was applied to either series during release preparation. Apparent image lighting and civil clock time may therefore differ by one hour. Repeated clock times identify distinct photos and are retained. The investigator reports accounting for seasonal clock changes during first-season processing, but the exact historical procedure has not been recovered. Existing first-season timestamps are preserved. No UTC offset or independently verified camera-to-logger synchronization is asserted. Photographs are grouped in photos/season/deployment_id/. Image filenames use deployment_id_YYYYMMDDHHMMSS.JPG, corresponding to the format code %Y%m%d%H%M%S. The deployment identifier may itself contain an underscore. The timestamp has a four-digit year followed by two-digit month, day, 24-hour hour, minute and second. It carries no timezone. For the reviewed second season it comes from the photo EXIF capture time. Existing first-season canonical filenames are preserved. Distinct second-season photos sharing a timestamp use the unsuffixed name and an _02 suffix before .JPG. This suffix is a collision counter, not a fractional second, ordering guarantee, or clock correction. The photo index links every released filename to its deployment folder. One collection-level description applies to all images in each deployment folder. Individual photo metadata records are not required.</supplinf>
+      <supplinf>Camera and wind-meter clocks do not automatically apply daylight saving time. For the 2024-2025 season, timestamps remain on the recorded device clocks. No daylight saving or UTC conversion was applied to either series during release preparation. Apparent image lighting and civil clock time may therefore differ by one hour. Repeated clock times identify distinct photos and are retained. The investigator reports accounting for seasonal clock changes during first-season processing, but the exact historical procedure has not been recovered. Existing first-season timestamps are preserved. No UTC offset or independently verified camera-to-logger synchronization is asserted. Photographs are grouped in photos/season/deployment_id/. Image filenames use deployment_id_YYYYMMDDHHMMSS.JPG, corresponding to the format code %Y%m%d%H%M%S. The deployment identifier may itself contain an underscore. The timestamp has a four-digit year followed by two-digit month, day, 24-hour hour, minute and second. It carries no timezone. For the reviewed second season it comes from the photo EXIF capture time. Existing first-season canonical filenames are preserved. Distinct second-season photos sharing a timestamp use the unsuffixed name and an _02 suffix before .JPG. This suffix is a collision counter, not a fractional second, ordering guarantee, or clock correction. The photo index links every released filename to its deployment folder. One collection-level description applies to all images in each deployment folder. Individual photo metadata records are not required. Deployment identifiers are unique across the release. SC12 identifies the first-season NOVA camera and BlueLake wind meter. SC13 identifies the second-season IRIS camera and RockWall wind meter. The investigator corrected the second-season source label SC12 to SC13. This correction applies to deployment and wind table identifiers, photo filenames and photo paths. Original source labels are retained in the internal provenance mapping. Photograph contents, recorded times and measurement values are unchanged.</supplinf>
     </descript>
     <timeperd>
       <timeinfo>
@@ -81,6 +81,10 @@
         <procdate>20260913</procdate>
       </procstep>
       <procstep>
+        <procdesc>Deployment identifiers are unique across the release. SC12 identifies the first-season NOVA camera and BlueLake wind meter. SC13 identifies the second-season IRIS camera and RockWall wind meter. The investigator corrected the second-season source label SC12 to SC13. This correction applies to deployment and wind table identifiers, photo filenames and photo paths. Original source labels are retained in the internal provenance mapping. Photograph contents, recorded times and measurement values are unchanged.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
         <procdesc>Wind records from 92 SQLite databases were matched to the assigned wind meter and inclusive deployment interval. Whitespace and numeric representations were normalized. Identical sensor, time, speed, gust and direction tuples were deduplicated. Source IDs were not treated as globally unique. Off-interval and unrelated observations were omitted. Conflicting measurement tuples would be retained for review. Raw source databases remain unchanged.</procdesc>
         <procdate>20260913</procdate>
       </procstep>
@@ -128,7 +132,7 @@
       </enttyp>
       <attr>
         <attrlabl>season</attrlabl>
-        <attrdef>Field season. Use season together with deployment_id as the deployment key, because SC12 recurs across seasons. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Field season. Retain season when combining deployment and observation tables. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -136,7 +140,7 @@
       </attr>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -247,7 +251,7 @@
       </enttyp>
       <attr>
         <attrlabl>season</attrlabl>
-        <attrdef>Field season. Use season together with deployment_id as the deployment key, because SC12 recurs across seasons. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Field season. Retain season when combining deployment and observation tables. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -255,7 +259,7 @@
       </attr>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -302,7 +306,7 @@
       </enttyp>
       <attr>
         <attrlabl>season</attrlabl>
-        <attrdef>Field season. Use season together with deployment_id as the deployment key, because SC12 recurs across seasons. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Field season. Retain season when combining deployment and observation tables. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -310,7 +314,7 @@
       </attr>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -453,7 +457,7 @@
       </enttyp>
       <attr>
         <attrlabl>season</attrlabl>
-        <attrdef>Field season. Use season together with deployment_id as the deployment key, because SC12 recurs across seasons. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Field season. Retain season when combining deployment and observation tables. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -461,7 +465,7 @@
       </attr>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -508,7 +512,7 @@
       </enttyp>
       <attr>
         <attrlabl>season</attrlabl>
-        <attrdef>Field season. Use season together with deployment_id as the deployment key, because SC12 recurs across seasons. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Field season. Retain season when combining deployment and observation tables. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -516,7 +520,7 @@
       </attr>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -571,7 +575,7 @@
       </enttyp>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -714,7 +718,7 @@
       </enttyp>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Field deployment identifier. Unique within a season. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
