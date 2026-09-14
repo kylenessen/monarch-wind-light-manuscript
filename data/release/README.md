@@ -1,12 +1,16 @@
 # Monarch monitoring data release draft
 
+Authors in manuscript order. Kyle Nessen, Peter C. Ibsen, Jay E. Diffendorfer, Francis X. Villablanca.
+
+Corresponding author. Kyle Nessen, knessen@calpoly.edu.
+
 deployments.csv. One row per season and camera deployment, including identifiers, WGS84 location, boundaries and known limitations. Contains 28 rows.
 
 photo_index.csv. One row per retained JPEG photograph. Links images to the deployment table and collection folders. Contains 223,887 rows.
 
 classifications.csv. One row per image with evidence of classification, with ordinal cell primitives and BI totals. Unclassified placeholders are omitted. Covers the first season only. Contains 8,299 rows.
 
-temperature_measurements.csv. One row per reviewed first-season image-overlay temperature record, including missing temperature values. No second-season temperature extraction was supplied. Contains 56,066 rows.
+temperature_measurements.csv. One row per reviewed first-season image-overlay temperature record, including missing temperature values. The investigator confirmed that no second-season temperature data exist. Contains 56,066 rows.
 
 wind_measurements.csv. One row per distinct wind observation associated with an assigned deployment interval. Identical observations within an instrument are deduplicated. SC9 and SC10 share StarDust observations because both deployment records assign that sensor during overlapping intervals. These shared rows are not independent measurements. Contains 757,260 rows.
 
@@ -24,13 +28,13 @@ Coordinates are longitude and latitude in WGS84, EPSG 4326, expressed in decimal
 
 Missing CSV values are empty fields. Join observations using season and deployment_id. SC12 occurs in both seasons. Retain the season when combining tables. Only the analysis tables omit season because they contain first-season data exclusively. Wind observations shared by SC9 and SC10 must not be counted as independent measurements.
 
-The temperature table preserves the previously reviewed overlay values. No second-season temperature extraction or butterfly classification was supplied. Review deployment data_quality_note before using wind. UDMH1 has source-reported corruption. PS01 stops before the camera stops. SC12 has a long gap followed by zero-valued January records of uncertain context. No gap filling or new sensor corrections were performed.
+The temperature table preserves the previously reviewed overlay values. The investigator confirmed that no second-season temperature data exist. Butterfly classifications cover the first season only. Review deployment data_quality_note before using wind. UDMH1 has source-reported corruption. PS01 stops before the camera stops. SC12 has a long gap followed by zero-valued January records of uncertain context. No gap filling or new sensor corrections were performed.
 
 The analysis CSVs are renamed, reduced copies of the historical manuscript inputs. They do not recompute weather summaries from the broader reconciled wind archive. That archive includes additional deployments and preserves exact source boundary seconds. Analysis reproduction and re-derivation from the broader observational archive are distinct operations. The time covariate is minutes since the first daily observation, not calculated astronomical sunrise.
 
 Investigator review retained SC1_20231120133001.JPG as a valid zero-BI classification and assigned Skyler as primary observer, following the majority of SC1 classifications. All 752 source SC1 records with a saved user identify SM, and the deployment metadata names Skyler. The original software confirmation flag remains false and the original record_user_id remains blank. The release assignment is in primary_observer. The original JSON and historical analysis values are unchanged.
 
-data_dictionary.csv defines every data column. metadata.xml is a draft with explicit REVIEW_REQUIRED fields. Release author order, DOI, USGS metadata identifier, shared contact, distribution terms and final approval must be supplied before publication. XML well-formedness alone is not FGDC validation.
+data_dictionary.csv defines every data column. metadata.xml is a draft for coauthor and USGS contact review, with explicit REVIEW_REQUIRED fields. Authors and corresponding contact follow the manuscript at the investigator's instruction. The DOI, USGS metadata identifier, institutional metadata contact, distribution terms and final approval remain to be finalized with USGS colleagues before publication. XML well-formedness alone is not FGDC validation.
 
 Analysis scripts remain at https://github.com/kylenessen/monarch-wind-light-manuscript. Use the release CSVs with the matching repository version. Run Rscript analysis/run_results_analyses.R from that repository root. A final public commit link must be pinned before distribution. Scripts are not included in this package.
 

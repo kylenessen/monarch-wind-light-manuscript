@@ -3,7 +3,10 @@
   <idinfo>
     <citation>
       <citeinfo>
-        <origin>REVIEW_REQUIRED release author list and order</origin>
+        <origin>Kyle Nessen</origin>
+        <origin>Peter C. Ibsen</origin>
+        <origin>Jay E. Diffendorfer</origin>
+        <origin>Francis X. Villablanca</origin>
         <pubdate>Unpublished material</pubdate>
         <title>Photographs, image classifications, wind measurements, and image-derived temperatures from monarch butterfly monitoring at Vandenberg Space Force Base, California, 2023 through 2025</title>
         <geoform>tabular digital data and digital photographs</geoform>
@@ -47,13 +50,22 @@
     </keywords>
     <accconst>REVIEW_REQUIRED release access terms</accconst>
     <useconst>Draft metadata and data package for review. No institutional approval or final DOI is asserted. Camera and wind-meter clocks do not automatically apply daylight saving time. For the 2024-2025 season, timestamps remain on the recorded device clocks. No daylight saving or UTC conversion was applied to either series during release preparation. Apparent image lighting and civil clock time may therefore differ by one hour. Repeated clock times identify distinct photos and are retained. The investigator reports accounting for seasonal clock changes during first-season processing, but the exact historical procedure has not been recovered. Existing first-season timestamps are preserved. No UTC offset or independently verified camera-to-logger synchronization is asserted.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Kyle Nessen</cntper>
+          <cntorg>Biological Sciences Department, California Polytechnic State University</cntorg>
+        </cntperp>
+        <cntemail>knessen@calpoly.edu</cntemail>
+      </cntinfo>
+    </ptcontac>
   </idinfo>
   <dataqual>
     <attracc>
       <attraccr>Wind speed and gust are in meters per second. Direction is reported in degrees clockwise from north, with 360 representing north. The instrument manual specifies a 16-point sensor with 22.5-degree resolution and averaged logging. The database contains integer directions throughout 0 to 360, so exported observations are not restricted to 45-degree increments. The investigator considers direction 0 invalid or suspect. That interpretation has not been confirmed in the manufacturer manual, so original zeros are retained and should not be treated as confirmed north. Blank is missing. Zero speed or gust is not automatically invalid. Manual https://rainwise.com/downloads/windsoft/WindLog140805%20.pdf, section 7.2. Matching source databases use Units code 2, consistent with the manuscript m/s convention. Camera-overlay temperatures were reviewed for OCR errors but are approximate camera measurements, not independently calibrated air temperatures. Classification primitives and source measurements are preserved.</attraccr>
     </attracc>
     <logic>Season and deployment_id jointly identify deployments. Photos link by season, deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals. Shared sensor observations for SC9 and SC10 remain associated with both camera deployments and are not independent measurements.</logic>
-    <complete>Available records are incomplete for some deployments. No second-season classification or reviewed temperature table was supplied. Deployment data_quality_note records absent wind coverage, corrupted wind records and uncertain later zero-valued records. Blank values are missing. Untouched unclassified zero placeholders are excluded unless explicitly accepted by the investigator during review. Analysis tables preserve historical manuscript inputs. No missing observations are imputed. Investigator review retained SC1_20231120133001.JPG as a valid zero-BI classification and assigned Skyler as primary observer, following the majority of SC1 classifications. All 752 source SC1 records with a saved user identify SM, and the deployment metadata names Skyler. The original software confirmation flag remains false and the original record_user_id remains blank. The release assignment is in primary_observer. The original JSON and historical analysis values are unchanged.</complete>
+    <complete>Available records are incomplete for some deployments. Classifications cover the first season only. The investigator confirmed that no second-season temperature data exist. Deployment data_quality_note records absent wind coverage, corrupted wind records and uncertain later zero-valued records. Blank values are missing. Untouched unclassified zero placeholders are excluded unless explicitly accepted by the investigator during review. Analysis tables preserve historical manuscript inputs. No missing observations are imputed. Investigator review retained SC1_20231120133001.JPG as a valid zero-BI classification and assigned Skyler as primary observer, following the majority of SC1 classifications. All 752 source SC1 records with a saved user identify SM, and the deployment metadata names Skyler. The original software confirmation flag remains false and the original record_user_id remains blank. The release assignment is in primary_observer. The original JSON and historical analysis values are unchanged.</complete>
     <posacc>
       <horizpa>
         <horizpar>First-season coordinates are WGS84 source deployment points. Second-season camera points were transformed from EPSG 3498, NAD83(NSRS2007) / California zone 5 in US survey feet, to EPSG 4326 using pyproj with longitude-first output. Positional accuracy was not independently measured. Decimal precision is not an accuracy estimate.</horizpar>
@@ -436,7 +448,7 @@
     <detailed>
       <enttyp>
         <enttypl>temperature_measurements.csv</enttypl>
-        <enttypd>One row per reviewed first-season image-overlay temperature record, including missing temperature values. No second-season temperature extraction was supplied.</enttypd>
+        <enttypd>One row per reviewed first-season image-overlay temperature record, including missing temperature values. The investigator confirmed that no second-season temperature data exist.</enttypd>
         <enttypds>Study investigators and analysis preparation code</enttypds>
       </enttyp>
       <attr>

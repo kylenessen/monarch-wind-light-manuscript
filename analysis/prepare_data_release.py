@@ -127,11 +127,19 @@ TABLES = {
     "deployments": "One row per season and camera deployment, including identifiers, WGS84 location, boundaries and known limitations.",
     "photo_index": "One row per retained JPEG photograph. Links images to the deployment table and collection folders.",
     "classifications": "One row per image with evidence of classification, with ordinal cell primitives and BI totals. Unclassified placeholders are omitted. Covers the first season only.",
-    "temperature_measurements": "One row per reviewed first-season image-overlay temperature record, including missing temperature values. No second-season temperature extraction was supplied.",
+    "temperature_measurements": "One row per reviewed first-season image-overlay temperature record, including missing temperature values. The investigator confirmed that no second-season temperature data exist.",
     "wind_measurements": "One row per distinct wind observation associated with an assigned deployment interval. Identical observations within an instrument are deduplicated. SC9 and SC10 share StarDust observations because both deployment records assign that sensor during overlapping intervals. These shared rows are not independent measurements.",
     "analysis_30_minute": "Retained 30-minute manuscript input, with only variables used by the primary analyses, descriptive summaries and focused observer sensitivity. Both-zero BI pairs were excluded upstream. Photo-pair tolerance is five minutes. Row order and values are preserved.",
     "analysis_next_day": "Retained next-day manuscript input after >=95 percent overall coverage and complete-case selection. Deployment-days contain 15-25 daytime observations, consecutive days are paired, and pairs with both daily maxima zero are excluded. Coverage is the geometric mean of temperature, wind and daylight-image coverage. Source observation-order gaps are preserved. Signed square-root delta BI is calculated in R.",
 }
+
+
+def manuscript_authors_and_contact():
+    manuscript = (ROOT / "manuscript.tex").read_text()
+    names = re.search(r"\\AuthorNames\{([^}]+)\}", manuscript)[1]
+    authors = names.replace(" and ", ", ").split(", ")
+    email = re.search(r"\\corres\{Correspondence: ([^\s}]+)", manuscript)[1]
+    return authors, email
 
 
 def read_gpkg(path, table, geometry):
@@ -272,7 +280,11 @@ def metadata_xml(tables, field_dictionary):
             child = parent.find(component)
             parent = child if child is not None else ET.SubElement(parent, component)
         parent.text = str(text)
-    add(root, "idinfo/citation/citeinfo/origin", "REVIEW_REQUIRED release author list and order")
+    authors, email = manuscript_authors_and_contact()
+    citation = ET.SubElement(ET.SubElement(root, "idinfo"), "citation")
+    citeinfo = ET.SubElement(citation, "citeinfo")
+    for author in authors:
+        ET.SubElement(citeinfo, "origin").text = author
     add(root, "idinfo/citation/citeinfo/pubdate", "Unpublished material")
     add(root, "idinfo/citation/citeinfo/title", "Photographs, image classifications, wind measurements, and image-derived temperatures from monarch butterfly monitoring at Vandenberg Space Force Base, California, 2023 through 2025")
     add(root, "idinfo/citation/citeinfo/geoform", "tabular digital data and digital photographs")
@@ -293,9 +305,12 @@ def metadata_xml(tables, field_dictionary):
     add(root, "idinfo/keywords/place/placekey", "Vandenberg Space Force Base, Santa Barbara County, California")
     add(root, "idinfo/accconst", "REVIEW_REQUIRED release access terms")
     add(root, "idinfo/useconst", "Draft metadata and data package for review. No institutional approval or final DOI is asserted. " + CLOCK_NOTE)
+    add(root, "idinfo/ptcontac/cntinfo/cntperp/cntper", authors[0])
+    add(root, "idinfo/ptcontac/cntinfo/cntperp/cntorg", "Biological Sciences Department, California Polytechnic State University")
+    add(root, "idinfo/ptcontac/cntinfo/cntemail", email)
     add(root, "dataqual/attracc/attraccr", WIND_NOTE + " Camera-overlay temperatures were reviewed for OCR errors but are approximate camera measurements, not independently calibrated air temperatures. Classification primitives and source measurements are preserved.")
     add(root, "dataqual/logic", "Season and deployment_id jointly identify deployments. Photos link by season, deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals. Shared sensor observations for SC9 and SC10 remain associated with both camera deployments and are not independent measurements.")
-    add(root, "dataqual/complete", "Available records are incomplete for some deployments. No second-season classification or reviewed temperature table was supplied. Deployment data_quality_note records absent wind coverage, corrupted wind records and uncertain later zero-valued records. Blank values are missing. Untouched unclassified zero placeholders are excluded unless explicitly accepted by the investigator during review. Analysis tables preserve historical manuscript inputs. No missing observations are imputed. " + CLASSIFICATION_REVIEW_NOTE)
+    add(root, "dataqual/complete", "Available records are incomplete for some deployments. Classifications cover the first season only. The investigator confirmed that no second-season temperature data exist. Deployment data_quality_note records absent wind coverage, corrupted wind records and uncertain later zero-valued records. Blank values are missing. Untouched unclassified zero placeholders are excluded unless explicitly accepted by the investigator during review. Analysis tables preserve historical manuscript inputs. No missing observations are imputed. " + CLASSIFICATION_REVIEW_NOTE)
     add(root, "dataqual/posacc/horizpa/horizpar", "First-season coordinates are WGS84 source deployment points. Second-season camera points were transformed from EPSG 3498, NAD83(NSRS2007) / California zone 5 in US survey feet, to EPSG 4326 using pyproj with longitude-first output. Positional accuracy was not independently measured. Decimal precision is not an accuracy estimate.")
     lineage = ET.SubElement(root.find("dataqual"), "lineage")
     for text in (
@@ -413,14 +428,15 @@ def main():
     validation = validate(tables)
     fields = dictionary(tables)
     xml = metadata_xml(tables, fields)
-    readme = "# Monarch monitoring data release draft\n\n" + "\n\n".join(f"{name}.csv. {TABLES[name]} Contains {len(frame):,} rows." for name, frame in tables.items())
+    authors, email = manuscript_authors_and_contact()
+    readme = "# Monarch monitoring data release draft\n\nAuthors in manuscript order. " + ", ".join(authors) + ".\n\nCorresponding author. " + authors[0] + ", " + email + ".\n\n" + "\n\n".join(f"{name}.csv. {TABLES[name]} Contains {len(frame):,} rows." for name, frame in tables.items())
     readme += "\n\n" + CLOCK_NOTE + "\n\n" + FILENAME_NOTE + "\n\n" + WIND_NOTE
     readme += "\n\nCoordinates are longitude and latitude in WGS84, EPSG 4326, expressed in decimal degrees. Later camera coordinates were transformed from EPSG 3498. First-season source geometries were already EPSG 4326. They represent camera positions, not separate wind-meter positions. Coordinate precision does not establish positional accuracy.\n\n"
     readme += "Missing CSV values are empty fields. Join observations using season and deployment_id. SC12 occurs in both seasons. Retain the season when combining tables. Only the analysis tables omit season because they contain first-season data exclusively. Wind observations shared by SC9 and SC10 must not be counted as independent measurements.\n\n"
-    readme += "The temperature table preserves the previously reviewed overlay values. No second-season temperature extraction or butterfly classification was supplied. Review deployment data_quality_note before using wind. UDMH1 has source-reported corruption. PS01 stops before the camera stops. SC12 has a long gap followed by zero-valued January records of uncertain context. No gap filling or new sensor corrections were performed.\n\n"
+    readme += "The temperature table preserves the previously reviewed overlay values. The investigator confirmed that no second-season temperature data exist. Butterfly classifications cover the first season only. Review deployment data_quality_note before using wind. UDMH1 has source-reported corruption. PS01 stops before the camera stops. SC12 has a long gap followed by zero-valued January records of uncertain context. No gap filling or new sensor corrections were performed.\n\n"
     readme += "The analysis CSVs are renamed, reduced copies of the historical manuscript inputs. They do not recompute weather summaries from the broader reconciled wind archive. That archive includes additional deployments and preserves exact source boundary seconds. Analysis reproduction and re-derivation from the broader observational archive are distinct operations. The time covariate is minutes since the first daily observation, not calculated astronomical sunrise.\n\n"
     readme += CLASSIFICATION_REVIEW_NOTE + "\n\n"
-    readme += "data_dictionary.csv defines every data column. metadata.xml is a draft with explicit REVIEW_REQUIRED fields. Release author order, DOI, USGS metadata identifier, shared contact, distribution terms and final approval must be supplied before publication. XML well-formedness alone is not FGDC validation.\n\n"
+    readme += "data_dictionary.csv defines every data column. metadata.xml is a draft for coauthor and USGS contact review, with explicit REVIEW_REQUIRED fields. Authors and corresponding contact follow the manuscript at the investigator's instruction. The DOI, USGS metadata identifier, institutional metadata contact, distribution terms and final approval remain to be finalized with USGS colleagues before publication. XML well-formedness alone is not FGDC validation.\n\n"
     readme += "Analysis scripts remain at https://github.com/kylenessen/monarch-wind-light-manuscript. Use the release CSVs with the matching repository version. Run Rscript analysis/run_results_analyses.R from that repository root. A final public commit link must be pinned before distribution. Scripts are not included in this package.\n\n"
     readme += "The local staging package uses directory links for photos to avoid copying the full archive. Before upload, create ordinary photo archives containing only the JPEG paths listed in photo_index.csv, preserving photos/season/deployment_id/ paths. Do not distribute symbolic links or unlisted source files.\n"
     package = args.package_dir or args.archive / "publication_package"
