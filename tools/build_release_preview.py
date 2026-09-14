@@ -25,8 +25,18 @@ def digest(path):
         return hashlib.file_digest(handle, "sha256").hexdigest()
 
 
-def build(source, destination):
-    if destination.exists():
+def ten_rows(priority, candidates):
+    chosen = []
+    for row in priority + candidates:
+        if row not in chosen:
+            chosen.append(row)
+        if len(chosen) == 10:
+            return chosen
+    raise ValueError("Insufficient distinct source rows for the preview")
+
+
+def build(source, destination, replace=False):
+    if destination.exists() and not replace:
         raise FileExistsError(f"Choose a new preview folder to preserve existing review files: {destination}")
     tables = {p.stem: read_csv(p) for p in sorted(source.glob("*.csv"))}
     rows = {name: data[1] for name, data in tables.items()}
@@ -63,15 +73,31 @@ def build(source, destination):
     unique = {tuple(r[f] for f in fields): r for r in wind_examples}
     selected["wind_measurements"] = sorted(unique.values(), key=lambda r: (r["season"], r["deployment_id"], r["timestamp_recorded"]))
 
+    wind_priority = []
+    for deployment in ("SC1", "SC9", "SC10", "SC12", "SC13"):
+        wind_priority.append(next(r for r in selected["wind_measurements"] if r["deployment_id"] == deployment))
+    wind_priority.extend(next(r for r in selected["wind_measurements"] if float(r["wind_direction_degrees"]) == direction)
+                         for direction in (0, 360))
+    wind_priority.append(next(r for r in selected["wind_measurements"]
+                              if r["deployment_id"] == "SC13" and r["timestamp_recorded"].startswith("2025-01-14")))
+    selected["wind_measurements"] = ten_rows(wind_priority, selected["wind_measurements"])
+    for name in ("classifications", "analysis_30_minute", "analysis_next_day"):
+        selected[name] = ten_rows(selected[name], rows[name])
+    classified_names = {r["image_filename"] for r in selected["classifications"]}
+    selected["temperature_measurements"] = [r for r in rows["temperature_measurements"] if r["image_filename"] in classified_names]
+    selected["photo_index"] = ten_rows(selected["photo_index"],
+                                      [r for r in rows["photo_index"] if r["image_filename"] in classified_names])
+
     assert set(selected) == set(tables)
-    assert len(selected["photo_index"]) == len(filenames) == 6
-    assert len(selected["classifications"]) == len(selected["temperature_measurements"]) == 3
+    assert len(filenames) == 6
+    assert all(len(chosen) == 10 for name, chosen in selected.items() if name not in {"deployments", "data_dictionary"})
     assert len({r["deployment_id"] for r in selected["deployments"]}) == len(selected["deployments"])
     photo_names = {r["image_filename"] for r in selected["photo_index"]}
-    assert all(r["image_filename"] in photo_names for name in ("classifications", "temperature_measurements") for r in selected[name])
+    assert filenames <= photo_names
+    assert {r["image_filename"] for r in selected["temperature_measurements"]} == classified_names
     definitions = {(r["table"], r["column"]) for r in selected["data_dictionary"]}
     assert all((name + ".csv", field) in definitions for name in selected if name != "data_dictionary" for field in tables[name][0])
-    destination.mkdir(parents=True)
+    destination.mkdir(parents=True, exist_ok=replace)
     counts = {}
     for name, chosen in selected.items():
         fields, original = tables[name]
@@ -90,6 +116,8 @@ def build(source, destination):
         counts[name + ".csv"] = {"preview_rows": len(chosen), "full_release_rows": len(original), "columns": len(fields)}
     photo_checksums = {}
     for photo in selected["photo_index"]:
+        if photo["image_filename"] not in filenames:
+            continue
         relative = photo["relative_path"]
         original, target = source / relative, destination / relative
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -98,7 +126,7 @@ def build(source, destination):
         photo_checksums[relative] = digest(target)
     shutil.copyfile(source / "metadata.xml", destination / "metadata.xml")
     reference = destination / "full_release_reference"
-    reference.mkdir()
+    reference.mkdir(exist_ok=replace)
     shutil.copyfile(source / "README.md", reference / "README.md")
 
     header_text = "# CSV headers for USGS review\n\nHeaders are identical to the full draft release, in the same column order. "
@@ -125,13 +153,13 @@ This is a selected example set, not the complete dataset or a statistically repr
     for name, count in counts.items():
         readme += f"| {name} | {count['preview_rows']:,} | {count['full_release_rows']:,} | {count['columns']} |\n"
     readme += """
-deployments.csv and data_dictionary.csv are complete copies. The other CSVs contain selected rows. Dictionary minimum and maximum values describe the full release.
+deployments.csv and data_dictionary.csv are complete copies. Each of the other six CSVs contains exactly 10 selected data rows, plus its header. Dictionary minimum and maximum values describe the full release.
 
 ## Photo examples and table relationships
 
-Six original JPEGs are included under photos/season/deployment_id/. Every path in this preview's photo_index.csv resolves to an included JPEG. These are ordinary files, with no symbolic links. The images and their EXIF metadata have not been resized or edited.
+Six original JPEGs are included under photos/season/deployment_id/. All six are listed in the 10-row photo index. The other four index rows demonstrate the schema but their photos are not included. These are ordinary files, with no symbolic links. The images and their EXIF metadata have not been resized or edited.
 
-The two SC1 photos are a retained 30-minute analysis pair. Their classification and temperature records are included, along with illustrative wind observations. The wind sample does not contain the whole aggregation window. Selected SC1 next-day analysis rows illustrate that table's schema, without all of their contributing observations.
+The two SC1 photos are a retained 30-minute analysis pair. Their classification and temperature records are included, along with illustrative wind observations. Additional analysis and observation rows bring each sampled table to 10 rows. Those rows can reference photos or observations available only in the full release. The preview does not contain all contributing observations or complete wind aggregation windows.
 
 The first-season SC12 image and second-season SC13 image show distinct camera deployments. SC12 is NOVA with BlueLake. SC13 is IRIS with RockWall. Deployment identifiers are unique across the release. The two CR01 images share a recorded capture time and demonstrate the unsuffixed filename and _02 collision suffix. They remain distinct photos.
 
@@ -148,7 +176,7 @@ The coauthor Word guide is being reviewed separately and is not included in this
     readme += "\n## Included photo paths\n\n```text\n" + "\n".join(sorted(photo_checksums)) + "\n```\n"
     (destination / "README.md").write_text(readme)
     archive = destination.with_suffix(".zip")
-    with zipfile.ZipFile(archive, "x", compression=zipfile.ZIP_DEFLATED) as zipped:
+    with zipfile.ZipFile(archive, "w" if replace else "x", compression=zipfile.ZIP_DEFLATED) as zipped:
         for path in sorted(destination.rglob("*")):
             if path.is_file():
                 zipped.write(path, destination.name + "/" + str(path.relative_to(destination)))
@@ -160,7 +188,8 @@ The coauthor Word guide is being reviewed separately and is not included in this
     return {"preview_folder": str(destination), "zip": str(archive), "zip_bytes": archive.stat().st_size,
             "files": sum(p.is_file() for p in destination.rglob("*")), "csv_counts": counts,
             "photo_sha256": photo_checksums, "headers_and_source_rows_verified": True,
-            "included_photo_joins_verified": True, "zip_contents_verified": True,
+            "attached_photos_listed_in_index": True, "sample_rows_per_table": 10,
+            "sample_contains_all_referenced_observations": False, "zip_contents_verified": True,
             "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()}
 
 
@@ -168,8 +197,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=Path("/Volumes/MonarchSSD/data_release/publication_package"))
     parser.add_argument("--output", type=Path, default=Path("/Volumes/MonarchSSD/data_release/Zach_USGS_preview_2026-09-14"))
+    parser.add_argument("--replace", action="store_true", help="Update an existing preview and ZIP")
     args = parser.parse_args()
-    result = build(args.source, args.output)
+    result = build(args.source, args.output, args.replace)
     report = Path(__file__).resolve().parents[1] / "data/release_working/usgs_preview_validation.json"
     report.write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result, indent=2))

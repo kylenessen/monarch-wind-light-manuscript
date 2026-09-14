@@ -1,7 +1,7 @@
 {
   "preview_folder": "/Volumes/MonarchSSD/data_release/Zach_USGS_preview_2026-09-14",
   "zip": "/Volumes/MonarchSSD/data_release/Zach_USGS_preview_2026-09-14.zip",
-  "zip_bytes": 8476431,
+  "zip_bytes": 8477144,
   "files": 18,
   "csv_counts": {
     "deployments.csv": {
@@ -15,32 +15,32 @@
       "columns": 7
     },
     "photo_index.csv": {
-      "preview_rows": 6,
+      "preview_rows": 10,
       "full_release_rows": 223887,
       "columns": 6
     },
     "classifications.csv": {
-      "preview_rows": 3,
+      "preview_rows": 10,
       "full_release_rows": 8299,
       "columns": 18
     },
     "temperature_measurements.csv": {
-      "preview_rows": 3,
+      "preview_rows": 10,
       "full_release_rows": 56066,
       "columns": 6
     },
     "analysis_30_minute.csv": {
-      "preview_rows": 1,
+      "preview_rows": 10,
       "full_release_rows": 1894,
       "columns": 17
     },
     "analysis_next_day.csv": {
-      "preview_rows": 2,
+      "preview_rows": 10,
       "full_release_rows": 96,
       "columns": 10
     },
     "wind_measurements.csv": {
-      "preview_rows": 16,
+      "preview_rows": 10,
       "full_release_rows": 757260,
       "columns": 7
     }
@@ -54,7 +54,9 @@
     "photos/2024-2025/SC13/SC13_20241215120001.JPG": "24e3534122b82f8d79d60e9b5655417dc1cc14078ddb92e4798a834af7d78d2a"
   },
   "headers_and_source_rows_verified": true,
-  "included_photo_joins_verified": true,
+  "attached_photos_listed_in_index": true,
+  "sample_rows_per_table": 10,
+  "sample_contains_all_referenced_observations": false,
   "zip_contents_verified": true,
-  "source_commit": "5e41e4da82d132dd1cded1b81ceb4e1b53c42603"
+  "source_commit": "0bf8b6b64f881999e109a38b2e22aeb949aeca97"
 }
