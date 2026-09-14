@@ -4,7 +4,7 @@ deployments.csv. One row per season and camera deployment, including identifiers
 
 photo_index.csv. One row per retained JPEG photograph. Links images to the deployment table and collection folders. Contains 223,887 rows.
 
-classifications.csv. One row per image with evidence of classification, with ordinal cell primitives and BI totals. Unclassified placeholders are omitted. Covers the first season only. Contains 8,298 rows.
+classifications.csv. One row per image with evidence of classification, with ordinal cell primitives and BI totals. Unclassified placeholders are omitted. Covers the first season only. Contains 8,299 rows.
 
 temperature_measurements.csv. One row per reviewed first-season image-overlay temperature record, including missing temperature values. No second-season temperature extraction was supplied. Contains 56,066 rows.
 
@@ -28,7 +28,7 @@ The temperature table preserves the previously reviewed overlay values. No secon
 
 The analysis CSVs are renamed, reduced copies of the historical manuscript inputs. They do not recompute weather summaries from the broader reconciled wind archive. That archive includes additional deployments and preserves exact source boundary seconds. Analysis reproduction and re-derivation from the broader observational archive are distinct operations. The time covariate is minutes since the first daily observation, not calculated astronomical sunrise.
 
-Pending classification review. The historical analysis includes SC1_20231120133001.JPG, an unconfirmed all-zero source record with no observer. It is omitted from classifications as an unclassified placeholder. The historical analysis value is preserved pending an explicit decision about reanalysis. Other unconfirmed records are retained only where saved annotations or a saved user provide evidence of classification.
+Investigator review retained SC1_20231120133001.JPG as a valid zero-BI classification and assigned Skyler as primary observer, following the majority of SC1 classifications. All 752 source SC1 records with a saved user identify SM, and the deployment metadata names Skyler. The original software confirmation flag remains false and the original record_user_id remains blank. The release assignment is in primary_observer. The original JSON and historical analysis values are unchanged.
 
 data_dictionary.csv defines every data column. metadata.xml is a draft with explicit REVIEW_REQUIRED fields. Release author order, DOI, USGS metadata identifier, shared contact, distribution terms and final approval must be supplied before publication. XML well-formedness alone is not FGDC validation.
 

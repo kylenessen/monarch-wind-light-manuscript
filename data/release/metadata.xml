@@ -53,7 +53,7 @@
       <attraccr>Wind speed and gust are in meters per second. Direction is reported in degrees clockwise from north, with 360 representing north. The instrument manual specifies a 16-point sensor with 22.5-degree resolution and averaged logging. The database contains integer directions throughout 0 to 360, so exported observations are not restricted to 45-degree increments. The investigator considers direction 0 invalid or suspect. That interpretation has not been confirmed in the manufacturer manual, so original zeros are retained and should not be treated as confirmed north. Blank is missing. Zero speed or gust is not automatically invalid. Manual https://rainwise.com/downloads/windsoft/WindLog140805%20.pdf, section 7.2. Matching source databases use Units code 2, consistent with the manuscript m/s convention. Camera-overlay temperatures were reviewed for OCR errors but are approximate camera measurements, not independently calibrated air temperatures. Classification primitives and source measurements are preserved.</attraccr>
     </attracc>
     <logic>Season and deployment_id jointly identify deployments. Photos link by season, deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals. Shared sensor observations for SC9 and SC10 remain associated with both camera deployments and are not independent measurements.</logic>
-    <complete>Available records are incomplete for some deployments. No second-season classification or reviewed temperature table was supplied. Deployment data_quality_note records absent wind coverage, corrupted wind records and uncertain later zero-valued records. Blank values are missing. Untouched unclassified zero placeholders are excluded from classifications. Analysis tables preserve historical manuscript inputs, including an unresolved unconfirmed zero observation identified in README. No missing observations are imputed.</complete>
+    <complete>Available records are incomplete for some deployments. No second-season classification or reviewed temperature table was supplied. Deployment data_quality_note records absent wind coverage, corrupted wind records and uncertain later zero-valued records. Blank values are missing. Untouched unclassified zero placeholders are excluded unless explicitly accepted by the investigator during review. Analysis tables preserve historical manuscript inputs. No missing observations are imputed. Investigator review retained SC1_20231120133001.JPG as a valid zero-BI classification and assigned Skyler as primary observer, following the majority of SC1 classifications. All 752 source SC1 records with a saved user identify SM, and the deployment metadata names Skyler. The original software confirmation flag remains false and the original record_user_id remains blank. The release assignment is in primary_observer. The original JSON and historical analysis values are unchanged.</complete>
     <posacc>
       <horizpa>
         <horizpar>First-season coordinates are WGS84 source deployment points. Second-season camera points were transformed from EPSG 3498, NAD83(NSRS2007) / California zone 5 in US survey feet, to EPSG 4326 using pyproj with longitude-first output. Positional accuracy was not independently measured. Decimal precision is not an accuracy estimate.</horizpar>
@@ -73,7 +73,7 @@
         <procdate>20260913</procdate>
       </procstep>
       <procstep>
-        <procdesc>Saved classification categories were summarized into grid-cell counts and lower-bound BI. Confirmed records, records with a saved user, and nondefault annotations are retained. Untouched unconfirmed zero placeholders are omitted. Reviewed first-season camera-overlay temperatures were copied without recalibration. No new temperature extraction was performed.</procdesc>
+        <procdesc>Saved classification categories were summarized into grid-cell counts and lower-bound BI. Confirmed records, records with a saved user, nondefault annotations and investigator-accepted records are retained. Other untouched unconfirmed zero placeholders are omitted. Reviewed first-season camera-overlay temperatures were copied without recalibration. No new temperature extraction was performed. Investigator review retained SC1_20231120133001.JPG as a valid zero-BI classification and assigned Skyler as primary observer, following the majority of SC1 classifications. All 752 source SC1 records with a saved user identify SM, and the deployment metadata names Skyler. The original software confirmation flag remains false and the original record_user_id remains blank. The release assignment is in primary_observer. The original JSON and historical analysis values are unchanged.</procdesc>
         <procdate>20260913</procdate>
       </procstep>
       <procstep>
@@ -212,7 +212,7 @@
       </attr>
       <attr>
         <attrlabl>primary_observer</attrlabl>
-        <attrdef>Primary classifier assigned to the deployment in the manuscript metadata. This does not identify an independent replicate observer for every image. Units text. Missing values are empty fields.</attrdef>
+        <attrdef>Primary classifier assigned to the deployment in the manuscript metadata, including the investigator-approved majority-observer assignment for the retained SC1 zero described in README. This does not identify an independent replicate observer for every image. Units text. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -330,7 +330,7 @@
       </attr>
       <attr>
         <attrlabl>primary_observer</attrlabl>
-        <attrdef>Primary classifier assigned to the deployment in the manuscript metadata. This does not identify an independent replicate observer for every image. Units text. Missing values are empty fields.</attrdef>
+        <attrdef>Primary classifier assigned to the deployment in the manuscript metadata, including the investigator-approved majority-observer assignment for the retained SC1 zero described in README. This does not identify an independent replicate observer for every image. Units text. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -346,7 +346,7 @@
       </attr>
       <attr>
         <attrlabl>classification_confirmed</attrlabl>
-        <attrdef>True if the annotation software marked the record confirmed. Unconfirmed records are included only when a user or a nondefault annotation provides evidence of classification. Units boolean. Missing values are empty fields.</attrdef>
+        <attrdef>True if the original annotation software marked the record confirmed. Unconfirmed records are included when a saved user or nondefault annotation provides evidence of classification, or the investigator explicitly accepts the record during release review. This original software flag is not changed by later review. See README for the accepted SC1 zero. Units boolean. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -687,7 +687,7 @@
       </attr>
       <attr>
         <attrlabl>primary_observer</attrlabl>
-        <attrdef>Primary classifier assigned to the deployment in the manuscript metadata. This does not identify an independent replicate observer for every image. Units text. Missing values are empty fields.</attrdef>
+        <attrdef>Primary classifier assigned to the deployment in the manuscript metadata, including the investigator-approved majority-observer assignment for the retained SC1 zero described in README. This does not identify an independent replicate observer for every image. Units text. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -782,7 +782,7 @@
       </attr>
     </detailed>
     <overview>
-      <eaover>Photographs are grouped in photos/season/deployment_id/. Image filenames use deployment_id_YYYYMMDDHHMMSS.JPG, corresponding to the format code %Y%m%d%H%M%S. The deployment identifier may itself contain an underscore. The timestamp has a four-digit year followed by two-digit month, day, 24-hour hour, minute and second. It carries no timezone. For the reviewed second season it comes from the photo EXIF capture time. Existing first-season canonical filenames are preserved. Distinct second-season photos sharing a timestamp use the unsuffixed name and an _02 suffix before .JPG. This suffix is a collision counter, not a fractional second, ordering guarantee, or clock correction. The photo index links every released filename to its deployment folder. One collection-level description applies to all images in each deployment folder. Individual photo metadata records are not required. deployments.csv contains 28 rows. photo_index.csv contains 223,887 rows. classifications.csv contains 8,298 rows. temperature_measurements.csv contains 56,066 rows. wind_measurements.csv contains 757,260 rows. analysis_30_minute.csv contains 1,894 rows. analysis_next_day.csv contains 96 rows.</eaover>
+      <eaover>Photographs are grouped in photos/season/deployment_id/. Image filenames use deployment_id_YYYYMMDDHHMMSS.JPG, corresponding to the format code %Y%m%d%H%M%S. The deployment identifier may itself contain an underscore. The timestamp has a four-digit year followed by two-digit month, day, 24-hour hour, minute and second. It carries no timezone. For the reviewed second season it comes from the photo EXIF capture time. Existing first-season canonical filenames are preserved. Distinct second-season photos sharing a timestamp use the unsuffixed name and an _02 suffix before .JPG. This suffix is a collision counter, not a fractional second, ordering guarantee, or clock correction. The photo index links every released filename to its deployment folder. One collection-level description applies to all images in each deployment folder. Individual photo metadata records are not required. deployments.csv contains 28 rows. photo_index.csv contains 223,887 rows. classifications.csv contains 8,299 rows. temperature_measurements.csv contains 56,066 rows. wind_measurements.csv contains 757,260 rows. analysis_30_minute.csv contains 1,894 rows. analysis_next_day.csv contains 96 rows.</eaover>
       <eadetcit>data_dictionary.csv and README.md in this package</eadetcit>
     </overview>
   </eainfo>

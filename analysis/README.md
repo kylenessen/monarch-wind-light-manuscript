@@ -31,7 +31,7 @@ The larger CSVs directly under data retain the historical inputs and original va
 uv run analysis/prepare_data_release.py --analysis-only
 ```
 
-To re-derive the historical inputs from source classifications, deployment metadata, wind records and temperature records, the original preparation commands remain available. Then run the release export so the R scripts receive the updated inputs. This is a separate operation from reproducing the committed analysis. The historical source processing includes an unresolved unconfirmed zero observation documented in the release notes. Do not treat that observation as independently confirmed by a successful model run.
+To re-derive the historical inputs from source classifications, deployment metadata, wind records and temperature records, the original preparation commands remain available. Then run the release export so the R scripts receive the updated inputs. This is a separate operation from reproducing the committed analysis. The investigator retained the SC1 zero observation during release review and assigned the majority SC1 classifier, Skyler. The release notes distinguish this later review from the original software confirmation flag.
 
 ```sh
 uv run analysis/prepare_lag_30min.py --lag-minutes 30 --tolerance-minutes 5 --output-file data/monarch_analysis_lag30min.csv

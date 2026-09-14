@@ -2,15 +2,13 @@
   "table_rows": {
     "deployments": 28,
     "photo_index": 223887,
-    "classifications": 8298,
+    "classifications": 8299,
     "temperature_measurements": 56066,
     "wind_measurements": 757260,
     "analysis_30_minute": 1894,
     "analysis_next_day": 96
   },
-  "analysis_images_without_classification": [
-    "SC1_20231120133001.JPG"
-  ],
+  "analysis_images_without_classification": [],
   "schema_and_join_checks": "passed",
   "raw_data_modified": false,
   "clock_corrections_applied": false
