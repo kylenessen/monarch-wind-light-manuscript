@@ -7,6 +7,7 @@
   "corresponding_email": "knessen@calpoly.edu",
   "second_season_temperature_scope": "No data exist, confirmed by investigator",
   "package_documentation_matches_repository": true,
-  "sha256": "06d5a98c5124e0a975f47803ea1801dc3526387c959dca7cb97feeafe3c461c3",
-  "word_count_approximate": 2506
+  "sha256": "a914f1669c6dc57903b9a39a05de6871ec209e9705c546ddf1b72c71f573ba1d",
+  "word_count_approximate": 2519,
+  "deployment_id_correction": "Second-season IRIS/RockWall deployment is SC13. First-season NOVA/BlueLake remains SC12."
 }
