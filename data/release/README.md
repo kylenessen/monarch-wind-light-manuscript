@@ -4,7 +4,7 @@ Authors in manuscript order. Kyle Nessen, Peter C. Ibsen, Jay E. Diffendorfer, F
 
 Corresponding author. Kyle Nessen, knessen@calpoly.edu.
 
-deployments.csv. One row per season and camera deployment, including identifiers, WGS84 location, boundaries and known limitations. Contains 28 rows.
+deployments.csv. One row per camera deployment, including identifiers, WGS84 location, boundaries and known limitations. Contains 28 rows.
 
 photo_index.csv. One row per retained JPEG photograph. Links images to the deployment table and collection folders. Contains 223,887 rows.
 
@@ -20,7 +20,7 @@ analysis_next_day.csv. Retained next-day manuscript input after >=95 percent ove
 
 Camera and wind-meter clocks do not automatically apply daylight saving time. For the 2024-2025 season, timestamps remain on the recorded device clocks. No daylight saving or UTC conversion was applied to either series during release preparation. Apparent image lighting and civil clock time may therefore differ by one hour. Repeated clock times identify distinct photos and are retained. The investigator reports accounting for seasonal clock changes during first-season processing, but the exact historical procedure has not been recovered. Existing first-season timestamps are preserved. No UTC offset or independently verified camera-to-logger synchronization is asserted.
 
-Photographs are grouped in photos/season/deployment_id/. Image filenames use deployment_id_YYYYMMDDHHMMSS.JPG, corresponding to the format code %Y%m%d%H%M%S. The deployment identifier may itself contain an underscore. The timestamp has a four-digit year followed by two-digit month, day, 24-hour hour, minute and second. It carries no timezone. For the reviewed second season it comes from the photo EXIF capture time. Existing first-season canonical filenames are preserved. Distinct second-season photos sharing a timestamp use the unsuffixed name and an _02 suffix before .JPG. This suffix is a collision counter, not a fractional second, ordering guarantee, or clock correction. The photo index links every released filename to its deployment folder. One collection-level description applies to all images in each deployment folder. Individual photo metadata records are not required.
+Photographs are grouped in photos/deployment_id/. Image filenames use deployment_id_YYYYMMDDHHMMSS.JPG, corresponding to the format code %Y%m%d%H%M%S. The deployment identifier may itself contain an underscore. The timestamp has a four-digit year followed by two-digit month, day, 24-hour hour, minute and second. It carries no timezone. For the reviewed second season it comes from the photo EXIF capture time. Existing first-season canonical filenames are preserved. Distinct second-season photos sharing a timestamp use the unsuffixed name and an _02 suffix before .JPG. This suffix is a collision counter, not a fractional second, ordering guarantee, or clock correction. The photo index links every released filename to its deployment folder. One collection-level description applies to all images in each deployment folder. Individual photo metadata records are not required.
 
 Deployment identifiers are unique across the release. SC12 identifies the first-season NOVA camera and BlueLake wind meter. SC13 identifies the second-season IRIS camera and RockWall wind meter. The investigator corrected the second-season source label SC12 to SC13. This correction applies to deployment and wind table identifiers, photo filenames and photo paths. Original source labels are retained in the internal provenance mapping. Photograph contents, recorded times and measurement values are unchanged.
 
@@ -28,7 +28,7 @@ Wind speed and gust are in meters per second. Direction is reported in degrees c
 
 Coordinates are longitude and latitude in WGS84, EPSG 4326, expressed in decimal degrees. Later camera coordinates were transformed from EPSG 3498. First-season source geometries were already EPSG 4326. They represent camera positions, not separate wind-meter positions. Coordinate precision does not establish positional accuracy.
 
-Missing CSV values are empty fields. Join observations using deployment_id, retaining season for context and consistency checks. Only the analysis tables omit season because they contain first-season data exclusively. Wind observations shared by SC9 and SC10 must not be counted as independent measurements.
+Missing CSV values are empty fields. Join observations using deployment_id. Add image_filename when linking classifications or temperatures to the photo index. Wind observations shared by SC9 and SC10 must not be counted as independent measurements.
 
 The temperature table preserves the previously reviewed overlay values. The investigator confirmed that no second-season temperature data exist. Butterfly classifications cover the first season only. Review deployment data_quality_note before using wind. UDMH1 has source-reported corruption. PS01 stops before the camera stops. SC13 has a long gap followed by zero-valued January records of uncertain context. No gap filling or new sensor corrections were performed.
 
@@ -40,4 +40,4 @@ data_dictionary.csv defines every data column. metadata.xml is a draft for coaut
 
 Analysis scripts remain at https://github.com/kylenessen/monarch-wind-light-manuscript. Use the release CSVs with the matching repository version. Run Rscript analysis/run_results_analyses.R from that repository root. A final public commit link must be pinned before distribution. Scripts are not included in this package.
 
-The local staging package uses directory links for most photo collections and file hard links for the renamed SC13 collection to avoid copying image bytes. Before upload, create ordinary photo archives containing only the JPEG paths listed in photo_index.csv, preserving photos/season/deployment_id/ paths. Do not distribute symbolic links or unlisted source files.
+The local staging package uses directory links for most photo collections and file hard links for the renamed SC13 collection to avoid copying image bytes. Before upload, create ordinary photo archives containing only the JPEG paths listed in photo_index.csv, preserving photos/deployment_id/ paths. Do not distribute symbolic links or unlisted source files.

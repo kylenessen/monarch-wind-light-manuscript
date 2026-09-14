@@ -1,7 +1,6 @@
 table,column,description,units,missing_value,observed_minimum,observed_maximum
-deployments.csv,season,Field season. Retain season when combining deployment and observation tables.,identifier,empty field,,
 deployments.csv,deployment_id,"Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024.",identifier,empty field,,
-deployments.csv,camera_name,Field name assigned to the camera. Join deployments using season and deployment_id.,identifier,empty field,,
+deployments.csv,camera_name,Field name assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
 deployments.csv,wind_sensor_name,Field name assigned to the wind meter. A meter may serve multiple camera views or deployments.,identifier,empty field,,
 deployments.csv,start_time_recorded,"Deployment start from the original first-season deployment layer, or earliest retained EXIF capture time in the reviewed second-season photos. Source fractional seconds are preserved.",recorded clock,empty field,2023-11-17T11:40:00.000,2024-11-17T13:30:01
 deployments.csv,end_time_recorded,"Deployment end from the original first-season deployment layer, or latest retained EXIF capture time in the reviewed second-season photos. This is not necessarily the last wind observation.",recorded clock,empty field,2023-11-19T13:10:00.583,2025-04-11T14:10:01
@@ -13,16 +12,14 @@ deployments.csv,horizontal_distance_to_cluster_m,Recorded horizontal viewing dis
 deployments.csv,view_direction_degrees,Recorded camera viewing direction clockwise from north.,degrees,empty field,10,360
 deployments.csv,primary_observer,"Primary classifier assigned to the deployment in the manuscript metadata, including the investigator-approved majority-observer assignment for the retained SC1 zero described in README. This does not identify an independent replicate observer for every image.",text,empty field,,
 deployments.csv,data_quality_note,"Known recording, coverage or timing limitations. Empty means no additional deployment-specific note here, not certification of error-free observations.",text,empty field,,
-photo_index.csv,season,Field season. Retain season when combining deployment and observation tables.,identifier,empty field,,
 photo_index.csv,deployment_id,"Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024.",identifier,empty field,,
-photo_index.csv,camera_name,Field name assigned to the camera. Join deployments using season and deployment_id.,identifier,empty field,,
-photo_index.csv,image_filename,Canonical photo filename. Join with season and deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
+photo_index.csv,camera_name,Field name assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
+photo_index.csv,image_filename,Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
 photo_index.csv,timestamp_recorded,Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products.,recorded clock,empty field,2023-11-17T11:40:01,2025-04-11T14:10:01
-photo_index.csv,relative_path,"Photo path relative to the package root, grouped by season and deployment_id.",path,empty field,,
-classifications.csv,season,Field season. Retain season when combining deployment and observation tables.,identifier,empty field,,
+photo_index.csv,relative_path,"Photo path relative to the package root, grouped by deployment_id.",path,empty field,,
 classifications.csv,deployment_id,"Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024.",identifier,empty field,,
-classifications.csv,camera_name,Field name assigned to the camera. Join deployments using season and deployment_id.,identifier,empty field,,
-classifications.csv,image_filename,Canonical photo filename. Join with season and deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
+classifications.csv,camera_name,Field name assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
+classifications.csv,image_filename,Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
 classifications.csv,timestamp_recorded,Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-04T10:50:01
 classifications.csv,primary_observer,"Primary classifier assigned to the deployment in the manuscript metadata, including the investigator-approved majority-observer assignment for the retained SC1 zero described in README. This does not identify an independent replicate observer for every image.",text,empty field,,
 classifications.csv,record_user_id,"User identifier saved in the annotation record, possibly a later editor. Blank means absent from the source. The assigned primary observer is reported separately.",identifier,empty field,,
@@ -37,13 +34,11 @@ classifications.csv,sun_exposed_cells_10_99,Number of occupied grid cells in cat
 classifications.csv,sun_exposed_cells_100_999,Number of occupied grid cells in category 100-999 marked as receiving direct sunlight.,grid cells,empty field,0,2
 classifications.csv,butterfly_index,"Butterfly Index, BI, of visible cluster size. Sum of grid-cell category lower bounds, using 0, 1, 10 and 100 for categories 0, 1-9, 10-99 and 100-999. This is not an individual butterfly count.",BI units,empty field,0,950
 classifications.csv,sun_exposed_butterfly_index,"BI subtotal for occupied grid cells marked directSun, or legacy sunlight. Cannot exceed total BI. No change or delta is included in this observation table.",BI units,empty field,0,295
-temperature_measurements.csv,season,Field season. Retain season when combining deployment and observation tables.,identifier,empty field,,
 temperature_measurements.csv,deployment_id,"Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024.",identifier,empty field,,
-temperature_measurements.csv,camera_name,Field name assigned to the camera. Join deployments using season and deployment_id.,identifier,empty field,,
-temperature_measurements.csv,image_filename,Canonical photo filename. Join with season and deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
+temperature_measurements.csv,camera_name,Field name assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
+temperature_measurements.csv,image_filename,Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
 temperature_measurements.csv,timestamp_recorded,Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-05T14:05:01
 temperature_measurements.csv,temperature_c,"Approximate local camera temperature extracted from the image overlay, with prior manual review of OCR. Existing reviewed values are preserved. This is not a newly calibrated ambient-air measurement.",degrees Celsius,empty field,0.0,37.0
-wind_measurements.csv,season,Field season. Retain season when combining deployment and observation tables.,identifier,empty field,,
 wind_measurements.csv,deployment_id,"Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024.",identifier,empty field,,
 wind_measurements.csv,wind_sensor_name,Field name assigned to the wind meter. A meter may serve multiple camera views or deployments.,identifier,empty field,,
 wind_measurements.csv,timestamp_recorded,Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products.,recorded clock,empty field,2023-11-17T11:40:00,2025-01-31T04:04:00

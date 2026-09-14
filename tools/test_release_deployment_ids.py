@@ -36,7 +36,7 @@ class ReleaseDeploymentIds(unittest.TestCase):
             dep = pd.DataFrame([{"season": "2024-2025", "deployment_id": "SC13"}])
             photos = pd.DataFrame([{"season": "2024-2025", "deployment_id": "SC13",
                                     "image_filename": "SC13_20250101000000.JPG",
-                                    "relative_path": "photos/2024-2025/SC13/SC13_20250101000000.JPG"}])
+                                    "relative_path": "photos/SC13/SC13_20250101000000.JPG"}])
             stage_photos(root, package, dep, photos)
             stage_photos(root, package, dep, photos)
             new = package / photos.iloc[0].relative_path

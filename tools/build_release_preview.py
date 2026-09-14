@@ -71,7 +71,7 @@ def build(source, destination, replace=False):
         wind_examples.append(next(r for r in wind if float(r["wind_direction_degrees"] or -1) == int(direction)))
     fields = tables["wind_measurements"][0]
     unique = {tuple(r[f] for f in fields): r for r in wind_examples}
-    selected["wind_measurements"] = sorted(unique.values(), key=lambda r: (r["season"], r["deployment_id"], r["timestamp_recorded"]))
+    selected["wind_measurements"] = sorted(unique.values(), key=lambda r: (r["deployment_id"], r["timestamp_recorded"]))
 
     wind_priority = []
     for deployment in ("SC1", "SC9", "SC10", "SC12", "SC13"):
@@ -124,6 +124,19 @@ def build(source, destination, replace=False):
         shutil.copyfile(original, target)
         assert not target.is_symlink() and digest(original) == digest(target)
         photo_checksums[relative] = digest(target)
+        if replace:
+            for old_season in ("2023-2024", "2024-2025"):
+                legacy = destination / "photos" / old_season / photo["deployment_id"] / photo["image_filename"]
+                if legacy.exists():
+                    if digest(legacy) != photo_checksums[relative]:
+                        raise ValueError(f"Old preview photo was modified {legacy}")
+                    legacy.unlink()
+                    if not any(legacy.parent.iterdir()):
+                        legacy.parent.rmdir()
+    for old_season in ("2023-2024", "2024-2025"):
+        legacy = destination / "photos" / old_season
+        if legacy.exists():
+            legacy.rmdir()
     shutil.copyfile(source / "metadata.xml", destination / "metadata.xml")
     reference = destination / "full_release_reference"
     reference.mkdir(exist_ok=replace)
@@ -157,7 +170,7 @@ deployments.csv and data_dictionary.csv are complete copies. Each of the other s
 
 ## Photo examples and table relationships
 
-Six original JPEGs are included under photos/season/deployment_id/. All six are listed in the 10-row photo index. The other four index rows demonstrate the schema but their photos are not included. These are ordinary files, with no symbolic links. The images and their EXIF metadata have not been resized or edited.
+Six original JPEGs are included under photos/deployment_id/. All six are listed in the 10-row photo index. The other four index rows demonstrate the schema but their photos are not included. These are ordinary files, with no symbolic links. The images and their EXIF metadata have not been resized or edited.
 
 The two SC1 photos are a retained 30-minute analysis pair. Their classification and temperature records are included, along with illustrative wind observations. Additional analysis and observation rows bring each sampled table to 10 rows. Those rows can reference photos or observations available only in the full release. The preview does not contain all contributing observations or complete wind aggregation windows.
 

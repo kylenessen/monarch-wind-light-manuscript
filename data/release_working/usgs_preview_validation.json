@@ -1,33 +1,33 @@
 {
   "preview_folder": "/Volumes/MonarchSSD/data_release/Zach_USGS_preview_2026-09-14",
   "zip": "/Volumes/MonarchSSD/data_release/Zach_USGS_preview_2026-09-14.zip",
-  "zip_bytes": 8477144,
+  "zip_bytes": 8476742,
   "files": 18,
   "csv_counts": {
     "deployments.csv": {
       "preview_rows": 28,
       "full_release_rows": 28,
-      "columns": 14
+      "columns": 13
     },
     "data_dictionary.csv": {
-      "preview_rows": 78,
-      "full_release_rows": 78,
+      "preview_rows": 73,
+      "full_release_rows": 73,
       "columns": 7
     },
     "photo_index.csv": {
       "preview_rows": 10,
       "full_release_rows": 223887,
-      "columns": 6
+      "columns": 5
     },
     "classifications.csv": {
       "preview_rows": 10,
       "full_release_rows": 8299,
-      "columns": 18
+      "columns": 17
     },
     "temperature_measurements.csv": {
       "preview_rows": 10,
       "full_release_rows": 56066,
-      "columns": 6
+      "columns": 5
     },
     "analysis_30_minute.csv": {
       "preview_rows": 10,
@@ -42,21 +42,21 @@
     "wind_measurements.csv": {
       "preview_rows": 10,
       "full_release_rows": 757260,
-      "columns": 7
+      "columns": 6
     }
   },
   "photo_sha256": {
-    "photos/2023-2024/SC1/SC1_20231117120001.JPG": "2c4e76a4e0b059d1086698a8e8fde31e927e457f77edd6fd1e5c2c295d0c4672",
-    "photos/2023-2024/SC1/SC1_20231117123001.JPG": "b2a66f38c4af73866299eecbc986be0bdf9164da5dc4a775d3078f0b7020815b",
-    "photos/2023-2024/SC12/SC12_20240129174001.JPG": "5a5a9d31c76d397fa1e9d26e0ef28de85d5aa383071d016585b63903dc51238e",
-    "photos/2024-2025/CR01/CR01_20241103020001.JPG": "7a96f0a6940fb6674eb3ab01ef30752829b2e067a6a9da2c5ef6d1d5e86a9860",
-    "photos/2024-2025/CR01/CR01_20241103020001_02.JPG": "51d67b68bb29bb45d7ffcdb595c238c9f3c741eb9738042c9315a6d63d3c1910",
-    "photos/2024-2025/SC13/SC13_20241215120001.JPG": "24e3534122b82f8d79d60e9b5655417dc1cc14078ddb92e4798a834af7d78d2a"
+    "photos/SC1/SC1_20231117120001.JPG": "2c4e76a4e0b059d1086698a8e8fde31e927e457f77edd6fd1e5c2c295d0c4672",
+    "photos/SC1/SC1_20231117123001.JPG": "b2a66f38c4af73866299eecbc986be0bdf9164da5dc4a775d3078f0b7020815b",
+    "photos/SC12/SC12_20240129174001.JPG": "5a5a9d31c76d397fa1e9d26e0ef28de85d5aa383071d016585b63903dc51238e",
+    "photos/CR01/CR01_20241103020001.JPG": "7a96f0a6940fb6674eb3ab01ef30752829b2e067a6a9da2c5ef6d1d5e86a9860",
+    "photos/CR01/CR01_20241103020001_02.JPG": "51d67b68bb29bb45d7ffcdb595c238c9f3c741eb9738042c9315a6d63d3c1910",
+    "photos/SC13/SC13_20241215120001.JPG": "24e3534122b82f8d79d60e9b5655417dc1cc14078ddb92e4798a834af7d78d2a"
   },
   "headers_and_source_rows_verified": true,
   "attached_photos_listed_in_index": true,
   "sample_rows_per_table": 10,
   "sample_contains_all_referenced_observations": false,
   "zip_contents_verified": true,
-  "source_commit": "0bf8b6b64f881999e109a38b2e22aeb949aeca97"
+  "source_commit": "2e7076a04ea60542ef252cbbb49d50dfeff65be1"
 }

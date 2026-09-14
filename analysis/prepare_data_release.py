@@ -58,7 +58,7 @@ CLOCK_NOTE = (
     "are preserved. No UTC offset or independently verified camera-to-logger synchronization is asserted."
 )
 FILENAME_NOTE = (
-    "Photographs are grouped in photos/season/deployment_id/. Image filenames use "
+    "Photographs are grouped in photos/deployment_id/. Image filenames use "
     "deployment_id_YYYYMMDDHHMMSS.JPG, corresponding to the format code %Y%m%d%H%M%S. "
     "The deployment identifier may itself contain an underscore. The timestamp has a four-digit "
     "year followed by two-digit month, day, 24-hour hour, minute and second. It carries no timezone. "
@@ -82,9 +82,8 @@ WIND_NOTE = (
 )
 
 DESCRIPTIONS = {
-    "season": ("Field season. Retain season when combining deployment and observation tables.", "identifier"),
     "deployment_id": ("Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024.", "identifier"),
-    "camera_name": ("Field name assigned to the camera. Join deployments using season and deployment_id.", "identifier"),
+    "camera_name": ("Field name assigned to the camera. Join deployments using deployment_id.", "identifier"),
     "wind_sensor_name": ("Field name assigned to the wind meter. A meter may serve multiple camera views or deployments.", "identifier"),
     "start_time_recorded": ("Deployment start from the original first-season deployment layer, or earliest retained EXIF capture time in the reviewed second-season photos. Source fractional seconds are preserved.", "recorded clock"),
     "end_time_recorded": ("Deployment end from the original first-season deployment layer, or latest retained EXIF capture time in the reviewed second-season photos. This is not necessarily the last wind observation.", "recorded clock"),
@@ -96,9 +95,9 @@ DESCRIPTIONS = {
     "view_direction_degrees": ("Recorded camera viewing direction clockwise from north.", "degrees"),
     "primary_observer": ("Primary classifier assigned to the deployment in the manuscript metadata, including the investigator-approved majority-observer assignment for the retained SC1 zero described in README. This does not identify an independent replicate observer for every image.", "text"),
     "data_quality_note": ("Known recording, coverage or timing limitations. Empty means no additional deployment-specific note here, not certification of error-free observations.", "text"),
-    "image_filename": ("Canonical photo filename. Join with season and deployment_id to photo_index. See filename convention in README and metadata XML.", "identifier"),
+    "image_filename": ("Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.", "identifier"),
     "timestamp_recorded": ("Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products.", "recorded clock"),
-    "relative_path": ("Photo path relative to the package root, grouped by season and deployment_id.", "path"),
+    "relative_path": ("Photo path relative to the package root, grouped by deployment_id.", "path"),
     "record_user_id": ("User identifier saved in the annotation record, possibly a later editor. Blank means absent from the source. The assigned primary observer is reported separately.", "identifier"),
     "classification_confirmed": ("True if the original annotation software marked the record confirmed. Unconfirmed records are included when a saved user or nondefault annotation provides evidence of classification, or the investigator explicitly accepts the record during release review. This original software flag is not changed by later review. See README for the accepted SC1 zero.", "boolean"),
     "is_night": ("Night flag from the annotation record, or historical SC1/SC2 night intervals when the flag was absent. This is an existing classification convention, not a newly inferred timezone.", "boolean"),
@@ -136,7 +135,7 @@ for category in ("0", "1_9", "10_99", "100_999"):
         DESCRIPTIONS[f"sun_exposed_cells_{category}"] = (f"Number of occupied grid cells in category {category.replace('_', '-')} marked as receiving direct sunlight.", "grid cells")
 
 TABLES = {
-    "deployments": "One row per season and camera deployment, including identifiers, WGS84 location, boundaries and known limitations.",
+    "deployments": "One row per camera deployment, including identifiers, WGS84 location, boundaries and known limitations.",
     "photo_index": "One row per retained JPEG photograph. Links images to the deployment table and collection folders.",
     "classifications": "One row per image with evidence of classification, with ordinal cell primitives and BI totals. Unclassified placeholders are omitted. Covers the first season only.",
     "temperature_measurements": "One row per reviewed first-season image-overlay temperature record, including missing temperature values. The investigator confirmed that no second-season temperature data exist.",
@@ -193,7 +192,12 @@ def stage_photos(archive, package, deployment, photos):
         source_id = source_ids.get((row.season, row.deployment_id), row.deployment_id)
         source = archive / ("raw/Camelot_Photos" if row.season == "2023-2024"
                             else "VSFB_2025_Deployment_Review") / source_id
-        target = package / "photos" / row.season / row.deployment_id
+        target = package / "photos" / row.deployment_id
+        legacy = package / "photos" / row.season / row.deployment_id
+        if legacy.exists() or legacy.is_symlink():
+            if target.exists() or target.is_symlink():
+                raise ValueError(f"Both old and new photo directories exist {target}")
+            legacy.rename(target)
         if source_id == row.deployment_id:
             if not source.is_dir():
                 continue
@@ -206,7 +210,7 @@ def stage_photos(archive, package, deployment, photos):
         if target.is_symlink():
             raise ValueError(f"Renamed photo directory must not be a symlink {target}")
         target.mkdir(parents=True, exist_ok=True)
-        selected = photos.loc[photos.season.eq(row.season) & photos.deployment_id.eq(row.deployment_id)]
+        selected = photos.loc[photos.deployment_id.eq(row.deployment_id)]
         for photo in selected.itertuples(index=False):
             original = source / (source_id + photo.image_filename[len(row.deployment_id):])
             renamed = target / photo.image_filename
@@ -216,7 +220,7 @@ def stage_photos(archive, package, deployment, photos):
                 raise ValueError(f"Renamed photo differs from original {renamed}")
         if {p.name for p in target.iterdir()} != set(selected.image_filename):
             raise ValueError(f"Unexpected files in renamed photo directory {target}")
-        previous = target.with_name(source_id)
+        previous = package / "photos" / row.season / source_id
         if previous.is_symlink() and previous.resolve() == source.resolve():
             previous.unlink()
         elif previous.exists() or previous.is_symlink():
@@ -224,6 +228,10 @@ def stage_photos(archive, package, deployment, photos):
     for relative_path in photos.relative_path:
         if not (package / relative_path).is_file():
             raise ValueError(f"Released photo path does not resolve {relative_path}")
+    for season in deployment.season.unique():
+        legacy_parent = package / "photos" / season
+        if legacy_parent.exists():
+            legacy_parent.rmdir()  # Fails without deleting anything if unexpected entries remain.
 
 
 def deployments(staging):
@@ -277,7 +285,7 @@ def photo_index(archive, staging, deployment):
                 raise ValueError(f"Unexpected filename {path}")
             timestamp = pd.to_datetime(match[1], format="%Y%m%d%H%M%S").isoformat()
             records.append((*key, names[key], path.name, timestamp,
-                            f"photos/{key[0]}/{folder.name}/{path.name}"))
+                            f"photos/{folder.name}/{path.name}"))
     manifest = pd.read_csv(staging / "reviewed_image_manifest.csv", keep_default_na=False)
     for row in manifest.itertuples(index=False):
         key = (row.season, release_deployment_id(row.season, row.deployment_id))
@@ -285,7 +293,7 @@ def photo_index(archive, staging, deployment):
             continue
         relative = release_photo_path(row.season, row.relative_path)
         records.append((*key, names[key], relative.name,
-                        row.capture_time_recorded, f"photos/{row.season}/{relative}"))
+                        row.capture_time_recorded, f"photos/{relative}"))
     return pd.DataFrame(records, columns=["season", "deployment_id", "camera_name", "image_filename", "timestamp_recorded", "relative_path"])
 
 
@@ -378,7 +386,7 @@ def metadata_xml(tables, field_dictionary):
     add(root, "idinfo/ptcontac/cntinfo/cntperp/cntorg", "Biological Sciences Department, California Polytechnic State University")
     add(root, "idinfo/ptcontac/cntinfo/cntemail", email)
     add(root, "dataqual/attracc/attraccr", WIND_NOTE + " Camera-overlay temperatures were reviewed for OCR errors but are approximate camera measurements, not independently calibrated air temperatures. Classification primitives and source measurements are preserved.")
-    add(root, "dataqual/logic", "Season and deployment_id jointly identify deployments. Photos link by season, deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals. Shared sensor observations for SC9 and SC10 remain associated with both camera deployments and are not independent measurements.")
+    add(root, "dataqual/logic", "deployment_id uniquely identifies each deployment. Photos link by deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals. Shared sensor observations for SC9 and SC10 remain associated with both camera deployments and are not independent measurements.")
     add(root, "dataqual/complete", "Available records are incomplete for some deployments. Classifications cover the first season only. The investigator confirmed that no second-season temperature data exist. Deployment data_quality_note records absent wind coverage, corrupted wind records and uncertain later zero-valued records. Blank values are missing. Untouched unclassified zero placeholders are excluded unless explicitly accepted by the investigator during review. Analysis tables preserve historical manuscript inputs. No missing observations are imputed. " + CLASSIFICATION_REVIEW_NOTE)
     add(root, "dataqual/posacc/horizpa/horizpar", "First-season coordinates are WGS84 source deployment points. Second-season camera points were transformed from EPSG 3498, NAD83(NSRS2007) / California zone 5 in US survey feet, to EPSG 4326 using pyproj with longitude-first output. Positional accuracy was not independently measured. Decimal precision is not an accuracy estimate.")
     lineage = ET.SubElement(root.find("dataqual"), "lineage")
@@ -393,7 +401,7 @@ def metadata_xml(tables, field_dictionary):
         step = ET.SubElement(lineage, "procstep")
         add(step, "procdesc", text)
         add(step, "procdate", "20260913")
-    add(root, "spdoinfo/indspref", "Photographs and tabular observations relate to camera deployment points through season and deployment_id.")
+    add(root, "spdoinfo/indspref", "Photographs and tabular observations relate to camera deployment points through deployment_id.")
     add(root, "spdoinfo/direct", "Point")
     add(root, "spdoinfo/ptvctinf/sdtsterm/sdtstype", "Entity point")
     add(root, "spdoinfo/ptvctinf/sdtsterm/ptvctcnt", len(dep))
@@ -431,24 +439,24 @@ def metadata_xml(tables, field_dictionary):
 
 def validate(tables):
     dep = tables["deployments"]
-    assert not dep.duplicated(["season", "deployment_id"]).any()
+    assert all("season" not in frame.columns for frame in tables.values())
     assert dep.deployment_id.is_unique, "Deployment identifiers must be unique across seasons"
     assert dep.latitude.between(34, 35).all() and dep.longitude.between(-121, -120).all()
-    keys = set(zip(dep.season, dep.deployment_id))
+    keys = set(dep.deployment_id)
     photos = tables["photo_index"]
-    assert not photos.duplicated(["season", "deployment_id", "image_filename"]).any()
+    assert not photos.duplicated(["deployment_id", "image_filename"]).any()
     assert photos.image_filename.is_unique, "Released photo filenames must be globally unique"
     assert photos.relative_path.is_unique
     for name in ("photo_index", "classifications", "temperature_measurements", "wind_measurements"):
         frame = tables[name]
-        assert set(zip(frame.season, frame.deployment_id)) <= keys, name
-    photo_keys = set(zip(photos.season, photos.deployment_id, photos.image_filename))
+        assert set(frame.deployment_id) <= keys, name
+    photo_keys = set(zip(photos.deployment_id, photos.image_filename))
     for name in ("classifications", "temperature_measurements"):
         frame = tables[name]
-        assert set(zip(frame.season, frame.deployment_id, frame.image_filename)) <= photo_keys, name
+        assert set(zip(frame.deployment_id, frame.image_filename)) <= photo_keys, name
     wind = tables["wind_measurements"]
     assert not wind.duplicated().any()
-    linked = wind.merge(dep[["season", "deployment_id", "start_time_recorded", "end_time_recorded"]], on=["season", "deployment_id"], validate="many_to_one")
+    linked = wind.merge(dep[["deployment_id", "start_time_recorded", "end_time_recorded"]], on="deployment_id", validate="many_to_one")
     time = pd.to_datetime(linked.timestamp_recorded, format="mixed")
     assert time.ge(pd.to_datetime(linked.start_time_recorded, format="mixed")).all()
     assert time.le(pd.to_datetime(linked.end_time_recorded, format="mixed")).all()
@@ -457,7 +465,7 @@ def validate(tables):
     thirty = tables["analysis_30_minute"]
     classified = set(classification.image_filename)
     analysis_images = set(thirty.previous_image_filename) | set(thirty.current_image_filename)
-    assert {("2023-2024", f.rsplit("_", 1)[0], f) for f in analysis_images} <= photo_keys
+    assert {(f.rsplit("_", 1)[0], f) for f in analysis_images} <= photo_keys
     missing = sorted(analysis_images - classified)
     assert not missing, f"Analysis images lack a retained classification: {missing}"
     values = classification.set_index("image_filename").butterfly_index
@@ -500,6 +508,8 @@ def main():
     wind = wind.merge(dep[["season", "deployment_id"]], on=["season", "deployment_id"], validate="many_to_one")
     wind = wind[["season", "deployment_id", "wind_sensor_name", "timestamp_recorded", "wind_speed_m_s", "wind_gust_m_s", "wind_direction_degrees"]]
     tables = dict(deployments=dep, photo_index=photos, classifications=classifications(dep), temperature_measurements=temp, wind_measurements=wind, **tables)
+    # Season remains internal source provenance only. Public joins use deployment_id.
+    tables = {name: frame.drop(columns="season", errors="ignore") for name, frame in tables.items()}
     validation = validate(tables)
     fields = dictionary(tables)
     xml = metadata_xml(tables, fields)
@@ -507,13 +517,13 @@ def main():
     readme = "# Monarch monitoring data release draft\n\nAuthors in manuscript order. " + ", ".join(authors) + ".\n\nCorresponding author. " + authors[0] + ", " + email + ".\n\n" + "\n\n".join(f"{name}.csv. {TABLES[name]} Contains {len(frame):,} rows." for name, frame in tables.items())
     readme += "\n\n" + CLOCK_NOTE + "\n\n" + FILENAME_NOTE + "\n\n" + DEPLOYMENT_ID_NOTE + "\n\n" + WIND_NOTE
     readme += "\n\nCoordinates are longitude and latitude in WGS84, EPSG 4326, expressed in decimal degrees. Later camera coordinates were transformed from EPSG 3498. First-season source geometries were already EPSG 4326. They represent camera positions, not separate wind-meter positions. Coordinate precision does not establish positional accuracy.\n\n"
-    readme += "Missing CSV values are empty fields. Join observations using deployment_id, retaining season for context and consistency checks. Only the analysis tables omit season because they contain first-season data exclusively. Wind observations shared by SC9 and SC10 must not be counted as independent measurements.\n\n"
+    readme += "Missing CSV values are empty fields. Join observations using deployment_id. Add image_filename when linking classifications or temperatures to the photo index. Wind observations shared by SC9 and SC10 must not be counted as independent measurements.\n\n"
     readme += "The temperature table preserves the previously reviewed overlay values. The investigator confirmed that no second-season temperature data exist. Butterfly classifications cover the first season only. Review deployment data_quality_note before using wind. UDMH1 has source-reported corruption. PS01 stops before the camera stops. SC13 has a long gap followed by zero-valued January records of uncertain context. No gap filling or new sensor corrections were performed.\n\n"
     readme += "The analysis CSVs are renamed, reduced copies of the historical manuscript inputs. They do not recompute weather summaries from the broader reconciled wind archive. That archive includes additional deployments and preserves exact source boundary seconds. Analysis reproduction and re-derivation from the broader observational archive are distinct operations. The time covariate is minutes since the first daily observation, not calculated astronomical sunrise.\n\n"
     readme += CLASSIFICATION_REVIEW_NOTE + "\n\n"
     readme += "data_dictionary.csv defines every data column. metadata.xml is a draft for coauthor and USGS contact review, with explicit REVIEW_REQUIRED fields. Authors and corresponding contact follow the manuscript at the investigator's instruction. The DOI, USGS metadata identifier, institutional metadata contact, distribution terms and final approval remain to be finalized with USGS colleagues before publication. XML well-formedness alone is not FGDC validation.\n\n"
     readme += "Analysis scripts remain at https://github.com/kylenessen/monarch-wind-light-manuscript. Use the release CSVs with the matching repository version. Run Rscript analysis/run_results_analyses.R from that repository root. A final public commit link must be pinned before distribution. Scripts are not included in this package.\n\n"
-    readme += "The local staging package uses directory links for most photo collections and file hard links for the renamed SC13 collection to avoid copying image bytes. Before upload, create ordinary photo archives containing only the JPEG paths listed in photo_index.csv, preserving photos/season/deployment_id/ paths. Do not distribute symbolic links or unlisted source files.\n"
+    readme += "The local staging package uses directory links for most photo collections and file hard links for the renamed SC13 collection to avoid copying image bytes. Before upload, create ordinary photo archives containing only the JPEG paths listed in photo_index.csv, preserving photos/deployment_id/ paths. Do not distribute symbolic links or unlisted source files.\n"
     package = args.package_dir or args.archive / "publication_package"
     for destination in (args.output_dir, package):
         destination.mkdir(parents=True, exist_ok=True)
