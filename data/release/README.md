@@ -10,13 +10,13 @@ This release preserves observations from both monitoring seasons at Vandenberg S
 
 [photo_index.csv](photo_index.csv) contains 226,830 rows. One row per retained JPEG photograph. Links images to the deployment table and collection folders.
 
-[classifications.csv](classifications.csv) contains 8,299 rows. One row per saved image classification, with counts of grid-cell categories and Butterfly Index totals. Unclassified placeholders are omitted from this summary.
+[classifications.csv](classifications.csv) contains 3,713 rows. One row per saved image classification, with counts of grid-cell categories and Butterfly Index totals. Unclassified placeholders are omitted from this summary.
 
 [temperature_measurements.csv](temperature_measurements.csv) contains 56,066 rows. One row per reviewed camera-overlay temperature measurement.
 
 [wind_measurements.csv](wind_measurements.csv) contains 757,260 rows. One row per wind observation associated with a deployment.
 
-classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes the saved classifications for use without the software. See classifications/README.md for the JSON structure and software links.
+classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes saved daytime classifications for use without the software. See classifications/README.md for the JSON structure and software links.
 
 Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path.
 

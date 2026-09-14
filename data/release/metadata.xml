@@ -15,7 +15,7 @@
     <descript>
       <abstract>Observations from monarch monitoring at Vandenberg Space Force Base during the 2023-2024 and 2024-2025 overwintering seasons. Includes deployment information, photographs, wind measurements, native classification JSON and a tabular summary, and reviewed camera-overlay temperatures. The archive includes monitoring beyond the subset analyzed in the associated manuscript.</abstract>
       <purpose>Preserve monitoring observations for future research. Manuscript analysis inputs, scripts and results are maintained at https://github.com/kylenessen/monarch-wind-light-manuscript.</purpose>
-      <supplinf>Timestamps use device clock times without a UTC offset. The cameras and wind meters do not automatically adjust for daylight saving time. TGR1 photo times were reconstructed as described below. Other timestamps are preserved as recorded. TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time. Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path. Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes the saved classifications for use without the software. See classifications/README.md for the JSON structure and software links.</supplinf>
+      <supplinf>Timestamps use device clock times without a UTC offset. The cameras and wind meters do not automatically adjust for daylight saving time. TGR1 photo times were reconstructed as described below. Other timestamps are preserved as recorded. TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time. Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path. Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes saved daytime classifications for use without the software. See classifications/README.md for the JSON structure and software links.</supplinf>
     </descript>
     <timeperd>
       <timeinfo>
@@ -65,7 +65,7 @@
       <attraccr>Wind speed and gust are in meters per second. Direction retains the logger values from 0 to 360 degrees, reported clockwise from north. Camera-overlay temperatures were extracted with OCR and manually reviewed. Camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size calculated from ordinal grid-cell classifications.</attraccr>
     </attracc>
     <logic>deployment_id uniquely identifies each deployment. Photos link by deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals. Shared sensor observations for SC9 and SC10 remain associated with both camera deployments and are not independent measurements.</logic>
-    <complete>Classifications and reviewed temperatures cover the first season. Photographs and available wind measurements cover both seasons. Deployment-specific recording information is in deployments.csv. Unclassified placeholders remain in the native JSON and are omitted from the classification summary. Unclassified photographs do not establish butterfly absence. Missing CSV values are empty fields.</complete>
+    <complete>Classifications and reviewed temperatures cover the first season. Photographs and available wind measurements cover both seasons. Deployment-specific recording information is in deployments.csv. The classification summary excludes night records and unclassified placeholders. Native JSON files retain the full annotations. Unclassified photographs do not establish butterfly absence. Missing CSV values are empty fields.</complete>
     <posacc>
       <horizpa>
         <horizpar>Coordinates are approximate camera locations in WGS84, EPSG 4326, expressed in decimal degrees. Locations were recorded with a cellphone under canopy. Some points were adjusted against satellite imagery. First-season coordinates were already in WGS84. Second-season points were transformed from EPSG 3498 to EPSG 4326.</horizpar>
@@ -97,7 +97,7 @@
         <procdate>20260913</procdate>
       </procstep>
       <procstep>
-        <procdesc>Native classification JSON files were included with their cell positions and annotation fields. Saved annotations were summarized as category counts and BI in classifications.csv. BI uses category lower bounds of 0, 1, 10 and 100. The summary supplements missing night flags with the recorded SC1 and SC2 night intervals.</procdesc>
+        <procdesc>Native classification JSON files were included with their cell positions and annotation fields. Saved daytime annotations were summarized as category counts and BI in classifications.csv. BI uses category lower bounds of 0, 1, 10 and 100. Night records were excluded using saved night flags and recorded SC1 and SC2 night intervals when flags were absent.</procdesc>
         <procdate>20260913</procdate>
       </procstep>
       <procstep>
@@ -321,22 +321,6 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>classification_confirmed</attrlabl>
-        <attrdef>Confirmation flag in the classification JSON. The summary includes confirmed records and saved annotations. Units boolean. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>is_night</attrlabl>
-        <attrdef>Night flag from the annotation record, supplemented by the recorded SC1 and SC2 night intervals when the flag is absent. Units boolean. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
         <attrlabl>cells_0</attrlabl>
         <attrdef>Number of image grid cells assigned to butterfly category 0. Retained primitives support alternative category mappings. Units grid cells. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
@@ -512,7 +496,7 @@
       </attr>
     </detailed>
     <overview>
-      <eaover>Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes the saved classifications for use without the software. See classifications/README.md for the JSON structure and software links. deployments.csv contains 28 rows. photo_index.csv contains 226,830 rows. classifications.csv contains 8,299 rows. temperature_measurements.csv contains 56,066 rows. wind_measurements.csv contains 757,260 rows.</eaover>
+      <eaover>Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes saved daytime classifications for use without the software. See classifications/README.md for the JSON structure and software links. deployments.csv contains 28 rows. photo_index.csv contains 226,830 rows. classifications.csv contains 3,713 rows. temperature_measurements.csv contains 56,066 rows. wind_measurements.csv contains 757,260 rows.</eaover>
       <eadetcit>data_dictionary.csv, README.md and classifications/README.md in this package. Classifier source code https://github.com/kylenessen/monarch_trailcam_classifier.</eadetcit>
     </overview>
   </eainfo>

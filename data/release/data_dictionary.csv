@@ -20,8 +20,6 @@ classifications.csv,camera_name,Field name assigned to the camera. Join deployme
 classifications.csv,image_filename,Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
 classifications.csv,timestamp_recorded,Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-04T10:50:01
 classifications.csv,record_user_id,User identifier saved in the classification JSON.,identifier,empty field,,
-classifications.csv,classification_confirmed,Confirmation flag in the classification JSON. The summary includes confirmed records and saved annotations.,boolean,empty field,False,True
-classifications.csv,is_night,"Night flag from the annotation record, supplemented by the recorded SC1 and SC2 night intervals when the flag is absent.",boolean,empty field,False,True
 classifications.csv,cells_0,Number of image grid cells assigned to butterfly category 0. Retained primitives support alternative category mappings.,grid cells,empty field,0,720
 classifications.csv,cells_1_9,Number of image grid cells assigned to butterfly category 1-9. Retained primitives support alternative category mappings.,grid cells,empty field,0,62
 classifications.csv,cells_10_99,Number of image grid cells assigned to butterfly category 10-99. Retained primitives support alternative category mappings.,grid cells,empty field,0,29

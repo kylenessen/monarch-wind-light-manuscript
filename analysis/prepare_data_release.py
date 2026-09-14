@@ -65,7 +65,7 @@ CLASSIFICATION_NOTE = (
     "classifications/ contains one JSON file per classified deployment in the native "
     "format of the Monarch Trailcam Classifier. These files retain cell positions, "
     "categories, sunlight labels and saved annotation fields. classifications.csv "
-    "summarizes the saved classifications for use without the software. "
+    "summarizes saved daytime classifications for use without the software. "
     "See classifications/README.md for the JSON structure and software links."
 )
 
@@ -85,8 +85,6 @@ DESCRIPTIONS = {
     "timestamp_recorded": ("Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.", "recorded clock"),
     "relative_path": ("Photo path relative to the package root, grouped by deployment_id.", "path"),
     "record_user_id": ("User identifier saved in the classification JSON.", "identifier"),
-    "classification_confirmed": ("Confirmation flag in the classification JSON. The summary includes confirmed records and saved annotations.", "boolean"),
-    "is_night": ("Night flag from the annotation record, supplemented by the recorded SC1 and SC2 night intervals when the flag is absent.", "boolean"),
     "butterfly_index": ("Butterfly Index, BI, of visible cluster size. Sum of grid-cell category lower bounds, using 0, 1, 10 and 100 for categories 0, 1-9, 10-99 and 100-999. This is not an individual butterfly count.", "BI units"),
     "sun_exposed_butterfly_index": ("BI subtotal for occupied grid cells marked directSun or the legacy sunlight field.", "BI units"),
     "temperature_c": ("Camera-overlay temperature extracted using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer.", "degrees Celsius"),
@@ -291,10 +289,11 @@ def classifications(deployment):
                 continue
             compact = re.search(r"_(\d{14})", filename)[1]
             night = record.get("isNight", any(a <= compact <= b for a, b in legacy.get(path.stem, [])))
+            if night:
+                continue
             row = dict(season="2023-2024", deployment_id=path.stem, camera_name=cameras[path.stem],
                 image_filename=filename, timestamp_recorded=pd.to_datetime(compact, format="%Y%m%d%H%M%S").isoformat(),
-                record_user_id=record.get("user", ""),
-                classification_confirmed=bool(record.get("confirmed")), is_night=bool(night))
+                record_user_id=record.get("user", ""))
             counts = dict.fromkeys(weights, 0)
             sun = dict.fromkeys(weights, 0)
             for cell in record.get("cells", {}).values():
@@ -359,7 +358,7 @@ def metadata_xml(tables, field_dictionary):
     add(root, "idinfo/ptcontac/cntinfo/cntemail", email)
     add(root, "dataqual/attracc/attraccr", WIND_NOTE + " Camera-overlay temperatures were extracted with OCR and manually reviewed. Camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size calculated from ordinal grid-cell classifications.")
     add(root, "dataqual/logic", "deployment_id uniquely identifies each deployment. Photos link by deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals. Shared sensor observations for SC9 and SC10 remain associated with both camera deployments and are not independent measurements.")
-    add(root, "dataqual/complete", "Classifications and reviewed temperatures cover the first season. Photographs and available wind measurements cover both seasons. Deployment-specific recording information is in deployments.csv. Unclassified placeholders remain in the native JSON and are omitted from the classification summary. Unclassified photographs do not establish butterfly absence. Missing CSV values are empty fields.")
+    add(root, "dataqual/complete", "Classifications and reviewed temperatures cover the first season. Photographs and available wind measurements cover both seasons. Deployment-specific recording information is in deployments.csv. The classification summary excludes night records and unclassified placeholders. Native JSON files retain the full annotations. Unclassified photographs do not establish butterfly absence. Missing CSV values are empty fields.")
     add(root, "dataqual/posacc/horizpa/horizpar", LOCATION_NOTE + " First-season coordinates were already in WGS84. Second-season points were transformed from EPSG 3498 to EPSG 4326.")
     lineage = ET.SubElement(root.find("dataqual"), "lineage")
     for text in (
@@ -369,7 +368,7 @@ def metadata_xml(tables, field_dictionary):
         "One photograph per deployment and capture timestamp was retained. Where multiple images shared a timestamp, the unsuffixed photograph was retained.",
         DEPLOYMENT_ID_NOTE,
         "Wind records from 92 SQLite databases were matched to the assigned wind meter and inclusive deployment interval. Whitespace and numeric representations were normalized. Identical sensor, time, speed, gust and direction tuples were deduplicated. Source IDs were not treated as globally unique. Off-interval and unrelated observations were omitted. Conflicting measurement tuples would be retained for review. Raw source databases remain unchanged.",
-        "Native classification JSON files were included with their cell positions and annotation fields. Saved annotations were summarized as category counts and BI in classifications.csv. BI uses category lower bounds of 0, 1, 10 and 100. The summary supplements missing night flags with the recorded SC1 and SC2 night intervals.",
+        "Native classification JSON files were included with their cell positions and annotation fields. Saved daytime annotations were summarized as category counts and BI in classifications.csv. BI uses category lower bounds of 0, 1, 10 and 100. Night records were excluded using saved night flags and recorded SC1 and SC2 night intervals when flags were absent.",
         "Camera-overlay temperatures were extracted using OCR, reviewed as deployment time series and manually corrected for extraction errors. The reviewed values are included in temperature_measurements.csv.",
     ):
         step = ET.SubElement(lineage, "procstep")
@@ -466,9 +465,9 @@ isNight and notes. These retain confirmation state, image sequence, saved user,
 night flag and annotation notes.
 
 The JSON includes unclassified placeholders. classifications.csv summarizes
-confirmed records and saved annotations, excluding untouched placeholders. Its
-is_night field also uses recorded night intervals for SC1 and SC2 when a JSON flag
-is absent. Butterfly Index sums category lower bounds of 0, 1, 10 and 100.
+saved daytime classifications, including unconfirmed annotations and excluding
+untouched placeholders. Night records are identified using saved night flags and
+recorded SC1 and SC2 night intervals when a JSON flag is absent. Butterfly Index sums category lower bounds of 0, 1, 10 and 100.
 Sun-exposed Butterfly Index sums those values for occupied cells marked in sunlight.
 """)
     return len(files)
