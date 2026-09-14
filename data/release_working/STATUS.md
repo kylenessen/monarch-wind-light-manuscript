@@ -14,7 +14,9 @@ The two manuscript analysis tables are in data/analysis_inputs. The R scripts re
 them there. Their values are unchanged. They are not data-release attachments.
 The earlier numerical comparison is preserved in analysis_verification.json.
 
-Both seasons use the same public fields and photos/deployment_id/ paths. The release
+Both seasons use the same public fields and photos/deployment_id/ paths. Deployment
+times are named start_time and end_time and displayed as YYYY-MM-DD HH:MM:SS.
+Observer information is retained with classifications, not in the deployment table. The release
 retains one photograph per deployment and capture timestamp. Thirty additional
 exposures sharing timestamps were excluded at the investigator's request. Their
 originals remain in the source archive. Locations are approximate cellphone GPS

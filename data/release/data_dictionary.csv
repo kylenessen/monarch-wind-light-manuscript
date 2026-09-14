@@ -2,15 +2,13 @@ table,column,description,units,missing_value,observed_minimum,observed_maximum
 deployments.csv,deployment_id,"Camera deployment identifier, unique across both seasons.",identifier,empty field,,
 deployments.csv,camera_name,Field name assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
 deployments.csv,wind_sensor_name,Field name assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments.,identifier,empty field,,
-deployments.csv,start_time_recorded,"Deployment start from the original first-season deployment layer, or earliest retained EXIF capture time in the reviewed second-season photos. Source fractional seconds are preserved.",recorded clock,empty field,2023-11-17T11:40:00.000,2024-11-17T13:30:01
-deployments.csv,end_time_recorded,"Deployment end from the original first-season deployment layer, or latest retained EXIF capture time in the reviewed second-season photos. This is not necessarily the last wind observation.",recorded clock,empty field,2023-11-19T13:10:00.583,2025-04-11T14:10:01
-deployments.csv,boundary_basis,first_season_deployment_geopackage means source deployment-layer boundaries. reviewed_photo_exif means minimum and maximum retained photo EXIF times.,text,empty field,,
+deployments.csv,start_time,"Deployment start in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the first retained photo for the second season.",recorded clock,empty field,2023-11-17 11:40:00,2024-11-17 13:30:01
+deployments.csv,end_time,"Deployment end in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the last retained photo for the second season.",recorded clock,empty field,2023-11-19 13:10:00,2025-04-11 14:10:01
 deployments.csv,latitude,"Approximate camera latitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.",decimal degrees,empty field,34.58434444,34.88680926
 deployments.csv,longitude,"Approximate camera longitude in WGS84, EPSG 4326. Western longitudes are negative. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.",decimal degrees,empty field,-120.63312527,-120.56154322
 deployments.csv,camera_height_m,Recorded camera height above ground.,meters,empty field,1.0,9.6
 deployments.csv,horizontal_distance_to_cluster_m,Recorded horizontal viewing distance from camera to butterfly cluster.,meters,empty field,4.1,33.8
 deployments.csv,view_direction_degrees,Recorded camera viewing direction clockwise from north.,degrees,empty field,10,360
-deployments.csv,primary_observer,Primary image classifier assigned to the deployment.,text,empty field,,
 deployments.csv,data_quality_note,"Deployment-specific recording, coverage or timing information.",text,empty field,,
 photo_index.csv,deployment_id,"Camera deployment identifier, unique across both seasons.",identifier,empty field,,
 photo_index.csv,camera_name,Field name assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,

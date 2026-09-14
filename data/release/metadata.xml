@@ -77,7 +77,7 @@
         <procdate>20260913</procdate>
       </procstep>
       <procstep>
-        <procdesc>TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time. The first and last image times were anchored to December 15, 2023 at 16:34:52.663 and January 5, 2024 at 08:10:01.412. Intermediate times were linearly scaled by elapsed camera time after removing the 31-day calendar jump. EXIF capture, creation and modification times were updated in release copies, including fractional seconds. Image pixels and original source photographs were unchanged.</procdesc>
+        <procdesc>TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time. The first and last image times were anchored to the field deployment start and end. Intermediate times were linearly scaled by elapsed camera time after removing the 31-day calendar jump. EXIF capture, creation and modification times were updated in release copies. Image pixels and original source photographs were unchanged.</procdesc>
         <procdate>20260914</procdate>
       </procstep>
       <procstep>
@@ -163,24 +163,16 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>start_time_recorded</attrlabl>
-        <attrdef>Deployment start from the original first-season deployment layer, or earliest retained EXIF capture time in the reviewed second-season photos. Source fractional seconds are preserved. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrlabl>start_time</attrlabl>
+        <attrdef>Deployment start in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the first retained photo for the second season. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>end_time_recorded</attrlabl>
-        <attrdef>Deployment end from the original first-season deployment layer, or latest retained EXIF capture time in the reviewed second-season photos. This is not necessarily the last wind observation. Units recorded clock. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>boundary_basis</attrlabl>
-        <attrdef>first_season_deployment_geopackage means source deployment-layer boundaries. reviewed_photo_exif means minimum and maximum retained photo EXIF times. Units text. Missing values are empty fields.</attrdef>
+        <attrlabl>end_time</attrlabl>
+        <attrdef>Deployment end in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the last retained photo for the second season. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -221,14 +213,6 @@
       <attr>
         <attrlabl>view_direction_degrees</attrlabl>
         <attrdef>Recorded camera viewing direction clockwise from north. Units degrees. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>primary_observer</attrlabl>
-        <attrdef>Primary image classifier assigned to the deployment. Units text. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>

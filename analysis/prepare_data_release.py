@@ -73,9 +73,8 @@ DESCRIPTIONS = {
     "deployment_id": ("Camera deployment identifier, unique across both seasons.", "identifier"),
     "camera_name": ("Field name assigned to the camera. Join deployments using deployment_id.", "identifier"),
     "wind_sensor_name": ("Field name assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments.", "identifier"),
-    "start_time_recorded": ("Deployment start from the original first-season deployment layer, or earliest retained EXIF capture time in the reviewed second-season photos. Source fractional seconds are preserved.", "recorded clock"),
-    "end_time_recorded": ("Deployment end from the original first-season deployment layer, or latest retained EXIF capture time in the reviewed second-season photos. This is not necessarily the last wind observation.", "recorded clock"),
-    "boundary_basis": ("first_season_deployment_geopackage means source deployment-layer boundaries. reviewed_photo_exif means minimum and maximum retained photo EXIF times.", "text"),
+    "start_time": ("Deployment start in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the first retained photo for the second season.", "recorded clock"),
+    "end_time": ("Deployment end in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the last retained photo for the second season.", "recorded clock"),
     "latitude": ("Approximate camera latitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.", "decimal degrees"),
     "longitude": ("Approximate camera longitude in WGS84, EPSG 4326. Western longitudes are negative. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.", "decimal degrees"),
     "camera_height_m": ("Recorded camera height above ground.", "meters"),
@@ -228,14 +227,10 @@ def deployments(staging):
         source = (first if earlier else second).loc[row.deployment_id]
         assert source["camera_name" if earlier else "ID"] == row.camera_name
         notes = []
+        if earlier and row.deployment_id == "SC3":
+            notes.append("Nonstandard deployment to capture opportunistic imagery during rocket launch.")
         if earlier and row.deployment_id == "TGR1":
             notes.append(TGR1_NOTE)
-        if not earlier and row.deployment_id == "PS01":
-            notes.append("Wind records end January 31, 2025 at 04:04.")
-        if not earlier and row.deployment_id == "SC12":
-            notes.append("Wind records extend through December 23, 2024, with 69 additional records on January 14, 2025.")
-        if not earlier and row.deployment_id not in ("PS01", "SC12"):
-            notes.append("No wind records are available within the deployment interval.")
         records.append(dict(season=row.season, deployment_id=release_deployment_id(row.season, row.deployment_id),
             camera_name=row.camera_name, wind_sensor_name=row.wind_sensor_name,
             start_time_recorded=row.start_time_recorded, end_time_recorded=row.end_time_recorded,
@@ -348,8 +343,8 @@ def metadata_xml(tables, field_dictionary):
     add(root, "idinfo/descript/purpose", "Preserve monitoring observations for future research. Manuscript analysis inputs, scripts and results are maintained at https://github.com/kylenessen/monarch-wind-light-manuscript.")
     add(root, "idinfo/descript/supplinf", CLOCK_NOTE + " " + TGR1_NOTE + " " + FILENAME_NOTE + " " + DEPLOYMENT_ID_NOTE + " " + CLASSIFICATION_NOTE)
     dep = tables["deployments"]
-    add(root, "idinfo/timeperd/timeinfo/rngdates/begdate", dep.start_time_recorded.min()[:10].replace("-", ""))
-    add(root, "idinfo/timeperd/timeinfo/rngdates/enddate", dep.end_time_recorded.max()[:10].replace("-", ""))
+    add(root, "idinfo/timeperd/timeinfo/rngdates/begdate", dep.start_time.min()[:10].replace("-", ""))
+    add(root, "idinfo/timeperd/timeinfo/rngdates/enddate", dep.end_time.max()[:10].replace("-", ""))
     add(root, "idinfo/timeperd/current", "Recorded deployment and photograph times.")
     add(root, "idinfo/status/progress", "In work")
     add(root, "idinfo/status/update", "As needed")
@@ -371,7 +366,7 @@ def metadata_xml(tables, field_dictionary):
     lineage = ET.SubElement(root.find("dataqual"), "lineage")
     for text in (
         "First-season deployment intervals and positions were read from the original deployment GeoPackage. Second-season retained photograph EXIF extrema set the release boundaries. Coordinates were transformed to WGS84 where needed. Deployment and wind timestamps were preserved.",
-        TGR1_NOTE + " The first and last image times were anchored to December 15, 2023 at 16:34:52.663 and January 5, 2024 at 08:10:01.412. Intermediate times were linearly scaled by elapsed camera time after removing the 31-day calendar jump. EXIF capture, creation and modification times were updated in release copies, including fractional seconds. Image pixels and original source photographs were unchanged.",
+        TGR1_NOTE + " The first and last image times were anchored to the field deployment start and end. Intermediate times were linearly scaled by elapsed camera time after removing the 31-day calendar jump. EXIF capture, creation and modification times were updated in release copies. Image pixels and original source photographs were unchanged.",
         FILENAME_NOTE,
         "One photograph per deployment and capture timestamp was retained. Where multiple images shared a timestamp, the unsuffixed photograph was retained.",
         DEPLOYMENT_ID_NOTE,
@@ -546,6 +541,13 @@ def main():
     # Season remains internal source provenance only. Public joins use deployment_id.
     tables = {name: frame.drop(columns="season", errors="ignore") for name, frame in tables.items()}
     validation = validate(tables)
+    # Validate against the source boundaries before simplifying their public display.
+    public_deployments = tables["deployments"].drop(columns=["boundary_basis", "primary_observer"]).rename(
+        columns={"start_time_recorded": "start_time", "end_time_recorded": "end_time"})
+    for column in ("start_time", "end_time"):
+        public_deployments[column] = pd.to_datetime(
+            public_deployments[column], format="mixed").dt.strftime("%Y-%m-%d %H:%M:%S")
+    tables["deployments"] = public_deployments
     fields = dictionary(tables)
     xml = metadata_xml(tables, fields)
     readme = release_readme(tables)
