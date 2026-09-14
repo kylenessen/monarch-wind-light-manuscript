@@ -13,6 +13,28 @@ from prepare_data_release import release_deployment_id, release_photo_path, stag
 
 
 class ReleaseDeploymentIds(unittest.TestCase):
+    def test_excluded_repeated_times_are_removed_only_from_the_package(self):
+        for source_id, release_id in (("CR01", "CR01"), ("SC12", "SC13")):
+            with self.subTest(deployment=release_id), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                source = root / "VSFB_2025_Deployment_Review" / source_id
+                source.mkdir(parents=True)
+                names = [f"{source_id}_20241103020001.JPG", f"{source_id}_20241103020001_02.JPG"]
+                for name in names:
+                    (source / name).write_bytes(name.encode())
+                dep = pd.DataFrame([{"season": "2024-2025", "deployment_id": release_id}])
+                photos = pd.DataFrame([dict(deployment_id=release_id,
+                                           image_filename=release_id + name[len(source_id):],
+                                           relative_path=f"photos/{release_id}/{release_id + name[len(source_id):]}")
+                                       for name in names])
+                package = root / "package"
+                stage_photos(root, package, dep, photos)
+                stage_photos(root, package, dep, photos.iloc[:1])
+                stage_photos(root, package, dep, photos.iloc[:1])
+                self.assertEqual({p.name for p in (package / "photos" / release_id).iterdir()},
+                                 {photos.iloc[0].image_filename})
+                self.assertTrue(all((source / name).exists() for name in names))
+
     def test_seasons_and_collision_suffix(self):
         self.assertEqual(release_deployment_id("2023-2024", "SC12"), "SC12")
         self.assertEqual(release_deployment_id("2024-2025", "SC12"), "SC13")

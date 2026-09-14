@@ -50,14 +50,16 @@ TGR1_NOTE = (
 FILENAME_NOTE = (
     "Photographs are stored in photos/deployment_id/ and named "
     "deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. "
-    "Deployment identifiers may contain underscores. An _02 suffix distinguishes "
-    "a second photograph with the same timestamp. photo_index.csv lists every image path."
+    "Deployment identifiers may contain underscores. photo_index.csv lists every image path."
 )
 WIND_NOTE = (
     "Wind speed and gust are in meters per second. Direction retains the logger values "
-    "from 0 to 360 degrees, reported clockwise from north. "
-    "SC9 and SC10 share wind-meter observations during overlapping deployments. "
-    "Those rows describe the same measurements."
+    "from 0 to 360 degrees, reported clockwise from north."
+)
+LOCATION_NOTE = (
+    "Coordinates are approximate camera locations in WGS84, EPSG 4326, expressed in decimal degrees. "
+    "Locations were recorded with a cellphone under canopy. Some points were adjusted "
+    "against satellite imagery."
 )
 CLASSIFICATION_NOTE = (
     "classifications/ contains one JSON file per classified deployment in the native "
@@ -70,12 +72,12 @@ CLASSIFICATION_NOTE = (
 DESCRIPTIONS = {
     "deployment_id": ("Camera deployment identifier, unique across both seasons.", "identifier"),
     "camera_name": ("Field name assigned to the camera. Join deployments using deployment_id.", "identifier"),
-    "wind_sensor_name": ("Field name assigned to the wind meter. A meter may serve multiple camera views or deployments.", "identifier"),
+    "wind_sensor_name": ("Field name assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments.", "identifier"),
     "start_time_recorded": ("Deployment start from the original first-season deployment layer, or earliest retained EXIF capture time in the reviewed second-season photos. Source fractional seconds are preserved.", "recorded clock"),
     "end_time_recorded": ("Deployment end from the original first-season deployment layer, or latest retained EXIF capture time in the reviewed second-season photos. This is not necessarily the last wind observation.", "recorded clock"),
     "boundary_basis": ("first_season_deployment_geopackage means source deployment-layer boundaries. reviewed_photo_exif means minimum and maximum retained photo EXIF times.", "text"),
-    "latitude": ("Latitude of the camera deployment in WGS84, EPSG 4326. Coordinate precision does not establish positional accuracy.", "decimal degrees"),
-    "longitude": ("Longitude of the camera deployment in WGS84, EPSG 4326. Western longitudes are negative.", "decimal degrees"),
+    "latitude": ("Approximate camera latitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.", "decimal degrees"),
+    "longitude": ("Approximate camera longitude in WGS84, EPSG 4326. Western longitudes are negative. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.", "decimal degrees"),
     "camera_height_m": ("Recorded camera height above ground.", "meters"),
     "horizontal_distance_to_cluster_m": ("Recorded horizontal viewing distance from camera to butterfly cluster.", "meters"),
     "view_direction_degrees": ("Recorded camera viewing direction clockwise from north.", "degrees"),
@@ -105,7 +107,7 @@ TABLES = {
     "photo_index": "One row per retained JPEG photograph. Links images to the deployment table and collection folders.",
     "classifications": "One row per saved image classification, with counts of grid-cell categories and Butterfly Index totals. Unclassified placeholders are omitted from this summary.",
     "temperature_measurements": "One row per reviewed camera-overlay temperature measurement.",
-    "wind_measurements": "One row per wind observation associated with a deployment. Repeated copies of the same instrument reading are deduplicated.",
+    "wind_measurements": "One row per wind observation associated with a deployment.",
 }
 
 
@@ -158,13 +160,18 @@ def stage_photos(archive, package, deployment, photos):
                             else "VSFB_2025_Deployment_Review") / source_id
         if row.deployment_id == "TGR1":
             source = archive / "corrected_photos/TGR1"
+        selected = photos.loc[photos.deployment_id.eq(row.deployment_id)]
+        expected = set(selected.image_filename)
+        omitted = {row.deployment_id + path.name[len(source_id):]
+                   for path in source.glob("*.JPG")
+                   if re.fullmatch(re.escape(source_id) + r"_\d{14}_\d+\.JPG", path.name)} - expected
         target = package / "photos" / row.deployment_id
         legacy = package / "photos" / row.season / row.deployment_id
         if legacy.exists() or legacy.is_symlink():
             if target.exists() or target.is_symlink():
                 raise ValueError(f"Both old and new photo directories exist {target}")
             legacy.rename(target)
-        if source_id == row.deployment_id:
+        if source_id == row.deployment_id and not omitted:
             if not source.is_dir():
                 continue
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -174,9 +181,17 @@ def stage_photos(archive, package, deployment, photos):
                 raise ValueError(f"Existing photo link points to a different source {target}")
             continue
         if target.is_symlink():
-            raise ValueError(f"Renamed photo directory must not be a symlink {target}")
+            if target.resolve() != source.resolve():
+                raise ValueError(f"Existing photo link points to a different source {target}")
+            target.unlink()
         target.mkdir(parents=True, exist_ok=True)
-        selected = photos.loc[photos.deployment_id.eq(row.deployment_id)]
+        for name in omitted:
+            extra = target / name
+            original = source / (source_id + name[len(row.deployment_id):])
+            if extra.exists():
+                if not extra.samefile(original):
+                    raise ValueError(f"Excluded photo differs from its source {extra}")
+                extra.unlink()
         for photo in selected.itertuples(index=False):
             original = source / (source_id + photo.image_filename[len(row.deployment_id):])
             renamed = target / photo.image_filename
@@ -184,7 +199,7 @@ def stage_photos(archive, package, deployment, photos):
                 os.link(original, renamed)
             if not os.path.samefile(original, renamed):
                 raise ValueError(f"Renamed photo differs from original {renamed}")
-        if {p.name for p in target.iterdir()} != set(selected.image_filename):
+        if {p.name for p in target.iterdir() if p.name != ".DS_Store"} != expected:
             raise ValueError(f"Unexpected files in renamed photo directory {target}")
         previous = package / "photos" / row.season / source_id
         if previous.is_symlink() and previous.resolve() == source.resolve():
@@ -263,7 +278,10 @@ def photo_index(archive, staging, deployment):
         records.append(("2023-2024", "TGR1", names[("2023-2024", "TGR1")],
                         row.image_filename, row.timestamp_recorded,
                         f"photos/TGR1/{row.image_filename}"))
-    return pd.DataFrame(records, columns=["season", "deployment_id", "camera_name", "image_filename", "timestamp_recorded", "relative_path"])
+    frame = pd.DataFrame(records, columns=["season", "deployment_id", "camera_name", "image_filename", "timestamp_recorded", "relative_path"])
+    # Canonical unsuffixed filenames sort before collision-suffixed alternatives.
+    return frame.sort_values("image_filename").drop_duplicates(
+        ["deployment_id", "timestamp_recorded"], keep="first").sort_index().reset_index(drop=True)
 
 
 def classifications(deployment):
@@ -349,12 +367,13 @@ def metadata_xml(tables, field_dictionary):
     add(root, "dataqual/attracc/attraccr", WIND_NOTE + " Camera-overlay temperatures were extracted with OCR and manually reviewed. Camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size calculated from ordinal grid-cell classifications.")
     add(root, "dataqual/logic", "deployment_id uniquely identifies each deployment. Photos link by deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals. Shared sensor observations for SC9 and SC10 remain associated with both camera deployments and are not independent measurements.")
     add(root, "dataqual/complete", "Classifications and reviewed temperatures cover the first season. Photographs and available wind measurements cover both seasons. Deployment-specific recording information is in deployments.csv. Unclassified placeholders remain in the native JSON and are omitted from the classification summary. Unclassified photographs do not establish butterfly absence. Missing CSV values are empty fields.")
-    add(root, "dataqual/posacc/horizpa/horizpar", "First-season coordinates are WGS84 source deployment points. Second-season camera points were transformed from EPSG 3498, NAD83(NSRS2007) / California zone 5 in US survey feet, to EPSG 4326 using pyproj with longitude-first output. Positional accuracy was not independently measured. Decimal precision is not an accuracy estimate.")
+    add(root, "dataqual/posacc/horizpa/horizpar", LOCATION_NOTE + " First-season coordinates were already in WGS84. Second-season points were transformed from EPSG 3498 to EPSG 4326.")
     lineage = ET.SubElement(root.find("dataqual"), "lineage")
     for text in (
         "First-season deployment intervals and positions were read from the original deployment GeoPackage. Second-season retained photograph EXIF extrema set the release boundaries. Coordinates were transformed to WGS84 where needed. Deployment and wind timestamps were preserved.",
         TGR1_NOTE + " The first and last image times were anchored to December 15, 2023 at 16:34:52.663 and January 5, 2024 at 08:10:01.412. Intermediate times were linearly scaled by elapsed camera time after removing the 31-day calendar jump. EXIF capture, creation and modification times were updated in release copies, including fractional seconds. Image pixels and original source photographs were unchanged.",
         FILENAME_NOTE,
+        "One photograph per deployment and capture timestamp was retained. Where multiple images shared a timestamp, the unsuffixed photograph was retained.",
         DEPLOYMENT_ID_NOTE,
         "Wind records from 92 SQLite databases were matched to the assigned wind meter and inclusive deployment interval. Whitespace and numeric representations were normalized. Identical sensor, time, speed, gust and direction tuples were deduplicated. Source IDs were not treated as globally unique. Off-interval and unrelated observations were omitted. Conflicting measurement tuples would be retained for review. Raw source databases remain unchanged.",
         "Native classification JSON files were included with their cell positions and annotation fields. Saved annotations were summarized as category counts and BI in classifications.csv. BI uses category lower bounds of 0, 1, 10 and 100. The summary supplements missing night flags with the recorded SC1 and SC2 night intervals.",
@@ -409,6 +428,7 @@ def validate(tables):
     assert not photos.duplicated(["deployment_id", "image_filename"]).any()
     assert photos.image_filename.is_unique, "Released photo filenames must be globally unique"
     assert photos.relative_path.is_unique
+    assert not photos.duplicated(["deployment_id", "timestamp_recorded"]).any()
     for name in ("photo_index", "classifications", "temperature_measurements", "wind_measurements"):
         frame = tables[name]
         assert set(frame.deployment_id) <= keys, name
@@ -478,7 +498,7 @@ def release_readme(tables):
         + DEPLOYMENT_ID_NOTE + " Missing CSV values are empty fields. "
         "[data_dictionary.csv](data_dictionary.csv) defines the table fields.\n\n"
         + CLOCK_NOTE + "\n\n" + TGR1_NOTE + "\n\n"
-        "Coordinates are camera locations in WGS84, EPSG 4326, expressed in decimal degrees. "
+        + LOCATION_NOTE + " "
         "Deployment-specific recording information is in deployments.csv.\n\n"
         + WIND_NOTE + " Wind measurements are provided as recorded within deployment intervals.\n\n"
         "Temperature values were extracted from camera overlays using OCR and manually reviewed. "

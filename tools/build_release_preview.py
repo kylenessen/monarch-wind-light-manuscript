@@ -45,7 +45,7 @@ def build(source, destination, replace=False):
     filenames = {
         *sc1,
         "SC12_20240129174001.JPG", "SC13_20241215120001.JPG",
-        "CR01_20241103020001.JPG", "CR01_20241103020001_02.JPG",
+        "CR01_20241103020001.JPG", "CR01_20241103021001.JPG",
     }
     selected = {
         "deployments": rows["deployments"],
@@ -180,11 +180,11 @@ Six original JPEGs are included under photos/deployment_id/. All six are listed 
 
 The two SC1 photos have saved classifications. Their classification and temperature records are included, along with illustrative wind observations. Additional observation rows bring each sampled table to 10 rows. Those rows and the full deployment JSON files can reference photos available only in the complete release.
 
-The first-season SC12 image and second-season SC13 image show distinct camera deployments. SC12 is NOVA with BlueLake. SC13 is IRIS with RockWall. Deployment identifiers are unique across the release. The two CR01 images share a recorded capture time and demonstrate the unsuffixed filename and _02 collision suffix. They remain distinct photos.
+The first-season SC12 image and second-season SC13 image show distinct camera deployments. SC12 is NOVA with BlueLake. SC13 is IRIS with RockWall. Deployment identifiers are unique across the release. The two CR01 images show consecutive ten-minute observations.
 
 The wind examples include both seasons, shared StarDust observations for SC9 and SC10, late zero-speed SC13 observations, and directions 0 and 360. They illustrate recorded values and documentation needs. The README and dictionary explain their limitations. No second-season classification or temperature records are included because those datasets cover the first season only.
 
-Filenames use deployment_id_YYYYMMDDHHMMSS.JPG, with an _02 suffix when needed to distinguish photos sharing a recorded time. Recorded device times have no newly applied daylight saving or UTC correction. Photo color and infrared appearance, overlays and timestamps are preserved as recorded.
+Filenames use deployment_id_YYYYMMDDHHMMSS.JPG. Recorded device times have no newly applied daylight saving or UTC correction. Photo color and infrared appearance, overlays and timestamps in these examples are preserved as recorded.
 
 ## Review focus
 

@@ -14,7 +14,12 @@ The two manuscript analysis tables are in data/analysis_inputs. The R scripts re
 them there. Their values are unchanged. They are not data-release attachments.
 The earlier numerical comparison is preserved in analysis_verification.json.
 
-Both seasons use the same public fields and photos/deployment_id/ paths. Times
+Both seasons use the same public fields and photos/deployment_id/ paths. The release
+retains one photograph per deployment and capture timestamp. Thirty additional
+exposures sharing timestamps were excluded at the investigator's request. Their
+originals remain in the source archive. Locations are approximate cellphone GPS
+positions recorded under canopy, with some points adjusted against satellite imagery.
+Times
 are described as recorded by the devices, without UTC offsets. TGR1 photo times are reconstructed from deployment
 start and end times. Available wind readings within assigned deployment intervals are
 included as recorded. Shared SC9 and SC10 observations remain linked to both
@@ -28,7 +33,7 @@ keeps the original incorrect camera timestamp. Corrected copies are stored under
 raw/Unusual Deployments/TGR1. tools/prepare_tgr1_photos.py reproduces the corrected
 copies, and tgr1_photo_times.csv records their source filenames and time mapping.
 
-The current package contains 28 deployments, 226,860 photographs, 757,260 wind
+The current package contains 28 deployments, 226,830 photographs, 757,260 wind
 associations, 56,066 temperature records, 8,299 classification summaries and 12
 native classification JSON files. The builder's existing schema and join checks
 passed. No software-loading check or statistical model rerun was performed for

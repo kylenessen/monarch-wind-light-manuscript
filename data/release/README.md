@@ -8,17 +8,17 @@ This release preserves observations from both monitoring seasons at Vandenberg S
 
 [deployments.csv](deployments.csv) contains 28 rows. One row per camera deployment, including identifiers, WGS84 location, boundaries and known limitations.
 
-[photo_index.csv](photo_index.csv) contains 226,860 rows. One row per retained JPEG photograph. Links images to the deployment table and collection folders.
+[photo_index.csv](photo_index.csv) contains 226,830 rows. One row per retained JPEG photograph. Links images to the deployment table and collection folders.
 
 [classifications.csv](classifications.csv) contains 8,299 rows. One row per saved image classification, with counts of grid-cell categories and Butterfly Index totals. Unclassified placeholders are omitted from this summary.
 
 [temperature_measurements.csv](temperature_measurements.csv) contains 56,066 rows. One row per reviewed camera-overlay temperature measurement.
 
-[wind_measurements.csv](wind_measurements.csv) contains 757,260 rows. One row per wind observation associated with a deployment. Repeated copies of the same instrument reading are deduplicated.
+[wind_measurements.csv](wind_measurements.csv) contains 757,260 rows. One row per wind observation associated with a deployment.
 
 classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes the saved classifications for use without the software. See classifications/README.md for the JSON structure and software links.
 
-Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. An _02 suffix distinguishes a second photograph with the same timestamp. photo_index.csv lists every image path.
+Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path.
 
 Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. Missing CSV values are empty fields. [data_dictionary.csv](data_dictionary.csv) defines the table fields.
 
@@ -26,9 +26,9 @@ Timestamps use device clock times without a UTC offset. The cameras and wind met
 
 TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time.
 
-Coordinates are camera locations in WGS84, EPSG 4326, expressed in decimal degrees. Deployment-specific recording information is in deployments.csv.
+Coordinates are approximate camera locations in WGS84, EPSG 4326, expressed in decimal degrees. Locations were recorded with a cellphone under canopy. Some points were adjusted against satellite imagery. Deployment-specific recording information is in deployments.csv.
 
-Wind speed and gust are in meters per second. Direction retains the logger values from 0 to 360 degrees, reported clockwise from north. SC9 and SC10 share wind-meter observations during overlapping deployments. Those rows describe the same measurements. Wind measurements are provided as recorded within deployment intervals.
+Wind speed and gust are in meters per second. Direction retains the logger values from 0 to 360 degrees, reported clockwise from north. Wind measurements are provided as recorded within deployment intervals.
 
 Temperature values were extracted from camera overlays using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size based on ordinal image-cell categories. Unclassified photographs do not establish butterfly absence.
 
