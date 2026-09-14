@@ -147,16 +147,16 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>camera_name</attrlabl>
-        <attrdef>Field name assigned to the camera. Join deployments using deployment_id. Units identifier. Missing values are empty fields.</attrdef>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Field identifier assigned to the camera. Join deployments using deployment_id. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>wind_sensor_name</attrlabl>
-        <attrdef>Field name assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments. Units identifier. Missing values are empty fields.</attrdef>
+        <attrlabl>wind_sensor_id</attrlabl>
+        <attrdef>Field identifier assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -195,7 +195,7 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>camera_height_m</attrlabl>
+        <attrlabl>camera_height</attrlabl>
         <attrdef>Recorded camera height above ground. Units meters. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
@@ -203,7 +203,7 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>horizontal_distance_to_cluster_m</attrlabl>
+        <attrlabl>horizontal_distance_to_cluster</attrlabl>
         <attrdef>Recorded horizontal viewing distance from camera to butterfly cluster. Units meters. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
@@ -211,7 +211,7 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>view_direction_degrees</attrlabl>
+        <attrlabl>view_direction</attrlabl>
         <attrdef>Recorded camera viewing direction clockwise from north. Units degrees. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
@@ -242,8 +242,8 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>camera_name</attrlabl>
-        <attrdef>Field name assigned to the camera. Join deployments using deployment_id. Units identifier. Missing values are empty fields.</attrdef>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Field identifier assigned to the camera. Join deployments using deployment_id. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -258,7 +258,7 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>timestamp_recorded</attrlabl>
+        <attrlabl>timestamp</attrlabl>
         <attrdef>Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
@@ -289,8 +289,8 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>camera_name</attrlabl>
-        <attrdef>Field name assigned to the camera. Join deployments using deployment_id. Units identifier. Missing values are empty fields.</attrdef>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Field identifier assigned to the camera. Join deployments using deployment_id. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -305,7 +305,7 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>timestamp_recorded</attrlabl>
+        <attrlabl>timestamp</attrlabl>
         <attrdef>Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
@@ -408,8 +408,8 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>camera_name</attrlabl>
-        <attrdef>Field name assigned to the camera. Join deployments using deployment_id. Units identifier. Missing values are empty fields.</attrdef>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Field identifier assigned to the camera. Join deployments using deployment_id. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -424,7 +424,7 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>timestamp_recorded</attrlabl>
+        <attrlabl>timestamp</attrlabl>
         <attrdef>Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
@@ -432,7 +432,7 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>temperature_c</attrlabl>
+        <attrlabl>temperature</attrlabl>
         <attrdef>Camera-overlay temperature extracted using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer. Units degrees Celsius. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
@@ -455,15 +455,15 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>wind_sensor_name</attrlabl>
-        <attrdef>Field name assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments. Units identifier. Missing values are empty fields.</attrdef>
+        <attrlabl>wind_sensor_id</attrlabl>
+        <attrdef>Field identifier assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>timestamp_recorded</attrlabl>
+        <attrlabl>timestamp</attrlabl>
         <attrdef>Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
@@ -471,7 +471,7 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>wind_speed_m_s</attrlabl>
+        <attrlabl>wind_speed</attrlabl>
         <attrdef>Wind speed reported in the logger speed field for the recording interval. Units meters per second. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
@@ -479,7 +479,7 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>wind_gust_m_s</attrlabl>
+        <attrlabl>wind_gust</attrlabl>
         <attrdef>Maximum wind gust reported in the logger gust field for the recording interval, normally one minute. Units meters per second. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
@@ -487,7 +487,7 @@
         </attrdomv>
       </attr>
       <attr>
-        <attrlabl>wind_direction_degrees</attrlabl>
+        <attrlabl>wind_direction</attrlabl>
         <attrdef>Logger wind-direction value from 0 to 360 degrees, reported clockwise from north. Units degrees. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>

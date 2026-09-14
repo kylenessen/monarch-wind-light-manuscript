@@ -14,7 +14,10 @@ The two manuscript analysis tables are in data/analysis_inputs. The R scripts re
 them there. Their values are unchanged. They are not data-release attachments.
 The earlier numerical comparison is preserved in analysis_verification.json.
 
-Both seasons use the same public fields and photos/deployment_id/ paths. Deployment
+Both seasons use the same public fields and photos/deployment_id/ paths.
+Camera and wind instrument fields are camera_id and wind_sensor_id. Measurement
+column names omit unit suffixes. Units are recorded in the data dictionary.
+Observation date and time columns are named timestamp. Deployment
 times are named start_time and end_time and displayed as YYYY-MM-DD HH:MM:SS.
 The classification summary retains saved user identifiers and daytime annotations,
 including unconfirmed records. Night rows and the confirmation and night columns

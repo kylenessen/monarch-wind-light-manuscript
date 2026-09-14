@@ -61,23 +61,23 @@ def build(source, destination, replace=False):
                               ("SC13", "2024-12-15T12:00"),
                               ("SC13", "2025-01-14")]:
         wind_examples.extend([r for r in wind if r["deployment_id"] == deployment
-                              and r["timestamp_recorded"] >= start][:3])
-    shared_time = next(r["timestamp_recorded"] for r in wind if r["deployment_id"] == "SC10")
+                              and r["timestamp"] >= start][:3])
+    shared_time = next(r["timestamp"] for r in wind if r["deployment_id"] == "SC10")
     wind_examples.extend(r for r in wind if r["deployment_id"] in {"SC9", "SC10"}
-                         and r["timestamp_recorded"] == shared_time)
+                         and r["timestamp"] == shared_time)
     for direction in ("0", "360"):
-        wind_examples.append(next(r for r in wind if float(r["wind_direction_degrees"] or -1) == int(direction)))
+        wind_examples.append(next(r for r in wind if float(r["wind_direction"] or -1) == int(direction)))
     fields = tables["wind_measurements"][0]
     unique = {tuple(r[f] for f in fields): r for r in wind_examples}
-    selected["wind_measurements"] = sorted(unique.values(), key=lambda r: (r["deployment_id"], r["timestamp_recorded"]))
+    selected["wind_measurements"] = sorted(unique.values(), key=lambda r: (r["deployment_id"], r["timestamp"]))
 
     wind_priority = []
     for deployment in ("SC1", "SC9", "SC10", "SC12", "SC13"):
         wind_priority.append(next(r for r in selected["wind_measurements"] if r["deployment_id"] == deployment))
-    wind_priority.extend(next(r for r in selected["wind_measurements"] if float(r["wind_direction_degrees"]) == direction)
+    wind_priority.extend(next(r for r in selected["wind_measurements"] if float(r["wind_direction"]) == direction)
                          for direction in (0, 360))
     wind_priority.append(next(r for r in selected["wind_measurements"]
-                              if r["deployment_id"] == "SC13" and r["timestamp_recorded"].startswith("2025-01-14")))
+                              if r["deployment_id"] == "SC13" and r["timestamp"].startswith("2025-01-14")))
     selected["wind_measurements"] = ten_rows(wind_priority, selected["wind_measurements"])
     for name in ("classifications",):
         selected[name] = ten_rows(selected[name], rows[name])

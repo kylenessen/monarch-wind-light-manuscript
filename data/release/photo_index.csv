@@ -1,4 +1,4 @@
-deployment_id,camera_name,image_filename,timestamp_recorded,relative_path
+deployment_id,camera_id,image_filename,timestamp,relative_path
 SC1,EM03,SC1_20231117114001.JPG,2023-11-17T11:40:01,photos/SC1/SC1_20231117114001.JPG
 SC1,EM03,SC1_20231117114501.JPG,2023-11-17T11:45:01,photos/SC1/SC1_20231117114501.JPG
 SC1,EM03,SC1_20231117115001.JPG,2023-11-17T11:50:01,photos/SC1/SC1_20231117115001.JPG

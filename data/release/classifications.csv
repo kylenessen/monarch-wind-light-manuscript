@@ -1,4 +1,4 @@
-deployment_id,camera_name,image_filename,timestamp_recorded,record_user_id,cells_0,cells_1_9,cells_10_99,cells_100_999,sun_exposed_cells_1_9,sun_exposed_cells_10_99,sun_exposed_cells_100_999,butterfly_index,sun_exposed_butterfly_index
+deployment_id,camera_id,image_filename,timestamp,record_user_id,cells_0,cells_1_9,cells_10_99,cells_100_999,sun_exposed_cells_1_9,sun_exposed_cells_10_99,sun_exposed_cells_100_999,butterfly_index,sun_exposed_butterfly_index
 SC1,EM03,SC1_20231117114001.JPG,2023-11-17T11:40:01,SM,104,31,9,0,0,0,0,121,0
 SC1,EM03,SC1_20231117114501.JPG,2023-11-17T11:45:01,SM,105,26,13,0,0,0,0,156,0
 SC1,EM03,SC1_20231117115001.JPG,2023-11-17T11:50:01,SM,103,32,9,0,0,0,0,122,0

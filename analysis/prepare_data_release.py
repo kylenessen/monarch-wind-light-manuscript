@@ -69,28 +69,41 @@ CLASSIFICATION_NOTE = (
     "See classifications/README.md for the JSON structure and software links."
 )
 
+PUBLIC_COLUMN_NAMES = {
+    "timestamp_recorded": "timestamp",
+    "camera_name": "camera_id",
+    "wind_sensor_name": "wind_sensor_id",
+    "camera_height_m": "camera_height",
+    "horizontal_distance_to_cluster_m": "horizontal_distance_to_cluster",
+    "view_direction_degrees": "view_direction",
+    "temperature_c": "temperature",
+    "wind_speed_m_s": "wind_speed",
+    "wind_gust_m_s": "wind_gust",
+    "wind_direction_degrees": "wind_direction",
+}
+
 DESCRIPTIONS = {
     "deployment_id": ("Camera deployment identifier, unique across both seasons.", "identifier"),
-    "camera_name": ("Field name assigned to the camera. Join deployments using deployment_id.", "identifier"),
-    "wind_sensor_name": ("Field name assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments.", "identifier"),
+    "camera_id": ("Field identifier assigned to the camera. Join deployments using deployment_id.", "identifier"),
+    "wind_sensor_id": ("Field identifier assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments.", "identifier"),
     "start_time": ("Deployment start in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the first retained photo for the second season.", "recorded clock"),
     "end_time": ("Deployment end in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the last retained photo for the second season.", "recorded clock"),
     "latitude": ("Approximate camera latitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.", "decimal degrees"),
     "longitude": ("Approximate camera longitude in WGS84, EPSG 4326. Western longitudes are negative. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.", "decimal degrees"),
-    "camera_height_m": ("Recorded camera height above ground.", "meters"),
-    "horizontal_distance_to_cluster_m": ("Recorded horizontal viewing distance from camera to butterfly cluster.", "meters"),
-    "view_direction_degrees": ("Recorded camera viewing direction clockwise from north.", "degrees"),
+    "camera_height": ("Recorded camera height above ground.", "meters"),
+    "horizontal_distance_to_cluster": ("Recorded horizontal viewing distance from camera to butterfly cluster.", "meters"),
+    "view_direction": ("Recorded camera viewing direction clockwise from north.", "degrees"),
     "data_quality_note": ("Deployment-specific recording, coverage or timing information.", "text"),
     "image_filename": ("Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.", "identifier"),
-    "timestamp_recorded": ("Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.", "recorded clock"),
+    "timestamp": ("Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.", "recorded clock"),
     "relative_path": ("Photo path relative to the package root, grouped by deployment_id.", "path"),
     "record_user_id": ("User identifier saved in the classification JSON.", "identifier"),
     "butterfly_index": ("Butterfly Index, BI, of visible cluster size. Sum of grid-cell category lower bounds, using 0, 1, 10 and 100 for categories 0, 1-9, 10-99 and 100-999. This is not an individual butterfly count.", "BI units"),
     "sun_exposed_butterfly_index": ("BI subtotal for occupied grid cells marked directSun or the legacy sunlight field.", "BI units"),
-    "temperature_c": ("Camera-overlay temperature extracted using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer.", "degrees Celsius"),
-    "wind_speed_m_s": ("Wind speed reported in the logger speed field for the recording interval.", "meters per second"),
-    "wind_gust_m_s": ("Maximum wind gust reported in the logger gust field for the recording interval, normally one minute.", "meters per second"),
-    "wind_direction_degrees": ("Logger wind-direction value from 0 to 360 degrees, reported clockwise from north.", "degrees"),
+    "temperature": ("Camera-overlay temperature extracted using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer.", "degrees Celsius"),
+    "wind_speed": ("Wind speed reported in the logger speed field for the recording interval.", "meters per second"),
+    "wind_gust": ("Maximum wind gust reported in the logger gust field for the recording interval, normally one minute.", "meters per second"),
+    "wind_direction": ("Logger wind-direction value from 0 to 360 degrees, reported clockwise from north.", "degrees"),
 
 }
 for category in ("0", "1_9", "10_99", "100_999"):
@@ -545,6 +558,7 @@ def main():
         public_deployments[column] = pd.to_datetime(
             public_deployments[column], format="mixed").dt.strftime("%Y-%m-%d %H:%M:%S")
     tables["deployments"] = public_deployments
+    tables = {name: frame.rename(columns=PUBLIC_COLUMN_NAMES) for name, frame in tables.items()}
     fields = dictionary(tables)
     xml = metadata_xml(tables, fields)
     readme = release_readme(tables)
