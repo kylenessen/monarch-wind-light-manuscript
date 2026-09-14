@@ -1,0 +1,180 @@
+{
+  "comparison": "Historical results versus release-schema results. Only documented variable renames are normalized.",
+  "numeric_tolerance": {
+    "relative": 1e-10,
+    "absolute": 1e-10
+  },
+  "files": [
+    {
+      "file": "descriptive_statistics/descriptive_statistics.csv",
+      "rows": 78,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "descriptive_statistics/hour_counts_paired_time_t.csv",
+      "rows": 11,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "descriptive_statistics/hour_counts_unique_observations.csv",
+      "rows": 12,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "descriptive_statistics/per_deployment_butterfly_index.csv",
+      "rows": 10,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "descriptive_figures/bi_distribution_summary.csv",
+      "rows": 1,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "descriptive_figures/hourly_delta_bi_summary.csv",
+      "rows": 11,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "wind_at_clusters/wind_at_clusters_summary.csv",
+      "rows": 1,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/all_comparisons.csv",
+      "rows": 121,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/next_day_no_previous_comparison.csv",
+      "rows": 35,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/next_day_no_previous_ranking.csv",
+      "rows": 35,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/next_day_no_previous_selected_summary.csv",
+      "rows": 3,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/next_day_primary_comparison.csv",
+      "rows": 35,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/next_day_primary_ranking.csv",
+      "rows": 35,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/next_day_primary_selected_summary.csv",
+      "rows": 4,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/selected_model_fit_statistics.csv",
+      "rows": 5,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/selected_models.csv",
+      "rows": 5,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/thirty_minute_conditional_wind_effects.csv",
+      "rows": 9,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/thirty_minute_figure_predictions.csv",
+      "rows": 2160,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/thirty_minute_no_previous_comparison.csv",
+      "rows": 17,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/thirty_minute_no_previous_ranking.csv",
+      "rows": 17,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/thirty_minute_no_previous_selected_summary.csv",
+      "rows": 9,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/thirty_minute_no_time_comparison.csv",
+      "rows": 17,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/thirty_minute_no_time_ranking.csv",
+      "rows": 17,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/thirty_minute_no_time_selected_summary.csv",
+      "rows": 9,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/thirty_minute_primary_comparison.csv",
+      "rows": 17,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/thirty_minute_primary_ranking.csv",
+      "rows": 17,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "harmonized_model_comparison/thirty_minute_primary_selected_summary.csv",
+      "rows": 10,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "next_day_window/descriptive_statistics.csv",
+      "rows": 11,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "next_day_window/nextday_model_fit_statistics.csv",
+      "rows": 1,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "next_day_window/nextday_model_summary.csv",
+      "rows": 4,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "bi_category_sensitivity/next_day_sensitivity.csv",
+      "rows": 4,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "bi_category_sensitivity/observer_fixed_effect_sensitivity.csv",
+      "rows": 1,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "bi_category_sensitivity/thirty_minute_conditional_effects.csv",
+      "rows": 36,
+      "maximum_absolute_numeric_difference": 0.0
+    },
+    {
+      "file": "bi_category_sensitivity/thirty_minute_sensitivity.csv",
+      "rows": 4,
+      "maximum_absolute_numeric_difference": 0.0
+    }
+  ],
+  "failures": []
+}

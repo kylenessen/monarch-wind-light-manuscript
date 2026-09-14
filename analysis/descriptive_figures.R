@@ -33,23 +33,24 @@ make_theme <- function() {
     theme(legend.position = "none")
 }
 
-lag_data <- read_csv(here("data", "monarch_analysis_lag30min.csv"), show_col_types = FALSE) %>%
-  filter(!is.na(butterfly_difference))
+lag_data <- read_csv(here("data", "release", "analysis_30_minute.csv"), show_col_types = FALSE) %>%
+  filter(!is.na(delta_bi))
 
+# UTC below is a neutral parser for clock arithmetic. It does not establish a UTC offset.
 obs_t <- lag_data %>%
   transmute(
     deployment_id,
-    image_filename = image_filename_t,
-    timestamp = as.POSIXct(timestamp_t, tz = "UTC"),
-    butterfly_index = total_butterflies_t
+    image_filename = current_image_filename,
+    timestamp = as.POSIXct(current_timestamp_recorded, tz = "UTC"),
+    butterfly_index = current_bi
   )
 
 obs_lag <- lag_data %>%
   transmute(
     deployment_id,
-    image_filename = image_filename_t_lag,
-    timestamp = as.POSIXct(timestamp_t_lag, tz = "UTC"),
-    butterfly_index = total_butterflies_t_lag
+    image_filename = previous_image_filename,
+    timestamp = as.POSIXct(previous_timestamp_recorded, tz = "UTC"),
+    butterfly_index = previous_bi
   )
 
 unique_observations <- bind_rows(obs_t, obs_lag) %>%
@@ -86,14 +87,14 @@ p_bi <- ggplot(unique_observations, aes(x = butterfly_index)) +
 
 hourly_day_means <- lag_data %>%
   mutate(
-    timestamp_t = as.POSIXct(timestamp_t, tz = "UTC"),
-    hour = format(timestamp_t, "%H:00"),
-    hour_num = as.integer(format(timestamp_t, "%H"))
+    current_timestamp_recorded = as.POSIXct(current_timestamp_recorded, tz = "UTC"),
+    hour = format(current_timestamp_recorded, "%H:00"),
+    hour_num = as.integer(format(current_timestamp_recorded, "%H"))
   ) %>%
-  filter(!is.na(hour), !is.na(deployment_day)) %>%
-  group_by(deployment_day, hour, hour_num) %>%
+  filter(!is.na(hour), !is.na(deployment_day_id)) %>%
+  group_by(deployment_day_id, hour, hour_num) %>%
   summarise(
-    deployment_day_hour_mean = mean(butterfly_difference, na.rm = TRUE),
+    deployment_day_hour_mean = mean(delta_bi, na.rm = TRUE),
     paired_rows = n(),
     .groups = "drop"
   )

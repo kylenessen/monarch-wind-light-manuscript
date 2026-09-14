@@ -40,26 +40,23 @@ summarise_numeric <- function(data, column, section, label) {
   )
 }
 
-lag_data <- read_csv(here("data", "monarch_analysis_lag30min.csv"), show_col_types = FALSE)
+lag_data <- read_csv(here("data", "release", "analysis_30_minute.csv"), show_col_types = FALSE)
 
+# UTC below is a neutral parser for clock arithmetic. It does not establish a UTC offset.
 obs_t <- lag_data %>%
   transmute(
     deployment_id,
-    image_filename = image_filename_t,
-    timestamp = as.POSIXct(timestamp_t, tz = "UTC"),
-    total_butterflies = total_butterflies_t,
-    butterflies_direct_sun = butterflies_direct_sun_t,
-    temperature = temperature_t
+    image_filename = current_image_filename,
+    timestamp = as.POSIXct(current_timestamp_recorded, tz = "UTC"),
+    total_butterflies = current_bi
   )
 
 obs_lag <- lag_data %>%
   transmute(
     deployment_id,
-    image_filename = image_filename_t_lag,
-    timestamp = as.POSIXct(timestamp_t_lag, tz = "UTC"),
-    total_butterflies = total_butterflies_t_lag,
-    butterflies_direct_sun = butterflies_direct_sun_t_lag,
-    temperature = temperature_t_lag
+    image_filename = previous_image_filename,
+    timestamp = as.POSIXct(previous_timestamp_recorded, tz = "UTC"),
+    total_butterflies = previous_bi
   )
 
 unique_obs <- bind_rows(obs_t, obs_lag) %>%
@@ -78,7 +75,7 @@ hour_counts_unique <- unique_obs %>%
   arrange(desc(unique_observations), hour)
 
 hour_counts_paired_t <- lag_data %>%
-  mutate(hour = format(as.POSIXct(timestamp_t, tz = "UTC"), "%H:00")) %>%
+  mutate(hour = format(as.POSIXct(current_timestamp_recorded, tz = "UTC"), "%H:00")) %>%
   count(hour, name = "paired_time_t_rows") %>%
   arrange(desc(paired_time_t_rows), hour)
 
@@ -91,8 +88,7 @@ per_deployment_bi <- unique_obs %>%
   ) %>%
   arrange(deployment_id)
 
-next_day <- read_csv(here("data", "monarch_daily_lag_analysis_nextday_window.csv"), show_col_types = FALSE) %>%
-  filter(metrics_complete >= 0.95)
+next_day <- read_csv(here("data", "release", "analysis_next_day.csv"), show_col_types = FALSE)
 
 metrics <- bind_rows(
   metric("30-minute pairs", "paired rows", nrow(lag_data)),
@@ -106,25 +102,25 @@ metrics <- bind_rows(
   metric("30-minute pairs", "peak paired time t hour", hour_counts_paired_t$hour[1], "paired time t rows", paste(hour_counts_paired_t$paired_time_t_rows[1], "rows")),
   metric("30-minute pairs", "16:00 unique observations", hour_counts_unique$unique_observations[hour_counts_unique$hour == "16:00"], "unique observations"),
   metric("30-minute pairs", "16:00 paired time t rows", hour_counts_paired_t$paired_time_t_rows[hour_counts_paired_t$hour == "16:00"], "paired time t rows"),
-  summarise_numeric(lag_data, "max_gust", "30-minute weather", "maximum gust"),
-  summarise_numeric(lag_data, "temperature_avg", "30-minute weather", "average temperature"),
-  summarise_numeric(lag_data, "minutes_above_threshold", "30-minute threshold", "minutes above 2 m/s"),
+  summarise_numeric(lag_data, "maximum_wind_gust_m_s", "30-minute weather", "maximum gust"),
+  summarise_numeric(lag_data, "mean_temperature_c", "30-minute weather", "average temperature"),
+  summarise_numeric(lag_data, "minutes_gust_at_or_above_2_m_s", "30-minute threshold", "minutes above 2 m/s"),
   summarise_numeric(unique_obs, "total_butterflies", "30-minute butterfly index", "Butterfly Index"),
   metric(
     "30-minute direct sun",
     "observations with butterflies in direct sun",
-    sum(lag_data$butterflies_direct_sun_t_lag > 0, na.rm = TRUE),
+    sum(lag_data$previous_sun_exposed_bi > 0, na.rm = TRUE),
     "paired rows",
-    paste0(round(mean(lag_data$butterflies_direct_sun_t_lag > 0, na.rm = TRUE) * 100, 1), "%")
+    paste0(round(mean(lag_data$previous_sun_exposed_bi > 0, na.rm = TRUE) * 100, 1), "%")
   ),
-  metric("30-minute direct sun", "mean butterflies in direct sun when present", mean(lag_data$butterflies_direct_sun_t_lag[lag_data$butterflies_direct_sun_t_lag > 0], na.rm = TRUE)),
-  metric("30-minute direct sun", "maximum butterflies in direct sun when present", max(lag_data$butterflies_direct_sun_t_lag, na.rm = TRUE)),
-  metric("Next Day Window", "filtered rows", nrow(next_day), "metrics_complete >= 0.95"),
-  summarise_numeric(next_day, "max_butterflies_t_1", "Next Day Window", "previous day maximum Butterfly Index"),
-  summarise_numeric(next_day, "butterfly_diff", "Next Day Window", "change in maximum Butterfly Index"),
-  summarise_numeric(next_day, "wind_max_gust", "Next Day Window", "maximum wind gust"),
-  summarise_numeric(next_day, "sum_butterflies_direct_sun", "Next Day Window", "cumulative butterflies in direct sun"),
-  summarise_numeric(next_day, "lag_duration_hours", "Next Day Window", "window duration hours")
+  metric("30-minute direct sun", "mean butterflies in direct sun when present", mean(lag_data$previous_sun_exposed_bi[lag_data$previous_sun_exposed_bi > 0], na.rm = TRUE)),
+  metric("30-minute direct sun", "maximum butterflies in direct sun when present", max(lag_data$previous_sun_exposed_bi, na.rm = TRUE)),
+  metric("Next Day Window", "filtered rows", nrow(next_day), "release table selected at overall coverage >= 0.95"),
+  summarise_numeric(next_day, "previous_day_maximum_bi", "Next Day Window", "previous day maximum Butterfly Index"),
+  summarise_numeric(next_day, "delta_bi", "Next Day Window", "change in maximum Butterfly Index"),
+  summarise_numeric(next_day, "maximum_wind_gust_m_s", "Next Day Window", "maximum wind gust"),
+  summarise_numeric(next_day, "cumulative_sun_exposed_bi", "Next Day Window", "cumulative butterflies in direct sun"),
+  summarise_numeric(next_day, "window_duration_hours", "Next Day Window", "window duration hours")
 )
 
 write_csv(metrics, file.path(out_dir, "descriptive_statistics.csv"))

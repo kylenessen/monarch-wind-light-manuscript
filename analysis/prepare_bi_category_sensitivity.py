@@ -15,6 +15,8 @@ ANALYSIS_DIR = Path(__file__).resolve().parent
 REPO_DIR = ANALYSIS_DIR.parent
 sys.path.insert(0, str(ANALYSIS_DIR))
 
+from release_schema import analysis_30_minute, analysis_next_day
+
 import prepare_dynamic_windows as dynamic  # noqa: E402
 import prepare_lag_30min as lag30  # noqa: E402
 
@@ -154,8 +156,8 @@ def main() -> None:
         data_next = prepare_next_day(mapping)
         if name == "lower_bound":
             validate_lower_bound(data_30, data_next)
-        data_30.to_csv(args.output_dir / f"30_minute_{name}.csv", index=False)
-        data_next.to_csv(args.output_dir / f"next_day_{name}.csv", index=False)
+        analysis_30_minute(data_30).to_csv(args.output_dir / f"30_minute_{name}.csv", index=False)
+        analysis_next_day(data_next).to_csv(args.output_dir / f"next_day_{name}.csv", index=False)
 
 
 if __name__ == "__main__":

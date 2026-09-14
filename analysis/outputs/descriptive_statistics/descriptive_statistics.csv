@@ -41,7 +41,7 @@ section,metric,value,denominator,note
 30-minute direct sun,observations with butterflies in direct sun,601,paired rows,31.7%
 30-minute direct sun,mean butterflies in direct sun when present,16.983,NA,NA
 30-minute direct sun,maximum butterflies in direct sun when present,295,NA,NA
-Next Day Window,filtered rows,96,metrics_complete >= 0.95,NA
+Next Day Window,filtered rows,96,release table selected at overall coverage >= 0.95,NA
 Next Day Window,previous day maximum Butterfly Index minimum,0,NA,NA
 Next Day Window,previous day maximum Butterfly Index maximum,770,NA,NA
 Next Day Window,previous day maximum Butterfly Index mean,139.969,NA,NA
