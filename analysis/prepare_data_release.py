@@ -53,8 +53,8 @@ FILENAME_NOTE = (
     "Deployment identifiers may contain underscores. photo_index.csv lists every image path."
 )
 WIND_NOTE = (
-    "Wind speed and gust are in meters per second. Direction retains the logger values "
-    "from 0 to 360 degrees, reported clockwise from north."
+    "Wind speed is the average and gust is the maximum speed over each one-minute "
+    "recording interval, in meters per second. Wind direction is the recorded average in degrees clockwise from north."
 )
 LOCATION_NOTE = (
     "Coordinates are approximate camera locations in WGS84, EPSG 4326, expressed in decimal degrees. "
@@ -83,27 +83,27 @@ PUBLIC_COLUMN_NAMES = {
 }
 
 DESCRIPTIONS = {
-    "deployment_id": ("Camera deployment identifier, unique across both seasons.", "identifier"),
-    "camera_id": ("Field identifier assigned to the camera. Join deployments using deployment_id.", "identifier"),
-    "wind_sensor_id": ("Field identifier assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments.", "identifier"),
-    "start_time": ("Deployment start in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the first retained photo for the second season.", "recorded clock"),
-    "end_time": ("Deployment end in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the last retained photo for the second season.", "recorded clock"),
+    "deployment_id": ("Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations.", "identifier"),
+    "camera_id": ("Unique identifier for an individual camera.", "identifier"),
+    "wind_sensor_id": ("Unique identifier for an individual wind sensor.", "identifier"),
+    "start_time": ("Deployment start in local device time, formatted as YYYY-MM-DD HH:MM:SS.", "recorded clock"),
+    "end_time": ("Deployment end in local device time, formatted as YYYY-MM-DD HH:MM:SS.", "recorded clock"),
     "latitude": ("Approximate camera latitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.", "decimal degrees"),
-    "longitude": ("Approximate camera longitude in WGS84, EPSG 4326. Western longitudes are negative. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.", "decimal degrees"),
+    "longitude": ("Approximate camera longitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.", "decimal degrees"),
     "camera_height": ("Recorded camera height above ground.", "meters"),
-    "horizontal_distance_to_cluster": ("Recorded horizontal viewing distance from camera to butterfly cluster.", "meters"),
+    "horizontal_distance_to_cluster": ("Recorded horizontal viewing distance from camera to observed or expected butterfly clusters.", "meters"),
     "view_direction": ("Recorded camera viewing direction clockwise from north.", "degrees"),
     "data_quality_note": ("Deployment-specific recording, coverage or timing information.", "text"),
-    "image_filename": ("Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.", "identifier"),
-    "timestamp": ("Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.", "recorded clock"),
+    "image_filename": ("Photograph filename in the form deployment_id_YYYYMMDDHHMMSS.JPG.", "identifier"),
+    "timestamp": ("Observation date and time in ISO 8601 format without a UTC offset.", "recorded clock"),
     "relative_path": ("Photo path relative to the package root, grouped by deployment_id.", "path"),
     "record_user_id": ("User identifier saved in the classification JSON.", "identifier"),
-    "butterfly_index": ("Butterfly Index, BI, of visible cluster size. Sum of grid-cell category lower bounds, using 0, 1, 10 and 100 for categories 0, 1-9, 10-99 and 100-999. This is not an individual butterfly count.", "BI units"),
-    "sun_exposed_butterfly_index": ("BI subtotal for occupied grid cells marked directSun or the legacy sunlight field.", "BI units"),
-    "temperature": ("Camera-overlay temperature extracted using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer.", "degrees Celsius"),
-    "wind_speed": ("Wind speed reported in the logger speed field for the recording interval.", "meters per second"),
-    "wind_gust": ("Maximum wind gust reported in the logger gust field for the recording interval, normally one minute.", "meters per second"),
-    "wind_direction": ("Logger wind-direction value from 0 to 360 degrees, reported clockwise from north.", "degrees"),
+    "butterfly_index": ("Butterfly Index, BI, of visible cluster size. Sum of grid-cell category lower bounds, using 0, 1, 10 and 100 for categories 0, 1-9, 10-99 and 100-999.", "BI units"),
+    "sun_exposed_butterfly_index": ("BI subtotal for occupied grid cells where monarchs were observed in direct sun.", "BI units"),
+    "temperature": ("Camera-overlay temperature extracted using OCR and manually reviewed.", "degrees Celsius"),
+    "wind_speed": ("Average wind speed over the one-minute recording interval.", "meters per second"),
+    "wind_gust": ("Maximum wind speed during the one-minute recording interval.", "meters per second"),
+    "wind_direction": ("Average wind direction over the one-minute recording interval, in degrees clockwise from north, as recorded by the logger.", "degrees"),
 
 }
 for category in ("0", "1_9", "10_99", "100_999"):
@@ -370,7 +370,7 @@ def metadata_xml(tables, field_dictionary):
     add(root, "idinfo/ptcontac/cntinfo/cntperp/cntorg", "Biological Sciences Department, California Polytechnic State University")
     add(root, "idinfo/ptcontac/cntinfo/cntemail", email)
     add(root, "dataqual/attracc/attraccr", WIND_NOTE + " Camera-overlay temperatures were extracted with OCR and manually reviewed. Camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size calculated from ordinal grid-cell classifications.")
-    add(root, "dataqual/logic", "deployment_id uniquely identifies each deployment. Photos link by deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals. Shared sensor observations for SC9 and SC10 remain associated with both camera deployments and are not independent measurements.")
+    add(root, "dataqual/logic", "deployment_id uniquely identifies each deployment. Photos link by deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals.")
     add(root, "dataqual/complete", "Classifications and reviewed temperatures cover the first season. Photographs and available wind measurements cover both seasons. Deployment-specific recording information is in deployments.csv. The classification summary excludes night records and unclassified placeholders. Native JSON files retain the full annotations. Unclassified photographs do not establish butterfly absence. Missing CSV values are empty fields.")
     add(root, "dataqual/posacc/horizpa/horizpar", LOCATION_NOTE + " First-season coordinates were already in WGS84. Second-season points were transformed from EPSG 3498 to EPSG 4326.")
     lineage = ET.SubElement(root.find("dataqual"), "lineage")

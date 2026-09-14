@@ -1,24 +1,24 @@
 table,column,description,units,missing_value,observed_minimum,observed_maximum
-deployments.csv,deployment_id,"Camera deployment identifier, unique across both seasons.",identifier,empty field,,
-deployments.csv,camera_id,Field identifier assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
-deployments.csv,wind_sensor_id,Field identifier assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments.,identifier,empty field,,
-deployments.csv,start_time,"Deployment start in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the first retained photo for the second season.",recorded clock,empty field,2023-11-17 11:40:00,2024-11-17 13:30:01
-deployments.csv,end_time,"Deployment end in YYYY-MM-DD HH:MM:SS format, without a UTC offset. From field deployment records for the first season and the last retained photo for the second season.",recorded clock,empty field,2023-11-19 13:10:00,2025-04-11 14:10:01
+deployments.csv,deployment_id,"Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations.",identifier,empty field,,
+deployments.csv,camera_id,Unique identifier for an individual camera.,identifier,empty field,,
+deployments.csv,wind_sensor_id,Unique identifier for an individual wind sensor.,identifier,empty field,,
+deployments.csv,start_time,"Deployment start in local device time, formatted as YYYY-MM-DD HH:MM:SS.",recorded clock,empty field,2023-11-17 11:40:00,2024-11-17 13:30:01
+deployments.csv,end_time,"Deployment end in local device time, formatted as YYYY-MM-DD HH:MM:SS.",recorded clock,empty field,2023-11-19 13:10:00,2025-04-11 14:10:01
 deployments.csv,latitude,"Approximate camera latitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.",decimal degrees,empty field,34.58434444,34.88680926
-deployments.csv,longitude,"Approximate camera longitude in WGS84, EPSG 4326. Western longitudes are negative. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.",decimal degrees,empty field,-120.63312527,-120.56154322
+deployments.csv,longitude,"Approximate camera longitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery.",decimal degrees,empty field,-120.63312527,-120.56154322
 deployments.csv,camera_height,Recorded camera height above ground.,meters,empty field,1.0,9.6
-deployments.csv,horizontal_distance_to_cluster,Recorded horizontal viewing distance from camera to butterfly cluster.,meters,empty field,4.1,33.8
+deployments.csv,horizontal_distance_to_cluster,Recorded horizontal viewing distance from camera to observed or expected butterfly clusters.,meters,empty field,4.1,33.8
 deployments.csv,view_direction,Recorded camera viewing direction clockwise from north.,degrees,empty field,10,360
 deployments.csv,data_quality_note,"Deployment-specific recording, coverage or timing information.",text,empty field,,
-photo_index.csv,deployment_id,"Camera deployment identifier, unique across both seasons.",identifier,empty field,,
-photo_index.csv,camera_id,Field identifier assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
-photo_index.csv,image_filename,Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
-photo_index.csv,timestamp,Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.,recorded clock,empty field,2023-11-17T11:40:01,2025-04-11T14:10:01
+photo_index.csv,deployment_id,"Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations.",identifier,empty field,,
+photo_index.csv,camera_id,Unique identifier for an individual camera.,identifier,empty field,,
+photo_index.csv,image_filename,Photograph filename in the form deployment_id_YYYYMMDDHHMMSS.JPG.,identifier,empty field,,
+photo_index.csv,timestamp,Observation date and time in ISO 8601 format without a UTC offset.,recorded clock,empty field,2023-11-17T11:40:01,2025-04-11T14:10:01
 photo_index.csv,relative_path,"Photo path relative to the package root, grouped by deployment_id.",path,empty field,,
-classifications.csv,deployment_id,"Camera deployment identifier, unique across both seasons.",identifier,empty field,,
-classifications.csv,camera_id,Field identifier assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
-classifications.csv,image_filename,Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
-classifications.csv,timestamp,Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-04T10:50:01
+classifications.csv,deployment_id,"Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations.",identifier,empty field,,
+classifications.csv,camera_id,Unique identifier for an individual camera.,identifier,empty field,,
+classifications.csv,image_filename,Photograph filename in the form deployment_id_YYYYMMDDHHMMSS.JPG.,identifier,empty field,,
+classifications.csv,timestamp,Observation date and time in ISO 8601 format without a UTC offset.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-04T10:50:01
 classifications.csv,record_user_id,User identifier saved in the classification JSON.,identifier,empty field,,
 classifications.csv,cells_0,Number of image grid cells assigned to butterfly category 0. Retained primitives support alternative category mappings.,grid cells,empty field,0,720
 classifications.csv,cells_1_9,Number of image grid cells assigned to butterfly category 1-9. Retained primitives support alternative category mappings.,grid cells,empty field,0,62
@@ -27,16 +27,16 @@ classifications.csv,cells_100_999,Number of image grid cells assigned to butterf
 classifications.csv,sun_exposed_cells_1_9,Number of occupied grid cells in category 1-9 marked as receiving direct sunlight.,grid cells,empty field,0,46
 classifications.csv,sun_exposed_cells_10_99,Number of occupied grid cells in category 10-99 marked as receiving direct sunlight.,grid cells,empty field,0,18
 classifications.csv,sun_exposed_cells_100_999,Number of occupied grid cells in category 100-999 marked as receiving direct sunlight.,grid cells,empty field,0,2
-classifications.csv,butterfly_index,"Butterfly Index, BI, of visible cluster size. Sum of grid-cell category lower bounds, using 0, 1, 10 and 100 for categories 0, 1-9, 10-99 and 100-999. This is not an individual butterfly count.",BI units,empty field,0,950
-classifications.csv,sun_exposed_butterfly_index,BI subtotal for occupied grid cells marked directSun or the legacy sunlight field.,BI units,empty field,0,295
-temperature_measurements.csv,deployment_id,"Camera deployment identifier, unique across both seasons.",identifier,empty field,,
-temperature_measurements.csv,camera_id,Field identifier assigned to the camera. Join deployments using deployment_id.,identifier,empty field,,
-temperature_measurements.csv,image_filename,Canonical photo filename. Join with deployment_id to photo_index. See filename convention in README and metadata XML.,identifier,empty field,,
-temperature_measurements.csv,timestamp,Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-05T14:05:01
-temperature_measurements.csv,temperature,Camera-overlay temperature extracted using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer.,degrees Celsius,empty field,0.0,37.0
-wind_measurements.csv,deployment_id,"Camera deployment identifier, unique across both seasons.",identifier,empty field,,
-wind_measurements.csv,wind_sensor_id,Field identifier assigned to the wind meter. SC9 and SC10 share StarDust readings during their overlapping deployment intervals. These are the same measurements associated with two camera deployments.,identifier,empty field,,
-wind_measurements.csv,timestamp,Observation date and time in ISO 8601 format without a UTC offset. TGR1 photo times are reconstructed from deployment start and end times.,recorded clock,empty field,2023-11-17T11:40:00,2025-01-31T04:04:00
-wind_measurements.csv,wind_speed,Wind speed reported in the logger speed field for the recording interval.,meters per second,empty field,0.0,9.7
-wind_measurements.csv,wind_gust,"Maximum wind gust reported in the logger gust field for the recording interval, normally one minute.",meters per second,empty field,0.0,119.0
-wind_measurements.csv,wind_direction,"Logger wind-direction value from 0 to 360 degrees, reported clockwise from north.",degrees,empty field,0.0,360.0
+classifications.csv,butterfly_index,"Butterfly Index, BI, of visible cluster size. Sum of grid-cell category lower bounds, using 0, 1, 10 and 100 for categories 0, 1-9, 10-99 and 100-999.",BI units,empty field,0,950
+classifications.csv,sun_exposed_butterfly_index,BI subtotal for occupied grid cells where monarchs were observed in direct sun.,BI units,empty field,0,295
+temperature_measurements.csv,deployment_id,"Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations.",identifier,empty field,,
+temperature_measurements.csv,camera_id,Unique identifier for an individual camera.,identifier,empty field,,
+temperature_measurements.csv,image_filename,Photograph filename in the form deployment_id_YYYYMMDDHHMMSS.JPG.,identifier,empty field,,
+temperature_measurements.csv,timestamp,Observation date and time in ISO 8601 format without a UTC offset.,recorded clock,empty field,2023-11-17T11:40:01,2024-02-05T14:05:01
+temperature_measurements.csv,temperature,Camera-overlay temperature extracted using OCR and manually reviewed.,degrees Celsius,empty field,0.0,37.0
+wind_measurements.csv,deployment_id,"Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations.",identifier,empty field,,
+wind_measurements.csv,wind_sensor_id,Unique identifier for an individual wind sensor.,identifier,empty field,,
+wind_measurements.csv,timestamp,Observation date and time in ISO 8601 format without a UTC offset.,recorded clock,empty field,2023-11-17T11:40:00,2025-01-31T04:04:00
+wind_measurements.csv,wind_speed,Average wind speed over the one-minute recording interval.,meters per second,empty field,0.0,9.7
+wind_measurements.csv,wind_gust,Maximum wind speed during the one-minute recording interval.,meters per second,empty field,0.0,119.0
+wind_measurements.csv,wind_direction,"Average wind direction over the one-minute recording interval, in degrees clockwise from north, as recorded by the logger.",degrees,empty field,0.0,360.0

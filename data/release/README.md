@@ -28,7 +28,7 @@ TGR1 photo metadata and filenames use reconstructed capture times, aligned to th
 
 Coordinates are approximate camera locations in WGS84, EPSG 4326, expressed in decimal degrees. Locations were recorded with a cellphone under canopy. Some points were adjusted against satellite imagery. Deployment-specific recording information is in deployments.csv.
 
-Wind speed and gust are in meters per second. Direction retains the logger values from 0 to 360 degrees, reported clockwise from north. Wind measurements are provided as recorded within deployment intervals.
+Wind speed is the average and gust is the maximum speed over each one-minute recording interval, in meters per second. Wind direction is the recorded average in degrees clockwise from north. Wind measurements are provided as recorded within deployment intervals.
 
 Temperature values were extracted from camera overlays using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size based on ordinal image-cell categories. Unclassified photographs do not establish butterfly absence.
 
