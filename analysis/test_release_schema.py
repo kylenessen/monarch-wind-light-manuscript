@@ -21,13 +21,6 @@ class ReleaseSchemaTests(unittest.TestCase):
         self.assertTrue(has_classification({**untouched, "user": "observer"}))
         self.assertTrue(has_classification({"cells": {"a": {"count": "1-9"}}}))
 
-    def test_author_can_accept_a_zero_without_changing_source_flags(self):
-        record = {"confirmed": False, "cells": {"a": {"count": 0}}}
-        self.assertTrue(has_classification(record, author_accepted=True))
-        self.assertFalse(has_classification(record))
-        self.assertFalse(record["confirmed"])
-        self.assertNotIn("user", record)
-
     def test_thirty_minute_preserves_every_selected_value_and_order(self):
         source = pd.read_csv(ROOT / "data/monarch_analysis_lag30min.csv")
         released = analysis_30_minute(source)

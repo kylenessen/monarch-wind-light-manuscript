@@ -1,8 +1,0 @@
-{
-  "SC1_20231120133001.JPG": {
-    "primary_observer": "Skyler",
-    "expected_butterfly_index": 0,
-    "expected_sun_exposed_butterfly_index": 0,
-    "decision": "Retain the zero classification at the investigator's explicit request on September 13, 2026. Assign SC1's majority classifier. All 752 source SC1 records with a saved user have user SM, and the deployment metadata identifies the primary observer as Skyler. Preserve the original source JSON, saved user field and software confirmation flag."
-  }
-}

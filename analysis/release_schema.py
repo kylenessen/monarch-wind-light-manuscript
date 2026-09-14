@@ -57,8 +57,8 @@ def analysis_next_day(source):
         ["deployment_id", "observation_order"]).reset_index(drop=True)
 
 
-def has_classification(record, *, author_accepted=False):
+def has_classification(record):
     """Retain confirmed zeros and saved annotations, omit untouched zero placeholders."""
-    return bool(author_accepted or record.get("confirmed") or record.get("user") or any(
+    return bool(record.get("confirmed") or record.get("user") or any(
         str(cell.get("count", "0")) != "0" or cell.get("directSun", cell.get("sunlight", False))
         for cell in record.get("cells", {}).values()))
