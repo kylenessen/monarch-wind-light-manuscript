@@ -9,13 +9,13 @@
         <origin>Francis X. Villablanca</origin>
         <pubdate>Unpublished material</pubdate>
         <title>Photographs, image classifications, wind measurements, and image-derived temperatures from monarch butterfly monitoring at Vandenberg Space Force Base, California, 2023 through 2025</title>
-        <geoform>tabular digital data and digital photographs</geoform>
+        <geoform>tabular digital data, JSON image annotations and digital photographs</geoform>
       </citeinfo>
     </citation>
     <descript>
-      <abstract>Draft release of available observations from two monarch overwintering monitoring seasons. Includes deployment locations and recorded intervals, photographs, first-season ordinal image classifications and reviewed camera-overlay temperatures, wind observations from both seasons where available, and two first-season manuscript analysis tables. Unclassified photographs do not establish butterfly absence. BI is an index of visible cluster size rather than a count of individual butterflies.</abstract>
-      <purpose>Preserve field observations for reuse and provide inputs for reproducing the associated wind and light analyses. Analysis scripts are maintained in the repository, not distributed as data-release files. Repository https://github.com/kylenessen/monarch-wind-light-manuscript. Pin the final release commit before publication.</purpose>
-      <supplinf>Camera and wind-meter clocks do not automatically apply daylight saving time. For the 2024-2025 season, timestamps remain on the recorded device clocks. No daylight saving or UTC conversion was applied to either series during release preparation. Apparent image lighting and civil clock time may therefore differ by one hour. Repeated clock times identify distinct photos and are retained. The investigator reports accounting for seasonal clock changes during first-season processing, but the exact historical procedure has not been recovered. Existing first-season timestamps are preserved. No UTC offset or independently verified camera-to-logger synchronization is asserted. Photographs are grouped in photos/deployment_id/. Image filenames use deployment_id_YYYYMMDDHHMMSS.JPG, corresponding to the format code %Y%m%d%H%M%S. The deployment identifier may itself contain an underscore. The timestamp has a four-digit year followed by two-digit month, day, 24-hour hour, minute and second. It carries no timezone. For the reviewed second season it comes from the photo EXIF capture time. Existing first-season canonical filenames are preserved. Distinct second-season photos sharing a timestamp use the unsuffixed name and an _02 suffix before .JPG. This suffix is a collision counter, not a fractional second, ordering guarantee, or clock correction. The photo index links every released filename to its deployment folder. One collection-level description applies to all images in each deployment folder. Individual photo metadata records are not required. Deployment identifiers are unique across the release. SC12 identifies the first-season NOVA camera and BlueLake wind meter. SC13 identifies the second-season IRIS camera and RockWall wind meter. The investigator corrected the second-season source label SC12 to SC13. This correction applies to deployment and wind table identifiers, photo filenames and photo paths. Original source labels are retained in the internal provenance mapping. Photograph contents, recorded times and measurement values are unchanged.</supplinf>
+      <abstract>Observations from monarch monitoring at Vandenberg Space Force Base during the 2023-2024 and 2024-2025 overwintering seasons. Includes deployment information, photographs, wind measurements, native classification JSON and a tabular summary, and reviewed camera-overlay temperatures. The archive includes monitoring beyond the subset analyzed in the associated manuscript.</abstract>
+      <purpose>Preserve monitoring observations for future research. Manuscript analysis inputs, scripts and results are maintained at https://github.com/kylenessen/monarch-wind-light-manuscript.</purpose>
+      <supplinf>Timestamps preserve recorded device times and have no UTC offset. The cameras and wind meters do not automatically adjust for daylight saving time. No clock conversion is applied when building this release. Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. An _02 suffix distinguishes a second photograph with the same timestamp. photo_index.csv lists every image path. Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes the saved classifications for use without the software. See classifications/README.md for the JSON structure and software links.</supplinf>
     </descript>
     <timeperd>
       <timeinfo>
@@ -24,7 +24,7 @@
           <enddate>20250411</enddate>
         </rngdates>
       </timeinfo>
-      <current>Recorded deployment-layer and reviewed photograph times. See clock caveat.</current>
+      <current>Recorded deployment and photograph times.</current>
     </timeperd>
     <status>
       <progress>In work</progress>
@@ -49,7 +49,7 @@
       </place>
     </keywords>
     <accconst>REVIEW_REQUIRED release access terms</accconst>
-    <useconst>Draft metadata and data package for review. No institutional approval or final DOI is asserted. Camera and wind-meter clocks do not automatically apply daylight saving time. For the 2024-2025 season, timestamps remain on the recorded device clocks. No daylight saving or UTC conversion was applied to either series during release preparation. Apparent image lighting and civil clock time may therefore differ by one hour. Repeated clock times identify distinct photos and are retained. The investigator reports accounting for seasonal clock changes during first-season processing, but the exact historical procedure has not been recovered. Existing first-season timestamps are preserved. No UTC offset or independently verified camera-to-logger synchronization is asserted.</useconst>
+    <useconst>REVIEW_REQUIRED release use terms</useconst>
     <ptcontac>
       <cntinfo>
         <cntperp>
@@ -62,10 +62,10 @@
   </idinfo>
   <dataqual>
     <attracc>
-      <attraccr>Wind speed and gust are in meters per second. Direction is reported in degrees clockwise from north, with 360 representing north. The instrument manual specifies a 16-point sensor with 22.5-degree resolution and averaged logging. The database contains integer directions throughout 0 to 360, so exported observations are not restricted to 45-degree increments. The investigator considers direction 0 invalid or suspect. That interpretation has not been confirmed in the manufacturer manual, so original zeros are retained and should not be treated as confirmed north. Blank is missing. Zero speed or gust is not automatically invalid. Manual https://rainwise.com/downloads/windsoft/WindLog140805%20.pdf, section 7.2. Matching source databases use Units code 2, consistent with the manuscript m/s convention. Camera-overlay temperatures were reviewed for OCR errors but are approximate camera measurements, not independently calibrated air temperatures. Classification primitives and source measurements are preserved.</attraccr>
+      <attraccr>Wind speed and gust are in meters per second. Direction retains the logger values from 0 to 360 degrees, reported clockwise from north. SC9 and SC10 share wind-meter observations during overlapping deployments. Those rows describe the same measurements. Camera-overlay temperatures were extracted with OCR and manually reviewed. Camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size calculated from ordinal grid-cell classifications.</attraccr>
     </attracc>
     <logic>deployment_id uniquely identifies each deployment. Photos link by deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals. Shared sensor observations for SC9 and SC10 remain associated with both camera deployments and are not independent measurements.</logic>
-    <complete>Available records are incomplete for some deployments. Classifications cover the first season only. The investigator confirmed that no second-season temperature data exist. Deployment data_quality_note records absent wind coverage, corrupted wind records and uncertain later zero-valued records. Blank values are missing. Untouched unclassified zero placeholders are excluded unless explicitly accepted by the investigator during review. Analysis tables preserve historical manuscript inputs. No missing observations are imputed. Investigator review retained SC1_20231120133001.JPG as a valid zero-BI classification and assigned Skyler as primary observer, following the majority of SC1 classifications. All 752 source SC1 records with a saved user identify SM, and the deployment metadata names Skyler. The original software confirmation flag remains false and the original record_user_id remains blank. The release assignment is in primary_observer. The original JSON and historical analysis values are unchanged.</complete>
+    <complete>Classifications and reviewed temperatures cover the first season. Photographs and available wind measurements cover both seasons. Deployment-specific recording information is in deployments.csv. Unclassified placeholders remain in the native JSON and are omitted from the classification summary. Unclassified photographs do not establish butterfly absence. Missing CSV values are empty fields.</complete>
     <posacc>
       <horizpa>
         <horizpar>First-season coordinates are WGS84 source deployment points. Second-season camera points were transformed from EPSG 3498, NAD83(NSRS2007) / California zone 5 in US survey feet, to EPSG 4326 using pyproj with longitude-first output. Positional accuracy was not independently measured. Decimal precision is not an accuracy estimate.</horizpar>
@@ -77,11 +77,11 @@
         <procdate>20260913</procdate>
       </procstep>
       <procstep>
-        <procdesc>Photographs are grouped in photos/deployment_id/. Image filenames use deployment_id_YYYYMMDDHHMMSS.JPG, corresponding to the format code %Y%m%d%H%M%S. The deployment identifier may itself contain an underscore. The timestamp has a four-digit year followed by two-digit month, day, 24-hour hour, minute and second. It carries no timezone. For the reviewed second season it comes from the photo EXIF capture time. Existing first-season canonical filenames are preserved. Distinct second-season photos sharing a timestamp use the unsuffixed name and an _02 suffix before .JPG. This suffix is a collision counter, not a fractional second, ordering guarantee, or clock correction. The photo index links every released filename to its deployment folder. One collection-level description applies to all images in each deployment folder. Individual photo metadata records are not required.</procdesc>
+        <procdesc>Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. An _02 suffix distinguishes a second photograph with the same timestamp. photo_index.csv lists every image path.</procdesc>
         <procdate>20260913</procdate>
       </procstep>
       <procstep>
-        <procdesc>Deployment identifiers are unique across the release. SC12 identifies the first-season NOVA camera and BlueLake wind meter. SC13 identifies the second-season IRIS camera and RockWall wind meter. The investigator corrected the second-season source label SC12 to SC13. This correction applies to deployment and wind table identifiers, photo filenames and photo paths. Original source labels are retained in the internal provenance mapping. Photograph contents, recorded times and measurement values are unchanged.</procdesc>
+        <procdesc>Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records.</procdesc>
         <procdate>20260913</procdate>
       </procstep>
       <procstep>
@@ -89,11 +89,11 @@
         <procdate>20260913</procdate>
       </procstep>
       <procstep>
-        <procdesc>Saved classification categories were summarized into grid-cell counts and lower-bound BI. Confirmed records, records with a saved user, nondefault annotations and investigator-accepted records are retained. Other untouched unconfirmed zero placeholders are omitted. Reviewed first-season camera-overlay temperatures were copied without recalibration. No new temperature extraction was performed. Investigator review retained SC1_20231120133001.JPG as a valid zero-BI classification and assigned Skyler as primary observer, following the majority of SC1 classifications. All 752 source SC1 records with a saved user identify SM, and the deployment metadata names Skyler. The original software confirmation flag remains false and the original record_user_id remains blank. The release assignment is in primary_observer. The original JSON and historical analysis values are unchanged.</procdesc>
+        <procdesc>Native classification JSON files were included with their cell positions and annotation fields. Saved annotations were summarized as category counts and BI in classifications.csv. BI uses category lower bounds of 0, 1, 10 and 100. The summary supplements missing night flags with the recorded SC1 and SC2 night intervals.</procdesc>
         <procdate>20260913</procdate>
       </procstep>
       <procstep>
-        <procdesc>Historical analysis inputs were reduced to columns used by the retained analyses and renamed to BI, delta BI and explicit weather terms. Selection rules and input values were preserved. The next-day table applies the historical coverage threshold of 0.95 and complete-case filter. The time covariate is minutes since the first daily observation, not a calculated sunrise time.</procdesc>
+        <procdesc>Camera-overlay temperatures were extracted using OCR, reviewed as deployment time series and manually corrected for extraction errors. The reviewed values are included in temperature_measurements.csv.</procdesc>
         <procdate>20260913</procdate>
       </procstep>
     </lineage>
@@ -132,7 +132,7 @@
       </enttyp>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across both seasons. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -220,7 +220,7 @@
       </attr>
       <attr>
         <attrlabl>primary_observer</attrlabl>
-        <attrdef>Primary classifier assigned to the deployment in the manuscript metadata, including the investigator-approved majority-observer assignment for the retained SC1 zero described in README. This does not identify an independent replicate observer for every image. Units text. Missing values are empty fields.</attrdef>
+        <attrdef>Primary image classifier assigned to the deployment. Units text. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -228,7 +228,7 @@
       </attr>
       <attr>
         <attrlabl>data_quality_note</attrlabl>
-        <attrdef>Known recording, coverage or timing limitations. Empty means no additional deployment-specific note here, not certification of error-free observations. Units text. Missing values are empty fields.</attrdef>
+        <attrdef>Deployment-specific recording, coverage or timing information. Units text. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -243,7 +243,7 @@
       </enttyp>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across both seasons. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -267,7 +267,7 @@
       </attr>
       <attr>
         <attrlabl>timestamp_recorded</attrlabl>
-        <attrdef>Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdef>Recorded date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -285,12 +285,12 @@
     <detailed>
       <enttyp>
         <enttypl>classifications.csv</enttypl>
-        <enttypd>One row per image with evidence of classification, with ordinal cell primitives and BI totals. Unclassified placeholders are omitted. Covers the first season only.</enttypd>
+        <enttypd>One row per saved image classification, with counts of grid-cell categories and Butterfly Index totals. Unclassified placeholders are omitted from this summary.</enttypd>
         <enttypds>Study investigators and analysis preparation code</enttypds>
       </enttyp>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across both seasons. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -314,7 +314,7 @@
       </attr>
       <attr>
         <attrlabl>timestamp_recorded</attrlabl>
-        <attrdef>Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdef>Recorded date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -322,7 +322,7 @@
       </attr>
       <attr>
         <attrlabl>primary_observer</attrlabl>
-        <attrdef>Primary classifier assigned to the deployment in the manuscript metadata, including the investigator-approved majority-observer assignment for the retained SC1 zero described in README. This does not identify an independent replicate observer for every image. Units text. Missing values are empty fields.</attrdef>
+        <attrdef>Primary image classifier assigned to the deployment. Units text. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -330,7 +330,7 @@
       </attr>
       <attr>
         <attrlabl>record_user_id</attrlabl>
-        <attrdef>User identifier saved in the annotation record, possibly a later editor. Blank means absent from the source. The assigned primary observer is reported separately. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>User identifier saved in the classification JSON. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -338,7 +338,7 @@
       </attr>
       <attr>
         <attrlabl>classification_confirmed</attrlabl>
-        <attrdef>True if the original annotation software marked the record confirmed. Unconfirmed records are included when a saved user or nondefault annotation provides evidence of classification, or the investigator explicitly accepts the record during release review. This original software flag is not changed by later review. See README for the accepted SC1 zero. Units boolean. Missing values are empty fields.</attrdef>
+        <attrdef>Confirmation flag in the classification JSON. The summary includes confirmed records and saved annotations. Units boolean. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -346,7 +346,7 @@
       </attr>
       <attr>
         <attrlabl>is_night</attrlabl>
-        <attrdef>Night flag from the annotation record, or historical SC1/SC2 night intervals when the flag was absent. This is an existing classification convention, not a newly inferred timezone. Units boolean. Missing values are empty fields.</attrdef>
+        <attrdef>Night flag from the annotation record, supplemented by the recorded SC1 and SC2 night intervals when the flag is absent. Units boolean. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -418,7 +418,7 @@
       </attr>
       <attr>
         <attrlabl>sun_exposed_butterfly_index</attrlabl>
-        <attrdef>BI subtotal for occupied grid cells marked directSun, or legacy sunlight. Cannot exceed total BI. No change or delta is included in this observation table. Units BI units. Missing values are empty fields.</attrdef>
+        <attrdef>BI subtotal for occupied grid cells marked directSun or the legacy sunlight field. Units BI units. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -428,12 +428,12 @@
     <detailed>
       <enttyp>
         <enttypl>temperature_measurements.csv</enttypl>
-        <enttypd>One row per reviewed first-season image-overlay temperature record, including missing temperature values. The investigator confirmed that no second-season temperature data exist.</enttypd>
+        <enttypd>One row per reviewed camera-overlay temperature measurement.</enttypd>
         <enttypds>Study investigators and analysis preparation code</enttypds>
       </enttyp>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across both seasons. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -457,7 +457,7 @@
       </attr>
       <attr>
         <attrlabl>timestamp_recorded</attrlabl>
-        <attrdef>Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdef>Recorded date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -465,7 +465,7 @@
       </attr>
       <attr>
         <attrlabl>temperature_c</attrlabl>
-        <attrdef>Approximate local camera temperature extracted from the image overlay, with prior manual review of OCR. Existing reviewed values are preserved. This is not a newly calibrated ambient-air measurement. Units degrees Celsius. Missing values are empty fields.</attrdef>
+        <attrdef>Camera-overlay temperature extracted using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer. Units degrees Celsius. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -475,12 +475,12 @@
     <detailed>
       <enttyp>
         <enttypl>wind_measurements.csv</enttypl>
-        <enttypd>One row per distinct wind observation associated with an assigned deployment interval. Identical observations within an instrument are deduplicated. SC9 and SC10 share StarDust observations because both deployment records assign that sensor during overlapping intervals. These shared rows are not independent measurements.</enttypd>
+        <enttypd>One row per wind observation associated with a deployment. Repeated copies of the same instrument reading are deduplicated.</enttypd>
         <enttypds>Study investigators and analysis preparation code</enttypds>
       </enttyp>
       <attr>
         <attrlabl>deployment_id</attrlabl>
-        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdef>Camera deployment identifier, unique across both seasons. Units identifier. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -496,7 +496,7 @@
       </attr>
       <attr>
         <attrlabl>timestamp_recorded</attrlabl>
-        <attrdef>Recorded date and time in ISO 8601 extended form without UTC offset. No new clock correction was applied. Image times are EXIF-derived for second-season photos and filename-derived for first-season products. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdef>Recorded date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -520,237 +520,7 @@
       </attr>
       <attr>
         <attrlabl>wind_direction_degrees</attrlabl>
-        <attrdef>Wind speed and gust are in meters per second. Direction is reported in degrees clockwise from north, with 360 representing north. The instrument manual specifies a 16-point sensor with 22.5-degree resolution and averaged logging. The database contains integer directions throughout 0 to 360, so exported observations are not restricted to 45-degree increments. The investigator considers direction 0 invalid or suspect. That interpretation has not been confirmed in the manufacturer manual, so original zeros are retained and should not be treated as confirmed north. Blank is missing. Zero speed or gust is not automatically invalid. Manual https://rainwise.com/downloads/windsoft/WindLog140805%20.pdf, section 7.2. Matching source databases use Units code 2, consistent with the manuscript m/s convention. Units degrees. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-    </detailed>
-    <detailed>
-      <enttyp>
-        <enttypl>analysis_30_minute.csv</enttypl>
-        <enttypd>Retained 30-minute manuscript input, with only variables used by the primary analyses, descriptive summaries and focused observer sensitivity. Both-zero BI pairs were excluded upstream. Photo-pair tolerance is five minutes. Row order and values are preserved.</enttypd>
-        <enttypds>Study investigators and analysis preparation code</enttypds>
-      </enttyp>
-      <attr>
-        <attrlabl>deployment_id</attrlabl>
-        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>deployment_day_id</attrlabl>
-        <attrdef>Deployment and calendar-day grouping used for random intercepts and within-day residual correlation in the 30-minute analysis. Units identifier. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>observation_order</attrlabl>
-        <attrdef>Original sequence index of the current observation within deployment-day for the 30-minute analysis, or current day within deployment for next-day analysis. Gaps are retained for AR(1) correlation. Units integer. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>previous_image_filename</attrlabl>
-        <attrdef>Earlier photo in the retained 30-minute pair. First-season photo_index provides its path. Units identifier. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>previous_timestamp_recorded</attrlabl>
-        <attrdef>Recorded earlier image time in the retained pair. No new timezone conversion. Units recorded clock. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>current_image_filename</attrlabl>
-        <attrdef>Later photo in the retained 30-minute pair. First-season photo_index provides its path. Units identifier. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>current_timestamp_recorded</attrlabl>
-        <attrdef>Recorded later image time in the retained pair. No new timezone conversion. Units recorded clock. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>previous_bi</attrlabl>
-        <attrdef>BI of the earlier image. Adjustment covariate and input to descriptive statistics. Units BI units. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>current_bi</attrlabl>
-        <attrdef>BI of the later image. Used in descriptive and occupied-cluster wind summaries. Units BI units. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>delta_bi</attrlabl>
-        <attrdef>Change in BI. Current minus previous image BI for 30-minute pairs. Current-day maximum minus previous-day maximum BI for next-day pairs. Units BI units. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>delta_bi_signed_cuberoot</attrlabl>
-        <attrdef>Signed cube root of delta_bi, the 30-minute model response. Stored transformation preserved from the manuscript input. Units transformed BI units. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>previous_sun_exposed_bi</attrlabl>
-        <attrdef>Sun-exposed BI of the earlier image in the 30-minute pair. Units BI units. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>mean_temperature_c</attrlabl>
-        <attrdef>Arithmetic mean of the earlier and later image-overlay temperatures. Units degrees Celsius. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>maximum_wind_gust_m_s</attrlabl>
-        <attrdef>Maximum recorded gust in the analysis window. The 30-minute preparation uses a fixed 30-minute wind window ending at the later image, even if the photo pair differs by up to five minutes. Units meters per second. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>minutes_since_first_daily_observation</attrlabl>
-        <attrdef>Minutes since the first observation in the upstream deployment-day series. Historical code called this time_within_day_t. The manuscript called it time since sunrise, but the code does not calculate astronomical sunrise. Units minutes. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>minutes_gust_at_or_above_2_m_s</attrlabl>
-        <attrdef>Number of source one-minute records with gust &gt;= 2 m/s in the 30-minute window. Used in descriptive summaries. This counts minute maxima, not continuous exposure above a threshold. Units one-minute records. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>primary_observer</attrlabl>
-        <attrdef>Primary classifier assigned to the deployment in the manuscript metadata, including the investigator-approved majority-observer assignment for the retained SC1 zero described in README. This does not identify an independent replicate observer for every image. Units text. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-    </detailed>
-    <detailed>
-      <enttyp>
-        <enttypl>analysis_next_day.csv</enttypl>
-        <enttypd>Retained next-day manuscript input after &gt;=95 percent overall coverage and complete-case selection. Deployment-days contain 15-25 daytime observations, consecutive days are paired, and pairs with both daily maxima zero are excluded. Coverage is the geometric mean of temperature, wind and daylight-image coverage. Source observation-order gaps are preserved. Signed square-root delta BI is calculated in R.</enttypd>
-        <enttypds>Study investigators and analysis preparation code</enttypds>
-      </enttyp>
-      <attr>
-        <attrlabl>deployment_id</attrlabl>
-        <attrdef>Camera deployment identifier, unique across the release. SC12 is the first-season NOVA deployment. SC13 is the second-season IRIS deployment. Both analysis tables and all classifications and temperatures are from 2023-2024. Units identifier. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>observation_order</attrlabl>
-        <attrdef>Original sequence index of the current observation within deployment-day for the 30-minute analysis, or current day within deployment for next-day analysis. Gaps are retained for AR(1) correlation. Units integer. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>previous_day_maximum_bi</attrlabl>
-        <attrdef>Maximum BI on the earlier day. Adjustment covariate in next-day models. Units BI units. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>delta_bi</attrlabl>
-        <attrdef>Change in BI. Current minus previous image BI for 30-minute pairs. Current-day maximum minus previous-day maximum BI for next-day pairs. Units BI units. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>window_duration_hours</attrlabl>
-        <attrdef>Duration from previous-day maximum BI time to current-day final daytime observation. Units hours. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>minimum_temperature_c</attrlabl>
-        <attrdef>Minimum reviewed camera-overlay temperature in the next-day window. Units degrees Celsius. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>maximum_temperature_c</attrlabl>
-        <attrdef>Maximum reviewed camera-overlay temperature in the next-day window. Units degrees Celsius. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>temperature_at_previous_day_maximum_c</attrlabl>
-        <attrdef>Reviewed camera-overlay temperature at the earlier day's maximum BI. Units degrees Celsius. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>maximum_wind_gust_m_s</attrlabl>
-        <attrdef>Maximum recorded gust in the analysis window. The 30-minute preparation uses a fixed 30-minute wind window ending at the later image, even if the photo pair differs by up to five minutes. Units meters per second. Missing values are empty fields.</attrdef>
-        <attrdefs>Study source data and processing code</attrdefs>
-        <attrdomv>
-          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
-        </attrdomv>
-      </attr>
-      <attr>
-        <attrlabl>cumulative_sun_exposed_bi</attrlabl>
-        <attrdef>Sum of sun-exposed BI across daytime image observations in the next-day window. Combines the indexed abundance in sunlit cells and the number of observations, not a continuous radiation dose. Units BI units. Missing values are empty fields.</attrdef>
+        <attrdef>Logger wind-direction value from 0 to 360 degrees, reported clockwise from north. Units degrees. Missing values are empty fields.</attrdef>
         <attrdefs>Study source data and processing code</attrdefs>
         <attrdomv>
           <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
@@ -758,16 +528,16 @@
       </attr>
     </detailed>
     <overview>
-      <eaover>Photographs are grouped in photos/deployment_id/. Image filenames use deployment_id_YYYYMMDDHHMMSS.JPG, corresponding to the format code %Y%m%d%H%M%S. The deployment identifier may itself contain an underscore. The timestamp has a four-digit year followed by two-digit month, day, 24-hour hour, minute and second. It carries no timezone. For the reviewed second season it comes from the photo EXIF capture time. Existing first-season canonical filenames are preserved. Distinct second-season photos sharing a timestamp use the unsuffixed name and an _02 suffix before .JPG. This suffix is a collision counter, not a fractional second, ordering guarantee, or clock correction. The photo index links every released filename to its deployment folder. One collection-level description applies to all images in each deployment folder. Individual photo metadata records are not required. deployments.csv contains 28 rows. photo_index.csv contains 223,887 rows. classifications.csv contains 8,299 rows. temperature_measurements.csv contains 56,066 rows. wind_measurements.csv contains 757,260 rows. analysis_30_minute.csv contains 1,894 rows. analysis_next_day.csv contains 96 rows.</eaover>
-      <eadetcit>data_dictionary.csv and README.md in this package</eadetcit>
+      <eaover>Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. An _02 suffix distinguishes a second photograph with the same timestamp. photo_index.csv lists every image path. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes the saved classifications for use without the software. See classifications/README.md for the JSON structure and software links. deployments.csv contains 28 rows. photo_index.csv contains 223,887 rows. classifications.csv contains 8,299 rows. temperature_measurements.csv contains 56,066 rows. wind_measurements.csv contains 757,260 rows.</eaover>
+      <eadetcit>data_dictionary.csv, README.md and classifications/README.md in this package. Classifier source code https://github.com/kylenessen/monarch_trailcam_classifier.</eadetcit>
     </overview>
   </eainfo>
   <distinfo>
-    <resdesc>Draft package of CSV tables, JPEG photograph collections, metadata XML and README. Scripts are in the GitHub repository.</resdesc>
+    <resdesc>CSV observation tables, native classification JSON files, JPEG photograph collections, metadata XML and documentation.</resdesc>
     <distliab>REVIEW_REQUIRED applicable USGS distribution statement after review. No release approval is claimed by this draft.</distliab>
   </distinfo>
   <metainfo>
-    <metd>20260913</metd>
+    <metd>20260914</metd>
     <metc>
       <cntinfo>
         <cntorgp>

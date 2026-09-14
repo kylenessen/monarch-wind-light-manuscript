@@ -4,7 +4,7 @@ This directory contains the source data used to generate the analysis CSV files 
 
 The `deployments/` directory contains hand-labeled image classifications in JSON format. The `wind/` directory contains the SQLite databases exported from each wind sensor. The `deployments.csv` file describes deployment metadata, including the camera or wind sensor, deployment location, and deployment duration. The `temperature_data_2023.csv` file contains temperature values extracted from the field images.
 
-The historical analysis inputs are `monarch_analysis_lag30min.csv` and `monarch_daily_lag_analysis_nextday_window.csv`. The R analysis now reads their reduced, renamed versions in [release/analysis_30_minute.csv](release/analysis_30_minute.csv) and [release/analysis_next_day.csv](release/analysis_next_day.csv). See the [analysis guide](../analysis/README.md) for regeneration and validation commands.
+The historical analysis inputs are `monarch_analysis_lag30min.csv` and `monarch_daily_lag_analysis_nextday_window.csv`. The R analysis now reads their reduced, renamed versions in [analysis_inputs/analysis_30_minute.csv](analysis_inputs/analysis_30_minute.csv) and [analysis_inputs/analysis_next_day.csv](analysis_inputs/analysis_next_day.csv). See the [analysis guide](../analysis/README.md) for regeneration and validation commands.
 
 ## Classification and Temperature Protocols
 
@@ -16,6 +16,6 @@ Camera temperature values were read from image overlays with a custom optical-ch
 
 The raw image files are not included in this repository because of storage constraints. A USGS ScienceBase release containing the original photographs, deployment metadata, image classifications, wind measurements, and reviewed image-derived temperature values used in this study is in preparation and will be made publicly available before publication. The source code for the custom image-classification software is available at <https://github.com/kylenessen/monarch_trailcam_classifier>.
 
-The expanded release tables include available deployment and weather records outside the manuscript subset, including deployments with no butterfly detections. Unclassified photos do not establish absence. The release includes both field seasons, while classifications, reviewed temperatures and manuscript analysis tables cover the first season.
+The expanded release tables include available deployment and weather records outside the manuscript subset, including deployments with no butterfly detections. Unclassified photos do not establish absence. The observational release includes both field seasons. Native classification JSON, a classification summary and reviewed temperatures cover the first season. Manuscript analysis inputs remain separately in analysis_inputs/.
 
-The [draft release tables](release/README.md) include a photo index, field dictionary and draft metadata XML. The separate [working notes](release_working/STATUS.md) record provenance, verification and remaining decisions. Working notes and scripts are not data-release attachments. Raw source observations and recorded device clocks were not changed during release preparation.
+The [draft release tables](release/README.md) include a photo index, field dictionary and draft metadata XML. The separate [working notes](release_working/STATUS.md) record provenance, verification and remaining decisions. Working notes and scripts are not data-release attachments. Recorded device clocks are preserved.

@@ -231,7 +231,7 @@ refit_selected <- function(comparison, data, random, correlation) {
 }
 
 thirty_minute_data <- read_csv(
-  here("data", "release", "analysis_30_minute.csv"), show_col_types = FALSE
+  here("data", "analysis_inputs", "analysis_30_minute.csv"), show_col_types = FALSE
 ) %>%
   filter(
     !is.na(delta_bi_signed_cuberoot), !is.na(previous_bi),
@@ -241,7 +241,7 @@ thirty_minute_data <- read_csv(
   )
 
 next_day_data <- read_csv(
-  here("data", "release", "analysis_next_day.csv"), show_col_types = FALSE
+  here("data", "analysis_inputs", "analysis_next_day.csv"), show_col_types = FALSE
 ) %>%
   mutate(
     delta_bi_signed_square_root = sign(delta_bi) * sqrt(abs(delta_bi)),

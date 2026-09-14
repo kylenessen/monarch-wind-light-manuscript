@@ -44,7 +44,7 @@ save_acf <- function(filename, residuals) {
   dev.off()
 }
 
-data <- read_csv(here("data", "release", "analysis_next_day.csv"), show_col_types = FALSE) %>%
+data <- read_csv(here("data", "analysis_inputs", "analysis_next_day.csv"), show_col_types = FALSE) %>%
   mutate(
     delta_bi_signed_square_root = sign(delta_bi) * sqrt(abs(delta_bi))
   ) %>%

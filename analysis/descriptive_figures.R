@@ -33,7 +33,7 @@ make_theme <- function() {
     theme(legend.position = "none")
 }
 
-lag_data <- read_csv(here("data", "release", "analysis_30_minute.csv"), show_col_types = FALSE) %>%
+lag_data <- read_csv(here("data", "analysis_inputs", "analysis_30_minute.csv"), show_col_types = FALSE) %>%
   filter(!is.na(delta_bi))
 
 # UTC below is a neutral parser for clock arithmetic. It does not establish a UTC offset.

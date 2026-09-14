@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 out_dir <- here("analysis", "outputs", "wind_at_clusters")
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
-cluster_wind <- read_csv(here("data", "release", "analysis_30_minute.csv"), show_col_types = FALSE) %>%
+cluster_wind <- read_csv(here("data", "analysis_inputs", "analysis_30_minute.csv"), show_col_types = FALSE) %>%
   filter(
     !is.na(maximum_wind_gust_m_s),
     !is.na(current_bi),

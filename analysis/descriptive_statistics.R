@@ -40,7 +40,7 @@ summarise_numeric <- function(data, column, section, label) {
   )
 }
 
-lag_data <- read_csv(here("data", "release", "analysis_30_minute.csv"), show_col_types = FALSE)
+lag_data <- read_csv(here("data", "analysis_inputs", "analysis_30_minute.csv"), show_col_types = FALSE)
 
 # UTC below is a neutral parser for clock arithmetic. It does not establish a UTC offset.
 obs_t <- lag_data %>%
@@ -88,7 +88,7 @@ per_deployment_bi <- unique_obs %>%
   ) %>%
   arrange(deployment_id)
 
-next_day <- read_csv(here("data", "release", "analysis_next_day.csv"), show_col_types = FALSE)
+next_day <- read_csv(here("data", "analysis_inputs", "analysis_next_day.csv"), show_col_types = FALSE)
 
 metrics <- bind_rows(
   metric("30-minute pairs", "paired rows", nrow(lag_data)),

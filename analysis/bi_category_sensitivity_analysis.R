@@ -175,7 +175,7 @@ analyze_next_day <- function(mapping) {
 
 analyze_observer_sensitivity <- function() {
   data <- read_csv(
-    here("data", "release", "analysis_30_minute.csv"),
+    here("data", "analysis_inputs", "analysis_30_minute.csv"),
     show_col_types = FALSE
   ) %>%
     filter(complete.cases(

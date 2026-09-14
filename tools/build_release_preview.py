@@ -40,10 +40,10 @@ def build(source, destination, replace=False):
         raise FileExistsError(f"Choose a new preview folder to preserve existing review files: {destination}")
     tables = {p.stem: read_csv(p) for p in sorted(source.glob("*.csv"))}
     rows = {name: data[1] for name, data in tables.items()}
-    pair = next(r for r in rows["analysis_30_minute"]
-                if r["deployment_id"] == "SC1" and float(r["previous_bi"]) > 0)
+    sc1 = [r["image_filename"] for r in rows["classifications"]
+           if r["deployment_id"] == "SC1" and float(r["butterfly_index"]) > 0][:2]
     filenames = {
-        pair["previous_image_filename"], pair["current_image_filename"],
+        *sc1,
         "SC12_20240129174001.JPG", "SC13_20241215120001.JPG",
         "CR01_20241103020001.JPG", "CR01_20241103020001_02.JPG",
     }
@@ -53,8 +53,6 @@ def build(source, destination, replace=False):
         "photo_index": [r for r in rows["photo_index"] if r["image_filename"] in filenames],
         "classifications": [r for r in rows["classifications"] if r["image_filename"] in filenames],
         "temperature_measurements": [r for r in rows["temperature_measurements"] if r["image_filename"] in filenames],
-        "analysis_30_minute": [pair],
-        "analysis_next_day": [r for r in rows["analysis_next_day"] if r["deployment_id"] == "SC1"][:3],
     }
     wind = rows["wind_measurements"]
     wind_examples = []
@@ -81,7 +79,7 @@ def build(source, destination, replace=False):
     wind_priority.append(next(r for r in selected["wind_measurements"]
                               if r["deployment_id"] == "SC13" and r["timestamp_recorded"].startswith("2025-01-14")))
     selected["wind_measurements"] = ten_rows(wind_priority, selected["wind_measurements"])
-    for name in ("classifications", "analysis_30_minute", "analysis_next_day"):
+    for name in ("classifications",):
         selected[name] = ten_rows(selected[name], rows[name])
     classified_names = {r["image_filename"] for r in selected["classifications"]}
     selected["temperature_measurements"] = [r for r in rows["temperature_measurements"] if r["image_filename"] in classified_names]
@@ -98,6 +96,8 @@ def build(source, destination, replace=False):
     definitions = {(r["table"], r["column"]) for r in selected["data_dictionary"]}
     assert all((name + ".csv", field) in definitions for name in selected if name != "data_dictionary" for field in tables[name][0])
     destination.mkdir(parents=True, exist_ok=replace)
+    for name in ("analysis_30_minute.csv", "analysis_next_day.csv"):
+        (destination / name).unlink(missing_ok=True)
     counts = {}
     for name, chosen in selected.items():
         fields, original = tables[name]
@@ -141,6 +141,12 @@ def build(source, destination, replace=False):
     reference = destination / "full_release_reference"
     reference.mkdir(exist_ok=replace)
     shutil.copyfile(source / "README.md", reference / "README.md")
+    annotations = destination / "classifications"
+    annotations.mkdir(exist_ok=True)
+    shutil.copyfile(source / "classifications/README.md", annotations / "README.md")
+    for deployment in {r["deployment_id"] for r in selected["classifications"]}:
+        shutil.copyfile(source / "classifications" / f"{deployment}.json",
+                        annotations / f"{deployment}.json")
 
     header_text = "# CSV headers for USGS review\n\nHeaders are identical to the full draft release, in the same column order. "
     header_text += "The numbered lists below are for reading. Each CSV retains its standard comma-separated header row. "
@@ -166,13 +172,13 @@ This is a selected example set, not the complete dataset or a statistically repr
     for name, count in counts.items():
         readme += f"| {name} | {count['preview_rows']:,} | {count['full_release_rows']:,} | {count['columns']} |\n"
     readme += """
-deployments.csv and data_dictionary.csv are complete copies. Each of the other six CSVs contains exactly 10 selected data rows, plus its header. Dictionary minimum and maximum values describe the full release.
+deployments.csv and data_dictionary.csv are complete copies. Each of the other four CSVs contains exactly 10 selected data rows, plus its header. Dictionary minimum and maximum values describe the full release. Native JSON files for the sampled classified deployments are included in classifications/.
 
 ## Photo examples and table relationships
 
 Six original JPEGs are included under photos/deployment_id/. All six are listed in the 10-row photo index. The other four index rows demonstrate the schema but their photos are not included. These are ordinary files, with no symbolic links. The images and their EXIF metadata have not been resized or edited.
 
-The two SC1 photos are a retained 30-minute analysis pair. Their classification and temperature records are included, along with illustrative wind observations. Additional analysis and observation rows bring each sampled table to 10 rows. Those rows can reference photos or observations available only in the full release. The preview does not contain all contributing observations or complete wind aggregation windows.
+The two SC1 photos have saved classifications. Their classification and temperature records are included, along with illustrative wind observations. Additional observation rows bring each sampled table to 10 rows. Those rows and the full deployment JSON files can reference photos available only in the complete release.
 
 The first-season SC12 image and second-season SC13 image show distinct camera deployments. SC12 is NOVA with BlueLake. SC13 is IRIS with RockWall. Deployment identifiers are unique across the release. The two CR01 images share a recorded capture time and demonstrate the unsuffixed filename and _02 collision suffix. They remain distinct photos.
 

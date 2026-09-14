@@ -1,17 +1,41 @@
 # Data release status
 
-The public tables omit season at the investigator's request. Deployment ID alone is the join key. Photo paths are photos/deployment_id/image_filename. The release builder retains season only while interpreting historical source records. All 223,887 public image paths resolve after flattening the photo folders. Zach's preview has the same schemas and paths, with 10 rows in each sampled CSV, the full deployment table and dictionary, and six photo examples.
+Updated September 14, 2026. Work is on the data-release branch. The current package
+is /Volumes/MonarchSSD/data_release/publication_package. data/release contains the
+matching tables and documentation. Its generated JSON copies are not duplicated
+in Git because their source files are already tracked in data/deployments.
 
-Updated September 13, 2026. Work is on the local data-release branch. The public draft is in data/release and the matching portable staging package is /Volumes/MonarchSSD/data_release/publication_package. This working-notes directory is not part of the release package. Earlier investigation and reconciliation reports here are historical evidence, not current packaging instructions.
+The observational release contains deployments, photographs and their index, wind
+measurements, reviewed camera-overlay temperatures, native classification JSON,
+a classification summary CSV, a data dictionary and metadata XML. It covers both
+seasons. Classifications and reviewed temperatures cover the first season.
 
-The release now has 28 deployments with WGS84 camera coordinates and identifiers unique across seasons. At the investigator's instruction, the second-season IRIS and RockWall deployment is SC13. First-season NOVA and BlueLake remains SC12. The release builder applies deployment_id_corrections.json to the deployment and wind tables, photo index, filenames and package paths. Internal source layers, reconciliation records and archive names retain their original labels as provenance. The SC13 package folder uses hard links to the original reviewed image bytes on the external drive. The obsolete second-season SC12 package link is removed. First-season boundaries come from the frozen original deployment GeoPackage. Second-season boundaries come from the reviewed photo EXIF extrema. Source observations and device clocks remain unchanged. The README, XML and coauthor guide describe the identifier correction, daylight saving behavior, incomplete recording histories, shared sensors and the image filename convention.
+The two manuscript analysis tables are in data/analysis_inputs. The R scripts read
+them there. Their values are unchanged. They are not data-release attachments.
+The earlier numerical comparison is preserved in analysis_verification.json.
 
-The photo index contains 223,887 JPEGs, comprising 56,066 first-season images and 167,821 reviewed second-season images. All indexed paths resolve in the staged package. The 3,952 SC3 JPEGs in the unusual-deployments archive match the canonical SC3 filenames and file sizes already represented in the first-season collection. They are not added a second time. That archive also contains 2,973 unreviewed TGR1 images with the known clock problem and 2,861 SC3 videos. Those are not part of the reviewed JPEG release. See photo_inventory_validation.json. The wind CSV contains 757,260 deployment-associated observations from 725,714 distinct measurements. SC9 and SC10 share 31,546 observations because both source metadata records assign StarDust. The classification table contains 8,299 retained classified images and omits untouched unconfirmed zero placeholders. Category counts support recalculating BI under other category mappings. The temperature table preserves 56,066 reviewed first-season overlay records. Kyle confirmed that no second-season temperature data exist. Classifications cover the first season only. This is the agreed scope, not an unresolved search for additional temperature files.
+Both seasons use the same public fields and photos/deployment_id/ paths. Times
+are described as recorded by the devices, without UTC offsets or new clock
+conversions. Available wind readings within assigned deployment intervals are
+included as recorded. Shared SC9 and SC10 observations remain linked to both
+deployments.
 
-The 30-minute analysis CSV has 1,894 rows and 17 used columns. The next-day CSV has 96 rows and 10 used columns. All primary R scripts read these public tables directly. Focused sensitivity inputs use the same names, and the observer check reads the public 30-minute table. All 121 candidate fits and all 34 checked CSV output tables reproduced the historical numerical results exactly. See analysis_verification.json. The historical time covariate was mislabeled as time since sunrise. Its calculation is minutes since the first daily observation. Names, definitions and manuscript wording now reflect the code. Values did not change.
+The 2,973 TGR1 photos are awaiting investigator review in
+/Volumes/MonarchSSD/data_release/raw/Unusual Deployments/TGR1/20240105/DCIM/100MEDIA.
+They are not yet in the release photo index. The camera date was not set.
 
-The public draft contains one CSV each for deployments, wind, temperatures, classifications and the photo index, plus the two analysis CSVs and the dictionary. The XML defines all data columns and photo collections. It is well-formed XML, but it is not a validated or approved submission record. The release authors and order follow the manuscript, as requested by Kyle. They are Kyle Nessen, Peter C. Ibsen, Jay E. Diffendorfer and Francis X. Villablanca. Kyle is corresponding author at knessen@calpoly.edu. The DOI, USGS metadata identifier, institutional metadata contact, access and distribution terms, and institutional review remain to be finalized with USGS colleagues. The draft is being prepared for coauthor and USGS contact review. No prior example identifiers or approval claims were reused.
+The current package contains 28 deployments, 223,887 photographs, 757,260 wind
+associations, 56,066 temperature records, 8,299 classification summaries and 12
+native classification JSON files. The builder's existing schema and join checks
+passed. No software-loading check or statistical model rerun was performed for
+this packaging change.
 
-Photo directories in the portable staging package are links to existing reviewed collections. The index resolves locally without copying hundreds of gigabytes. Final upload archives must contain ordinary JPEG files selected by the index, not symbolic links or unlisted source CSVs. Analysis scripts stay in GitHub. Pin and publish the final repository commit before distributing a final release. No upload, push, merge, DOI assignment or institutional approval occurred in this task.
+Photo folders in the local package use links to existing files. Final upload
+archives must contain ordinary JPEG files selected by photo_index.csv and preserve
+their deployment paths. The release DOI, metadata identifier, institutional contact
+and distribution terms remain to be completed with USGS. A fixed public repository
+version should be cited when the release is published.
 
-See SOURCE_INVENTORY.md, METADATA_REVIEW.md and reconciliation_2026-09-13 for the earlier source and instrument investigations. Their old paths and unfinished-task lists may be superseded by this status record. The raw archive and frozen reconciliation remain unchanged.
+Earlier reconciliation reports and dated preview or coauthor documents are
+historical working materials. They may describe the previous scope. The current
+package README and metadata define the present release.
