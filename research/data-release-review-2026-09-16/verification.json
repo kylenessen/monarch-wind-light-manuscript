@@ -40,5 +40,14 @@
   },
   "unchanged_other_files": true,
   "xml_structural_validation": "Passed xmllint --dtdvalid against https://www.fgdc.gov/schemas/metadata/fgdc-std-001-1998.dtd. DOI and publication date remain pending. This structural check does not establish publication readiness.",
-  "retained_older_ocr_export": "photos/SLC6_1/temperature_data.csv was retained unchanged pending the user preference. It is separate from the reviewed temperature_measurements.csv."
+  "removed_older_ocr_export": {
+    "path": "photos/SLC6_1/temperature_data.csv",
+    "removed_from": [
+      "canonical",
+      "onedrive"
+    ],
+    "sha256": "bad23d5a938616b052143cf1b92932f4e43a5075fc959ab2d5d1ed55f57bbe66",
+    "archived_outside_release": "/Volumes/MonarchSSD/data_release/previous_work/removed_release_files_2026-09-16/SLC6_1_temperature_data.csv",
+    "reviewed_temperature_table_unchanged": true
+  }
 }
