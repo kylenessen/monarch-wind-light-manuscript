@@ -1,0 +1,17 @@
+{
+  "table_rows": {
+    "deployments": 28,
+    "photo_index": 226830,
+    "classifications": 3713,
+    "temperature_measurements": 56066,
+    "wind_measurements": 757260
+  },
+  "schema_and_join_checks": "passed",
+  "photo_time_reconstruction": "TGR1 deployment endpoints",
+  "photo_paths_resolve": 226830,
+  "deployment_ids_globally_unique": true,
+  "photo_filenames_globally_unique": true,
+  "deployment_id_corrections": {
+    "2024-2025/SC12": "SC13"
+  }
+}

@@ -1,4 +1,4 @@
-max_gust,temperature_avg,butterflies_direct_sun_t_lag,total_butterflies_t_lag,time_within_day_t,fit,standard_error,conf_low,conf_high,temperature_label,direct_sun_label
+maximum_wind_gust_m_s,mean_temperature_c,previous_sun_exposed_bi,previous_bi,minutes_since_first_daily_observation,fit,standard_error,conf_low,conf_high,temperature_label,direct_sun_label
 0,10,0,37,300,0.2273229762149989,0.39213436840532384,-0.5412603858594358,0.9959063382894335,10 °C,0
 0.025970711297071108,10,0,37,300,0.22585113819483096,0.39178950473183793,-0.5420562910795714,0.9937585674692333,10 °C,0
 0.051941422594142216,10,0,37,300,0.22437930017466304,0.39144920868927957,-0.542861148856325,0.991619749205651,10 °C,0

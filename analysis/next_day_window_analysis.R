@@ -44,25 +44,24 @@ save_acf <- function(filename, residuals) {
   dev.off()
 }
 
-data <- read_csv(here("data", "monarch_daily_lag_analysis_nextday_window.csv"), show_col_types = FALSE) %>%
+data <- read_csv(here("data", "analysis_inputs", "analysis_next_day.csv"), show_col_types = FALSE) %>%
   mutate(
-    butterfly_diff_sqrt = sign(butterfly_diff) * sqrt(abs(butterfly_diff))
+    delta_bi_signed_square_root = sign(delta_bi) * sqrt(abs(delta_bi))
   ) %>%
-  filter(metrics_complete >= 0.95) %>%
-  arrange(deployment_id, observation_order_t) %>%
+  arrange(deployment_id, observation_order) %>%
   mutate(
     deployment_id = factor(deployment_id),
     across(
-      c(max_butterflies_t_1, lag_duration_hours, wind_max_gust, sum_butterflies_direct_sun),
+      c(previous_day_maximum_bi, window_duration_hours, maximum_wind_gust_m_s, cumulative_sun_exposed_bi),
       as.numeric
     )
   ) %>%
   filter(
-    !is.na(butterfly_diff_sqrt),
-    !is.na(max_butterflies_t_1),
-    !is.na(lag_duration_hours),
-    !is.na(wind_max_gust),
-    !is.na(sum_butterflies_direct_sun)
+    !is.na(delta_bi_signed_square_root),
+    !is.na(previous_day_maximum_bi),
+    !is.na(window_duration_hours),
+    !is.na(maximum_wind_gust_m_s),
+    !is.na(cumulative_sun_exposed_bi)
   )
 
 # Use the primary selection from the manuscript's shared candidate framework.
@@ -78,7 +77,7 @@ model <- withCallingHandlers(
   gamm(
     as.formula(selected_formula), data = data,
     random = list(deployment_id = ~1),
-    correlation = corAR1(form = ~ observation_order_t | deployment_id),
+    correlation = corAR1(form = ~ observation_order | deployment_id),
     method = "REML"
   ),
   warning = function(w) {
@@ -124,16 +123,16 @@ descriptive <- tibble(
   ),
   value = c(
     nrow(data),
-    mean(data$max_butterflies_t_1),
-    sd(data$max_butterflies_t_1),
-    mean(data$butterfly_diff),
-    sd(data$butterfly_diff),
-    mean(data$wind_max_gust),
-    sd(data$wind_max_gust),
-    mean(data$sum_butterflies_direct_sun),
-    sd(data$sum_butterflies_direct_sun),
-    mean(data$lag_duration_hours),
-    sd(data$lag_duration_hours)
+    mean(data$previous_day_maximum_bi),
+    sd(data$previous_day_maximum_bi),
+    mean(data$delta_bi),
+    sd(data$delta_bi),
+    mean(data$maximum_wind_gust_m_s),
+    sd(data$maximum_wind_gust_m_s),
+    mean(data$cumulative_sun_exposed_bi),
+    sd(data$cumulative_sun_exposed_bi),
+    mean(data$window_duration_hours),
+    sd(data$window_duration_hours)
   )
 )
 write_csv(descriptive, file.path(out_dir, "descriptive_statistics.csv"))
@@ -142,8 +141,8 @@ interaction_sizes <- reference_sizes(cfg$interaction_w, cfg$interaction_include_
 
 interaction_wind_sun_nextday <- create_binned_interaction_plot(
   gam_model = model$gam,
-  x_var = "wind_max_gust",
-  y_var = "sum_butterflies_direct_sun",
+  x_var = "maximum_wind_gust_m_s",
+  y_var = "cumulative_sun_exposed_bi",
   data = data,
   xlab = "Maximum wind gust (m/s)",
   ylab = "Butterflies in direct sun",

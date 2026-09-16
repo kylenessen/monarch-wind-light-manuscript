@@ -1,0 +1,84 @@
+{
+  "checks": "sensor mapping, inclusive bounds, measurement uniqueness, provenance links and counts",
+  "passed": true,
+  "baseline_rows_not_retained": 9,
+  "baseline_exclusions": [
+    {
+      "deployment_id": "SC12",
+      "wind_sensor_name": "BlueLake",
+      "time": "2024-01-27 13:00:00",
+      "wind_speed_m_s": "1.2",
+      "wind_gust_m_s": "1.3",
+      "wind_direction_degrees": "292"
+    },
+    {
+      "deployment_id": "SC4",
+      "wind_sensor_name": "StarDust",
+      "time": "2023-12-03 14:30:00",
+      "wind_speed_m_s": "1.2",
+      "wind_gust_m_s": "2.0",
+      "wind_direction_degrees": "330"
+    },
+    {
+      "deployment_id": "SC6",
+      "wind_sensor_name": "BlueLake",
+      "time": "2023-12-15 13:20:00",
+      "wind_speed_m_s": "1.3",
+      "wind_gust_m_s": "2.0",
+      "wind_direction_degrees": "135"
+    },
+    {
+      "deployment_id": "SC7",
+      "wind_sensor_name": "FunStorm",
+      "time": "2023-12-15 14:45:00",
+      "wind_speed_m_s": "1.3",
+      "wind_gust_m_s": "1.6",
+      "wind_direction_degrees": "135"
+    },
+    {
+      "deployment_id": "SC8",
+      "wind_sensor_name": "BlueLake",
+      "time": "2024-01-05 15:30:00",
+      "wind_speed_m_s": "1.2",
+      "wind_gust_m_s": "2.0",
+      "wind_direction_degrees": "56"
+    },
+    {
+      "deployment_id": "SC9",
+      "wind_sensor_name": "StarDust",
+      "time": "2024-01-05 16:02:00",
+      "wind_speed_m_s": "1.6",
+      "wind_gust_m_s": "2.4",
+      "wind_direction_degrees": "292"
+    },
+    {
+      "deployment_id": "SLC6_2",
+      "wind_sensor_name": "MoonTide",
+      "time": "2023-12-03 13:02:00",
+      "wind_speed_m_s": "0.0",
+      "wind_gust_m_s": "0.0",
+      "wind_direction_degrees": "67"
+    },
+    {
+      "deployment_id": "UDMH2",
+      "wind_sensor_name": "JoyHouse",
+      "time": "2024-01-05 12:20:00",
+      "wind_speed_m_s": "0.8",
+      "wind_gust_m_s": "1.8",
+      "wind_direction_degrees": "347"
+    },
+    {
+      "deployment_id": "UDMH4",
+      "wind_sensor_name": "MoonTide",
+      "time": "2024-01-18 15:50:00",
+      "wind_speed_m_s": "0.0",
+      "wind_gust_m_s": "0.0",
+      "wind_direction_degrees": "360"
+    }
+  ],
+  "baseline_exclusion_explanation": "Nine original draft rows occur at the whole second immediately before a fractional deployment start. The new filter preserves exact source boundaries instead of truncating them.",
+  "photo_filenames_match_current_exif": true,
+  "remaining_review_files": 0,
+  "excluded_deployments_absent_from_active_tables": true,
+  "active_deployment_intervals": 28
+}

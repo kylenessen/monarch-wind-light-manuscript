@@ -55,3 +55,6 @@ cover_letter.typ
 insects-template.dot
 output/pdf/cover-letter.pdf
 output/pdf/response-letter.pdf
+
+# Release copies of native JSON are generated from data/deployments
+/data/release/classifications/*.json

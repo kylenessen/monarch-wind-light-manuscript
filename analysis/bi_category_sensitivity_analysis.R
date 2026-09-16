@@ -46,10 +46,10 @@ conditional_wind_effect <- function(fit, temperature, direct_sun) {
   beta <- fixef(fit$lme)
   covariance <- vcov(fit$lme)
   contrast <- setNames(rep(0, length(beta)), names(beta))
-  contrast["Xmax_gust"] <- 1
-  contrast["Xmax_gust:temperature_avg"] <- temperature
-  contrast["Xmax_gust:butterflies_direct_sun_t_lag"] <- direct_sun
-  contrast["Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag"] <-
+  contrast["Xmaximum_wind_gust_m_s"] <- 1
+  contrast["Xmaximum_wind_gust_m_s:mean_temperature_c"] <- temperature
+  contrast["Xmaximum_wind_gust_m_s:previous_sun_exposed_bi"] <- direct_sun
+  contrast["Xmaximum_wind_gust_m_s:mean_temperature_c:previous_sun_exposed_bi"] <-
     temperature * direct_sun
   estimate <- sum(contrast * beta)
   standard_error <- sqrt(as.numeric(t(contrast) %*% covariance %*% contrast))
@@ -70,34 +70,34 @@ analyze_30_minute <- function(mapping) {
     show_col_types = FALSE
   ) %>%
     filter(complete.cases(
-      butterfly_difference_cbrt, total_butterflies_t_lag,
-      temperature_avg, max_gust, butterflies_direct_sun_t_lag,
-      observation_order_within_day_t, deployment_day, deployment_id
+      delta_bi_signed_cuberoot, previous_bi,
+      mean_temperature_c, maximum_wind_gust_m_s, previous_sun_exposed_bi,
+      observation_order, deployment_day_id, deployment_id
     ))
 
-  random <- list(deployment_id = ~1, deployment_day = ~1)
+  random <- list(deployment_id = ~1, deployment_day_id = ~1)
   correlation <- corAR1(
-    form = ~ observation_order_within_day_t | deployment_day
+    form = ~ observation_order | deployment_day_id
   )
   formulas <- list(
-    m15 = butterfly_difference_cbrt ~ total_butterflies_t_lag +
-      max_gust * temperature_avg +
-      max_gust * butterflies_direct_sun_t_lag +
-      temperature_avg * butterflies_direct_sun_t_lag,
-    m16 = butterfly_difference_cbrt ~ total_butterflies_t_lag +
-      max_gust * temperature_avg * butterflies_direct_sun_t_lag,
-    m40 = butterfly_difference_cbrt ~
-      max_gust * temperature_avg * butterflies_direct_sun_t_lag
+    m15 = delta_bi_signed_cuberoot ~ previous_bi +
+      maximum_wind_gust_m_s * mean_temperature_c +
+      maximum_wind_gust_m_s * previous_sun_exposed_bi +
+      mean_temperature_c * previous_sun_exposed_bi,
+    m16 = delta_bi_signed_cuberoot ~ previous_bi +
+      maximum_wind_gust_m_s * mean_temperature_c * previous_sun_exposed_bi,
+    m40 = delta_bi_signed_cuberoot ~
+      maximum_wind_gust_m_s * mean_temperature_c * previous_sun_exposed_bi
   )
   ml <- map(formulas, ~ fit_gamm(.x, data, random, correlation, "ML"))
   reml <- fit_gamm(formulas$m16, data, random, correlation, "REML")
   coefficients <- summary(reml$fit$lme)$tTable
   interaction_row <- coefficients[
-    "Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag",
+    "Xmaximum_wind_gust_m_s:mean_temperature_c:previous_sun_exposed_bi",
   ]
 
-  nonzero_sun <- data$butterflies_direct_sun_t_lag[
-    data$butterflies_direct_sun_t_lag > 0
+  nonzero_sun <- data$previous_sun_exposed_bi[
+    data$previous_sun_exposed_bi > 0
   ]
   sun_values <- c(
     0,
@@ -135,28 +135,27 @@ analyze_next_day <- function(mapping) {
     show_col_types = FALSE
   ) %>%
     mutate(
-      butterfly_diff_sqrt = sign(butterfly_diff) * sqrt(abs(butterfly_diff))
+      delta_bi_signed_square_root = sign(delta_bi) * sqrt(abs(delta_bi))
     ) %>%
-    filter(metrics_complete >= 0.95) %>%
-    arrange(deployment_id, observation_order_t) %>%
+    arrange(deployment_id, observation_order) %>%
     filter(complete.cases(
-      butterfly_diff_sqrt, max_butterflies_t_1, lag_duration_hours,
-      wind_max_gust, sum_butterflies_direct_sun, deployment_id,
-      observation_order_t
+      delta_bi_signed_square_root, previous_day_maximum_bi, window_duration_hours,
+      maximum_wind_gust_m_s, cumulative_sun_exposed_bi, deployment_id,
+      observation_order
     ))
 
   random <- list(deployment_id = ~1)
-  correlation <- corAR1(form = ~ observation_order_t | deployment_id)
-  m2_formula <- butterfly_diff_sqrt ~
-    max_butterflies_t_1 + lag_duration_hours
-  m32_formula <- butterfly_diff_sqrt ~
-    max_butterflies_t_1 + lag_duration_hours +
-    ti(wind_max_gust, sum_butterflies_direct_sun)
+  correlation <- corAR1(form = ~ observation_order | deployment_id)
+  m2_formula <- delta_bi_signed_square_root ~
+    previous_day_maximum_bi + window_duration_hours
+  m32_formula <- delta_bi_signed_square_root ~
+    previous_day_maximum_bi + window_duration_hours +
+    ti(maximum_wind_gust_m_s, cumulative_sun_exposed_bi)
   m2_ml <- fit_gamm(m2_formula, data, random, correlation, "ML")
   m32_ml <- fit_gamm(m32_formula, data, random, correlation, "ML")
   m32_reml <- fit_gamm(m32_formula, data, random, correlation, "REML")
   smooth_row <- summary(m32_reml$fit$gam)$s.table[
-    "ti(wind_max_gust,sum_butterflies_direct_sun)",
+    "ti(maximum_wind_gust_m_s,cumulative_sun_exposed_bi)",
   ]
 
   tibble(
@@ -176,25 +175,25 @@ analyze_next_day <- function(mapping) {
 
 analyze_observer_sensitivity <- function() {
   data <- read_csv(
-    file.path(input_dir, "30_minute_lower_bound.csv"),
+    here("data", "analysis_inputs", "analysis_30_minute.csv"),
     show_col_types = FALSE
   ) %>%
     filter(complete.cases(
-      butterfly_difference_cbrt, total_butterflies_t_lag,
-      temperature_avg, max_gust, butterflies_direct_sun_t_lag,
-      observation_order_within_day_t, deployment_day, deployment_id,
-      Observer
+      delta_bi_signed_cuberoot, previous_bi,
+      mean_temperature_c, maximum_wind_gust_m_s, previous_sun_exposed_bi,
+      observation_order, deployment_day_id, deployment_id,
+      primary_observer
     ))
-  random <- list(deployment_id = ~1, deployment_day = ~1)
+  random <- list(deployment_id = ~1, deployment_day_id = ~1)
   correlation <- corAR1(
-    form = ~ observation_order_within_day_t | deployment_day
+    form = ~ observation_order | deployment_day_id
   )
-  baseline_formula <- butterfly_difference_cbrt ~
-    total_butterflies_t_lag +
-    max_gust * temperature_avg * butterflies_direct_sun_t_lag
-  observer_formula <- butterfly_difference_cbrt ~
-    Observer + total_butterflies_t_lag +
-    max_gust * temperature_avg * butterflies_direct_sun_t_lag
+  baseline_formula <- delta_bi_signed_cuberoot ~
+    previous_bi +
+    maximum_wind_gust_m_s * mean_temperature_c * previous_sun_exposed_bi
+  observer_formula <- delta_bi_signed_cuberoot ~
+    primary_observer + previous_bi +
+    maximum_wind_gust_m_s * mean_temperature_c * previous_sun_exposed_bi
   baseline <- fit_gamm(
     baseline_formula, data, random, correlation, "ML"
   )
@@ -204,7 +203,7 @@ analyze_observer_sensitivity <- function() {
   comparison <- anova(baseline$fit$lme, observer$fit$lme)
   coefficients <- summary(observer$fit$lme)$tTable
   interaction <- coefficients[
-    "Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag",
+    "Xmaximum_wind_gust_m_s:mean_temperature_c:previous_sun_exposed_bi",
   ]
   tibble(
     baseline_aic = AIC(baseline$fit$lme),

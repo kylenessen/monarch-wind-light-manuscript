@@ -1,0 +1,89 @@
+file_name,field_name,description
+wind_measurements.csv,deployment_key,Unique release join key formed as season/deployment_id. Distinguishes the two SC12 deployments.
+wind_measurements.csv,season,"Field season, either 2023-2024 or 2024-2025."
+wind_measurements.csv,deployment_id,Original deployment identifier. Unique only within season.
+wind_measurements.csv,measurement_id,"SHA-256 content identifier derived from sensor, normalized recorded timestamp, speed, gust, and direction. Shared across valid deployment associations."
+wind_measurements.csv,wind_sensor_name,Assigned wind instrument field identifier. Case variants are normalized. Blank means no assignment.
+wind_measurements.csv,timestamp_recorded,ISO-format timestamp as recorded in the wind database. No timezone or clock correction was applied.
+wind_measurements.csv,wind_speed_m_s,"Recorded wind speed, retaining the existing manuscript release unit convention of meters per second. Blank means missing."
+wind_measurements.csv,wind_gust_m_s,"Recorded wind gust, retaining the existing manuscript release unit convention of meters per second. Blank means missing."
+wind_measurements.csv,wind_direction_degrees,Recorded wind direction in degrees clockwise from north under the existing release convention. Directional reliability is limited. Blank means missing.
+wind_measurements.csv,source_record_count,"Number of source rows represented by this distinct measurement, including duplicate database copies. Not a count of independent observations."
+wind_measurements.csv,timestamp_conflict,True if this sensor and recorded timestamp have more than one distinct measurement tuple. False otherwise. Conflicting tuples are retained.
+wind_measurements.csv,sensor_quality_note,Known deployment-specific quality limitation. Blank does not imply calibration or absence of other limitations.
+wind_record_sources.csv,measurement_id,"SHA-256 content identifier derived from sensor, normalized recorded timestamp, speed, gust, and direction. Shared across valid deployment associations."
+wind_record_sources.csv,source_database,"Stable source path relative to a named root in wind_summary.json. This identifies a database file, not a unique instrument."
+wind_record_sources.csv,source_rowid,SQLite rowid locating the original Wind table record within this source database.
+wind_record_sources.csv,source_record_id,"Original Wind.id value. Interpret together with source_database, not globally."
+wind_source_inventory.csv,source_database,"Stable source path relative to a named root in wind_summary.json. This identifies a database file, not a unique instrument."
+wind_source_inventory.csv,sha256,"SHA-256 checksum of file bytes. For images, consult checksum_basis for verification timing."
+wind_source_inventory.csv,size_bytes,File size in bytes.
+wind_source_inventory.csv,wind_sensor_name,Assigned wind instrument field identifier. Case variants are normalized. Blank means no assignment.
+wind_source_inventory.csv,sensor_match_basis,"exact_case_insensitive_filename, explicit_filename_alias, or not_a_study_sensor_filename. See filename_aliases in wind_summary.json."
+wind_source_inventory.csv,source_rows,"All Wind rows in this source database, before study filtering."
+wind_source_inventory.csv,matched_source_rows,"Source rows matching at least one assigned sensor and deployment interval, counted once before deduplication."
+wind_source_inventory.csv,excluded_source_rows,Source rows not matching the study sensor and interval rules. Retained in the original database.
+wind_source_inventory.csv,first_timestamp_raw,Minimum raw Wind.time value in the source database. May reflect an incorrect instrument clock.
+wind_source_inventory.csv,last_timestamp_raw,Maximum raw Wind.time value in the source database. May include other studies or incorrect instrument clocks.
+wind_source_inventory.csv,units_table,"JSON representation of the source Units table values. All matched databases have code 2, consistent with existing manuscript sources."
+wind_source_inventory.csv,log_interval_table,JSON representation of the source LogInt table values. Preserved as recorded without reinterpreting the device setting.
+deployment_intervals.csv,deployment_key,Unique release join key formed as season/deployment_id. Distinguishes the two SC12 deployments.
+deployment_intervals.csv,season,"Field season, either 2023-2024 or 2024-2025."
+deployment_intervals.csv,deployment_id,Original deployment identifier. Unique only within season.
+deployment_intervals.csv,camera_name,Camera field identifier from the deployment or camera GeoPackage.
+deployment_intervals.csv,wind_sensor_name,Assigned wind instrument field identifier. Case variants are normalized. Blank means no assignment.
+deployment_intervals.csv,start_time_recorded,"Inclusive start of the retained wind interval. Source deployment time for 2023-2024, earliest retained photo EXIF time for 2024-2025. Blank means unavailable."
+deployment_intervals.csv,end_time_recorded,"Inclusive end of the retained wind interval. Source recovery time for 2023-2024, latest retained photo EXIF time for 2024-2025. Blank means unavailable."
+deployment_intervals.csv,boundary_basis,"first_season_deployment_geopackage, user_reviewed_photos, or no_photos. Photo boundaries are the user-authorized filtering rule, not independently verified field recovery times."
+deployment_intervals.csv,photo_count_for_interval,"Count of retained JPEGs contributing timestamps to a 2025 interval, including distinct photos at repeated times. Blank for first-season metadata intervals. Zero means no eligible photos."
+deployment_intervals.csv,notes,Original deployment or camera field notes. Blank means no note was supplied.
+deployment_wind_coverage.csv,deployment_key,Unique release join key formed as season/deployment_id. Distinguishes the two SC12 deployments.
+deployment_wind_coverage.csv,season,"Field season, either 2023-2024 or 2024-2025."
+deployment_wind_coverage.csv,deployment_id,Original deployment identifier. Unique only within season.
+deployment_wind_coverage.csv,camera_name,Camera field identifier from the deployment or camera GeoPackage.
+deployment_wind_coverage.csv,wind_sensor_name,Assigned wind instrument field identifier. Case variants are normalized. Blank means no assignment.
+deployment_wind_coverage.csv,start_time_recorded,"Inclusive start of the retained wind interval. Source deployment time for 2023-2024, earliest retained photo EXIF time for 2024-2025. Blank means unavailable."
+deployment_wind_coverage.csv,end_time_recorded,"Inclusive end of the retained wind interval. Source recovery time for 2023-2024, latest retained photo EXIF time for 2024-2025. Blank means unavailable."
+deployment_wind_coverage.csv,boundary_basis,"first_season_deployment_geopackage, user_reviewed_photos, or no_photos. Photo boundaries are the user-authorized filtering rule, not independently verified field recovery times."
+deployment_wind_coverage.csv,photo_count_for_interval,"Count of retained JPEGs contributing timestamps to a 2025 interval, including distinct photos at repeated times. Blank for first-season metadata intervals. Zero means no eligible photos."
+deployment_wind_coverage.csv,notes,Original deployment or camera field notes. Blank means no note was supplied.
+deployment_wind_coverage.csv,wind_status,"records_available, no_assigned_sensor, no_photo_interval, no_matching_sensor_database, or no_records_in_interval. Available records do not imply full temporal coverage."
+deployment_wind_coverage.csv,wind_record_count,Distinct measurement associations retained for this deployment.
+deployment_wind_coverage.csv,first_wind_timestamp,Earliest retained wind timestamp for this deployment. Blank when no wind data matched.
+deployment_wind_coverage.csv,last_wind_timestamp,Latest retained wind timestamp for this deployment. Blank when no wind data matched.
+deployment_wind_coverage.csv,conflicting_timestamp_record_count,"Number of measurement associations flagged as timestamp conflicts, not the number of conflicting timestamps."
+wind_timestamp_conflicts.csv,deployment_key,Unique release join key formed as season/deployment_id. Distinguishes the two SC12 deployments.
+wind_timestamp_conflicts.csv,season,"Field season, either 2023-2024 or 2024-2025."
+wind_timestamp_conflicts.csv,deployment_id,Original deployment identifier. Unique only within season.
+wind_timestamp_conflicts.csv,measurement_id,"SHA-256 content identifier derived from sensor, normalized recorded timestamp, speed, gust, and direction. Shared across valid deployment associations."
+wind_timestamp_conflicts.csv,wind_sensor_name,Assigned wind instrument field identifier. Case variants are normalized. Blank means no assignment.
+wind_timestamp_conflicts.csv,timestamp_recorded,ISO-format timestamp as recorded in the wind database. No timezone or clock correction was applied.
+wind_timestamp_conflicts.csv,wind_speed_m_s,"Recorded wind speed, retaining the existing manuscript release unit convention of meters per second. Blank means missing."
+wind_timestamp_conflicts.csv,wind_gust_m_s,"Recorded wind gust, retaining the existing manuscript release unit convention of meters per second. Blank means missing."
+wind_timestamp_conflicts.csv,wind_direction_degrees,Recorded wind direction in degrees clockwise from north under the existing release convention. Directional reliability is limited. Blank means missing.
+wind_timestamp_conflicts.csv,source_record_count,"Number of source rows represented by this distinct measurement, including duplicate database copies. Not a count of independent observations."
+wind_timestamp_conflicts.csv,timestamp_conflict,True if this sensor and recorded timestamp have more than one distinct measurement tuple. False otherwise. Conflicting tuples are retained.
+wind_timestamp_conflicts.csv,sensor_quality_note,Known deployment-specific quality limitation. Blank does not imply calibration or absence of other limitations.
+reviewed_image_manifest.csv,season,"Field season, either 2023-2024 or 2024-2025."
+reviewed_image_manifest.csv,deployment_id,Original deployment identifier. Unique only within season.
+reviewed_image_manifest.csv,deployment_key,Unique release join key formed as season/deployment_id. Distinguishes the two SC12 deployments.
+reviewed_image_manifest.csv,relative_path,Current file path relative to the reviewed photo export directory.
+reviewed_image_manifest.csv,original_export_path,"File path in the September 10 export inventory, before user review and subsequent renaming."
+reviewed_image_manifest.csv,source_relative,Original file path relative to the raw second-season photo archive.
+reviewed_image_manifest.csv,capture_time_recorded,"Current JPEG EXIF DateTimeOriginal, formatted as ISO text without timezone correction. Blank for non-JPEG media."
+reviewed_image_manifest.csv,include_in_wind_interval,True if this retained image contributes to the deployment's minimum and maximum photo times. False otherwise.
+reviewed_image_manifest.csv,interval_exclusion_reason,Reason a retained image is excluded from the interval calculation. Blank means no exclusion.
+reviewed_image_manifest.csv,size_bytes,File size in bytes.
+reviewed_image_manifest.csv,sha256,"SHA-256 checksum of file bytes. For images, consult checksum_basis for verification timing."
+reviewed_image_manifest.csv,checksum_basis,"verified_during_rename, export_hash_unchanged_size_mtime, or recomputed_after_review. The middle value reuses the export checksum when size and modification time still match."
+removed_after_review.csv,original_export_path,"File path in the September 10 export inventory, before user review and subsequent renaming."
+removed_after_review.csv,source_relative,Original file path relative to the raw second-season photo archive.
+removed_after_review.csv,deployment_id,Original deployment identifier. Unique only within season.
+removed_after_review.csv,reason,absent_after_user_review indicates the original export path is absent from the cleaned set. A separately logged user-requested removal is included in this accounting.
+photo_intervals_2025.csv,season,"Field season, either 2023-2024 or 2024-2025."
+photo_intervals_2025.csv,deployment_id,Original deployment identifier. Unique only within season.
+photo_intervals_2025.csv,deployment_key,Unique release join key formed as season/deployment_id. Distinguishes the two SC12 deployments.
+photo_intervals_2025.csv,photo_count_for_interval,"Count of retained JPEGs contributing timestamps to a 2025 interval, including distinct photos at repeated times. Blank for first-season metadata intervals. Zero means no eligible photos."
+photo_intervals_2025.csv,start_time_recorded,"Inclusive start of the retained wind interval. Source deployment time for 2023-2024, earliest retained photo EXIF time for 2024-2025. Blank means unavailable."
+photo_intervals_2025.csv,end_time_recorded,"Inclusive end of the retained wind interval. Source recovery time for 2023-2024, latest retained photo EXIF time for 2024-2025. Blank means unavailable."
+photo_intervals_2025.csv,boundary_basis,"first_season_deployment_geopackage, user_reviewed_photos, or no_photos. Photo boundaries are the user-authorized filtering rule, not independently verified field recovery times."

@@ -1,31 +1,35 @@
-# Draft USGS Data Release Tables
+# Monarch monitoring observations, 2023-2025
 
-This directory contains draft open-format tables for the USGS data release associated with the monarch wind and light manuscript. These files are generated from the repository sources by `analysis/prepare_data_release.py`. The source JSON, SQLite databases, and manuscript analysis files remain unchanged.
+Kyle Nessen, Peter C. Ibsen, Jay E. Diffendorfer, Francis X. Villablanca.
 
-Run the preparation command from the repository root.
+Contact Kyle Nessen, knessen@calpoly.edu.
 
-```sh
-uv run analysis/prepare_data_release.py
-```
+This release preserves observations from both monitoring seasons at Vandenberg Space Force Base, including deployments outside the manuscript analysis subset. Photographs and available wind measurements cover both seasons. Image classifications and reviewed camera-overlay temperatures cover the first season.
 
-## Current tables
+[deployments.csv](deployments.csv) contains 28 rows. One row per camera deployment, including identifiers, WGS84 location, boundaries and known limitations.
 
-`deployments.csv` contains the deployment metadata currently available in the repository. `classifications.csv` summarizes each image classification while preserving the ordinal cell-category counts needed to recalculate the Butterfly Index with alternative category values. `temperature_measurements.csv` contains the reviewed camera-overlay temperature extractions. `wind_measurements.csv` contains wind records assigned to the deployment intervals in `deployments.csv`.
+[photo_index.csv](photo_index.csv) contains 226,830 rows. One row per retained JPEG photograph. Links images to the deployment table and collection folders.
 
-`analysis_30_minute.csv` and `analysis_next_day.csv` contain only the identifiers, responses, predictors, adjustment variables, correlation-order variables, and data-coverage fields needed for the two retained manuscript analyses. The next-day table contains the 96 records that passed the manuscript requirement of at least 95 percent overall data completeness.
+[classifications.csv](classifications.csv) contains 3,713 rows. One row per saved image classification, with counts of grid-cell categories and Butterfly Index totals. Unclassified placeholders are omitted from this summary.
 
-`data_dictionary.csv` follows the table and field structure used by the example USGS ScienceBase release at <https://www.sciencebase.gov/catalog/item/68d307bad4be025f6ad24e66>. It gives a description, units, and observed minimum and maximum for every released field.
+[temperature_measurements.csv](temperature_measurements.csv) contains 56,066 rows. One row per reviewed camera-overlay temperature measurement.
 
-## Time and measurement conventions
+[wind_measurements.csv](wind_measurements.csv) contains 757,260 rows. One row per wind observation associated with a deployment.
 
-All timestamps are local Pacific Standard Time. All currently represented deployments occurred outside daylight-saving time. Temperature values are approximate local camera readings in degrees Celsius. Wind speed and gust values are in meters per second. Wind directions are degrees clockwise from north.
+classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes saved daytime classifications for use without the software. See classifications/README.md for the JSON structure and software links.
 
-Butterfly Index is an index of visible cluster size. It is not a count of individually identified butterflies. The index assigns the lower-bound values 0, 1, 10, and 100 to the four image-cell categories. Sun-exposed Butterfly Index is the subtotal from occupied cells marked as receiving direct sunlight.
+Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path.
 
-## Known gaps requiring review
+Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. Missing CSV values are empty fields. [data_dictionary.csv](data_dictionary.csv) defines the table fields.
 
-The temperature table contains six deployment identifiers that are not yet present in the repository deployment table. They are SC3, SC5, SC11, SLC6_1, UDMH1, and UDMH3. Their metadata should be added from the spatial deployment records when those records become available.
+Timestamps use device clock times without a UTC offset. The cameras and wind meters do not automatically adjust for daylight saving time. TGR1 photo times were reconstructed as described below. Other timestamps are preserved as recorded.
 
-Five images used in the current 30-minute manuscript input are marked unconfirmed in the source classification JSON. Four have nonzero Butterfly Index values and a stored user identifier. The draft release preserves the `classification_confirmed` field and does not alter the manuscript analysis. These records should be reviewed before the release is finalized.
+TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time.
 
-The current tables cover the 2023 to 2024 season. The 2024 to 2025 photographs, classifications, deployment metadata, wind measurements, and any temperature records have not yet been incorporated. The image inventory and photograph archive will be added after those files become available.
+Coordinates are approximate camera locations in WGS84, EPSG 4326, expressed in decimal degrees. Locations were recorded with a cellphone under canopy. Some points were adjusted against satellite imagery. Deployment-specific recording information is in deployments.csv.
+
+Wind speed is the average and gust is the maximum speed over each one-minute recording interval, in meters per second. Wind direction is the recorded average in degrees clockwise from north. Wind measurements are provided as recorded within deployment intervals.
+
+Temperature values were extracted from camera overlays using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size based on ordinal image-cell categories. Unclassified photographs do not establish butterfly absence.
+
+The [manuscript repository](https://github.com/kylenessen/monarch-wind-light-manuscript) contains the analysis inputs, scripts and results for reproducing the paper. [metadata.xml](metadata.xml) describes this observational release.

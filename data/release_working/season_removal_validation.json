@@ -1,0 +1,46 @@
+{
+  "deployments": {
+    "rows": 28,
+    "columns": 13,
+    "only_requested_changes": true,
+    "byte_unchanged": false
+  },
+  "photo_index": {
+    "rows": 223887,
+    "columns": 5,
+    "only_requested_changes": true,
+    "byte_unchanged": false
+  },
+  "classifications": {
+    "rows": 8299,
+    "columns": 17,
+    "only_requested_changes": true,
+    "byte_unchanged": false
+  },
+  "temperature_measurements": {
+    "rows": 56066,
+    "columns": 5,
+    "only_requested_changes": true,
+    "byte_unchanged": false
+  },
+  "wind_measurements": {
+    "rows": 757260,
+    "columns": 6,
+    "only_requested_changes": true,
+    "byte_unchanged": false
+  },
+  "analysis_30_minute": {
+    "rows": 1894,
+    "columns": 17,
+    "only_requested_changes": true,
+    "byte_unchanged": true
+  },
+  "analysis_next_day": {
+    "rows": 96,
+    "columns": 10,
+    "only_requested_changes": true,
+    "byte_unchanged": true
+  },
+  "source_commit": "2e7076a04ea60542ef252cbbb49d50dfeff65be1",
+  "all_table_values_preserved": true
+}

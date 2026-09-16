@@ -231,76 +231,75 @@ refit_selected <- function(comparison, data, random, correlation) {
 }
 
 thirty_minute_data <- read_csv(
-  here("data", "monarch_analysis_lag30min.csv"), show_col_types = FALSE
+  here("data", "analysis_inputs", "analysis_30_minute.csv"), show_col_types = FALSE
 ) %>%
   filter(
-    !is.na(butterfly_difference_cbrt), !is.na(total_butterflies_t_lag),
-    !is.na(max_gust), !is.na(temperature_avg), !is.na(butterflies_direct_sun_t_lag),
-    !is.na(time_within_day_t), !is.na(observation_order_within_day_t),
-    !is.na(deployment_day), !is.na(deployment_id)
+    !is.na(delta_bi_signed_cuberoot), !is.na(previous_bi),
+    !is.na(maximum_wind_gust_m_s), !is.na(mean_temperature_c), !is.na(previous_sun_exposed_bi),
+    !is.na(minutes_since_first_daily_observation), !is.na(observation_order),
+    !is.na(deployment_day_id), !is.na(deployment_id)
   )
 
 next_day_data <- read_csv(
-  here("data", "monarch_daily_lag_analysis_nextday_window.csv"), show_col_types = FALSE
+  here("data", "analysis_inputs", "analysis_next_day.csv"), show_col_types = FALSE
 ) %>%
   mutate(
-    butterfly_diff_sqrt = sign(butterfly_diff) * sqrt(abs(butterfly_diff)),
+    delta_bi_signed_square_root = sign(delta_bi) * sqrt(abs(delta_bi)),
     deployment_id = factor(deployment_id)
   ) %>%
   filter(
-    metrics_complete >= 0.95,
-    !is.na(butterfly_diff_sqrt), !is.na(max_butterflies_t_1), !is.na(lag_duration_hours),
-    !is.na(temp_min), !is.na(temp_max), !is.na(temp_at_max_count_t_1),
-    !is.na(wind_max_gust), !is.na(sum_butterflies_direct_sun),
-    !is.na(observation_order_t), !is.na(deployment_id)
+    !is.na(delta_bi_signed_square_root), !is.na(previous_day_maximum_bi), !is.na(window_duration_hours),
+    !is.na(minimum_temperature_c), !is.na(maximum_temperature_c), !is.na(temperature_at_previous_day_maximum_c),
+    !is.na(maximum_wind_gust_m_s), !is.na(cumulative_sun_exposed_bi),
+    !is.na(observation_order), !is.na(deployment_id)
   ) %>%
-  arrange(deployment_id, observation_order_t)
+  arrange(deployment_id, observation_order)
 
-thirty_random <- list(deployment_id = ~1, deployment_day = ~1)
-thirty_correlation <- corAR1(form = ~ observation_order_within_day_t | deployment_day)
+thirty_random <- list(deployment_id = ~1, deployment_day_id = ~1)
+thirty_correlation <- corAR1(form = ~ observation_order | deployment_day_id)
 next_random <- list(deployment_id = ~1)
-next_correlation <- corAR1(form = ~ observation_order_t | deployment_id)
+next_correlation <- corAR1(form = ~ observation_order | deployment_id)
 
 frameworks <- list(
   thirty_minute_primary = list(
-    data = thirty_minute_data, response = "butterfly_difference_cbrt",
-    controls = "total_butterflies_t_lag + time_within_day_t", wind = "max_gust",
-    sun = "butterflies_direct_sun_t_lag", temperatures = c(avg = "temperature_avg"),
+    data = thirty_minute_data, response = "delta_bi_signed_cuberoot",
+    controls = "previous_bi + minutes_since_first_daily_observation", wind = "maximum_wind_gust_m_s",
+    sun = "previous_sun_exposed_bi", temperatures = c(avg = "mean_temperature_c"),
     random = thirty_random, correlation = thirty_correlation,
     window = "thirty_minute", framework = "primary_controls"
   ),
   thirty_minute_no_previous = list(
-    data = thirty_minute_data, response = "butterfly_difference_cbrt",
-    controls = "time_within_day_t", wind = "max_gust",
-    sun = "butterflies_direct_sun_t_lag", temperatures = c(avg = "temperature_avg"),
+    data = thirty_minute_data, response = "delta_bi_signed_cuberoot",
+    controls = "minutes_since_first_daily_observation", wind = "maximum_wind_gust_m_s",
+    sun = "previous_sun_exposed_bi", temperatures = c(avg = "mean_temperature_c"),
     random = thirty_random, correlation = thirty_correlation,
     window = "thirty_minute", framework = "sensitivity_no_previous_bi"
   ),
   thirty_minute_no_time = list(
-    data = thirty_minute_data, response = "butterfly_difference_cbrt",
-    controls = "total_butterflies_t_lag", wind = "max_gust",
-    sun = "butterflies_direct_sun_t_lag", temperatures = c(avg = "temperature_avg"),
+    data = thirty_minute_data, response = "delta_bi_signed_cuberoot",
+    controls = "previous_bi", wind = "maximum_wind_gust_m_s",
+    sun = "previous_sun_exposed_bi", temperatures = c(avg = "mean_temperature_c"),
     random = thirty_random, correlation = thirty_correlation,
     window = "thirty_minute", framework = "sensitivity_no_time"
   ),
   next_day_primary = list(
-    data = next_day_data, response = "butterfly_diff_sqrt",
-    controls = "max_butterflies_t_1 + lag_duration_hours", wind = "wind_max_gust",
-    sun = "sum_butterflies_direct_sun",
+    data = next_day_data, response = "delta_bi_signed_square_root",
+    controls = "previous_day_maximum_bi + window_duration_hours", wind = "maximum_wind_gust_m_s",
+    sun = "cumulative_sun_exposed_bi",
     temperatures = c(
-      min = "temp_min", max = "temp_max",
-      at_previous_max = "temp_at_max_count_t_1"
+      min = "minimum_temperature_c", max = "maximum_temperature_c",
+      at_previous_max = "temperature_at_previous_day_maximum_c"
     ),
     random = next_random, correlation = next_correlation,
     window = "next_day", framework = "primary_previous_bi"
   ),
   next_day_no_previous = list(
-    data = next_day_data, response = "butterfly_diff_sqrt",
-    controls = "lag_duration_hours", wind = "wind_max_gust",
-    sun = "sum_butterflies_direct_sun",
+    data = next_day_data, response = "delta_bi_signed_square_root",
+    controls = "window_duration_hours", wind = "maximum_wind_gust_m_s",
+    sun = "cumulative_sun_exposed_bi",
     temperatures = c(
-      min = "temp_min", max = "temp_max",
-      at_previous_max = "temp_at_max_count_t_1"
+      min = "minimum_temperature_c", max = "maximum_temperature_c",
+      at_previous_max = "temperature_at_previous_day_maximum_c"
     ),
     random = next_random, correlation = next_correlation,
     window = "next_day", framework = "sensitivity_no_previous_bi"
@@ -351,19 +350,19 @@ thirty_model <- selected_outputs$thirty_minute_primary$model$gam
 thirty_lme <- selected_outputs$thirty_minute_primary$model$lme
 temperature_values <- c(10, 15, 20)
 sun_values <- c(0, 7, 20)
-previous_bi_value <- median(thirty_minute_data$total_butterflies_t_lag)
-time_value <- median(thirty_minute_data$time_within_day_t)
-wind_max_plot <- unname(quantile(thirty_minute_data$max_gust, 0.99))
+previous_bi_value <- median(thirty_minute_data$previous_bi)
+time_value <- median(thirty_minute_data$minutes_since_first_daily_observation)
+wind_max_plot <- unname(quantile(thirty_minute_data$maximum_wind_gust_m_s, 0.99))
 
 fixed_beta <- fixef(thirty_lme)
 fixed_vcov <- vcov(thirty_lme)
 fixed_df <- min(summary(thirty_lme)$tTable[, "DF"])
 conditional_wind_effect <- function(temperature, direct_sun) {
   contrast <- setNames(rep(0, length(fixed_beta)), names(fixed_beta))
-  contrast["Xmax_gust"] <- 1
-  contrast["Xmax_gust:temperature_avg"] <- temperature
-  contrast["Xmax_gust:butterflies_direct_sun_t_lag"] <- direct_sun
-  contrast["Xmax_gust:temperature_avg:butterflies_direct_sun_t_lag"] <-
+  contrast["Xmaximum_wind_gust_m_s"] <- 1
+  contrast["Xmaximum_wind_gust_m_s:mean_temperature_c"] <- temperature
+  contrast["Xmaximum_wind_gust_m_s:previous_sun_exposed_bi"] <- direct_sun
+  contrast["Xmaximum_wind_gust_m_s:mean_temperature_c:previous_sun_exposed_bi"] <-
     temperature * direct_sun
   estimate <- sum(contrast * fixed_beta)
   standard_error <- sqrt(as.numeric(t(contrast) %*% fixed_vcov %*% contrast))
@@ -392,15 +391,15 @@ write_csv(
 )
 
 prediction_grid <- expand.grid(
-  max_gust = seq(0, wind_max_plot, length.out = 240),
-  temperature_avg = temperature_values,
-  butterflies_direct_sun_t_lag = sun_values,
+  maximum_wind_gust_m_s = seq(0, wind_max_plot, length.out = 240),
+  mean_temperature_c = temperature_values,
+  previous_sun_exposed_bi = sun_values,
   KEEP.OUT.ATTRS = FALSE
 ) %>%
   as_tibble() %>%
   mutate(
-    total_butterflies_t_lag = previous_bi_value,
-    time_within_day_t = time_value
+    previous_bi = previous_bi_value,
+    minutes_since_first_daily_observation = time_value
   )
 
 prediction <- predict(thirty_model, newdata = prediction_grid, se.fit = TRUE)
@@ -411,12 +410,12 @@ prediction_grid <- prediction_grid %>%
     conf_low = fit - 1.96 * standard_error,
     conf_high = fit + 1.96 * standard_error,
     temperature_label = factor(
-      temperature_avg,
+      mean_temperature_c,
       levels = temperature_values,
       labels = c("10 °C", "15 °C", "20 °C")
     ),
     direct_sun_label = factor(
-      butterflies_direct_sun_t_lag,
+      previous_sun_exposed_bi,
       levels = sun_values,
       labels = as.character(sun_values)
     )
@@ -427,7 +426,7 @@ sun_colors <- c("0" = "#4d4d4d", "7" = "#2b83ba", "20" = "#d7191c")
 response_plot <- ggplot(
   prediction_grid,
   aes(
-    x = max_gust, y = fit, color = direct_sun_label,
+    x = maximum_wind_gust_m_s, y = fit, color = direct_sun_label,
     fill = direct_sun_label, group = direct_sun_label
   )
 ) +

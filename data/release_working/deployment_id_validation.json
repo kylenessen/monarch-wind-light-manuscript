@@ -1,0 +1,47 @@
+{
+  "deployments": {
+    "rows": 28,
+    "renamed_rows": 1,
+    "only_expected_identifier_changes": true,
+    "byte_unchanged": false
+  },
+  "photo_index": {
+    "rows": 223887,
+    "renamed_rows": 15374,
+    "only_expected_identifier_changes": true,
+    "byte_unchanged": false
+  },
+  "SC13_photo_source_identity_verified": 15374,
+  "wind_measurements": {
+    "rows": 757260,
+    "renamed_rows": 76314,
+    "only_expected_identifier_changes": true,
+    "byte_unchanged": false
+  },
+  "classifications": {
+    "rows": 8299,
+    "renamed_rows": 0,
+    "only_expected_identifier_changes": true,
+    "byte_unchanged": true
+  },
+  "temperature_measurements": {
+    "rows": 56066,
+    "renamed_rows": 0,
+    "only_expected_identifier_changes": true,
+    "byte_unchanged": true
+  },
+  "analysis_30_minute": {
+    "rows": 1894,
+    "renamed_rows": 0,
+    "only_expected_identifier_changes": true,
+    "byte_unchanged": true
+  },
+  "analysis_next_day": {
+    "rows": 96,
+    "renamed_rows": 0,
+    "only_expected_identifier_changes": true,
+    "byte_unchanged": true
+  },
+  "obsolete_second_season_release_folder_absent": true,
+  "comparison_baseline_commit": "cf0397fe84e811308e5dec32965dc430473a8076"
+}

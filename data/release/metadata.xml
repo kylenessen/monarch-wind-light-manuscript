@@ -1,0 +1,520 @@
+<?xml version='1.0' encoding='utf-8'?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Kyle Nessen</origin>
+        <origin>Peter C. Ibsen</origin>
+        <origin>Jay E. Diffendorfer</origin>
+        <origin>Francis X. Villablanca</origin>
+        <pubdate>Unpublished material</pubdate>
+        <title>Photographs, image classifications, wind measurements, and image-derived temperatures from monarch butterfly monitoring at Vandenberg Space Force Base, California, 2023 through 2025</title>
+        <geoform>tabular digital data, JSON image annotations and digital photographs</geoform>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Observations from monarch monitoring at Vandenberg Space Force Base during the 2023-2024 and 2024-2025 overwintering seasons. Includes deployment information, photographs, wind measurements, native classification JSON and a tabular summary, and reviewed camera-overlay temperatures. The archive includes monitoring beyond the subset analyzed in the associated manuscript.</abstract>
+      <purpose>Preserve monitoring observations for future research. Manuscript analysis inputs, scripts and results are maintained at https://github.com/kylenessen/monarch-wind-light-manuscript.</purpose>
+      <supplinf>Timestamps use device clock times without a UTC offset. The cameras and wind meters do not automatically adjust for daylight saving time. TGR1 photo times were reconstructed as described below. Other timestamps are preserved as recorded. TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time. Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path. Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes saved daytime classifications for use without the software. See classifications/README.md for the JSON structure and software links.</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>20231117</begdate>
+          <enddate>20250411</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>Recorded deployment and photograph times.</current>
+    </timeperd>
+    <status>
+      <progress>In work</progress>
+      <update>As needed</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-120.63312527</westbc>
+        <eastbc>-120.56154322</eastbc>
+        <northbc>34.88680926</northbc>
+        <southbc>34.58434444</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>monarch butterfly, overwintering, wind, image classification, Butterfly Index</themekey>
+      </theme>
+      <place>
+        <placekt>None</placekt>
+        <placekey>Vandenberg Space Force Base, Santa Barbara County, California</placekey>
+      </place>
+    </keywords>
+    <accconst>REVIEW_REQUIRED release access terms</accconst>
+    <useconst>REVIEW_REQUIRED release use terms</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Kyle Nessen</cntper>
+          <cntorg>Biological Sciences Department, California Polytechnic State University</cntorg>
+        </cntperp>
+        <cntemail>knessen@calpoly.edu</cntemail>
+      </cntinfo>
+    </ptcontac>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>Wind speed is the average and gust is the maximum speed over each one-minute recording interval, in meters per second. Wind direction is the recorded average in degrees clockwise from north. Camera-overlay temperatures were extracted with OCR and manually reviewed. Camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size calculated from ordinal grid-cell classifications.</attraccr>
+    </attracc>
+    <logic>deployment_id uniquely identifies each deployment. Photos link by deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals.</logic>
+    <complete>Classifications and reviewed temperatures cover the first season. Photographs and available wind measurements cover both seasons. Deployment-specific recording information is in deployments.csv. The classification summary excludes night records and unclassified placeholders. Native JSON files retain the full annotations. Unclassified photographs do not establish butterfly absence. Missing CSV values are empty fields.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>Coordinates are approximate camera locations in WGS84, EPSG 4326, expressed in decimal degrees. Locations were recorded with a cellphone under canopy. Some points were adjusted against satellite imagery. First-season coordinates were already in WGS84. Second-season points were transformed from EPSG 3498 to EPSG 4326.</horizpar>
+      </horizpa>
+    </posacc>
+    <lineage>
+      <procstep>
+        <procdesc>First-season deployment intervals and positions were read from the original deployment GeoPackage. Second-season retained photograph EXIF extrema set the release boundaries. Coordinates were transformed to WGS84 where needed. Deployment and wind timestamps were preserved.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time. The first and last image times were anchored to the field deployment start and end. Intermediate times were linearly scaled by elapsed camera time after removing the 31-day calendar jump. EXIF capture, creation and modification times were updated in release copies. Image pixels and original source photographs were unchanged.</procdesc>
+        <procdate>20260914</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>One photograph per deployment and capture timestamp was retained. Where multiple images shared a timestamp, the unsuffixed photograph was retained.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Wind records from 92 SQLite databases were matched to the assigned wind meter and inclusive deployment interval. Whitespace and numeric representations were normalized. Identical sensor, time, speed, gust and direction tuples were deduplicated. Source IDs were not treated as globally unique. Off-interval and unrelated observations were omitted. Conflicting measurement tuples would be retained for review. Raw source databases remain unchanged.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Native classification JSON files were included with their cell positions and annotation fields. Saved daytime annotations were summarized as category counts and BI in classifications.csv. BI uses category lower bounds of 0, 1, 10 and 100. Night records were excluded using saved night flags and recorded SC1 and SC2 night intervals when flags were absent.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Camera-overlay temperatures were extracted using OCR, reviewed as deployment time series and manually corrected for extraction errors. The reviewed values are included in temperature_measurements.csv.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <indspref>Photographs and tabular observations relate to camera deployment points through deployment_id.</indspref>
+    <direct>Point</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>Entity point</sdtstype>
+        <ptvctcnt>28</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <geograph>
+        <latres>0.00000001</latres>
+        <longres>0.00000001</longres>
+        <geogunit>Decimal degrees</geogunit>
+      </geograph>
+      <geodetic>
+        <horizdn>D_WGS_1984</horizdn>
+        <ellips>WGS_1984</ellips>
+        <semiaxis>6378137.0</semiaxis>
+        <denflat>298.257223563</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>deployments.csv</enttypl>
+        <enttypd>One row per camera deployment, including identifiers, WGS84 location, boundaries and known limitations.</enttypd>
+        <enttypds>Study investigators and analysis preparation code</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>deployment_id</attrlabl>
+        <attrdef>Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Unique identifier for an individual camera. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wind_sensor_id</attrlabl>
+        <attrdef>Unique identifier for an individual wind sensor. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>start_time</attrlabl>
+        <attrdef>Deployment start in local device time, formatted as YYYY-MM-DD HH:MM:SS. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>end_time</attrlabl>
+        <attrdef>Deployment end in local device time, formatted as YYYY-MM-DD HH:MM:SS. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>latitude</attrlabl>
+        <attrdef>Approximate camera latitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery. Units decimal degrees. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>longitude</attrlabl>
+        <attrdef>Approximate camera longitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery. Units decimal degrees. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>camera_height</attrlabl>
+        <attrdef>Recorded camera height above ground. Units meters. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>horizontal_distance_to_cluster</attrlabl>
+        <attrdef>Recorded horizontal viewing distance from camera to observed or expected butterfly clusters. Units meters. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>view_direction</attrlabl>
+        <attrdef>Recorded camera viewing direction clockwise from north. Units degrees. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>data_quality_note</attrlabl>
+        <attrdef>Deployment-specific recording, coverage or timing information. Units text. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photo_index.csv</enttypl>
+        <enttypd>One row per retained JPEG photograph. Links images to the deployment table and collection folders.</enttypd>
+        <enttypds>Study investigators and analysis preparation code</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>deployment_id</attrlabl>
+        <attrdef>Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Unique identifier for an individual camera. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>image_filename</attrlabl>
+        <attrdef>Photograph filename in the form deployment_id_YYYYMMDDHHMMSS.JPG. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>timestamp</attrlabl>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>relative_path</attrlabl>
+        <attrdef>Photo path relative to the package root, grouped by deployment_id. Units path. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>classifications.csv</enttypl>
+        <enttypd>One row per saved image classification, with counts of grid-cell categories and Butterfly Index totals. Unclassified placeholders are omitted from this summary.</enttypd>
+        <enttypds>Study investigators and analysis preparation code</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>deployment_id</attrlabl>
+        <attrdef>Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Unique identifier for an individual camera. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>image_filename</attrlabl>
+        <attrdef>Photograph filename in the form deployment_id_YYYYMMDDHHMMSS.JPG. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>timestamp</attrlabl>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>record_user_id</attrlabl>
+        <attrdef>User identifier saved in the classification JSON. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>cells_0</attrlabl>
+        <attrdef>Number of image grid cells assigned to butterfly category 0. Retained primitives support alternative category mappings. Units grid cells. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>cells_1_9</attrlabl>
+        <attrdef>Number of image grid cells assigned to butterfly category 1-9. Retained primitives support alternative category mappings. Units grid cells. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>cells_10_99</attrlabl>
+        <attrdef>Number of image grid cells assigned to butterfly category 10-99. Retained primitives support alternative category mappings. Units grid cells. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>cells_100_999</attrlabl>
+        <attrdef>Number of image grid cells assigned to butterfly category 100-999. Retained primitives support alternative category mappings. Units grid cells. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sun_exposed_cells_1_9</attrlabl>
+        <attrdef>Number of occupied grid cells in category 1-9 marked as receiving direct sunlight. Units grid cells. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sun_exposed_cells_10_99</attrlabl>
+        <attrdef>Number of occupied grid cells in category 10-99 marked as receiving direct sunlight. Units grid cells. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sun_exposed_cells_100_999</attrlabl>
+        <attrdef>Number of occupied grid cells in category 100-999 marked as receiving direct sunlight. Units grid cells. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>butterfly_index</attrlabl>
+        <attrdef>Butterfly Index, BI, of visible cluster size. Sum of grid-cell category lower bounds, using 0, 1, 10 and 100 for categories 0, 1-9, 10-99 and 100-999. Units BI units. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sun_exposed_butterfly_index</attrlabl>
+        <attrdef>BI subtotal for occupied grid cells where monarchs were observed in direct sun. Units BI units. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>temperature_measurements.csv</enttypl>
+        <enttypd>One row per reviewed camera-overlay temperature measurement.</enttypd>
+        <enttypds>Study investigators and analysis preparation code</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>deployment_id</attrlabl>
+        <attrdef>Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Unique identifier for an individual camera. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>image_filename</attrlabl>
+        <attrdef>Photograph filename in the form deployment_id_YYYYMMDDHHMMSS.JPG. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>timestamp</attrlabl>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temperature</attrlabl>
+        <attrdef>Camera-overlay temperature extracted using OCR and manually reviewed. Units degrees Celsius. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>wind_measurements.csv</enttypl>
+        <enttypd>One row per wind observation associated with a deployment.</enttypd>
+        <enttypds>Study investigators and analysis preparation code</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>deployment_id</attrlabl>
+        <attrdef>Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wind_sensor_id</attrlabl>
+        <attrdef>Unique identifier for an individual wind sensor. Units identifier. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>timestamp</attrlabl>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wind_speed</attrlabl>
+        <attrdef>Average wind speed over the one-minute recording interval. Units meters per second. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wind_gust</attrlabl>
+        <attrdef>Maximum wind speed during the one-minute recording interval. Units meters per second. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wind_direction</attrlabl>
+        <attrdef>Average wind direction over the one-minute recording interval, in degrees clockwise from north, as recorded by the logger. Units degrees. Missing values are empty fields.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <overview>
+      <eaover>Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path. classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes saved daytime classifications for use without the software. See classifications/README.md for the JSON structure and software links. deployments.csv contains 28 rows. photo_index.csv contains 226,830 rows. classifications.csv contains 3,713 rows. temperature_measurements.csv contains 56,066 rows. wind_measurements.csv contains 757,260 rows.</eaover>
+      <eadetcit>data_dictionary.csv, README.md and classifications/README.md in this package. Classifier source code https://github.com/kylenessen/monarch_trailcam_classifier.</eadetcit>
+    </overview>
+  </eainfo>
+  <distinfo>
+    <resdesc>CSV observation tables, native classification JSON files, JPEG photograph collections, metadata XML and documentation.</resdesc>
+    <distliab>REVIEW_REQUIRED applicable USGS distribution statement after review. No release approval is claimed by this draft.</distliab>
+  </distinfo>
+  <metainfo>
+    <metd>20260914</metd>
+    <metc>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>REVIEW_REQUIRED responsible metadata organization</cntorg>
+        </cntorgp>
+        <cntemail>REVIEW_REQUIRED shared group email</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>
