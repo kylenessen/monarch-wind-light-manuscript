@@ -6,7 +6,9 @@ An observational study of western monarchs by Kyle Nessen, Peter C. Ibsen, Jay E
 
 To explore the evidence, start with the [data guide](data/README.md) and the [analysis guide](analysis/README.md). The [complete model comparisons](analysis/outputs/harmonized_model_comparison/README.md) and [Butterfly Index sensitivity checks](analysis/outputs/bi_category_sensitivity/README.md) include the saved results, so reading them does not require running code.
 
-The manuscript source is [manuscript.tex](manuscript.tex). Its four figures are the [monitoring photograph](figures/methods_photo.png), [descriptive figure](figures/descriptive_bi.png), [30-minute predictions](analysis/outputs/harmonized_model_comparison/figures/thirty_minute_predicted_response.png), and [Next Day interaction](analysis/outputs/next_day_window/figures/interaction_wind_sun_nextday.png). [bibliography/](bibliography/) contains the references. [Definitions/](Definitions/) contains the journal's LaTeX template and supporting assets.
+The manuscript source is [manuscript.tex](manuscript.tex). Its four figures are the [monitoring photograph](figures/methods_photo.jpg), [descriptive figure](figures/descriptive_bi.png), [30-minute predictions](analysis/outputs/harmonized_model_comparison/figures/thirty_minute_predicted_response.png), and [Next Day interaction](analysis/outputs/next_day_window/figures/interaction_wind_sun_nextday.png). [bibliography/](bibliography/) contains the references. [Definitions/](Definitions/) contains the journal's LaTeX template and supporting assets.
+
+The manuscript uses a compressed 2400-pixel JPEG of the monitoring photograph, about 450 dpi at its printed size. The original [high-resolution PNG](figures/methods_photo.png) is retained.
 
 To compile the paper, install a TeX distribution with `latexmk` and run these commands from the repository root. The saved figures are sufficient. No analysis rerun is required.
 
