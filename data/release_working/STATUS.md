@@ -1,3 +1,11 @@
+# Current status
+
+Updated September 16, 2026. The completed data-release branch has been merged into main. The repository release tables now match the canonical package at /Volumes/MonarchSSD/data_release/publication_package, including the final reviewed metadata, dictionary and NULL values. Native classification JSON files remain in data/deployments and are not release attachments. The current classification summary contains 3,713 records.
+
+Publication is planned for September 30, 2026. Peter will provide the final citation and DOI. The metadata retains its unpublished status until publication details are finalized. The manuscript approval comment requesting a citable data release remains pending that citation. See the [approval record](../../research/usgs-manuscript-approval-2026-09-16.md) and [release review record](../../research/data-release-review-2026-09-16.md). The release builder predates the final manual metadata and missing-value edits, so a rebuild requires reapplying those reviewed changes.
+
+The September 14 record below is historical and is superseded by this update where they differ.
+
 # Data release status
 
 Updated September 14, 2026. Work is on the data-release branch. The current package

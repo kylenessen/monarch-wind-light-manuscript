@@ -2,7 +2,7 @@
 
 Kyle Nessen, Peter C. Ibsen, Jay E. Diffendorfer, Francis X. Villablanca.
 
-Contact Kyle Nessen, knessen@calpoly.edu.
+The reviewed data and metadata contact is Peter C. Ibsen. See [metadata.xml](metadata.xml) for contact details. Publication is planned for September 30, 2026. Peter will supply the final citation and DOI.
 
 This release preserves observations from both monitoring seasons at Vandenberg Space Force Base, including deployments outside the manuscript analysis subset. Photographs and available wind measurements cover both seasons. Image classifications and reviewed camera-overlay temperatures cover the first season.
 
@@ -16,11 +16,11 @@ This release preserves observations from both monitoring seasons at Vandenberg S
 
 [wind_measurements.csv](wind_measurements.csv) contains 757,260 rows. One row per wind observation associated with a deployment.
 
-classifications/ contains one JSON file per classified deployment in the native format of the Monarch Trailcam Classifier. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes saved daytime classifications for use without the software. See classifications/README.md for the JSON structure and software links.
+The manuscript repository retains one JSON file per classified deployment in [../deployments/](../deployments/) in the native format of the Monarch Trailcam Classifier. These native JSON files are not release attachments. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes saved daytime classifications for use without the software. See classifications/README.md for the JSON structure and software links.
 
 Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path.
 
-Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. Missing CSV values are empty fields. [data_dictionary.csv](data_dictionary.csv) defines the table fields.
+Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. Missing observation values are represented by NULL. [data_dictionary.csv](data_dictionary.csv) defines the table fields and photograph collections. N/A marks dictionary units and bounds that do not apply.
 
 Timestamps use device clock times without a UTC offset. The cameras and wind meters do not automatically adjust for daylight saving time. TGR1 photo times were reconstructed as described below. Other timestamps are preserved as recorded.
 
@@ -33,3 +33,5 @@ Wind speed is the average and gust is the maximum speed over each one-minute rec
 Temperature values were extracted from camera overlays using OCR and manually reviewed. The camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size based on ordinal image-cell categories. Unclassified photographs do not establish butterfly absence.
 
 The [manuscript repository](https://github.com/kylenessen/monarch-wind-light-manuscript) contains the analysis inputs, scripts and results for reproducing the paper. [metadata.xml](metadata.xml) describes this observational release.
+
+The reviewed metadata, dictionary, deployment table and classification summary were synchronized from the canonical publication package on September 16, 2026. The release builder predates these final manual review edits. Regenerating the package requires reapplying them. See the [review record](../../research/data-release-review-2026-09-16.md).

@@ -1,5 +1,7 @@
 # Image classifications
 
+Native JSON files are retained in [../../deployments/](../../deployments/) in the manuscript repository and are not attachments to the observational release.
+
 Each deployment JSON contains the native annotations for its photographs. The
 deployment identifier in the JSON filename matches deployments.csv. Image keys
 match image_filename in photo_index.csv.
