@@ -1,0 +1,15 @@
+# Data release review changes
+
+Applied Zach Ancona's September 16 review to the canonical release at `/Volumes/MonarchSSD/data_release/publication_package` and copied the changed files into `OneDrive-CalPoly/Manuscript/data-release`. The adjacent `data-release-review-2026-09-16` directory records the resulting metadata, dictionary and verification report. These are dated snapshots. The external-drive publication package remains the canonical release.
+
+The metadata now uses CSV and JPEG as the presentation and transfer formats, lists the USGS publisher in Denver, separates the theme and place keywords, and includes the supplied access, use and distribution statements. Peter Ibsen is the data and metadata contact. His address, phone and email were taken from the example `Metadata_new_PismoV3.xml`, associated with the [example ScienceBase release](https://www.sciencebase.gov/catalog/item/68d307bad4be025f6ad24e66). The unrelated example DOI was not copied. The publication date remains unpublished material, and both DOI fields explicitly await this release's assigned DOI.
+
+The ScienceBase distributor and standard order process follow Zach's instructions and the [USGS metadata guidance](https://www.usgs.gov/sciencebase-instructions-and-documentation/metadata-instructions). The supplied USGS boilerplate is included for review. The release status remains in work.
+
+The data dictionary has File Name, Field, description, units, Minimum and Maximum columns. The missing_value column was removed. Field descriptions explain NULL, and inapplicable dictionary bounds use N/A. The dictionary and XML have matching descriptions for each of the 28 deployment photograph collections, including the filename time format, table links and TGR1 reconstruction caveat.
+
+Replaced 32 empty cells in deployments.csv and 16 empty record_user_id cells in classifications.csv with NULL. Every original nonempty field and all row orders were preserved. The photo index, reviewed temperature table and wind table already had no empty cells and remain byte-for-byte unchanged. The older OCR export at photos/SLC6_1/temperature_data.csv was retained unchanged pending the user's preference about its inclusion.
+
+The complete photo scan found 226,830 photographs, no filenames ending in _02 before the extension, and no repeated deployment and timestamp pairs in the index. All index paths resolved, and every classification and reviewed temperature record matched an indexed photograph. No photograph deletion was necessary. The OneDrive copy retains two photographs per deployment, for 56 total.
+
+The revised XML passes structural validation against the [FGDC CSDGM DTD](https://www.fgdc.gov/schemas/metadata/fgdc-std-001-1998.dtd). This check does not resolve the pending publication date or DOI and does not establish release approval. SHA-256 checks confirm that the four changed files match in the canonical and OneDrive copies. Unrelated supporting files and both photo inventories are unchanged. Cloud upload completion was not checked.

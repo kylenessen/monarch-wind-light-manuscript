@@ -1,0 +1,44 @@
+{
+  "csv_changes": {
+    "deployments.csv": {
+      "data_quality_note": 26,
+      "horizontal_distance_to_cluster": 4,
+      "wind_sensor_id": 1,
+      "camera_height": 1
+    },
+    "classifications.csv": {
+      "record_user_id": 16
+    }
+  },
+  "dictionary_rows": 69,
+  "photo_descriptions": 28,
+  "canonical_photos": 226830,
+  "review_photos": 56,
+  "duplicate_photo_timestamps": 0,
+  "suffix_02_photos": 0,
+  "photo_references": {
+    "classifications.csv": {
+      "rows": 3713,
+      "missing_photo_references": 0
+    },
+    "temperature_measurements.csv": {
+      "rows": 56066,
+      "missing_photo_references": 0
+    }
+  },
+  "pending": [
+    "Release DOI URL in two fields",
+    "Publication date"
+  ],
+  "canonical_source": "/Volumes/MonarchSSD/data_release/publication_package",
+  "review_destination": "/Users/kylenessen/Library/CloudStorage/OneDrive-CalPoly/Manuscript/data-release",
+  "supporting_file_sha256": {
+    "deployments.csv": "6ed19c5d924c7f21e17cfe1b9d1b308f94eed25c0ad117526bd51125f1a842f3",
+    "classifications.csv": "a8a541ae4a8ae4f549a5761aa68262d0df4e7f7764e777e20ef4425a0e92045d",
+    "data_dictionary.csv": "835225d0f24c8da82ef35453c32d442c76c045e623f0d0df8ae77cacaf4ff0aa",
+    "metadata.xml": "a5546cdeea5a7efb86e85acb834d9f49f924b5b2cec84722476dae52646664f3"
+  },
+  "unchanged_other_files": true,
+  "xml_structural_validation": "Passed xmllint --dtdvalid against https://www.fgdc.gov/schemas/metadata/fgdc-std-001-1998.dtd. DOI and publication date remain pending. This structural check does not establish publication readiness.",
+  "retained_older_ocr_export": "photos/SLC6_1/temperature_data.csv was retained unchanged pending the user preference. It is separate from the reviewed temperature_measurements.csv."
+}

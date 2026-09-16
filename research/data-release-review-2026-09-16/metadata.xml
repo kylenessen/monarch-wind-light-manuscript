@@ -1,0 +1,786 @@
+<?xml version='1.0' encoding='utf-8'?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Kyle Nessen</origin>
+        <origin>Peter C. Ibsen</origin>
+        <origin>Jay E. Diffendorfer</origin>
+        <origin>Francis X. Villablanca</origin>
+        <pubdate>Unpublished material</pubdate>
+        <title>Photographs, image classifications, wind measurements, and image-derived temperatures from monarch butterfly monitoring at Vandenberg Space Force Base, California, 2023 through 2025</title>
+        <geoform>CSV, JPEG</geoform>
+        <pubinfo>
+          <pubplace>Denver, CO</pubplace>
+          <publish>U.S. Geological Survey</publish>
+        </pubinfo>
+        <onlink>REVIEW_REQUIRED DOI URL when assigned to this release</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>Observations from monarch monitoring at Vandenberg Space Force Base during the 2023-2024 and 2024-2025 overwintering seasons. Includes deployment information, photographs, wind measurements, a tabular summary of image classifications, and reviewed camera-overlay temperatures. The archive includes monitoring beyond the subset analyzed in the associated manuscript.</abstract>
+      <purpose>Preserve monitoring observations for future research. Manuscript analysis inputs, scripts and results are maintained at https://github.com/kylenessen/monarch-wind-light-manuscript.</purpose>
+      <supplinf>Timestamps use device clock times without a UTC offset. The cameras and wind meters do not automatically adjust for daylight saving time. TGR1 photo times were reconstructed as described below. Other timestamps are preserved as recorded. TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time. Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path. Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records. classifications.csv summarizes saved daytime classifications. Native classification JSON files are maintained separately in the manuscript repository at https://github.com/kylenessen/monarch-wind-light-manuscript/tree/main/data/deployments and are not included in this release. Missing values in CSV observation tables are represented by NULL. In data_dictionary.csv, N/A marks units or minimum and maximum values that do not apply. The dictionary includes a filename pattern and description for each of the 28 deployment photo collections.</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>20231117</begdate>
+          <enddate>20250411</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>Recorded deployment and photograph times.</current>
+    </timeperd>
+    <status>
+      <progress>In work</progress>
+      <update>As needed</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-120.63312527</westbc>
+        <eastbc>-120.56154322</eastbc>
+        <northbc>34.88680926</northbc>
+        <southbc>34.58434444</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>monarch butterfly</themekey>
+        <themekey>overwintering</themekey>
+        <themekey>wind</themekey>
+        <themekey>image classification</themekey>
+        <themekey>Butterfly Index</themekey>
+      </theme>
+      <place>
+        <placekt>None</placekt>
+        <placekey>Vandenberg Space Force Base</placekey>
+        <placekey>Santa Barbara County</placekey>
+        <placekey>California</placekey>
+      </place>
+    </keywords>
+    <accconst>None</accconst>
+    <useconst>Unless otherwise stated, all data, metadata and related materials are considered to satisfy the quality standards relative to the purpose for which the data were collected. Although these data and associated metadata have been reviewed for accuracy and completeness and approved for release by the U.S. Geological Survey (USGS), no warranty expressed or implied is made regarding the display or utility of the data on any other system or for general or scientific purposes, nor shall the act of distribution constitute any such warranty.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Peter Ibsen</cntper>
+          <cntorg>U.S. Geological Survey</cntorg>
+        </cntperp>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>PO Box 25046, MS 980</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>360-317-5602</cntvoice>
+        <cntemail>pibsen@usgs.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>Wind speed is the average and gust is the maximum speed over each one-minute recording interval, in meters per second. Wind direction is the recorded average in degrees clockwise from north. Camera-overlay temperatures were extracted with OCR and manually reviewed. Camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size calculated from ordinal grid-cell classifications.</attraccr>
+    </attracc>
+    <logic>deployment_id uniquely identifies each deployment. Photos link by deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals.</logic>
+    <complete>Classifications and reviewed temperatures cover the first season. Photographs and available wind measurements cover both seasons. Deployment-specific recording information is in deployments.csv. The classification summary excludes night records and unclassified placeholders. Native JSON files in the manuscript repository retain the full annotations. Unclassified photographs do not establish butterfly absence. Missing CSV values are represented by NULL.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>Coordinates are approximate camera locations in WGS84, EPSG 4326, expressed in decimal degrees. Locations were recorded with a cellphone under canopy. Some points were adjusted against satellite imagery. First-season coordinates were already in WGS84. Second-season points were transformed from EPSG 3498 to EPSG 4326.</horizpar>
+      </horizpa>
+    </posacc>
+    <lineage>
+      <procstep>
+        <procdesc>First-season deployment intervals and positions were read from the original deployment GeoPackage. Second-season retained photograph EXIF extrema set the release boundaries. Coordinates were transformed to WGS84 where needed. Deployment and wind timestamps were preserved.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time. The first and last image times were anchored to the field deployment start and end. Intermediate times were linearly scaled by elapsed camera time after removing the 31-day calendar jump. EXIF capture, creation and modification times were updated in release copies. Image pixels and original source photographs were unchanged.</procdesc>
+        <procdate>20260914</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>One photograph per deployment and capture timestamp was retained. Where multiple images shared a timestamp, the unsuffixed photograph was retained.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Deployment identifiers are unique across both seasons and link all observation tables. Use deployment_id and image_filename together to link image records.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Wind records from 92 SQLite databases were matched to the assigned wind meter and inclusive deployment interval. Whitespace and numeric representations were normalized. Identical sensor, time, speed, gust and direction tuples were deduplicated. Source IDs were not treated as globally unique. Off-interval and unrelated observations were omitted. Conflicting measurement tuples would be retained for review. Raw source databases remain unchanged.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Native classification JSON files with their cell positions and annotation fields are maintained separately in the manuscript repository. Saved daytime annotations were summarized as category counts and BI in classifications.csv. BI uses category lower bounds of 0, 1, 10 and 100. Night records were excluded using saved night flags and recorded SC1 and SC2 night intervals when flags were absent.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Camera-overlay temperatures were extracted using OCR, reviewed as deployment time series and manually corrected for extraction errors. The reviewed values are included in temperature_measurements.csv.</procdesc>
+        <procdate>20260913</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>Updated the metadata and data dictionary in response to the September 16, 2026 data review. Replaced empty data-table fields with NULL without changing recorded nonmissing values. Added deployment-specific photograph descriptions and completed contact, keyword, publication and distribution sections. Checked photo filenames and the photo index for _02 suffixes and repeated deployment and capture timestamp pairs. No such suffixes or repeated pairs remained in the release at this review.</procdesc>
+        <procdate>20260916</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <indspref>Photographs and tabular observations relate to camera deployment points through deployment_id.</indspref>
+    <direct>Point</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>Entity point</sdtstype>
+        <ptvctcnt>28</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <geograph>
+        <latres>0.00000001</latres>
+        <longres>0.00000001</longres>
+        <geogunit>Decimal degrees</geogunit>
+      </geograph>
+      <geodetic>
+        <horizdn>D_WGS_1984</horizdn>
+        <ellips>WGS_1984</ellips>
+        <semiaxis>6378137.0</semiaxis>
+        <denflat>298.257223563</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>deployments.csv</enttypl>
+        <enttypd>One row per camera deployment, including identifiers, WGS84 location, boundaries and known limitations.</enttypd>
+        <enttypds>Study investigators and analysis preparation code</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>deployment_id</attrlabl>
+        <attrdef>Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Unique identifier for an individual camera. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wind_sensor_id</attrlabl>
+        <attrdef>Unique identifier for an individual wind sensor. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>start_time</attrlabl>
+        <attrdef>Deployment start in local device time, formatted as YYYY-MM-DD HH:MM:SS. Units recorded clock. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>end_time</attrlabl>
+        <attrdef>Deployment end in local device time, formatted as YYYY-MM-DD HH:MM:SS. Units recorded clock. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>latitude</attrlabl>
+        <attrdef>Approximate camera latitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery. Units decimal degrees. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>longitude</attrlabl>
+        <attrdef>Approximate camera longitude in WGS84, EPSG 4326. Locations were recorded with a cellphone under canopy, with some points adjusted against satellite imagery. Units decimal degrees. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>camera_height</attrlabl>
+        <attrdef>Recorded camera height above ground. Units meters. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>horizontal_distance_to_cluster</attrlabl>
+        <attrdef>Recorded horizontal viewing distance from camera to observed or expected butterfly clusters. Units meters. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>view_direction</attrlabl>
+        <attrdef>Recorded camera viewing direction clockwise from north. Units degrees. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>data_quality_note</attrlabl>
+        <attrdef>Deployment-specific recording, coverage or timing information. Units text. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photo_index.csv</enttypl>
+        <enttypd>One row per retained JPEG photograph. Links images to the deployment table and collection folders.</enttypd>
+        <enttypds>Study investigators and analysis preparation code</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>deployment_id</attrlabl>
+        <attrdef>Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Unique identifier for an individual camera. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>image_filename</attrlabl>
+        <attrdef>Photograph filename in the form deployment_id_YYYYMMDDHHMMSS.JPG. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>timestamp</attrlabl>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>relative_path</attrlabl>
+        <attrdef>Photo path relative to the package root, grouped by deployment_id. Units path. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>classifications.csv</enttypl>
+        <enttypd>One row per saved image classification, with counts of grid-cell categories and Butterfly Index totals. Unclassified placeholders are omitted from this summary.</enttypd>
+        <enttypds>Study investigators and analysis preparation code</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>deployment_id</attrlabl>
+        <attrdef>Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Unique identifier for an individual camera. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>image_filename</attrlabl>
+        <attrdef>Photograph filename in the form deployment_id_YYYYMMDDHHMMSS.JPG. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>timestamp</attrlabl>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>record_user_id</attrlabl>
+        <attrdef>User identifier saved in the classification JSON. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>cells_0</attrlabl>
+        <attrdef>Number of image grid cells assigned to butterfly category 0. Retained primitives support alternative category mappings. Units grid cells. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>cells_1_9</attrlabl>
+        <attrdef>Number of image grid cells assigned to butterfly category 1-9. Retained primitives support alternative category mappings. Units grid cells. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>cells_10_99</attrlabl>
+        <attrdef>Number of image grid cells assigned to butterfly category 10-99. Retained primitives support alternative category mappings. Units grid cells. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>cells_100_999</attrlabl>
+        <attrdef>Number of image grid cells assigned to butterfly category 100-999. Retained primitives support alternative category mappings. Units grid cells. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sun_exposed_cells_1_9</attrlabl>
+        <attrdef>Number of occupied grid cells in category 1-9 marked as receiving direct sunlight. Units grid cells. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sun_exposed_cells_10_99</attrlabl>
+        <attrdef>Number of occupied grid cells in category 10-99 marked as receiving direct sunlight. Units grid cells. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sun_exposed_cells_100_999</attrlabl>
+        <attrdef>Number of occupied grid cells in category 100-999 marked as receiving direct sunlight. Units grid cells. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>butterfly_index</attrlabl>
+        <attrdef>Butterfly Index, BI, of visible cluster size. Sum of grid-cell category lower bounds, using 0, 1, 10 and 100 for categories 0, 1-9, 10-99 and 100-999. Units BI units. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sun_exposed_butterfly_index</attrlabl>
+        <attrdef>BI subtotal for occupied grid cells where monarchs were observed in direct sun. Units BI units. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>temperature_measurements.csv</enttypl>
+        <enttypd>One row per reviewed camera-overlay temperature measurement.</enttypd>
+        <enttypds>Study investigators and analysis preparation code</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>deployment_id</attrlabl>
+        <attrdef>Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>camera_id</attrlabl>
+        <attrdef>Unique identifier for an individual camera. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>image_filename</attrlabl>
+        <attrdef>Photograph filename in the form deployment_id_YYYYMMDDHHMMSS.JPG. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>timestamp</attrlabl>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>temperature</attrlabl>
+        <attrdef>Camera-overlay temperature extracted using OCR and manually reviewed. Units degrees Celsius. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>wind_measurements.csv</enttypl>
+        <enttypd>One row per wind observation associated with a deployment.</enttypd>
+        <enttypds>Study investigators and analysis preparation code</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>deployment_id</attrlabl>
+        <attrdef>Unique identifier for an uninterrupted monitoring period with a fixed camera location and view, linking photographs and associated sensor observations. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wind_sensor_id</attrlabl>
+        <attrdef>Unique identifier for an individual wind sensor. Units identifier. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>timestamp</attrlabl>
+        <attrdef>Observation date and time in ISO 8601 format without a UTC offset. Units recorded clock. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wind_speed</attrlabl>
+        <attrdef>Average wind speed over the one-minute recording interval. Units meters per second. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wind_gust</attrlabl>
+        <attrdef>Maximum wind speed during the one-minute recording interval. Units meters per second. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>wind_direction</attrlabl>
+        <attrdef>Average wind direction over the one-minute recording interval, in degrees clockwise from north, as recorded by the logger. Units degrees. Missing values are represented by NULL.</attrdef>
+        <attrdefs>Study source data and processing code</attrdefs>
+        <attrdomv>
+          <udom>Observed values. Minimum and Maximum in data_dictionary.csv describe observed values, not validation limits. N/A indicates that a bound is not applicable. NULL indicates a missing value.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC1/SC1_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC1, collected with camera EM03. Files are stored in photos/SC1/. The literal filename prefix SC1_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC10/SC10_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC10, collected with camera JINX. Files are stored in photos/SC10/. The literal filename prefix SC10_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC11/SC11_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC11, collected with camera IRIS. Files are stored in photos/SC11/. The literal filename prefix SC11_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC12/SC12_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC12, collected with camera NOVA. Files are stored in photos/SC12/. The literal filename prefix SC12_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC2/SC2_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC2, collected with camera LYNX. Files are stored in photos/SC2/. The literal filename prefix SC2_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC3/SC3_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC3, collected with camera ECHO. Files are stored in photos/SC3/. The literal filename prefix SC3_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC4/SC4_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC4, collected with camera ZEST. Files are stored in photos/SC4/. The literal filename prefix SC4_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC5/SC5_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC5, collected with camera APEX. Files are stored in photos/SC5/. The literal filename prefix SC5_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC6/SC6_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC6, collected with camera EM03. Files are stored in photos/SC6/. The literal filename prefix SC6_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC7/SC7_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC7, collected with camera IRIS. Files are stored in photos/SC7/. The literal filename prefix SC7_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC8/SC8_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC8, collected with camera EM03. Files are stored in photos/SC8/. The literal filename prefix SC8_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC9/SC9_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC9, collected with camera WASP. Files are stored in photos/SC9/. The literal filename prefix SC9_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SLC6_1/SLC6_1_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SLC6_1, collected with camera NOVA. Files are stored in photos/SLC6_1/. The literal filename prefix SLC6_1_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SLC6_2/SLC6_2_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SLC6_2, collected with camera WASP. Files are stored in photos/SLC6_2/. The literal filename prefix SLC6_2_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/TGR1/TGR1_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment TGR1, collected with camera ZEST. Files are stored in photos/TGR1/. The literal filename prefix TGR1_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format. TGR1 photo metadata and filenames use reconstructed capture times, aligned to the deployment start and end using elapsed time in the numbered image sequence. The camera calendar jump was removed and recording gaps were retained. The visible timestamp overlay still shows the incorrect camera date and time.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/UDMH1/UDMH1_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment UDMH1, collected with camera LUNA. Files are stored in photos/UDMH1/. The literal filename prefix UDMH1_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/UDMH2/UDMH2_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment UDMH2, collected with camera GOLD. Files are stored in photos/UDMH2/. The literal filename prefix UDMH2_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/UDMH3/UDMH3_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment UDMH3, collected with camera GOLD. Files are stored in photos/UDMH3/. The literal filename prefix UDMH3_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/UDMH4/UDMH4_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment UDMH4, collected with camera LUNA. Files are stored in photos/UDMH4/. The literal filename prefix UDMH4_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/ARC1/ARC1_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment ARC1, collected with camera ORCA. Files are stored in photos/ARC1/. The literal filename prefix ARC1_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/BC01/BC01_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment BC01, collected with camera APEX. Files are stored in photos/BC01/. The literal filename prefix BC01_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/CR01/CR01_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment CR01, collected with camera GOLD. Files are stored in photos/CR01/. The literal filename prefix CR01_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/MM01/MM01_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment MM01, collected with camera NOVA. Files are stored in photos/MM01/. The literal filename prefix MM01_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/PS01/PS01_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment PS01, collected with camera EM03. Files are stored in photos/PS01/. The literal filename prefix PS01_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SC13/SC13_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SC13, collected with camera IRIS. Files are stored in photos/SC13/. The literal filename prefix SC13_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/SLC6_3/SLC6_3_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment SLC6_3, collected with camera KIWI. Files are stored in photos/SLC6_3/. The literal filename prefix SLC6_3_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/TGR2/TGR2_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment TGR2, collected with camera MOSS. Files are stored in photos/TGR2/. The literal filename prefix TGR2_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>photos/UDMH05/UDMH05_YYYYMMDDHHMMSS.JPG</enttypl>
+        <enttypd>JPEG photographs from deployment UDMH05, collected with camera JADE. Files are stored in photos/UDMH05/. The literal filename prefix UDMH05_ identifies the deployment. YYYYMMDDHHMMSS gives the four-digit year, two-digit month, day, hour, minute and second, with hours 00 through 23 on a 24-hour clock. Each filename identifies a photograph at its recorded capture time. Device times have no UTC offset and were not automatically adjusted for daylight saving time. Use deployment_id and image_filename in photo_index.csv to link photographs to deployments.csv and associated observations. The .JPG extension denotes JPEG format.</enttypd>
+        <enttypds>Study investigators and photo_index.csv</enttypds>
+      </enttyp>
+    </detailed>
+    <overview>
+      <eaover>Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path. classifications.csv summarizes saved daytime classifications. Native classification JSON files are maintained separately in the manuscript repository at https://github.com/kylenessen/monarch-wind-light-manuscript/tree/main/data/deployments and are not included in this release. deployments.csv contains 28 rows. photo_index.csv contains 226,830 rows. classifications.csv contains 3,713 rows. temperature_measurements.csv contains 56,066 rows. wind_measurements.csv contains 757,260 rows. The 28 photograph collections are described individually in this metadata and in data_dictionary.csv. Missing table values are represented by NULL. Dictionary units and bounds that do not apply are represented by N/A.</eaover>
+      <eadetcit>data_dictionary.csv in this package. Native classification annotations https://github.com/kylenessen/monarch-wind-light-manuscript/tree/main/data/deployments. Classifier source code https://github.com/kylenessen/monarch_trailcam_classifier.</eadetcit>
+    </overview>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntperp>
+          <cntper>U.S. Geological Survey ScienceBase</cntper>
+          <cntorg>U.S. Geological Survey ScienceBase</cntorg>
+        </cntperp>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>Denver Federal Center, Building 810, Mail Stop 302</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>1-888-275-8747</cntvoice>
+        <cntemail>sciencebase@usgs.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <resdesc>CSV observation tables, JPEG photograph collections and metadata XML.</resdesc>
+    <distliab>Any use of trade, product or firm names is for descriptive purposes only and does not imply endorsement by the U.S. Geological Survey. Although this information product, for the most part, is in the public domain, it also contains copyrighted materials as noted in the text. Permission to reproduce copyrighted items for other than personal use must be secured from the copyright owner. This database has been approved for release and publication by the Director of the USGS. Although this database has been subjected to rigorous review and is substantially complete, the USGS reserves the right to revise the data pursuant to further analysis and review. Furthermore, it is released on condition that neither the USGS nor the United States Government may be held liable for any damages resulting from its authorized or unauthorized use. Although these data have been processed successfully on a computer system at the U.S. Geological Survey, no warranty expressed or implied is made regarding the display or utility of the data on any other system, or for general or scientific purposes, nor shall the act of distribution constitute any such warranty. The U.S. Geological Survey shall not be held liable for improper or incorrect use of the data described and/or contained herein.</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>CSV, JPEG</formname>
+          <formcont>CSV observation tables and data dictionary, and JPEG photograph collections with the .JPG extension.</formcont>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>REVIEW_REQUIRED DOI URL when assigned to this release</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <fees>None</fees>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20260916</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>Peter Ibsen</cntper>
+          <cntorg>U.S. Geological Survey</cntorg>
+        </cntperp>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>PO Box 25046, MS 980</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>360-317-5602</cntvoice>
+        <cntemail>pibsen@usgs.gov</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>
