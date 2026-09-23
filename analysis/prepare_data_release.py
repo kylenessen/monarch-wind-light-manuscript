@@ -6,7 +6,8 @@
 """Build the observational data release and its documentation.
 
 Use uv run analysis/prepare_data_release.py. The portable package contains only
-public tables, classification JSON, documentation and the photo collections.
+public tables, documentation and the photo collections. Native classification
+JSON files are hosted separately in the classifier repository.
 Manuscript analysis inputs are generated separately in data/analysis_inputs.
 """
 
@@ -16,7 +17,6 @@ import argparse
 import json
 import os
 import re
-import shutil
 import sqlite3
 from pathlib import Path
 import xml.etree.ElementTree as ET
@@ -61,12 +61,13 @@ LOCATION_NOTE = (
     "Locations were recorded with a cellphone under canopy. Some points were adjusted "
     "against satellite imagery."
 )
+CLASSIFICATION_URL = "https://github.com/kylenessen/monarch_trailcam_classifier/tree/main/data/classifications"
 CLASSIFICATION_NOTE = (
-    "classifications/ contains one JSON file per classified deployment in the native "
-    "format of the Monarch Trailcam Classifier. These files retain cell positions, "
-    "categories, sunlight labels and saved annotation fields. classifications.csv "
-    "summarizes saved daytime classifications for use without the software. "
-    "See classifications/README.md for the JSON structure and software links."
+    "classifications.csv summarizes saved daytime classifications as image-level BI, "
+    "sun-exposed BI and category counts. Native classification JSON files with cell "
+    "positions, categories, sunlight labels and saved annotations are hosted separately "
+    "in the classifier repository at " + CLASSIFICATION_URL + ". "
+    "Native JSON files are not included in this release."
 )
 
 PUBLIC_COLUMN_NAMES = {
@@ -348,8 +349,8 @@ def metadata_xml(tables, field_dictionary):
         ET.SubElement(citeinfo, "origin").text = author
     add(root, "idinfo/citation/citeinfo/pubdate", "Unpublished material")
     add(root, "idinfo/citation/citeinfo/title", "Photographs, image classifications, wind measurements, and image-derived temperatures from monarch butterfly monitoring at Vandenberg Space Force Base, California, 2023 through 2025")
-    add(root, "idinfo/citation/citeinfo/geoform", "tabular digital data, JSON image annotations and digital photographs")
-    add(root, "idinfo/descript/abstract", "Observations from monarch monitoring at Vandenberg Space Force Base during the 2023-2024 and 2024-2025 overwintering seasons. Includes deployment information, photographs, wind measurements, native classification JSON and a tabular summary, and reviewed camera-overlay temperatures. The archive includes monitoring beyond the subset analyzed in the associated manuscript.")
+    add(root, "idinfo/citation/citeinfo/geoform", "tabular digital data and digital photographs")
+    add(root, "idinfo/descript/abstract", "Observations from monarch monitoring at Vandenberg Space Force Base during the 2023-2024 and 2024-2025 overwintering seasons. Includes deployment information, photographs, wind measurements, a tabular summary of image classifications, and reviewed camera-overlay temperatures. The archive includes monitoring beyond the subset analyzed in the associated manuscript.")
     add(root, "idinfo/descript/purpose", "Preserve monitoring observations for future research. Manuscript analysis inputs, scripts and results are maintained at https://github.com/kylenessen/monarch-wind-light-manuscript.")
     add(root, "idinfo/descript/supplinf", CLOCK_NOTE + " " + TGR1_NOTE + " " + FILENAME_NOTE + " " + DEPLOYMENT_ID_NOTE + " " + CLASSIFICATION_NOTE)
     dep = tables["deployments"]
@@ -371,7 +372,7 @@ def metadata_xml(tables, field_dictionary):
     add(root, "idinfo/ptcontac/cntinfo/cntemail", email)
     add(root, "dataqual/attracc/attraccr", WIND_NOTE + " Camera-overlay temperatures were extracted with OCR and manually reviewed. Camera readings were not calibrated against a reference thermometer. BI is an index of visible cluster size calculated from ordinal grid-cell classifications.")
     add(root, "dataqual/logic", "deployment_id uniquely identifies each deployment. Photos link by deployment_id and image_filename. Exact wind tuples are deduplicated within sensors before assigning deployment intervals.")
-    add(root, "dataqual/complete", "Classifications and reviewed temperatures cover the first season. Photographs and available wind measurements cover both seasons. Deployment-specific recording information is in deployments.csv. The classification summary excludes night records and unclassified placeholders. Native JSON files retain the full annotations. Unclassified photographs do not establish butterfly absence. Missing CSV values are empty fields.")
+    add(root, "dataqual/complete", "Classifications and reviewed temperatures cover the first season. Photographs and available wind measurements cover both seasons. Deployment-specific recording information is in deployments.csv. The classification summary excludes night records and unclassified placeholders. Native JSON files in the classifier repository retain the full annotations and are not release attachments. Unclassified photographs do not establish butterfly absence. Missing CSV values are empty fields.")
     add(root, "dataqual/posacc/horizpa/horizpar", LOCATION_NOTE + " First-season coordinates were already in WGS84. Second-season points were transformed from EPSG 3498 to EPSG 4326.")
     lineage = ET.SubElement(root.find("dataqual"), "lineage")
     for text in (
@@ -381,7 +382,7 @@ def metadata_xml(tables, field_dictionary):
         "One photograph per deployment and capture timestamp was retained. Where multiple images shared a timestamp, the unsuffixed photograph was retained.",
         DEPLOYMENT_ID_NOTE,
         "Wind records from 92 SQLite databases were matched to the assigned wind meter and inclusive deployment interval. Whitespace and numeric representations were normalized. Identical sensor, time, speed, gust and direction tuples were deduplicated. Source IDs were not treated as globally unique. Off-interval and unrelated observations were omitted. Conflicting measurement tuples would be retained for review. Raw source databases remain unchanged.",
-        "Native classification JSON files were included with their cell positions and annotation fields. Saved daytime annotations were summarized as category counts and BI in classifications.csv. BI uses category lower bounds of 0, 1, 10 and 100. Night records were excluded using saved night flags and recorded SC1 and SC2 night intervals when flags were absent.",
+        "Native classification JSON files with their cell positions and annotation fields are hosted separately in the classifier repository. Saved daytime annotations were summarized as category counts and BI in classifications.csv. BI uses category lower bounds of 0, 1, 10 and 100. Night records were excluded using saved night flags and recorded SC1 and SC2 night intervals when flags were absent.",
         "Camera-overlay temperatures were extracted using OCR, reviewed as deployment time series and manually corrected for extraction errors. The reviewed values are included in temperature_measurements.csv.",
     ):
         step = ET.SubElement(lineage, "procstep")
@@ -411,8 +412,8 @@ def metadata_xml(tables, field_dictionary):
             add(attr, "attrdefs", "Study source data and processing code")
             add(attr, "attrdomv/udom", "Observed values. Observed minimum and maximum in data_dictionary.csv are descriptive, not validation limits.")
     add(ea, "overview/eaover", FILENAME_NOTE + " " + CLASSIFICATION_NOTE + " " + " ".join(f"{name}.csv contains {len(frame):,} rows." for name, frame in tables.items()))
-    add(ea, "overview/eadetcit", "data_dictionary.csv, README.md and classifications/README.md in this package. Classifier source code https://github.com/kylenessen/monarch_trailcam_classifier.")
-    add(root, "distinfo/resdesc", "CSV observation tables, native classification JSON files, JPEG photograph collections, metadata XML and documentation.")
+    add(ea, "overview/eadetcit", "data_dictionary.csv and README.md in this package. Native classification annotations " + CLASSIFICATION_URL + ". Classifier source code https://github.com/kylenessen/monarch_trailcam_classifier.")
+    add(root, "distinfo/resdesc", "CSV observation tables, JPEG photograph collections, metadata XML and documentation.")
     add(root, "distinfo/distliab", "REVIEW_REQUIRED applicable USGS distribution statement after review. No release approval is claimed by this draft.")
     add(root, "metainfo/metd", "20260914")
     add(root, "metainfo/metc/cntinfo/cntorgp/cntorg", "REVIEW_REQUIRED responsible metadata organization")
@@ -451,39 +452,6 @@ def validate(tables):
     assert classification.sun_exposed_butterfly_index.le(classification.butterfly_index).all()
     return dict(table_rows={name: len(frame) for name, frame in tables.items()},
                 schema_and_join_checks="passed", photo_time_reconstruction="TGR1 deployment endpoints")
-
-
-def stage_classifications(destination):
-    target = destination / "classifications"
-    target.mkdir(parents=True, exist_ok=True)
-    files = sorted((ROOT / "data/deployments").glob("*.json"))
-    for path in files:
-        shutil.copyfile(path, target / path.name)
-    (target / "README.md").write_text("""# Image classifications
-
-Each deployment JSON contains the native annotations for its photographs. The
-deployment identifier in the JSON filename matches deployments.csv. Image keys
-match image_filename in photo_index.csv.
-
-The source code and illustrated protocol are available from the
-[Monarch Trailcam Classifier](https://github.com/kylenessen/monarch_trailcam_classifier)
-and its [classification guide](https://kylenessen.github.io/monarch_trailcam_classifier/).
-
-Files contain an object keyed by image filename, either at the top level or within
-a classifications object. Each image record contains cells keyed by cell_row_column.
-Each cell stores count, an ordinal category, and directSun, a sunlight flag. Some
-older records use sunlight for the same flag. Categories are 0, 1-9, 10-99 and
-100-999. Image records also contain confirmed and index, and may contain user,
-isNight and notes. These retain confirmation state, image sequence, saved user,
-night flag and annotation notes.
-
-The JSON includes unclassified placeholders. classifications.csv summarizes
-saved daytime classifications, including unconfirmed annotations and excluding
-untouched placeholders. Night records are identified using saved night flags and
-recorded SC1 and SC2 night intervals when a JSON flag is absent. Butterfly Index sums category lower bounds of 0, 1, 10 and 100.
-Sun-exposed Butterfly Index sums those values for occupied cells marked in sunlight.
-""")
-    return len(files)
 
 
 def release_readme(tables):
@@ -570,7 +538,6 @@ def main():
         fields.to_csv(destination / "data_dictionary.csv", index=False, na_rep="")
         (destination / "metadata.xml").write_bytes(xml)
         (destination / "README.md").write_text(readme)
-        stage_classifications(destination)
         for name in ("analysis_30_minute.csv", "analysis_next_day.csv"):
             (destination / name).unlink(missing_ok=True)
     stage_photos(args.archive, package, dep, photos)

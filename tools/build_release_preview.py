@@ -141,12 +141,6 @@ def build(source, destination, replace=False):
     reference = destination / "full_release_reference"
     reference.mkdir(exist_ok=replace)
     shutil.copyfile(source / "README.md", reference / "README.md")
-    annotations = destination / "classifications"
-    annotations.mkdir(exist_ok=True)
-    shutil.copyfile(source / "classifications/README.md", annotations / "README.md")
-    for deployment in {r["deployment_id"] for r in selected["classifications"]}:
-        shutil.copyfile(source / "classifications" / f"{deployment}.json",
-                        annotations / f"{deployment}.json")
 
     header_text = "# CSV headers for USGS review\n\nHeaders are identical to the full draft release, in the same column order. "
     header_text += "The numbered lists below are for reading. Each CSV retains its standard comma-separated header row. "
@@ -172,13 +166,13 @@ This is a selected example set, not the complete dataset or a statistically repr
     for name, count in counts.items():
         readme += f"| {name} | {count['preview_rows']:,} | {count['full_release_rows']:,} | {count['columns']} |\n"
     readme += """
-deployments.csv and data_dictionary.csv are complete copies. Each of the other four CSVs contains exactly 10 selected data rows, plus its header. Dictionary minimum and maximum values describe the full release. Native JSON files for the sampled classified deployments are included in classifications/.
+deployments.csv and data_dictionary.csv are complete copies. Each of the other four CSVs contains exactly 10 selected data rows, plus its header. Dictionary minimum and maximum values describe the full release. Native cell-level JSON files are hosted separately at https://github.com/kylenessen/monarch_trailcam_classifier/tree/main/data/classifications and are not included in this preview or the data release.
 
 ## Photo examples and table relationships
 
 Six original JPEGs are included under photos/deployment_id/. All six are listed in the 10-row photo index. The other four index rows demonstrate the schema but their photos are not included. These are ordinary files, with no symbolic links. The images and their EXIF metadata have not been resized or edited.
 
-The two SC1 photos have saved classifications. Their classification and temperature records are included, along with illustrative wind observations. Additional observation rows bring each sampled table to 10 rows. Those rows and the full deployment JSON files can reference photos available only in the complete release.
+The two SC1 photos have saved classifications. Their classification and temperature records are included, along with illustrative wind observations. Additional observation rows bring each sampled table to 10 rows. Those rows can reference photos available only in the complete release.
 
 The first-season SC12 image and second-season SC13 image show distinct camera deployments. SC12 is NOVA with BlueLake. SC13 is IRIS with RockWall. Deployment identifiers are unique across the release. The two CR01 images show consecutive ten-minute observations.
 
