@@ -1,6 +1,6 @@
 # Image classifications
 
-Native JSON files are retained in [../../deployments/](../../deployments/) in the manuscript repository and are not attachments to the observational release.
+The original native JSON files are hosted in the [classifier repository](https://github.com/kylenessen/monarch_trailcam_classifier/tree/main/data/classifications) alongside the software. They are not attachments to the observational release. Matching copies remain in [../../deployments/](../../deployments/) for manuscript analysis reproducibility.
 
 Each deployment JSON contains the native annotations for its photographs. The
 deployment identifier in the JSON filename matches deployments.csv. Image keys

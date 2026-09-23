@@ -16,7 +16,7 @@ This release preserves observations from both monitoring seasons at Vandenberg S
 
 [wind_measurements.csv](wind_measurements.csv) contains 757,260 rows. One row per wind observation associated with a deployment.
 
-The manuscript repository retains one JSON file per classified deployment in [../deployments/](../deployments/) in the native format of the Monarch Trailcam Classifier. These native JSON files are not release attachments. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes saved daytime classifications for use without the software. See classifications/README.md for the JSON structure and software links.
+The [classifier repository](https://github.com/kylenessen/monarch_trailcam_classifier/tree/main/data/classifications) hosts one original JSON file per classified deployment alongside the application source code. These native JSON files are not release attachments. These files retain cell positions, categories, sunlight labels and saved annotation fields. classifications.csv summarizes saved daytime classifications for use without the software. See classifications/README.md for the JSON structure and software links.
 
 Photographs are stored in photos/deployment_id/ and named deployment_id_YYYYMMDDHHMMSS.JPG using a 24-hour clock. Deployment identifiers may contain underscores. photo_index.csv lists every image path.
 
