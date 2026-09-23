@@ -14,7 +14,7 @@ Camera temperature values were read from image overlays with a custom optical-ch
 
 ## Data Availability Notes
 
-The raw image files are not included in this repository because of storage constraints. A USGS ScienceBase release containing the original photographs, deployment metadata, image classifications, wind measurements, and reviewed image-derived temperature values used in this study is planned for publication on September 30, 2026. Peter Ibsen will provide the final release citation and DOI. The source code for the custom image-classification software is available at <https://github.com/kylenessen/monarch_trailcam_classifier>.
+The raw image files are not included in this repository because of storage constraints. The [USGS data release](https://doi.org/10.5066/P13IEKEB) by Nessen, Ibsen, Diffendorfer and Villablanca (2026) contains the photographs, deployment metadata, image classifications, wind measurements, and reviewed image-derived temperature values. The source code for the custom image-classification software is available at <https://github.com/kylenessen/monarch_trailcam_classifier>.
 
 The expanded release tables include available deployment and weather records outside the manuscript subset, including deployments with no butterfly detections. Unclassified photos do not establish absence. The observational release includes both field seasons. The classification summary and reviewed temperatures cover the first season. Native classification JSON files remain in this repository and are not release attachments. Manuscript analysis inputs remain separately in analysis_inputs/.
 

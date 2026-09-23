@@ -2,7 +2,7 @@
 
 Kyle Nessen, Peter C. Ibsen, Jay E. Diffendorfer, Francis X. Villablanca.
 
-The reviewed data and metadata contact is Peter C. Ibsen. See [metadata.xml](metadata.xml) for contact details. Publication is planned for September 30, 2026. Peter will supply the final citation and DOI.
+The reviewed data and metadata contact is Peter C. Ibsen. See [metadata.xml](metadata.xml) for contact details. Cite the [USGS data release](https://doi.org/10.5066/P13IEKEB) by Nessen, Ibsen, Diffendorfer and Villablanca (2026). The citation supplied by Peter gives September 30, 2026 as the publication date.
 
 This release preserves observations from both monitoring seasons at Vandenberg Space Force Base, including deployments outside the manuscript analysis subset. Photographs and available wind measurements cover both seasons. Image classifications and reviewed camera-overlay temperatures cover the first season.
 
