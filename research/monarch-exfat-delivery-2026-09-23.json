@@ -1,0 +1,16 @@
+{
+  "phase": "complete",
+  "updated": "2026-09-23T13:43:03.610689-07:00",
+  "destination": "/Volumes/MonarchSSD/publication_package",
+  "filesystem": "exFAT",
+  "file_paths_and_sizes_match": true,
+  "symlinks": 0,
+  "nested_deployment_directories": 0,
+  "supporting_files_byte_match": true,
+  "full_checksum_verification": false,
+  "files": 226837,
+  "photos": 226830,
+  "deployments": 28,
+  "bytes": 332494036777,
+  "source": "/Volumes/MediaVault/MonarchSSD_backup_2026-09-22/data_release/publication_package"
+}
