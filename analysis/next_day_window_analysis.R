@@ -145,7 +145,7 @@ interaction_wind_sun_nextday <- create_binned_interaction_plot(
   y_var = "cumulative_sun_exposed_bi",
   data = data,
   xlab = "Maximum wind gust (m/s)",
-  ylab = "Butterflies in direct sun",
+  ylab = "Cumulative sun-exposed BI",
   n = 400,
   limits = c(-16, 16),
   breaks = seq(-16, 16, by = 2),
