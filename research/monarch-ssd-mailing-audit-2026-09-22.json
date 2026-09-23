@@ -1,0 +1,188 @@
+{
+  "date": "2026-09-22",
+  "ready_to_mail": false,
+  "canonical_release": "/Volumes/MonarchSSD/data_release/publication_package",
+  "indexed_photos": 226830,
+  "accessible_photos": 111698,
+  "broken_deployment_links": 23,
+  "missing_indexed_photos": 115132,
+  "supporting_files": {
+    "wind_measurements.csv": {
+      "bytes": 35980160,
+      "sha256": "176d3d635b50213db5c8402198b49435a5268e89986c387a0d4412a2ce4862dd",
+      "matches_review": null,
+      "rows": 757260,
+      "blank_cells": 0,
+      "malformed_rows": 0
+    },
+    "classifications.csv": {
+      "bytes": 285944,
+      "sha256": "a8a541ae4a8ae4f549a5761aa68262d0df4e7f7764e777e20ef4425a0e92045d",
+      "matches_review": true,
+      "rows": 3713,
+      "blank_cells": 0,
+      "malformed_rows": 0
+    },
+    "photo_index.csv": {
+      "bytes": 20583763,
+      "sha256": "6662b223ec732224e71e4d6dbc2ce665fe1134d11fe0860a95a79e7275597e61",
+      "matches_review": null,
+      "rows": 226830,
+      "blank_cells": 0,
+      "malformed_rows": 0
+    },
+    "metadata.xml": {
+      "bytes": 64365,
+      "sha256": "a5546cdeea5a7efb86e85acb834d9f49f924b5b2cec84722476dae52646664f3",
+      "matches_review": true
+    },
+    "temperature_measurements.csv": {
+      "bytes": 3264751,
+      "sha256": "ea62087ce5260492c72ec3b83850e79dabd9614f7f44d9f7c8dc62b774f06568",
+      "matches_review": null,
+      "rows": 56066,
+      "blank_cells": 0,
+      "malformed_rows": 0
+    },
+    "data_dictionary.csv": {
+      "bytes": 26983,
+      "sha256": "835225d0f24c8da82ef35453c32d442c76c045e623f0d0df8ae77cacaf4ff0aa",
+      "matches_review": true,
+      "rows": 69,
+      "blank_cells": 0,
+      "malformed_rows": 0
+    },
+    "deployments.csv": {
+      "bytes": 3393,
+      "sha256": "6ed19c5d924c7f21e17cfe1b9d1b308f94eed25c0ad117526bd51125f1a842f3",
+      "matches_review": true,
+      "rows": 28,
+      "blank_cells": 0,
+      "malformed_rows": 0
+    }
+  },
+  "pending_metadata": [
+    {
+      "element": "pubdate",
+      "value": "Unpublished material"
+    },
+    {
+      "element": "onlink",
+      "value": "REVIEW_REQUIRED DOI URL when assigned to this release"
+    },
+    {
+      "element": "networkr",
+      "value": "REVIEW_REQUIRED DOI URL when assigned to this release"
+    }
+  ],
+  "backup_recovery": {
+    "coverage_by_deployment": {
+      "SC1": {
+        "copy_existing_filename": 4338
+      },
+      "SC10": {
+        "copy_existing_filename": 3779
+      },
+      "SC11": {
+        "copy_existing_filename": 4449
+      },
+      "SC12": {
+        "copy_existing_filename": 1138
+      },
+      "SC2": {
+        "copy_existing_filename": 563
+      },
+      "SC3": {
+        "copy_existing_filename": 3952
+      },
+      "SC4": {
+        "copy_existing_filename": 4751
+      },
+      "SC5": {
+        "copy_existing_filename": 8514
+      },
+      "SC6": {
+        "copy_existing_filename": 3026
+      },
+      "SC7": {
+        "copy_existing_filename": 3035
+      },
+      "SC8": {
+        "copy_existing_filename": 3141
+      },
+      "SC9": {
+        "copy_existing_filename": 3782
+      },
+      "SLC6_1": {
+        "copy_existing_filename": 2455
+      },
+      "SLC6_2": {
+        "copy_existing_filename": 4754
+      },
+      "UDMH1": {
+        "copy_existing_filename": 1895
+      },
+      "UDMH2": {
+        "copy_existing_filename": 95
+      },
+      "UDMH3": {
+        "copy_existing_filename": 1897
+      },
+      "UDMH4": {
+        "copy_existing_filename": 502
+      },
+      "ARC1": {
+        "copy_with_inventory_filename": 8432
+      },
+      "BC01": {
+        "copy_existing_filename": 22289
+      },
+      "SLC6_3": {
+        "copy_with_inventory_filename": 4483
+      },
+      "TGR2": {
+        "copy_with_inventory_filename": 20889
+      },
+      "TGR1": {
+        "reapply_saved_TGR1_EXIF_correction": 2973
+      }
+    },
+    "resolved_source_paths": 115132,
+    "unresolved_count": 0,
+    "unresolved_examples": [],
+    "review_sample_comparisons": [],
+    "tgr1_saved_mapping_rows": 2973,
+    "tgr1_saved_mapping_matches_index": true,
+    "source_sizes_by_recovery_method": {
+      "copy_existing_filename": {
+        "files": 78355,
+        "bytes": 89408721775
+      },
+      "copy_with_inventory_filename": {
+        "files": 33804,
+        "bytes": 61947059396
+      },
+      "reapply_saved_TGR1_EXIF_correction": {
+        "files": 2973,
+        "bytes": 3008402543
+      }
+    },
+    "zero_byte_source_files": [],
+    "source_paths_used_more_than_once": [],
+    "tgr1_raw_EXIF_matches_saved_mapping": true,
+    "tgr1_raw_EXIF_checked_files": 2973
+  },
+  "disk_format": "APFS",
+  "disk_free_bytes": 734028451840,
+  "disk_trash_empty": true,
+  "apfs_snapshots": 0,
+  "changes_to_ssd": "None. Audit only.",
+  "verification_limits": "Source existence, nonzero file sizes and unique mappings checked. Full source checksum and image decoding checks have not been performed. Files have not been restored.",
+  "other_drive_content": [
+    "Pictures",
+    "monarch-knowledge-base",
+    "OneDrive - Cal Poly symlink pointing to the local computer"
+  ],
+  "external_link": "/Volumes/MonarchSSD/OneDrive - Cal Poly -> /Users/kylenessen/Library/CloudStorage/OneDrive-CalPoly",
+  "recipient_platform": "User is unsure. Windows is likely."
+}
