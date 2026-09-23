@@ -9,6 +9,7 @@ from collections import Counter, defaultdict
 import csv
 import ctypes
 from datetime import datetime
+import errno
 import hashlib
 import io
 import json
@@ -94,6 +95,28 @@ class Handoff:
         self.copy_metadata = ctypes.CDLL('/usr/lib/libSystem.B.dylib', use_errno=True).copyfile
         self.copy_metadata.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_void_p, ctypes.c_uint32]
         self.copy_metadata.restype = ctypes.c_int
+        self.get_xattr = ctypes.CDLL('/usr/lib/libSystem.B.dylib', use_errno=True).getxattr
+        self.get_xattr.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_void_p,
+                                  ctypes.c_size_t, ctypes.c_uint32, ctypes.c_int]
+        self.get_xattr.restype = ctypes.c_ssize_t
+
+    def resource_fork(self, path):
+        """Read a macOS resource fork even when Python lacks os.getxattr."""
+        name = b'com.apple.ResourceFork'
+        size = self.get_xattr(os.fsencode(path), name, None, 0, 0, 0)
+        if size < 0:
+            error = ctypes.get_errno()
+            if error == errno.ENOATTR:
+                return None
+            raise OSError(error, os.strerror(error), str(path))
+        buffer = ctypes.create_string_buffer(size)
+        actual = self.get_xattr(os.fsencode(path), name, buffer, size, 0, 0)
+        if actual < 0:
+            error = ctypes.get_errno()
+            raise OSError(error, os.strerror(error), str(path))
+        if actual != size:
+            raise ValueError(f'Resource fork changed while reading {path}')
+        return buffer.raw[:actual]
 
     def status(self, phase, force=False, **details):
         if not force and time.time() - self.last_status < 30:
@@ -313,10 +336,7 @@ class Handoff:
             else:
                 digest = sha(target)
             assert digest == row['sha256'], f'Checksum mismatch {target}'
-            source_attributes = os.listxattr(source)
-            for key in source_attributes:
-                if key == 'com.apple.ResourceFork':
-                    assert os.getxattr(source, key) == os.getxattr(target, key), (target, key)
+            assert self.resource_fork(source) == self.resource_fork(target), (target, 'com.apple.ResourceFork')
             self.db.execute("UPDATE files SET state='verified' WHERE relative=?", (row['relative'],))
             progress['files'] += 1
             progress['bytes'] += row['size']
