@@ -23,7 +23,7 @@ cfg <- list(
   dpi = 600,
   interaction_w = 7,
   interaction_h = 6,
-  interaction_include_width = 0.70,
+  interaction_include_width = 0.72,
   diagnostic_h = 5,
   diagnostic_include_width = 0.80,
   acf_w = 7,
@@ -137,7 +137,9 @@ descriptive <- tibble(
 )
 write_csv(descriptive, file.path(out_dir, "descriptive_statistics.csv"))
 
-interaction_sizes <- reference_sizes(cfg$interaction_w, cfg$interaction_include_width)
+interaction_sizes <- reference_sizes(
+  cfg$interaction_w, cfg$interaction_include_width, manuscript_figure_style
+)
 
 interaction_wind_sun_nextday <- create_binned_interaction_plot(
   gam_model = model$gam,
@@ -158,6 +160,7 @@ interaction_wind_sun_nextday <- create_binned_interaction_plot(
   axis_title_size = interaction_sizes$axis_title,
   axis_text_size = interaction_sizes$axis_text,
   base_size = interaction_sizes$axis_title,
+  base_family = manuscript_figure_style$font_family,
   legend_key_height_cm = 2.0
 )
 save_figure("interaction_wind_sun_nextday.png", interaction_wind_sun_nextday, cfg$interaction_w, cfg$interaction_h)

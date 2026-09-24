@@ -42,6 +42,7 @@ create_binned_interaction_plot <- function(
     legend_key_height_cm = 0.6,
     legend_name = expression(paste("Partial effect on ", Delta, "BI")),
     base_size = 14,
+    base_family = "sans",
     # Distance-based mask for excluding far-away grid points
     # Default mirrors mgcv::vis.gam (0.1)
     too_far = 0.1,
@@ -107,7 +108,7 @@ create_binned_interaction_plot <- function(
       x = if (is.null(xlab)) x_var else xlab,
       y = if (is.null(ylab)) y_var else ylab
     ) +
-    theme_minimal(base_size = base_size) +
+    theme_minimal(base_size = base_size, base_family = base_family) +
     theme(
       plot.title = element_blank(),
       plot.subtitle = element_blank(),

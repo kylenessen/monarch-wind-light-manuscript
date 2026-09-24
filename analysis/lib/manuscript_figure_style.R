@@ -4,7 +4,20 @@ reference_figure_style <- list(
   axis_title = 14,
   axis_text = 12,
   legend_title = 14,
-  legend_text = 12
+  legend_text = 12,
+  font_family = "sans"
+)
+
+# Printed sizes for Figures 2-4 in the MDPI template's 13.86 cm text column.
+# Palatino matches the manuscript's mathpazo/Palladio serif typography.
+manuscript_figure_style <- list(
+  figure_width = 13.86 / 2.54,
+  include_width = 1,
+  axis_title = 9,
+  axis_text = 8,
+  legend_title = 9,
+  legend_text = 8,
+  font_family = "Palatino"
 )
 
 reference_scale <- function(fig_width, include_width, reference = reference_figure_style) {
@@ -12,7 +25,7 @@ reference_scale <- function(fig_width, include_width, reference = reference_figu
 }
 
 reference_text_size <- function(size, fig_width, include_width, reference = reference_figure_style) {
-  round(size * reference_scale(fig_width, include_width, reference))
+  size * reference_scale(fig_width, include_width, reference)
 }
 
 reference_sizes <- function(fig_width, include_width, reference = reference_figure_style) {
@@ -32,7 +45,7 @@ theme_like_reference <- function(fig_width,
   sizes <- reference_sizes(fig_width, include_width, reference)
   axis_face <- if (bold_axis_title) "bold" else "plain"
 
-  theme_minimal(base_size = sizes$axis_title) +
+  theme_minimal(base_size = sizes$axis_title, base_family = reference$font_family) +
     theme(
       panel.grid.major = element_line(color = "gray90", linewidth = 0.5),
       panel.grid.minor = if (grid_minor) element_line(color = "gray95", linewidth = 0.3) else element_blank(),

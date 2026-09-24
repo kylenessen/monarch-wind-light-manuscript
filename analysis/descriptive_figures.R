@@ -29,7 +29,10 @@ cfg <- list(
 )
 
 make_theme <- function() {
-  theme_like_reference(cfg$combined_w, cfg$include_width, grid_minor = FALSE) +
+  theme_like_reference(
+    cfg$combined_w, cfg$include_width,
+    reference = manuscript_figure_style, grid_minor = FALSE
+  ) +
     theme(legend.position = "none")
 }
 
@@ -133,7 +136,7 @@ p_hourly <- ggplot(hourly_summary, aes(x = hour, y = mean_delta_bi)) +
   ) +
   labs(
     x = "Time of day",
-    y = expression(paste("Mean ", Delta, "BI"))
+    y = "Mean ΔBI"
   ) +
   make_theme() +
   theme(
@@ -148,7 +151,10 @@ combined_plot <- p_bi + p_hourly +
   theme(
     plot.tag = element_text(
       face = "bold",
-      size = reference_text_size(reference_figure_style$axis_title, cfg$combined_w, cfg$include_width)
+      family = manuscript_figure_style$font_family,
+      size = reference_sizes(
+        cfg$combined_w, cfg$include_width, manuscript_figure_style
+      )$axis_title
     ),
     plot.tag.position = c(0.02, 0.98)
   )

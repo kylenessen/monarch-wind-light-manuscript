@@ -445,14 +445,16 @@ response_plot <- ggplot(
   ) +
   labs(
     x = "Maximum wind gust (m/s)",
-    y = "Predicted 30-minute BI change\n(cube-root scale)"
+    y = "Predicted 30-minute ΔBI\n(signed cube-root scale)"
   ) +
-  theme_like_reference(12, 0.95) +
+  theme_like_reference(12, 0.98, reference = manuscript_figure_style) +
   theme(
     legend.position = "bottom",
-    legend.title = element_text(size = reference_sizes(12, 0.95)$legend_title),
+    legend.title = element_text(
+      size = reference_sizes(12, 0.98, manuscript_figure_style)$legend_title
+    ),
     strip.text = element_text(
-      color = "black", size = reference_sizes(12, 0.95)$axis_text
+      color = "black", size = reference_sizes(12, 0.98, manuscript_figure_style)$axis_text
     ),
     panel.spacing.x = grid::unit(1, "lines")
   )

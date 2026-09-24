@@ -11,6 +11,8 @@ Rscript -e 'install.packages(c("dplyr", "ggplot2", "gratia", "here", "mgcv", "nl
 
 Python dependencies are recorded in [pyproject.toml](../pyproject.toml) and [uv.lock](../uv.lock). The R packages are not version locked. Regenerated plots or floating-point results can vary with package versions. The committed manuscript figures preserve the submitted versions.
 
+Figures 2 through 4 use Palatino to match the manuscript's serif typography. Install that font before regenerating these figures on another system. The shared [figure style](lib/manuscript_figure_style.R) sizes axis and legend titles at 9 points and tick and legend labels at 8 points after placement in the MDPI template's 13.86 cm text column. The scripts account for each figure's inclusion width. Figure 1 and the diagnostic figures retain their existing styling.
+
 The main analysis reads [analysis_30_minute.csv](../data/analysis_inputs/analysis_30_minute.csv) and [analysis_next_day.csv](../data/analysis_inputs/analysis_next_day.csv) directly. Their field names use BI, delta BI and explicit weather units. They contain 17 and 10 columns respectively. These inputs stay in the manuscript repository, separate from the observational release. Every column is used by a retained analysis, descriptive summary or the focused observer sensitivity. The signed square-root next-day response is calculated in R. The stored signed cube-root 30-minute response is preserved from the historical input.
 
 This command regenerates descriptive summaries, the descriptive figure, wind-exceedance statistics, all 121 harmonized candidate fits and their selected models, and the Next Day figure and diagnostics.
