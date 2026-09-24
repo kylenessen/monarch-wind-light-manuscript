@@ -2,14 +2,14 @@
 
 Run all commands from the repository root. The saved inputs and outputs are included, so you can inspect the results without installing the analysis software.
 
-Install Python 3.13 or newer through [uv](https://docs.astral.sh/uv/) and restore the Python environment with `uv sync --locked`. Install R and the packages used by the scripts.
+Install Python 3.13 or newer through [uv](https://docs.astral.sh/uv/) and R 4.6.1, then restore the recorded Python and R environments from the repository root. The renv bootstrap runs when R starts in this project.
 
 ```sh
 uv sync --locked
-Rscript -e 'install.packages(c("dplyr", "ggplot2", "gratia", "here", "mgcv", "nlme", "patchwork", "purrr", "readr", "tibble"), repos="https://cloud.r-project.org")'
+Rscript -e 'renv::restore(prompt = FALSE)'
 ```
 
-Python dependencies are recorded in [pyproject.toml](../pyproject.toml) and [uv.lock](../uv.lock). The R packages are not version locked. Regenerated plots or floating-point results can vary with package versions. The committed manuscript figures preserve the submitted versions.
+Python dependencies are recorded in [pyproject.toml](../pyproject.toml) and [uv.lock](../uv.lock). [renv.lock](../renv.lock) records the installed R package versions used for the final manuscript checks. [The R session record](R-session-info.txt) records the reference platform. The project loads its local renv library automatically. Platform and graphics-device differences can still affect rendered figures. The committed figures preserve the submitted versions.
 
 Figures 2 through 4 use Palatino to match the manuscript's serif typography. Install that font before regenerating these figures on another system. The shared [figure style](lib/manuscript_figure_style.R) sizes axis and legend titles at 9 points and tick and legend labels at 8 points after placement in the MDPI template's 13.86 cm text column. The scripts account for each figure's inclusion width. Figure 1 and the diagnostic figures retain their existing styling.
 

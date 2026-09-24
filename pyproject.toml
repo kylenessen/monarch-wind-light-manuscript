@@ -9,3 +9,9 @@ dependencies = [
     "pandas>=2.3.0",
 ]
 
+[dependency-groups]
+dev = [
+    "pyproj>=3.7",
+    "shapely>=2.1",
+]
+
