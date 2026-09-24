@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "Please cite the manuscript and identify the repository version when using these analysis materials. Cite the USGS data release separately when using its observations."
+type: software
+title: "Analysis materials for Does Wind Disrupt Overwintering Monarch Butterfly Clusters? An Observational Study of Western Monarchs"
+authors:
+  - family-names: Nessen
+    given-names: Kyle
+  - family-names: Ibsen
+    given-names: Peter C.
+  - family-names: Diffendorfer
+    given-names: Jay E.
+  - family-names: Villablanca
+    given-names: Francis X.
+version: submission-2026-09-24
+date-released: 2026-09-24
+repository-code: "https://github.com/kylenessen/monarch-wind-light-manuscript"
+url: "https://github.com/kylenessen/monarch-wind-light-manuscript/releases/tag/submission-2026-09-24"
+license: CC0-1.0
+abstract: "Analysis inputs, scripts and saved results accompanying the manuscript submitted to Insects on September 24, 2026. The code dedication applies to original software. Manuscript text, data and third-party assets are covered separately in REUSE.md."

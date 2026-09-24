@@ -1,3 +1,7 @@
+# Archive preparation utilities
+
+These scripts supported preparation and transfer of the observational release. They are separate from the [manuscript reproduction workflow](../analysis/README.md). Drive paths in the historical examples below refer to the original preparation environment. The [operations records](../research/operations/README.md) describe subsequent recovery and delivery.
+
 # Photograph review export
 
 `export_season_photos.py` makes an independent copy of the raw second-season archive, using the `ID` and `deployment_ID` fields in the camera GeoPackage. It never renames or writes to source photographs. JPEG names use the recorded EXIF capture timestamp without filtering dates, correcting clocks, or splitting deployments. Unreadable dates and timestamp collisions retain their original paths under the deployment's `review_needed` folder. Other media retain their paths under `other_media`.
